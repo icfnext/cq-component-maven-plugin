@@ -7,7 +7,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.maven.plugin.logging.Log;
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.Component;
@@ -23,7 +22,7 @@ import com.citytechinc.cq.component.dialog.impl.WidgetCollection;
 
 public class DialogFactory {
 
-	public static Dialog make(Class<?> componentClass, Log log) throws InvalidComponentClassException, InvalidComponentFieldException {
+	public static Dialog make(Class<?> componentClass) throws InvalidComponentClassException, InvalidComponentFieldException {
 
 		Component componentAnnotation = componentClass.getAnnotation(Component.class);
 

@@ -77,36 +77,26 @@ public class ComponentMojo extends AbstractMojo {
 			ClassLoader classLoader = getClassLoader(project.getCompileClasspathElements());
 			List<Class<?>> compiledClasses = getCompiledClasses(classLoader, project.getCompileClasspathElements());
 			buildArchiveFileForProjectAndClassList(compiledClasses);
-		} catch (MalformedURLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (DependencyResolutionRequiredException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		} catch (MalformedURLException e) {
+			getLog().error(e);
+		} catch (DependencyResolutionRequiredException e) {
+			getLog().error(e);
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			getLog().error(e);
 		} catch (InvalidComponentClassException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			getLog().error(e);
 		} catch (InvalidComponentFieldException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			getLog().error(e);
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			getLog().error(e);
 		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			getLog().error(e);
 		} catch (TransformerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			getLog().error(e);
 		} catch (OutputFailureException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			getLog().error(e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			getLog().error(e);
 		}
 
 
@@ -119,7 +109,7 @@ public class ComponentMojo extends AbstractMojo {
 
 			URL newClassPathURL = new File(curPath).toURI().toURL();
 
-			getLog().info("Adding " + newClassPathURL.toString() + " to class loader");
+			getLog().debug("Adding " + newClassPathURL.toString() + " to class loader");
 
 			pathURLs.add(newClassPathURL);
 
@@ -136,7 +126,7 @@ public class ComponentMojo extends AbstractMojo {
 		String[] extensions = { "class" };
 
 		for (String curClassPath : classPaths) {
-			getLog().info("Current Class Path : " + curClassPath);
+			getLog().debug("Current Class Path : " + curClassPath);
 
 			File curClassPathFile = new File(curClassPath);
 
@@ -150,7 +140,7 @@ public class ComponentMojo extends AbstractMojo {
 				for (File curClassFile : classFiles) {
 					String curClassString = classNameFromFilePath(curClassFile.getPath(), curClassPath);
 
-					getLog().info("Loading class : " + curClassString);
+					getLog().debug("Loading class : " + curClassString);
 
 					classList.add(classLoader.loadClass(curClassString));
 				}
@@ -186,7 +176,7 @@ public class ComponentMojo extends AbstractMojo {
 					jarArtifact.getArtifactId().equals(curDependency.getArtifactId()) &&
 					jarArtifact.getGroupId().equals(curDependency.getGroupId())) {
 
-				getLog().info("Including artifact " + jarArtifact.getArtifactId() + " : " + jarArtifact.getGroupId());
+				getLog().debug("Including artifact " + jarArtifact.getArtifactId() + " : " + jarArtifact.getGroupId());
 
 				return true;
 			}
@@ -199,7 +189,7 @@ public class ComponentMojo extends AbstractMojo {
 			throws IOException, ClassNotFoundException {
 		List<Class<?>> classList = new ArrayList<Class<?>>();
 
-		getLog().info("Searching JAR " + jarFile.getName() + " for classes");
+		getLog().debug("Searching JAR " + jarFile.getName() + " for classes");
 
 		JarArchiveInputStream jarInputStream = new JarArchiveInputStream(new FileInputStream(jarFile));
 
@@ -207,7 +197,7 @@ public class ComponentMojo extends AbstractMojo {
 
 		while ((curJarEntry = jarInputStream.getNextJarEntry()) != null) {
 			if (curJarEntry.getName().endsWith(".class")) {
-				getLog().info("Found class " + curJarEntry.getName());
+				getLog().debug("Found class " + curJarEntry.getName());
 
 				String qualifiedClassname = classNameFromFilePath(curJarEntry.getName(), null);
 
@@ -233,7 +223,7 @@ public class ComponentMojo extends AbstractMojo {
 			placeholder = placeholder.substring(0, placeholder.length() - ".class".length());
 		}
 
-		getLog().info("Class pre replace " + placeholder);
+		getLog().debug("Class pre replace " + placeholder);
 
 		return placeholder.replace('/', '.');
 	}
@@ -292,7 +282,7 @@ public class ComponentMojo extends AbstractMojo {
 
 		while ((curArchiveEntry = existingInputStream.getNextZipEntry()) != null) {
 			existingArchiveEntryNames.add(curArchiveEntry.getName().toLowerCase());
-			getLog().info("Current File Name: " + curArchiveEntry.getName());
+			getLog().debug("Current File Name: " + curArchiveEntry.getName());
 			tempOutputStream.putArchiveEntry(curArchiveEntry);
 			IOUtils.copy(existingInputStream, tempOutputStream);
 			tempOutputStream.closeArchiveEntry();
@@ -375,7 +365,7 @@ public class ComponentMojo extends AbstractMojo {
 				getComponentNameForComponentClass(componentClass) +
 				"/_cq_editConfig.xml";
 
-		getLog().info("Archiving edit config file " + editConfigFilePath);
+		getLog().debug("Archiving edit config file " + editConfigFilePath);
 
 		if (!reservedNames.contains(editConfigFilePath.toLowerCase())) {
 
@@ -389,7 +379,7 @@ public class ComponentMojo extends AbstractMojo {
 
 		}
 		else {
-			getLog().info("Existing file found at " + editConfigFilePath);
+			getLog().debug("Existing file found at " + editConfigFilePath);
 		}
 	}
 
@@ -398,14 +388,14 @@ public class ComponentMojo extends AbstractMojo {
 		List<Content> builtContents = new ArrayList<Content>();
 
 		for (Class<?> curClass : classList) {
-			getLog().info("Checking class for Component annotation " + curClass);
+			getLog().debug("Checking class for Component annotation " + curClass);
 
 			Component annotation = curClass.getAnnotation(Component.class);
 
-			getLog().info("Annotation : " + annotation);
+			getLog().debug("Annotation : " + annotation);
 
 			if (annotation instanceof Component) {
-				getLog().info("Processing Component Class " + curClass);
+				getLog().debug("Processing Component Class " + curClass);
 
 				Content builtContent = buildContentFromClass(curClass, annotation);
 
@@ -450,7 +440,7 @@ public class ComponentMojo extends AbstractMojo {
 				getComponentNameForComponentClass(componentClass) +
 				"/.content.xml";
 
-		getLog().info("Archiving content file " + contentFilePath);
+		getLog().debug("Archiving content file " + contentFilePath);
 
 		if (!reservedNames.contains(contentFilePath.toLowerCase())) {
 
@@ -464,7 +454,7 @@ public class ComponentMojo extends AbstractMojo {
 
 		}
 		else {
-			getLog().info("Existing file found at " + contentFilePath);
+			getLog().debug("Existing file found at " + contentFilePath);
 		}
 	}
 
@@ -475,12 +465,12 @@ public class ComponentMojo extends AbstractMojo {
 		final List<Dialog> dialogList = new ArrayList<Dialog>();
 
 		for (Class<?> curClass : classList) {
-			getLog().info("Checking class for Component annotation " + curClass);
+			getLog().debug("Checking class for Component annotation " + curClass);
 
 			Component annotation = curClass.getAnnotation(Component.class);
-			getLog().info("Annotation : " + annotation);
+			getLog().debug("Annotation : " + annotation);
 			if (annotation instanceof Component) {
-				getLog().info("Processing Component Class " + curClass);
+				getLog().debug("Processing Component Class " + curClass);
 				Dialog builtDialog = buildDialogFromClass(curClass);
 				dialogList.add(builtDialog);
 				File dialogFile = writeDialogeToFile(builtDialog, curClass);
@@ -495,7 +485,7 @@ public class ComponentMojo extends AbstractMojo {
 	private Dialog buildDialogFromClass(Class<?> curClass)
 			throws InvalidComponentClassException, InvalidComponentFieldException {
 
-		return DialogFactory.make(curClass, getLog());
+		return DialogFactory.make(curClass);
 
 	}
 
@@ -527,7 +517,7 @@ public class ComponentMojo extends AbstractMojo {
 								getComponentNameForComponentClass(componentClass) +
 								"/dialog.xml";
 
-		getLog().info("Archiving dialog file " + dialogFilePath);
+		getLog().debug("Archiving dialog file " + dialogFilePath);
 
 		if (!reservedNames.contains(dialogFilePath.toLowerCase())) {
 
@@ -541,7 +531,7 @@ public class ComponentMojo extends AbstractMojo {
 
 		}
 		else {
-			getLog().info("Existing file found at " + dialogFilePath);
+			getLog().debug("Existing file found at " + dialogFilePath);
 		}
 	}
 
@@ -550,7 +540,7 @@ public class ComponentMojo extends AbstractMojo {
 
 		String zipFileName = project.getArtifactId() + "-" + project.getVersion() + ".zip";
 
-		getLog().info("Determined ZIP file name to be " + zipFileName);
+		getLog().debug("Determined ZIP file name to be " + zipFileName);
 
 		return new File(buildDirectory, zipFileName);
 	}
@@ -560,7 +550,7 @@ public class ComponentMojo extends AbstractMojo {
 
 		String zipFileName = project.getArtifactId() + "-" + project.getVersion() + "-temp.zip";
 
-		getLog().info("Temp archive file name " + zipFileName);
+		getLog().debug("Temp archive file name " + zipFileName);
 
 		return new File(buildDirectory, zipFileName);
 	}

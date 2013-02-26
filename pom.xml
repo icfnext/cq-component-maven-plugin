@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.citytechinc.cq</groupId>
-  <artifactId>cqcomponent-maven-plugin</artifactId>
+  <artifactId>cq-component-maven-plugin</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
-  <name>cqcomponent-maven-plugin</name>
+  <name>cq-component-maven-plugin</name>
 
   <distributionManagement>
     <repository>
@@ -87,7 +87,7 @@
         <artifactId>maven-plugin-plugin</artifactId>
         <version>3.2</version>
         <configuration>
-          <goalPrefix>cqcomponent</goalPrefix>
+          <goalPrefix>cq-component</goalPrefix>
           <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
         </configuration>
         <executions>

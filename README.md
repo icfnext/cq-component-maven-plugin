@@ -54,15 +54,15 @@ plugin creating the aforementioned .zip file.
       <td></td>
       <td>The content path to your project's components within the apps content tree.  The full path to which
           files for an individual component will be written is:
-          `componentPathBase + / + componentPathSuffix + / +` component name (annotated per component or based
+          <span style="font-family:courier">componentPathBase + / + componentPathSuffix + / +</span> component name (annotated per component or based
           on the name of the component class if not annotated).  The component path as a whole can be overridden
-          at the component level via the `path` property of the `@Component` annotation.</td>
+          at the component level via the <span style="font-family:courier">path</span> property of the <span style="font-family:courier">@Component</span> annotation.</td>
     </tr>
     <tr>
       <td>componentPathSuffix</td>
       <td>String</td>
       <td>content</td>
-      <td>See the description of `componentPathBase` for an explanation of how this property is used in
+      <td>See the description of <span style="font-family:courier">componentPathBase</span> for an explanation of how this property is used in
           the construction of a path to which component files will be written.</td>
     </tr>
     <tr>
@@ -70,8 +70,8 @@ plugin creating the aforementioned .zip file.
       <td>String</td>
       <td></td>
       <td>The group to which Components whose files are generated via this plugin will be added in the
-          CQ Sidekick.  This can be overridden at the component level via the `group` property of the
-          `@Component` annotation.</td>
+          CQ Sidekick.  This can be overridden at the component level via the <span style="font-family:courier">group</span> property of the
+          <span style="font-family:courier">@Component</span> annotation.</td>
     </tr>
     <tr>
       <td>includeDependencies</td>
@@ -79,7 +79,7 @@ plugin creating the aforementioned .zip file.
       <td>Empty List</td>
       <td>An optional list of Dependencies whose classes should be included in the plugins search for
           annotated components.  Each dependency included in the list has two required child elements,
-          `artifactId` and `groupId`.  These should match the `artifactId` and `groupId` for the dependency
+          <span style="font-family:courier">artifactId</span> and <span style="font-family:courier">groupId</span>.  These should match the <span style="font-family:courier">artifactId</span> and <span style="font-family:courier">groupId</span> for the dependency
           as specified in the dependency section of your POM.</td>
     </tr>
   </tbody>

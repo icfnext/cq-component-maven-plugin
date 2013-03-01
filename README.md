@@ -88,7 +88,218 @@ plugin creating the aforementioned .zip file.
 Annotations
 -----------
 
-As the heading suggests, this is where documentation about available annotations will go.
+This plugin will search through the classes built as part of your project along with those contained in any
+dependencies specified in the includeDependencies plugin configuration looking the @Component annotation and
+generating .content.xml, _cq_editConfig, and dialog.xml files based on said annotation, the class itself,
+and the fields of the class which are annotated with @DialogField annotations.  The plugin will attempt to
+default most configuration present in these generated files based on the class and fields.  These default
+choices can be overridden via properties of the annotations.
+
+Specific files will only be generated if such files do not already exist for the component.  For example,
+if you have created a dialog.xml file for the component already, this plugin will not overwrite your dialog.xml,
+as it is assumed that you created yours for a reason and which to keep it.
+
+Annotations are defined under the `com.citytechinc.cq.component.annotations` package.
+
+<table>
+  <thead>
+    <tr>
+      <th>Annotation</th>
+      <th>Description</th>
+      <th>Properties</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Component</td>
+      <td>This annotation marks a class as a CQ component.</td>
+      <td>
+        <table>
+          <tr>
+            <td>path</td>
+            <td>The path to the component in the repository.  Setting this will override the path generated
+                via the algorithm described above.</td>
+          </tr>
+          <tr>
+            <td>name</td>
+            <td>A unique name for the component.  In the path generating algorithm, this name is used to
+                indicate the component folder into which the component files will be placed.</td>
+          </tr>
+          <tr>
+            <td>title</td>
+            <td>The title of the component which will be presented in the Sidekick and Edit Bar (presuming
+                an editbar layout).</td>
+          </tr>
+          <tr>
+            <td>group</td>
+            <td>The component group into which this component should be placed.  This will override the
+                group set via the plugin configuration in the POM file.</td>
+          </tr>
+          <tr>
+            <td>isContainer</td>
+            <td>A flag indicating whether this component is a container for other components. <br/>
+                <strong>Default: </strong> false.
+            </td>
+          </tr>
+          <tr>
+            <td>tabs</td>
+            <td>An ordered list of strings defining the tabs which will appear within the eventually
+                rendered dialog.  Each string in the list is the title of the rendered tab.  The order
+                of the list represents the final ordering of the tabs in the dialog.  While tabs can
+                be defined within the context of individual fields (see the tab property of DialogField),
+                this property can be used to enforce a tab ordering when necessary. <br />
+                <strong>Default: </strong> empty list.
+            </td>
+          </tr>
+          <tr>
+            <td>actions</td>
+            <td>An ordered list of strings defining the edit actions which will be available for the
+                component. <br/>
+                <strong>Default: </strong> { &quot;text:[title]&quot;,&quot;-&quot;,&quot;edit&quot;,&quot;copymove&quot;,&quot;delete&quot;,&quot;-&quot;,&quot;insert&quot; }
+            </td>
+          </tr>
+          <tr>
+            <td>dialogMode</td>
+            <td>Defines the way in which the component editable is presented in CQ author.
+                One of &quot;editbar&quot;, &quot;rollover&quot;, or &quot;auto&quot;. <br/>
+                <strong>Default: </strong> editbar
+            </td>
+          </tr>
+          <tr>
+            <td>layout</td>
+            <td>Defines the way in which the dialog is presented in CQ author.  One of &quot;floating&quot;,
+                &quot;fixed&quot;, or &quot;auto&quot;. <br/>
+                <strong>Default: </strong> floating
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td>DialogField</td>
+      <td>Indicates that a member of a class is expected to be populated via author dialog input and as such,
+          a field for the member should be created in any dynamically created dialog.</td>
+      <td>
+        <table>
+          <tr>
+            <td>xtype</td>
+            <td>The xtype of the widget which will be rendered for the field.  Specifying the xtype
+                overrides any default determined by the plugin.  The following are the current defaults
+                by field type.
+                <ul>
+                  <li>String : textfield</li>
+                  <li>int / double / float and their respective classes : numberfield</li>
+                  <li>Link : pathfield</li>
+                  <li>Enum : selection</li>
+                  <li>List : multifield</li>
+                </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>name</td>
+            <td>The name of the property in the content repository (ie, the relative path to which the
+                property value will be saved upon submission of the dialog).
+            </td>
+          </tr>
+          <tr>
+            <td>fieldLabel</td>
+            <td>The label to apply to the field in the rendered dialog</td>
+          </tr>
+          <tr>
+            <td>fieldName</td>
+            <td>A unique name for the field.  While not part of the dialog this field is used to override
+                the name applied to the resource representing the dialog field itself.</td>
+          </tr>
+          <tr>
+            <td>fieldDescription</td>
+            <td>The description to apply to the field in the rendered dialog</td>
+          </tr>
+          <tr>
+            <td>required</td>
+            <td>A BooleanEnum representing whether population of the field by an author is required.</td>
+          </tr>
+          <tr>
+            <td>tab</td>
+            <td>The title of the tab into which this field should be placed.  Tabs will be created in the
+                rendered dialog for each unique tab title specified either within DialogField annotations or
+                in the tabs property of the Component annotation.</td>
+          </tr>
+          <tr>
+            <td>selectionOptions</td>
+            <td>An ordered list of Option annotations which define the valid values of the field. Currently
+                this only affects selection type fields.</td>
+          </tr>
+          <tr>
+            <td>selectionType</td>
+            <td>One of the valid SelectionType enums indicating what type of selection widget to render.</td>
+          </tr>
+          <tr>
+            <td>fieldConfigs</td>
+            <td>A list of FieldConfig annotations indicating the configuration of inner dialog fields in
+                the case of multi valued properties.  Currently this property only affects multifield type
+                fields.</td>
+          </tr>
+          <tr>
+            <td>additionalProperties</td>
+            <td>A list of FieldProperty annotations which should be applied to the dialog widget representing
+                this field.</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td>FieldConfig</td>
+      <td>Used to configure the dialog field type of multi-valued fields.  Specifically, this can be used
+          to override the xtype rendered for collection member fields.  For example, the dialog for a member of type
+          List<String> will default to being a multifield with field configs of type textfield.  If you
+          want something other than textfield as the inner field type, this annotation can be used in the
+          context of the DialogField annotation's fieldConfigs property.</td>
+      <td>
+        <table>
+          <tr>
+            <td>xtype</td>
+            <td>The widget xtype to be applied to the field.</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td>FieldProperty</td>
+      <td>A generic and arbitrary name-value pair which should be applied to a dialog field.  This annotation
+          may be used in the context of the DialogField's additionalProperties property.</td>
+      <td>
+        <table>
+          <tr>
+            <td>name</td>
+            <td>The name of the property.</td>
+          </tr>
+          <tr>
+            <td>value</td>
+            <td>The value of the property.</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td>Option</td>
+      <td>Used to define the valid values of a particular field.  This would most commonly be used in the
+          case of a selection type field.  The Option annotation can be used within the context of the
+          selectionOptions property of the DialogField annotation or applied directly to Enums to customize
+          the text and/or value associated during rendering.</td>
+      <td>
+        <table>
+          <tr>
+            <td>text</td>
+            <td>A text label which will be associated with the valid value in a dialog widget.</td>
+          </tr>
+          <tr>
+            <td>value</td>
+            <td>The concrete value which this option represents.</td>
+          </tr>
+        </table>
+      </td>
+  </tbody>
+</table>
 
 
 

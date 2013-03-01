@@ -17,9 +17,8 @@ import java.lang.annotation.Target;
 public @interface Component {
 
 	/**
-	 * The path to the component definition within the context of a CQ content tree.  If not
-	 * set the path will default to the fully qualified package name for the annotated class
-	 * with "." replaced with a file separator character.
+	 * The path to the component definition within the context of a CQ content tree.  This is meant
+	 * to override any default path specified for the project as a whole.
 	 *
 	 * @return
 	 */

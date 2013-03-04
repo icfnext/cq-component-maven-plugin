@@ -45,7 +45,7 @@ import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassExcept
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.exception.OutputFailureException;
 import com.citytechinc.cq.component.dialog.factory.DialogFactory;
-import com.citytechinc.cq.component.dialog.xml.DialogXmlFactory;
+import com.citytechinc.cq.component.dialog.xml.DialogXmlWriter;
 import com.citytechinc.cq.component.editconfig.EditConfig;
 import com.citytechinc.cq.component.editconfig.factory.EditConfigFactory;
 import com.citytechinc.cq.component.editconfig.xml.EditConfigXmlFactory;
@@ -501,7 +501,7 @@ public class ComponentMojo extends AbstractMojo {
 
 		dialogFile.createNewFile();
 
-		DialogXmlFactory.writeDialog(dialog, new FileOutputStream(dialogFile));
+		DialogXmlWriter.writeDialog(dialog, new FileOutputStream(dialogFile));
 
 		return dialogFile;
 	}

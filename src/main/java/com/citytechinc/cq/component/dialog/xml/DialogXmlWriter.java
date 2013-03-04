@@ -25,7 +25,7 @@ import com.citytechinc.cq.component.dialog.SelectionWidget;
 import com.citytechinc.cq.component.dialog.Tab;
 import com.citytechinc.cq.component.dialog.Widget;
 
-public class DialogXmlFactory {
+public class DialogXmlWriter {
 
 	public static final String JCR_NS_URI = "http://www.jcp.org/jcr/1.0";
 	public static final String CQ_NS_URI = "http://www.day.com/jcr/cq/1.0";
@@ -49,7 +49,7 @@ public class DialogXmlFactory {
 		transformer.transform(domSource, resultStream);
 	}
 
-	public static final Document makeDocument(Dialog dialog)
+	private static final Document makeDocument(Dialog dialog)
 			throws ParserConfigurationException {
 
 		DocumentBuilder documentBuilder = docFactory.newDocumentBuilder();

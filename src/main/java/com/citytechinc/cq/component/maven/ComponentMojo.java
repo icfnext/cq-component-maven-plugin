@@ -10,8 +10,10 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -70,13 +72,17 @@ public class ComponentMojo extends AbstractMojo {
 	@Parameter ( required = false )
 	private List<Dependency> includeDependencies;
 
+	@Parameter ( required = false )
+	private List<XtypeMapping> xtypeMappings;
+
 	@SuppressWarnings({ "unchecked" })
 	public void execute() throws MojoExecutionException, MojoFailureException {
 
 		try {
 			ClassLoader classLoader = getClassLoader(project.getCompileClasspathElements());
 			List<Class<?>> compiledClasses = getCompiledClasses(classLoader, project.getCompileClasspathElements());
-			buildArchiveFileForProjectAndClassList(compiledClasses);
+			Map<Class<?>, String> xtypeMap = getXTypeMapForCustomXTypeMapping(classLoader);
+			buildArchiveFileForProjectAndClassList(compiledClasses, xtypeMap);
 		} catch (MalformedURLException e) {
 			getLog().error(e);
 		} catch (DependencyResolutionRequiredException e) {
@@ -100,6 +106,16 @@ public class ComponentMojo extends AbstractMojo {
 		}
 
 
+	}
+
+	private Map<Class<?>, String> getXTypeMapForCustomXTypeMapping(ClassLoader classLoader) throws ClassNotFoundException {
+		Map<Class<?>, String> retMap = new HashMap<Class<?>, String>();
+
+		for (XtypeMapping curXTypeMapping : xtypeMappings) {
+			retMap.put(curXTypeMapping.getClassObject(classLoader), curXTypeMapping.getXtype());
+		}
+
+		return retMap;
 	}
 
 	private ClassLoader getClassLoader(List<String> paths) throws MalformedURLException {
@@ -240,7 +256,7 @@ public class ComponentMojo extends AbstractMojo {
 	 * @throws InvalidComponentFieldException
 	 * @throws InvalidComponentClassException
 	 */
-	private void buildArchiveFileForProjectAndClassList(List<Class<?>> classList)
+	private void buildArchiveFileForProjectAndClassList(List<Class<?>> classList, Map<Class<?>, String> xtypeMap)
 			throws OutputFailureException, IOException, InvalidComponentClassException, InvalidComponentFieldException, ParserConfigurationException, TransformerException {
 
 		/*
@@ -296,7 +312,7 @@ public class ComponentMojo extends AbstractMojo {
 		/*
 		 * Create Dialogs within temp archive
 		 */
-		buildDialogsFromClassList(classList, tempOutputStream, existingArchiveEntryNames);
+		buildDialogsFromClassList(classList, tempOutputStream, existingArchiveEntryNames, xtypeMap);
 
 		/*
 		 * Create edit config within temp archive
@@ -459,7 +475,7 @@ public class ComponentMojo extends AbstractMojo {
 	}
 
 
-	private List<Dialog> buildDialogsFromClassList(List<Class<?>> classList, ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames)
+	private List<Dialog> buildDialogsFromClassList(List<Class<?>> classList, ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames, Map<Class<?>, String> xtypeMap)
 			throws InvalidComponentClassException, InvalidComponentFieldException, OutputFailureException, IOException, ParserConfigurationException, TransformerException {
 
 		final List<Dialog> dialogList = new ArrayList<Dialog>();
@@ -471,7 +487,7 @@ public class ComponentMojo extends AbstractMojo {
 			getLog().debug("Annotation : " + annotation);
 			if (annotation instanceof Component) {
 				getLog().debug("Processing Component Class " + curClass);
-				Dialog builtDialog = buildDialogFromClass(curClass);
+				Dialog builtDialog = buildDialogFromClass(curClass, xtypeMap);
 				dialogList.add(builtDialog);
 				File dialogFile = writeDialogeToFile(builtDialog, curClass);
 				writeDialogToArchiveFile(dialogFile, curClass, zipOutputStream, reservedNames);
@@ -482,10 +498,10 @@ public class ComponentMojo extends AbstractMojo {
 
 	}
 
-	private Dialog buildDialogFromClass(Class<?> curClass)
+	private Dialog buildDialogFromClass(Class<?> curClass, Map<Class<?>, String> xtypeMap)
 			throws InvalidComponentClassException, InvalidComponentFieldException {
 
-		return DialogFactory.make(curClass);
+		return DialogFactory.make(curClass, xtypeMap);
 
 	}
 
@@ -519,6 +535,7 @@ public class ComponentMojo extends AbstractMojo {
 
 		getLog().debug("Archiving dialog file " + dialogFilePath);
 
+		//TODO: I'd like to move this check somewhere before we go through the trouble of creating the dialog object itself
 		if (!reservedNames.contains(dialogFilePath.toLowerCase())) {
 
 			ZipArchiveEntry entry = new ZipArchiveEntry(dialogFile, dialogFilePath);

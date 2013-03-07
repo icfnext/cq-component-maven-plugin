@@ -2,6 +2,8 @@ package com.citytechinc.cq.component.dialog.factory;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -15,16 +17,15 @@ import com.citytechinc.cq.component.annotations.DialogField.BooleanEnum;
 import com.citytechinc.cq.component.annotations.FieldConfig;
 import com.citytechinc.cq.component.annotations.FieldProperty;
 import com.citytechinc.cq.component.dialog.MultiValueWidget;
-import com.citytechinc.cq.component.dialog.impl.SimpleMultiValueWidget;
 import com.citytechinc.cq.component.dialog.Option;
 import com.citytechinc.cq.component.dialog.SelectionWidget;
 import com.citytechinc.cq.component.dialog.Widget;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.impl.BasicFieldConfig;
+import com.citytechinc.cq.component.dialog.impl.SimpleMultiValueWidget;
 import com.citytechinc.cq.component.dialog.impl.SimpleOption;
 import com.citytechinc.cq.component.dialog.impl.SimpleSelectionWidget;
 import com.citytechinc.cq.component.dialog.impl.SimpleWidget;
-import com.citytechinc.cqlibrary.web.content.link.Link;
 
 public class WidgetFactory {
 
@@ -34,7 +35,7 @@ public class WidgetFactory {
 	public static final String SELECTION_XTYPE = "selection";
 	public static final String MULTIFIELD_XTYPE = "multifield";
 
-	public static Widget make(Class<?> componentClass, Field widgetField)
+	public static Widget make(Class<?> componentClass, Field widgetField, Map<Class<?>, String> xtypeMap)
 			throws InvalidComponentFieldException {
 
 		DialogField propertyAnnotation = widgetField.getAnnotation(DialogField.class);
@@ -43,7 +44,7 @@ public class WidgetFactory {
 			throw new InvalidComponentFieldException();
 		}
 
-		String xtype = getXTypeForField(widgetField, propertyAnnotation);
+		String xtype = getXTypeForField(widgetField, propertyAnnotation, xtypeMap);
 		String name = getNameForField(widgetField, propertyAnnotation);
 		String fieldName = getFieldNameForField(widgetField, propertyAnnotation);
 		String fieldLabel = getFieldLabelForField(widgetField, propertyAnnotation);
@@ -77,7 +78,8 @@ public class WidgetFactory {
 					fieldLabel,
 					fieldDescription,
 					isRequired,
-					additionalProperties);
+					additionalProperties,
+					xtypeMap);
 		}
 
 		return new SimpleWidget(xtype, name, fieldName, fieldLabel, fieldDescription, isRequired, additionalProperties);
@@ -170,9 +172,10 @@ public class WidgetFactory {
 			String fieldLabel,
 			String fieldDescription,
 			Boolean isRequired,
-			Map<String, String> additionalProperties) throws InvalidComponentFieldException {
+			Map<String, String> additionalProperties,
+			Map<Class<?>, String> xtypeMap) throws InvalidComponentFieldException {
 
-		String innerXType = getInnerXTypeForMultiField(widgetField, fieldAnnotation);
+		String innerXType = getInnerXTypeForMultiField(widgetField, fieldAnnotation, xtypeMap);
 
 		if (innerXType == null) {
 			throw new InvalidComponentFieldException("Invalid or unsupported field annotation on a multi valued field");
@@ -187,7 +190,7 @@ public class WidgetFactory {
 		return new SimpleMultiValueWidget(MULTIFIELD_XTYPE, name, fieldName, fieldLabel, fieldDescription, isRequired, additionalProperties, fieldConfigs);
 	}
 
-	private static final String getInnerXTypeForMultiField(Field widgetField, DialogField fieldAnnotation) throws InvalidComponentFieldException {
+	private static final String getInnerXTypeForMultiField(Field widgetField, DialogField fieldAnnotation, Map<Class<?>, String> xtypeMap) throws InvalidComponentFieldException {
 
 		List<FieldConfig> fieldConfigs = Arrays.asList(fieldAnnotation.fieldConfigs());
 
@@ -201,7 +204,7 @@ public class WidgetFactory {
 		/*
 		 * Otherwise, see if we can derive the xtype from the parameterized field
 		 */
-		String innerXType = getInnerXTypeForParameterizedField(widgetField);
+		String innerXType = getInnerXTypeForParameterizedField(widgetField, xtypeMap);
 
 		if (innerXType != null) {
 			return innerXType;
@@ -291,8 +294,11 @@ public class WidgetFactory {
 
 	}
 
-	private static final String getXTypeForField(Field widgetField, DialogField propertyAnnotation) throws InvalidComponentFieldException {
+	private static final String getXTypeForField(Field widgetField, DialogField propertyAnnotation, Map<Class<?>, String> xtypeMap) throws InvalidComponentFieldException {
 
+		/*
+		 * Handle annotated xtypes
+		 */
 		String overrideXType = propertyAnnotation.xtype();
 
 		if (StringUtils.isNotEmpty(overrideXType)) {
@@ -302,15 +308,26 @@ public class WidgetFactory {
 		Class<?> fieldClass = widgetField.getType();
 
 		/*
+		 * Handle custom types
+		 */
+		for (Class<?> curCustomClass : xtypeMap.keySet()) {
+			if (curCustomClass.isAssignableFrom(fieldClass)) {
+				return xtypeMap.get(curCustomClass);
+			}
+		}
+
+		/*
+		 * Handle standard types
+		 */
+
+		/*
 		 * numberfield
 		 */
 		if (
+				Number.class.isAssignableFrom(fieldClass) ||
 				fieldClass.equals(int.class) ||
-				fieldClass.equals(Integer.class) ||
 				fieldClass.equals(double.class) ||
-				fieldClass.equals(Double.class) ||
-				fieldClass.equals(float.class) ||
-				fieldClass.equals(Float.class)) {
+				fieldClass.equals(float.class)) {
 			return NUMBERFIELD_XTYPE;
 		}
 
@@ -324,7 +341,7 @@ public class WidgetFactory {
 		/*
 		 *  pathfield
 		 */
-		if (fieldClass.equals(Link.class)) {
+		if (URI.class.isAssignableFrom(fieldClass) || URL.class.isAssignableFrom(fieldClass)) {
 			return PATHFIELD_XTYPE;
 		}
 
@@ -337,7 +354,7 @@ public class WidgetFactory {
 
 		if (List.class.isAssignableFrom(fieldClass)) {
 
-			String simpleXtype = getInnerXTypeForParameterizedField(widgetField);
+			String simpleXtype = getInnerXTypeForParameterizedField(widgetField, xtypeMap);
 
 			/*
 			 * TODO: This is where the multicompositefield would end up being selected once implemented
@@ -358,30 +375,37 @@ public class WidgetFactory {
 		return TEXTFIELD_XTYPE;
 	}
 
-	private static final String getInnerXTypeForParameterizedField(Field widgetField) throws InvalidComponentFieldException {
+	private static final String getInnerXTypeForParameterizedField(Field widgetField, Map<Class<?>, String> xtypeMap) throws InvalidComponentFieldException {
 		ParameterizedType parameterizedType = (ParameterizedType) widgetField.getGenericType();
 
 		if (parameterizedType.getActualTypeArguments().length == 0 || parameterizedType.getActualTypeArguments().length > 1) {
 			throw new InvalidComponentFieldException("List dialog property found with a paramaterized type count not equal to 1");
 		}
 
-		String simpleXtype = getSimpleXTypeForClass((Class<?>) parameterizedType.getActualTypeArguments()[0]);
+		String simpleXtype = getSimpleXTypeForClass((Class<?>) parameterizedType.getActualTypeArguments()[0], xtypeMap);
 
 		return simpleXtype;
 	}
 
-	private static final String getSimpleXTypeForClass(Class<?> fieldClass) {
+	private static final String getSimpleXTypeForClass(Class<?> fieldClass, Map<Class<?>, String> xtypeMap) {
+
+		/*
+		 * Handle custom types
+		 */
+		for (Class<?> curCustomClass : xtypeMap.keySet()) {
+			if (curCustomClass.isAssignableFrom(fieldClass)) {
+				return xtypeMap.get(curCustomClass);
+			}
+		}
 
 		/*
 		 * numberfield
 		 */
 		if (
+				Number.class.isAssignableFrom(fieldClass) ||
 				fieldClass.equals(int.class) ||
-				fieldClass.equals(Integer.class) ||
 				fieldClass.equals(double.class) ||
-				fieldClass.equals(Double.class) ||
-				fieldClass.equals(float.class) ||
-				fieldClass.equals(Float.class)) {
+				fieldClass.equals(float.class)) {
 			return NUMBERFIELD_XTYPE;
 		}
 
@@ -395,7 +419,7 @@ public class WidgetFactory {
 		/*
 		 *  pathfield
 		 */
-		if (fieldClass.equals(Link.class)) {
+		if (URI.class.isAssignableFrom(fieldClass) || URL.class.isAssignableFrom(fieldClass)) {
 			return PATHFIELD_XTYPE;
 		}
 

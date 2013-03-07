@@ -189,7 +189,7 @@ Annotations are defined under the `com.citytechinc.cq.component.annotations` pac
                 <ul>
                   <li>String : textfield</li>
                   <li>int / double / float and their respective classes : numberfield</li>
-                  <li>Link : pathfield</li>
+                  <li>URI/URL : pathfield</li>
                   <li>Enum : selection</li>
                   <li>List : multifield</li>
                 </ul>

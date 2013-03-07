@@ -22,7 +22,7 @@ import com.citytechinc.cq.component.dialog.impl.WidgetCollection;
 
 public class DialogFactory {
 
-	public static Dialog make(Class<?> componentClass) throws InvalidComponentClassException, InvalidComponentFieldException {
+	public static Dialog make(Class<?> componentClass, Map<Class<?>, String> xtypeMap) throws InvalidComponentClassException, InvalidComponentFieldException {
 
 		Component componentAnnotation = componentClass.getAnnotation(Component.class);
 
@@ -55,7 +55,7 @@ public class DialogFactory {
 			DialogField dialogProperty = curField.getAnnotation(DialogField.class);
 
 			if (dialogProperty instanceof DialogField) {
-				Widget builtFieldWidget = WidgetFactory.make(componentClass, curField);
+				Widget builtFieldWidget = WidgetFactory.make(componentClass, curField, xtypeMap);
 
 				String tabString = getTabStringForField(curField, dialogProperty);
 

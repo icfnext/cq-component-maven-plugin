@@ -75,12 +75,22 @@ plugin creating the aforementioned .zip file.
     </tr>
     <tr>
       <td>includeDependencies</td>
-      <td>List&lt;Dependency&gt;</td>
+      <td>List&lt;dependency&gt;</td>
       <td>Empty List</td>
       <td>An optional list of Dependencies whose classes should be included in the plugins search for
           annotated components.  Each dependency included in the list has two required child elements,
           <span style="font-family:courier">artifactId</span> and <span style="font-family:courier">groupId</span>.  These should match the <span style="font-family:courier">artifactId</span> and <span style="font-family:courier">groupId</span> for the dependency
           as specified in the dependency section of your POM.</td>
+    </tr>
+    <tr>
+      <td>xtypeMappings</td>
+      <td>List&lt;xtypeMapping&gt;</td>
+      <td>Empty List</td>
+      <td>
+        An optional mapping of Classes to xtypes.  If you are using custom Classes to represent your dialog fields this configuration
+        can be used to define a mapping between your Classes and xtypes which will remove the need to annotate the xtype of the dialog field
+        wherever the Class is used.
+      </td>
     </tr>
   </tbody>
 </table>

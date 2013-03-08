@@ -33,6 +33,12 @@ plugin creating the aforementioned .zip file.
 				<groupId>com.client.web</groupId>
 			</dependency>
 		</includeDependencies>
+		<xtypeMappings>
+			<xtypeMapping>
+				<className>com.example.cq.types.Color</className>
+				<className>colorfield</className>
+			</xtypeMapping>
+		</xtypeMappings>
 	</configuration>
 </plugin>
 

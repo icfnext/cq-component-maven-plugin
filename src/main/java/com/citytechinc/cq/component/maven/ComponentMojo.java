@@ -41,7 +41,7 @@ import org.codehaus.plexus.util.StringUtils;
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.content.Content;
 import com.citytechinc.cq.component.content.factory.ContentFactory;
-import com.citytechinc.cq.component.content.xml.ContentXmlFactory;
+import com.citytechinc.cq.component.content.xml.ContentXmlWriter;
 import com.citytechinc.cq.component.dialog.Dialog;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
@@ -50,7 +50,7 @@ import com.citytechinc.cq.component.dialog.factory.DialogFactory;
 import com.citytechinc.cq.component.dialog.xml.DialogXmlWriter;
 import com.citytechinc.cq.component.editconfig.EditConfig;
 import com.citytechinc.cq.component.editconfig.factory.EditConfigFactory;
-import com.citytechinc.cq.component.editconfig.xml.EditConfigXmlFactory;
+import com.citytechinc.cq.component.editconfig.xml.EditConfigXmlWriter;
 
 @Mojo( name="component", defaultPhase = LifecyclePhase.PACKAGE, requiresDependencyResolution = ResolutionScope.COMPILE )
 public class ComponentMojo extends AbstractMojo {
@@ -368,7 +368,7 @@ public class ComponentMojo extends AbstractMojo {
 
 		editConfigFile.createNewFile();
 
-		EditConfigXmlFactory.writeEditConfig(editConfig, new FileOutputStream(editConfigFile));
+		EditConfigXmlWriter.writeEditConfig(editConfig, new FileOutputStream(editConfigFile));
 
 		return editConfigFile;
 	}
@@ -443,7 +443,7 @@ public class ComponentMojo extends AbstractMojo {
 
 		contentFile.createNewFile();
 
-		ContentXmlFactory.writeContent(content, new FileOutputStream(contentFile));
+		ContentXmlWriter.writeContent(content, new FileOutputStream(contentFile));
 
 		return contentFile;
 	}

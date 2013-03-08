@@ -19,7 +19,7 @@ import org.w3c.dom.Element;
 import com.citytechinc.cq.component.editconfig.EditConfig;
 import com.citytechinc.cq.component.global.Constants;
 
-public class EditConfigXmlFactory {
+public class EditConfigXmlWriter {
 
 	private static final DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 	private static final TransformerFactory transformerFactory = TransformerFactory.newInstance();

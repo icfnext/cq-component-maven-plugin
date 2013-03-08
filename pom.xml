@@ -12,11 +12,11 @@
   <distributionManagement>
     <repository>
       <id>citytech-releases</id>
-      <url>http://nexus.citytech.ctmsp.com/content/repositories/releases</url>
+      <url>http://nexus.citytech.ctmsp.com/content/repositories/public-releases</url>
     </repository>
     <snapshotRepository>
       <id>citytech-snapshots</id>
-      <url>http://nexus.citytech.ctmsp.com/content/repositories/snapshots</url>
+      <url>http://nexus.citytech.ctmsp.com/content/repositories/public-snapshots</url>
       <uniqueVersion>false</uniqueVersion>
     </snapshotRepository>
   </distributionManagement>

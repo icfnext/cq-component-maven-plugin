@@ -115,6 +115,12 @@ public class ComponentMojo extends AbstractMojo {
 		} catch (CannotCompileException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchFieldException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 
@@ -273,9 +279,11 @@ public class ComponentMojo extends AbstractMojo {
 	 * @throws ClassNotFoundException
 	 * @throws NotFoundException
 	 * @throws CannotCompileException
+	 * @throws NoSuchFieldException
+	 * @throws SecurityException
 	 */
 	private void buildArchiveFileForProjectAndClassList(List<CtClass> classList, Map<Class<?>, String> xtypeMap, ClassLoader classLoader)
-			throws OutputFailureException, IOException, InvalidComponentClassException, InvalidComponentFieldException, ParserConfigurationException, TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException {
+			throws OutputFailureException, IOException, InvalidComponentClassException, InvalidComponentFieldException, ParserConfigurationException, TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
 
 		/*
 		 * Get existing archive file
@@ -494,7 +502,7 @@ public class ComponentMojo extends AbstractMojo {
 
 
 	private List<Dialog> buildDialogsFromClassList(List<CtClass> classList, ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames, Map<Class<?>, String> xtypeMap, ClassLoader classLoader)
-			throws InvalidComponentClassException, InvalidComponentFieldException, OutputFailureException, IOException, ParserConfigurationException, TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException {
+			throws InvalidComponentClassException, InvalidComponentFieldException, OutputFailureException, IOException, ParserConfigurationException, TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
 
 		final List<Dialog> dialogList = new ArrayList<Dialog>();
 
@@ -519,7 +527,7 @@ public class ComponentMojo extends AbstractMojo {
 	}
 
 	private Dialog buildDialogFromClass(CtClass curClass, Map<Class<?>, String> xtypeMap, ClassLoader classLoader)
-			throws InvalidComponentClassException, InvalidComponentFieldException, ClassNotFoundException, CannotCompileException, NotFoundException {
+			throws InvalidComponentClassException, InvalidComponentFieldException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
 
 		return DialogFactory.make(curClass, xtypeMap, classLoader);
 

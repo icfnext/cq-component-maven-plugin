@@ -40,28 +40,28 @@ public class WidgetFactory {
 	public static final String SELECTION_XTYPE = "selection";
 	public static final String MULTIFIELD_XTYPE = "multifield";
 
-	public static Widget make(CtClass componentClass, CtField widgetField, Map<Class<?>, String> xtypeMap, ClassLoader classLoader)
+	public static Widget make(CtClass componentClass, CtField annotatedWidgetField, Field widgetField, Map<Class<?>, String> xtypeMap, ClassLoader classLoader)
 			throws InvalidComponentFieldException, ClassNotFoundException, CannotCompileException, NotFoundException {
 
-		DialogField propertyAnnotation = (DialogField) widgetField.getAnnotation(DialogField.class);
+		DialogField propertyAnnotation = (DialogField) annotatedWidgetField.getAnnotation(DialogField.class);
 
 		if (propertyAnnotation == null) {
 			throw new InvalidComponentFieldException();
 		}
 
 		String xtype = getXTypeForField(widgetField, propertyAnnotation, xtypeMap, classLoader);
-		String name = getNameForField(widgetField, propertyAnnotation);
-		String fieldName = getFieldNameForField(widgetField, propertyAnnotation);
-		String fieldLabel = getFieldLabelForField(widgetField, propertyAnnotation);
-		String fieldDescription = getFieldDescriptionForField(widgetField, propertyAnnotation);
-		Boolean isRequired = getIsRequiredPropertyForField(widgetField, propertyAnnotation);
-		Map<String, String> additionalProperties = getAdditionalPropertiesForField(widgetField, propertyAnnotation);
+		String name = getNameForField(annotatedWidgetField, propertyAnnotation);
+		String fieldName = getFieldNameForField(annotatedWidgetField, propertyAnnotation);
+		String fieldLabel = getFieldLabelForField(annotatedWidgetField, propertyAnnotation);
+		String fieldDescription = getFieldDescriptionForField(annotatedWidgetField, propertyAnnotation);
+		Boolean isRequired = getIsRequiredPropertyForField(annotatedWidgetField, propertyAnnotation);
+		Map<String, String> additionalProperties = getAdditionalPropertiesForField(annotatedWidgetField, propertyAnnotation);
 
 		if (xtype.equals(SELECTION_XTYPE)) {
 
 			return buildSelectionWidget(
 					componentClass,
-					widgetField,
+					annotatedWidgetField,
 					propertyAnnotation,
 					name,
 					fieldName,
@@ -156,22 +156,9 @@ public class WidgetFactory {
 		return null;
 	}
 
-	/*
-	return buildMultiFieldWidget(
-			componentClass,
-			widgetField,
-			propertyAnnotation,
-			name,
-			fieldName,
-			fieldLabel,
-			fieldDescription,
-			isRequired,
-			additionalProperties);
-*/
-
 	private static final MultiValueWidget buildMultiFieldWidget(
 			CtClass componentClass,
-			CtField widgetField,
+			Field widgetField,
 			DialogField fieldAnnotation,
 			String name,
 			String fieldName,
@@ -196,7 +183,7 @@ public class WidgetFactory {
 		return new SimpleMultiValueWidget(MULTIFIELD_XTYPE, name, fieldName, fieldLabel, fieldDescription, isRequired, additionalProperties, fieldConfigs);
 	}
 
-	private static final String getInnerXTypeForMultiField(CtField widgetField, DialogField fieldAnnotation, Map<Class<?>, String> xtypeMap) throws InvalidComponentFieldException {
+	private static final String getInnerXTypeForMultiField(Field widgetField, DialogField fieldAnnotation, Map<Class<?>, String> xtypeMap) throws InvalidComponentFieldException {
 
 		List<FieldConfig> fieldConfigs = Arrays.asList(fieldAnnotation.fieldConfigs());
 
@@ -301,7 +288,7 @@ public class WidgetFactory {
 
 	}
 
-	private static final String getXTypeForField(CtField widgetField, DialogField propertyAnnotation, Map<Class<?>, String> xtypeMap, ClassLoader classLoader) throws InvalidComponentFieldException, CannotCompileException, NotFoundException, ClassNotFoundException {
+	private static final String getXTypeForField(Field widgetField, DialogField propertyAnnotation, Map<Class<?>, String> xtypeMap, ClassLoader classLoader) throws InvalidComponentFieldException, CannotCompileException, NotFoundException, ClassNotFoundException {
 
 		/*
 		 * Handle annotated xtypes
@@ -382,12 +369,8 @@ public class WidgetFactory {
 		return TEXTFIELD_XTYPE;
 	}
 
-	private static final String getInnerXTypeForParameterizedField(CtField widgetField, Map<Class<?>, String> xtypeMap) throws InvalidComponentFieldException {
+	private static final String getInnerXTypeForParameterizedField(Field widgetField, Map<Class<?>, String> xtypeMap) throws InvalidComponentFieldException {
 
-		return "textfield";
-
-		/*
-		 * TODO: This all would need to be re-implemented
 		ParameterizedType parameterizedType = (ParameterizedType) widgetField.getGenericType();
 
 		if (parameterizedType.getActualTypeArguments().length == 0 || parameterizedType.getActualTypeArguments().length > 1) {
@@ -397,7 +380,7 @@ public class WidgetFactory {
 		String simpleXtype = getSimpleXTypeForClass((Class<?>) parameterizedType.getActualTypeArguments()[0], xtypeMap);
 
 		return simpleXtype;
-		*/
+
 	}
 
 	private static final String getSimpleXTypeForClass(Class<?> fieldClass, Map<Class<?>, String> xtypeMap) {

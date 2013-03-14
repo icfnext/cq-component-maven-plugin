@@ -27,7 +27,7 @@ import com.citytechinc.cq.component.dialog.impl.WidgetCollection;
 
 public class DialogFactory {
 
-	public static Dialog make(CtClass componentClass, Map<Class<?>, String> xtypeMap, ClassLoader classLoader) throws InvalidComponentClassException, InvalidComponentFieldException, ClassNotFoundException, CannotCompileException, NotFoundException {
+	public static Dialog make(CtClass componentClass, Map<Class<?>, String> xtypeMap, ClassLoader classLoader) throws InvalidComponentClassException, InvalidComponentFieldException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
 
 		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
@@ -53,6 +53,9 @@ public class DialogFactory {
 
 		List<CtField> fields = Arrays.asList(componentClass.getDeclaredFields());
 
+		//Load the true class
+		Class<?> trueComponentClass = classLoader.loadClass(componentClass.getName());
+
 		/*
 		 * Iterate through all fields establishing proper widgets for each
 		 */
@@ -60,7 +63,10 @@ public class DialogFactory {
 			DialogField dialogProperty = (DialogField) curField.getAnnotation(DialogField.class);
 
 			if (dialogProperty != null) {
-				Widget builtFieldWidget = WidgetFactory.make(componentClass, curField, xtypeMap, classLoader);
+
+				Field trueField = trueComponentClass.getDeclaredField(curField.getName());
+
+				Widget builtFieldWidget = WidgetFactory.make(componentClass, curField, trueField, xtypeMap, classLoader);
 
 				String tabString = getTabStringForField(curField, dialogProperty);
 

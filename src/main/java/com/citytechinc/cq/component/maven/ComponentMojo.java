@@ -86,9 +86,10 @@ public class ComponentMojo extends AbstractMojo {
 
 		try {
 			ClassLoader classLoader = getClassLoader(project.getCompileClasspathElements());
-			List<CtClass> compiledClasses = getCompiledClasses(classLoader, project.getCompileClasspathElements());
+			ClassPool classPool = getClassPool(classLoader);
+			List<CtClass> compiledClasses = getCompiledClasses(classPool, project.getCompileClasspathElements());
 			Map<Class<?>, String> xtypeMap = getXTypeMapForCustomXTypeMapping(classLoader);
-			buildArchiveFileForProjectAndClassList(compiledClasses, xtypeMap, classLoader);
+			buildArchiveFileForProjectAndClassList(compiledClasses, xtypeMap, classLoader, classPool);
 		} catch (MalformedURLException e) {
 			getLog().error(e);
 		} catch (DependencyResolutionRequiredException e) {
@@ -110,17 +111,13 @@ public class ComponentMojo extends AbstractMojo {
 		} catch (IOException e) {
 			getLog().error(e);
 		} catch (NotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			getLog().error(e);
 		} catch (CannotCompileException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			getLog().error(e);
 		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			getLog().error(e);
 		} catch (NoSuchFieldException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			getLog().error(e);
 		}
 
 
@@ -152,15 +149,18 @@ public class ComponentMojo extends AbstractMojo {
 		return new URLClassLoader(pathURLs.toArray(new URL[0]), this.getClass().getClassLoader());
 	}
 
-	private List<CtClass> getCompiledClasses(ClassLoader classLoader, List<String> classPaths)
+	private ClassPool getClassPool(ClassLoader classLoader) {
+		ClassPool classPool = new ClassPool();
+		classPool.appendClassPath(new LoaderClassPath(classLoader));
+		return classPool;
+	}
+
+	private List<CtClass> getCompiledClasses(ClassPool classPool, List<String> classPaths)
 			throws ClassNotFoundException, IOException, NotFoundException {
 
 		final List<CtClass> classList = new ArrayList<CtClass>();
 
 		String[] extensions = { "class" };
-
-		ClassPool classPool = new ClassPool();
-		classPool.appendClassPath(new LoaderClassPath(classLoader));
 
 		for (String curClassPath : classPaths) {
 			getLog().debug("Current Class Path : " + curClassPath);
@@ -282,7 +282,7 @@ public class ComponentMojo extends AbstractMojo {
 	 * @throws NoSuchFieldException
 	 * @throws SecurityException
 	 */
-	private void buildArchiveFileForProjectAndClassList(List<CtClass> classList, Map<Class<?>, String> xtypeMap, ClassLoader classLoader)
+	private void buildArchiveFileForProjectAndClassList(List<CtClass> classList, Map<Class<?>, String> xtypeMap, ClassLoader classLoader, ClassPool classPool)
 			throws OutputFailureException, IOException, InvalidComponentClassException, InvalidComponentFieldException, ParserConfigurationException, TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
 
 		/*
@@ -338,7 +338,7 @@ public class ComponentMojo extends AbstractMojo {
 		/*
 		 * Create Dialogs within temp archive
 		 */
-		buildDialogsFromClassList(classList, tempOutputStream, existingArchiveEntryNames, xtypeMap, classLoader);
+		buildDialogsFromClassList(classList, tempOutputStream, existingArchiveEntryNames, xtypeMap, classLoader, classPool);
 
 		/*
 		 * Create edit config within temp archive
@@ -501,7 +501,7 @@ public class ComponentMojo extends AbstractMojo {
 	}
 
 
-	private List<Dialog> buildDialogsFromClassList(List<CtClass> classList, ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames, Map<Class<?>, String> xtypeMap, ClassLoader classLoader)
+	private List<Dialog> buildDialogsFromClassList(List<CtClass> classList, ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames, Map<Class<?>, String> xtypeMap, ClassLoader classLoader, ClassPool classPool)
 			throws InvalidComponentClassException, InvalidComponentFieldException, OutputFailureException, IOException, ParserConfigurationException, TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
 
 		final List<Dialog> dialogList = new ArrayList<Dialog>();
@@ -515,7 +515,7 @@ public class ComponentMojo extends AbstractMojo {
 
 			if (annotation != null) {
 				getLog().debug("Processing Component Class " + curClass);
-				Dialog builtDialog = buildDialogFromClass(curClass, xtypeMap, classLoader);
+				Dialog builtDialog = buildDialogFromClass(curClass, xtypeMap, classLoader, classPool);
 				dialogList.add(builtDialog);
 				File dialogFile = writeDialogeToFile(builtDialog, curClass);
 				writeDialogToArchiveFile(dialogFile, curClass, zipOutputStream, reservedNames);
@@ -526,10 +526,10 @@ public class ComponentMojo extends AbstractMojo {
 
 	}
 
-	private Dialog buildDialogFromClass(CtClass curClass, Map<Class<?>, String> xtypeMap, ClassLoader classLoader)
+	private Dialog buildDialogFromClass(CtClass curClass, Map<Class<?>, String> xtypeMap, ClassLoader classLoader, ClassPool classPool)
 			throws InvalidComponentClassException, InvalidComponentFieldException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
 
-		return DialogFactory.make(curClass, xtypeMap, classLoader);
+		return DialogFactory.make(curClass, xtypeMap, classLoader, classPool);
 
 	}
 

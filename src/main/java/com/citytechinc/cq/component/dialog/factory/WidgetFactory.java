@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import javassist.CannotCompileException;
+import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
 import javassist.NotFoundException;
@@ -40,7 +41,7 @@ public class WidgetFactory {
 	public static final String SELECTION_XTYPE = "selection";
 	public static final String MULTIFIELD_XTYPE = "multifield";
 
-	public static Widget make(CtClass componentClass, CtField annotatedWidgetField, Field widgetField, Map<Class<?>, String> xtypeMap, ClassLoader classLoader)
+	public static Widget make(CtClass componentClass, CtField annotatedWidgetField, Field widgetField, Map<Class<?>, String> xtypeMap, ClassLoader classLoader, ClassPool classPool)
 			throws InvalidComponentFieldException, ClassNotFoundException, CannotCompileException, NotFoundException {
 
 		DialogField propertyAnnotation = (DialogField) annotatedWidgetField.getAnnotation(DialogField.class);
@@ -69,7 +70,8 @@ public class WidgetFactory {
 					fieldDescription,
 					isRequired,
 					additionalProperties,
-					classLoader);
+					classLoader,
+					classPool);
 
 		}
 
@@ -216,9 +218,10 @@ public class WidgetFactory {
 			String fieldDescription,
 			Boolean isRequired,
 			Map<String, String> additionalProperties,
-			ClassLoader classLoader) throws InvalidComponentFieldException, CannotCompileException, NotFoundException, ClassNotFoundException {
+			ClassLoader classLoader,
+			ClassPool classPool) throws InvalidComponentFieldException, CannotCompileException, NotFoundException, ClassNotFoundException {
 
-		List<Option> options = buildSelectionOptionsForField(widgetField, fieldAnnotation, classLoader);
+		List<Option> options = buildSelectionOptionsForField(widgetField, fieldAnnotation, classLoader, classPool);
 
 		String selectionType = getSelectionTypeForField(widgetField, fieldAnnotation);
 
@@ -230,7 +233,7 @@ public class WidgetFactory {
 		return fieldAnnotation.selectionType().name().toLowerCase();
 	}
 
-	private static final List<Option> buildSelectionOptionsForField(CtField widgetField, DialogField fieldAnnotation, ClassLoader classLoader) throws InvalidComponentFieldException, CannotCompileException, NotFoundException, ClassNotFoundException {
+	private static final List<Option> buildSelectionOptionsForField(CtField widgetField, DialogField fieldAnnotation, ClassLoader classLoader, ClassPool classPool) throws InvalidComponentFieldException, CannotCompileException, NotFoundException, ClassNotFoundException {
 
 		List<Option> options = new ArrayList<Option>();
 
@@ -254,7 +257,7 @@ public class WidgetFactory {
 			for(Object curEnumObject : classLoader.loadClass(widgetField.getType().getName()).getEnumConstants()) {
 				Enum<?> curEnum = (Enum<?>) curEnumObject;
 				try {
-					options.add(buildSelectionOptionForEnum(curEnum));
+					options.add(buildSelectionOptionForEnum(curEnum, classPool));
 				} catch (SecurityException e) {
 					throw new InvalidComponentFieldException("Invalid Enum Field", e);
 				} catch (NoSuchFieldException e) {
@@ -267,15 +270,18 @@ public class WidgetFactory {
 
 	}
 
-	private static final Option buildSelectionOptionForEnum(Enum<?> optionEnum)
-			throws SecurityException, NoSuchFieldException {
+	//TODO: This isn't going to work
+	private static final Option buildSelectionOptionForEnum(Enum<?> optionEnum, ClassPool classPool)
+			throws SecurityException, NoSuchFieldException, NotFoundException, ClassNotFoundException {
 
 		String text = optionEnum.name();
 		String value = optionEnum.name();
 
-		com.citytechinc.cq.component.annotations.Option optionAnnotation = optionEnum.getDeclaringClass().getField(optionEnum.name()).getAnnotation(com.citytechinc.cq.component.annotations.Option.class);
+		CtClass annotatedEnumClass = classPool.getCtClass(optionEnum.getDeclaringClass().getName());
+		CtField annotatedEnumField = annotatedEnumClass.getField(optionEnum.name());
+		com.citytechinc.cq.component.annotations.Option optionAnnotation = (com.citytechinc.cq.component.annotations.Option) annotatedEnumField.getAnnotation(com.citytechinc.cq.component.annotations.Option.class);
 
-		if (optionAnnotation instanceof com.citytechinc.cq.component.annotations.Option) {
+		if (optionAnnotation != null) {
 			if (StringUtils.isNotEmpty(optionAnnotation.text())) {
 				text = optionAnnotation.text();
 			}

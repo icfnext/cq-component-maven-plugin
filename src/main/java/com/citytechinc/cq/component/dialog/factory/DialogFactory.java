@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javassist.CannotCompileException;
+import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
 import javassist.NotFoundException;
@@ -27,7 +28,7 @@ import com.citytechinc.cq.component.dialog.impl.WidgetCollection;
 
 public class DialogFactory {
 
-	public static Dialog make(CtClass componentClass, Map<Class<?>, String> xtypeMap, ClassLoader classLoader) throws InvalidComponentClassException, InvalidComponentFieldException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
+	public static Dialog make(CtClass componentClass, Map<Class<?>, String> xtypeMap, ClassLoader classLoader, ClassPool classPool) throws InvalidComponentClassException, InvalidComponentFieldException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
 
 		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
@@ -66,7 +67,7 @@ public class DialogFactory {
 
 				Field trueField = trueComponentClass.getDeclaredField(curField.getName());
 
-				Widget builtFieldWidget = WidgetFactory.make(componentClass, curField, trueField, xtypeMap, classLoader);
+				Widget builtFieldWidget = WidgetFactory.make(componentClass, curField, trueField, xtypeMap, classLoader, classPool);
 
 				String tabString = getTabStringForField(curField, dialogProperty);
 

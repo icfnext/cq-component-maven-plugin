@@ -15,7 +15,7 @@ public class ContentFactory {
 
 		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
-		if (!(componentAnnotation instanceof Component)) {
+		if (componentAnnotation == null) {
 			throw new InvalidComponentClassException();
 		}
 

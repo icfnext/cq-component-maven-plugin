@@ -7,6 +7,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javassist.CannotCompileException;
+import javassist.CtClass;
+import javassist.CtField;
+import javassist.NotFoundException;
+
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.Component;
@@ -22,9 +27,9 @@ import com.citytechinc.cq.component.dialog.impl.WidgetCollection;
 
 public class DialogFactory {
 
-	public static Dialog make(Class<?> componentClass, Map<Class<?>, String> xtypeMap) throws InvalidComponentClassException, InvalidComponentFieldException {
+	public static Dialog make(CtClass componentClass, Map<Class<?>, String> xtypeMap, ClassLoader classLoader) throws InvalidComponentClassException, InvalidComponentFieldException, ClassNotFoundException, CannotCompileException, NotFoundException {
 
-		Component componentAnnotation = componentClass.getAnnotation(Component.class);
+		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
 		if (componentAnnotation == null) {
 			throw new InvalidComponentClassException();
@@ -46,16 +51,16 @@ public class DialogFactory {
 			tabMap.put(curTab, new ArrayList<DialogElement>());
 		}
 
-		List<Field> fields = Arrays.asList(componentClass.getDeclaredFields());
+		List<CtField> fields = Arrays.asList(componentClass.getDeclaredFields());
 
 		/*
 		 * Iterate through all fields establishing proper widgets for each
 		 */
-		for (Field curField : fields) {
-			DialogField dialogProperty = curField.getAnnotation(DialogField.class);
+		for (CtField curField : fields) {
+			DialogField dialogProperty = (DialogField) curField.getAnnotation(DialogField.class);
 
-			if (dialogProperty instanceof DialogField) {
-				Widget builtFieldWidget = WidgetFactory.make(componentClass, curField, xtypeMap);
+			if (dialogProperty != null) {
+				Widget builtFieldWidget = WidgetFactory.make(componentClass, curField, xtypeMap, classLoader);
 
 				String tabString = getTabStringForField(curField, dialogProperty);
 
@@ -89,7 +94,7 @@ public class DialogFactory {
 
 	}
 
-	private static final String getTabStringForField(Field field, DialogField dialogProperty) {
+	private static final String getTabStringForField(CtField field, DialogField dialogProperty) {
 
 		String tabString = dialogProperty.tab();
 

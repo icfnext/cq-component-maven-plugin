@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * @author paulmichelotti
  *
  */
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.CLASS)
 @Target(ElementType.FIELD)
 public @interface Option {
 

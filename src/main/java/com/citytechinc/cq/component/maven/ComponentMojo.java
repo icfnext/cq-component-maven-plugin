@@ -16,6 +16,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javassist.CannotCompileException;
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.LoaderClassPath;
+import javassist.NotFoundException;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
@@ -80,9 +86,10 @@ public class ComponentMojo extends AbstractMojo {
 
 		try {
 			ClassLoader classLoader = getClassLoader(project.getCompileClasspathElements());
-			List<Class<?>> compiledClasses = getCompiledClasses(classLoader, project.getCompileClasspathElements());
+			ClassPool classPool = getClassPool(classLoader);
+			List<CtClass> compiledClasses = getCompiledClasses(classPool, project.getCompileClasspathElements());
 			Map<Class<?>, String> xtypeMap = getXTypeMapForCustomXTypeMapping(classLoader);
-			buildArchiveFileForProjectAndClassList(compiledClasses, xtypeMap);
+			buildArchiveFileForProjectAndClassList(compiledClasses, xtypeMap, classLoader, classPool);
 		} catch (MalformedURLException e) {
 			getLog().error(e);
 		} catch (DependencyResolutionRequiredException e) {
@@ -102,6 +109,14 @@ public class ComponentMojo extends AbstractMojo {
 		} catch (OutputFailureException e) {
 			getLog().error(e);
 		} catch (IOException e) {
+			getLog().error(e);
+		} catch (NotFoundException e) {
+			getLog().error(e);
+		} catch (CannotCompileException e) {
+			getLog().error(e);
+		} catch (SecurityException e) {
+			getLog().error(e);
+		} catch (NoSuchFieldException e) {
 			getLog().error(e);
 		}
 
@@ -134,10 +149,16 @@ public class ComponentMojo extends AbstractMojo {
 		return new URLClassLoader(pathURLs.toArray(new URL[0]), this.getClass().getClassLoader());
 	}
 
-	private List<Class<?>> getCompiledClasses(ClassLoader classLoader, List<String> classPaths)
-			throws ClassNotFoundException, IOException {
+	private ClassPool getClassPool(ClassLoader classLoader) {
+		ClassPool classPool = new ClassPool();
+		classPool.appendClassPath(new LoaderClassPath(classLoader));
+		return classPool;
+	}
 
-		final List<Class<?>> classList = new ArrayList<Class<?>>();
+	private List<CtClass> getCompiledClasses(ClassPool classPool, List<String> classPaths)
+			throws ClassNotFoundException, IOException, NotFoundException {
+
+		final List<CtClass> classList = new ArrayList<CtClass>();
 
 		String[] extensions = { "class" };
 
@@ -158,7 +179,7 @@ public class ComponentMojo extends AbstractMojo {
 
 					getLog().debug("Loading class : " + curClassString);
 
-					classList.add(classLoader.loadClass(curClassString));
+					classList.add(classPool.getCtClass(curClassString));
 				}
 
 			}
@@ -177,7 +198,7 @@ public class ComponentMojo extends AbstractMojo {
 			for (Artifact curArtifact : artifacts) {
 
 				if (includeJarClasses(curArtifact)) {
-					classList.addAll(getClassListForJarFile(curArtifact.getFile(), classLoader));
+					classList.addAll(getClassListForJarFile(curArtifact.getFile(), classPool));
 				}
 
 			}
@@ -201,9 +222,9 @@ public class ComponentMojo extends AbstractMojo {
 		return false;
 	}
 
-	private List<Class<?>> getClassListForJarFile(File jarFile, ClassLoader classLoader)
-			throws IOException, ClassNotFoundException {
-		List<Class<?>> classList = new ArrayList<Class<?>>();
+	private List<CtClass> getClassListForJarFile(File jarFile, ClassPool classPool)
+			throws IOException, ClassNotFoundException, NotFoundException {
+		List<CtClass> classList = new ArrayList<CtClass>();
 
 		getLog().debug("Searching JAR " + jarFile.getName() + " for classes");
 
@@ -217,7 +238,7 @@ public class ComponentMojo extends AbstractMojo {
 
 				String qualifiedClassname = classNameFromFilePath(curJarEntry.getName(), null);
 
-				classList.add(classLoader.loadClass(qualifiedClassname));
+				classList.add(classPool.getCtClass(qualifiedClassname));
 			}
 		}
 
@@ -255,9 +276,14 @@ public class ComponentMojo extends AbstractMojo {
 	 * @throws ParserConfigurationException
 	 * @throws InvalidComponentFieldException
 	 * @throws InvalidComponentClassException
+	 * @throws ClassNotFoundException
+	 * @throws NotFoundException
+	 * @throws CannotCompileException
+	 * @throws NoSuchFieldException
+	 * @throws SecurityException
 	 */
-	private void buildArchiveFileForProjectAndClassList(List<Class<?>> classList, Map<Class<?>, String> xtypeMap)
-			throws OutputFailureException, IOException, InvalidComponentClassException, InvalidComponentFieldException, ParserConfigurationException, TransformerException {
+	private void buildArchiveFileForProjectAndClassList(List<CtClass> classList, Map<Class<?>, String> xtypeMap, ClassLoader classLoader, ClassPool classPool)
+			throws OutputFailureException, IOException, InvalidComponentClassException, InvalidComponentFieldException, ParserConfigurationException, TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
 
 		/*
 		 * Get existing archive file
@@ -312,7 +338,7 @@ public class ComponentMojo extends AbstractMojo {
 		/*
 		 * Create Dialogs within temp archive
 		 */
-		buildDialogsFromClassList(classList, tempOutputStream, existingArchiveEntryNames, xtypeMap);
+		buildDialogsFromClassList(classList, tempOutputStream, existingArchiveEntryNames, xtypeMap, classLoader, classPool);
 
 		/*
 		 * Create edit config within temp archive
@@ -331,14 +357,14 @@ public class ComponentMojo extends AbstractMojo {
 
 	}
 
-	private List<EditConfig> buildEditConfigFromClassList(List<Class<?>> classList, ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames) throws InvalidComponentClassException, TransformerException, ParserConfigurationException, IOException, OutputFailureException {
+	private List<EditConfig> buildEditConfigFromClassList(List<CtClass> classList, ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames) throws InvalidComponentClassException, TransformerException, ParserConfigurationException, IOException, OutputFailureException, ClassNotFoundException {
 
 		List<EditConfig> builtEditConfigs = new ArrayList<EditConfig>();
 
-		for (Class<?> curClass : classList) {
-			Component annotation = curClass.getAnnotation(Component.class);
+		for (CtClass curClass : classList) {
+			Component annotation = (Component) curClass.getAnnotation(Component.class);
 
-			if (annotation instanceof Component) {
+			if (annotation != null) {
 				EditConfig builtEditConfig = buildEditConfigFromClass(curClass, annotation);
 
 				builtEditConfigs.add(builtEditConfig);
@@ -351,13 +377,13 @@ public class ComponentMojo extends AbstractMojo {
 		return builtEditConfigs;
 	}
 
-	private EditConfig buildEditConfigFromClass(Class<?> editConfigClass, Component componentAnnotation)
-			throws InvalidComponentClassException {
+	private EditConfig buildEditConfigFromClass(CtClass editConfigClass, Component componentAnnotation)
+			throws InvalidComponentClassException, ClassNotFoundException {
 		return EditConfigFactory.make(editConfigClass);
 	}
 
-	private File writeEditConfigToFile(EditConfig editConfig, Class<?> componentClass)
-			throws TransformerException, ParserConfigurationException, IOException, OutputFailureException {
+	private File writeEditConfigToFile(EditConfig editConfig, CtClass componentClass)
+			throws TransformerException, ParserConfigurationException, IOException, OutputFailureException, ClassNotFoundException {
 		File componentOutputDirectory = getOutputDirectoryForComponentClass(componentClass);
 
 		File editConfigFile = new File(componentOutputDirectory, "_cq_editConfig.xml");
@@ -373,7 +399,7 @@ public class ComponentMojo extends AbstractMojo {
 		return editConfigFile;
 	}
 
-	private void writeEditConfigToArchiveFile(File editConfigFile, Class<?> componentClass, ZipArchiveOutputStream archiveStream, Set<String> reservedNames) throws IOException {
+	private void writeEditConfigToArchiveFile(File editConfigFile, CtClass componentClass, ZipArchiveOutputStream archiveStream, Set<String> reservedNames) throws IOException, ClassNotFoundException {
 		String editConfigFilePath = componentPathBase +
 				"/" +
 				getComponentPathSuffixForComponentClass(componentClass) +
@@ -399,18 +425,18 @@ public class ComponentMojo extends AbstractMojo {
 		}
 	}
 
-	private List<Content> buildContentFromClassList(List<Class<?>> classList, ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames) throws InvalidComponentClassException, TransformerException, ParserConfigurationException, IOException, OutputFailureException {
+	private List<Content> buildContentFromClassList(List<CtClass> classList, ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames) throws InvalidComponentClassException, TransformerException, ParserConfigurationException, IOException, OutputFailureException, ClassNotFoundException {
 
 		List<Content> builtContents = new ArrayList<Content>();
 
-		for (Class<?> curClass : classList) {
+		for (CtClass curClass : classList) {
 			getLog().debug("Checking class for Component annotation " + curClass);
 
-			Component annotation = curClass.getAnnotation(Component.class);
+			Component annotation = (Component) curClass.getAnnotation(Component.class);
 
 			getLog().debug("Annotation : " + annotation);
 
-			if (annotation instanceof Component) {
+			if (annotation != null) {
 				getLog().debug("Processing Component Class " + curClass);
 
 				Content builtContent = buildContentFromClass(curClass, annotation);
@@ -426,13 +452,13 @@ public class ComponentMojo extends AbstractMojo {
 
 	}
 
-	private Content buildContentFromClass(Class<?> componentClass, Component contentAnnotation)
-			throws InvalidComponentClassException {
+	private Content buildContentFromClass(CtClass componentClass, Component contentAnnotation)
+			throws InvalidComponentClassException, ClassNotFoundException {
 		return ContentFactory.make(componentClass, defaultComponentGroup);
 	}
 
-	private File writeContentToFile(Content content, Class<?> componentClass)
-			throws TransformerException, ParserConfigurationException, IOException, OutputFailureException {
+	private File writeContentToFile(Content content, CtClass componentClass)
+			throws TransformerException, ParserConfigurationException, IOException, OutputFailureException, ClassNotFoundException {
 		File componentOutputDirectory = getOutputDirectoryForComponentClass(componentClass);
 
 		File contentFile = new File(componentOutputDirectory, ".content.xml");
@@ -448,7 +474,7 @@ public class ComponentMojo extends AbstractMojo {
 		return contentFile;
 	}
 
-	private void writeContentToArchiveFile(File contentFile, Class<?> componentClass, ZipArchiveOutputStream archiveStream, Set<String> reservedNames) throws IOException {
+	private void writeContentToArchiveFile(File contentFile, CtClass componentClass, ZipArchiveOutputStream archiveStream, Set<String> reservedNames) throws IOException, ClassNotFoundException {
 		String contentFilePath = componentPathBase +
 				"/" +
 				getComponentPathSuffixForComponentClass(componentClass) +
@@ -475,19 +501,21 @@ public class ComponentMojo extends AbstractMojo {
 	}
 
 
-	private List<Dialog> buildDialogsFromClassList(List<Class<?>> classList, ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames, Map<Class<?>, String> xtypeMap)
-			throws InvalidComponentClassException, InvalidComponentFieldException, OutputFailureException, IOException, ParserConfigurationException, TransformerException {
+	private List<Dialog> buildDialogsFromClassList(List<CtClass> classList, ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames, Map<Class<?>, String> xtypeMap, ClassLoader classLoader, ClassPool classPool)
+			throws InvalidComponentClassException, InvalidComponentFieldException, OutputFailureException, IOException, ParserConfigurationException, TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
 
 		final List<Dialog> dialogList = new ArrayList<Dialog>();
 
-		for (Class<?> curClass : classList) {
+		for (CtClass curClass : classList) {
 			getLog().debug("Checking class for Component annotation " + curClass);
 
-			Component annotation = curClass.getAnnotation(Component.class);
+			Component annotation = (Component) curClass.getAnnotation(Component.class);
+
 			getLog().debug("Annotation : " + annotation);
-			if (annotation instanceof Component) {
+
+			if (annotation != null) {
 				getLog().debug("Processing Component Class " + curClass);
-				Dialog builtDialog = buildDialogFromClass(curClass, xtypeMap);
+				Dialog builtDialog = buildDialogFromClass(curClass, xtypeMap, classLoader, classPool);
 				dialogList.add(builtDialog);
 				File dialogFile = writeDialogeToFile(builtDialog, curClass);
 				writeDialogToArchiveFile(dialogFile, curClass, zipOutputStream, reservedNames);
@@ -498,15 +526,15 @@ public class ComponentMojo extends AbstractMojo {
 
 	}
 
-	private Dialog buildDialogFromClass(Class<?> curClass, Map<Class<?>, String> xtypeMap)
-			throws InvalidComponentClassException, InvalidComponentFieldException {
+	private Dialog buildDialogFromClass(CtClass curClass, Map<Class<?>, String> xtypeMap, ClassLoader classLoader, ClassPool classPool)
+			throws InvalidComponentClassException, InvalidComponentFieldException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
 
-		return DialogFactory.make(curClass, xtypeMap);
+		return DialogFactory.make(curClass, xtypeMap, classLoader, classPool);
 
 	}
 
-	private File writeDialogeToFile(Dialog dialog, Class<?> componentClass)
-			throws OutputFailureException, IOException, ParserConfigurationException, TransformerException {
+	private File writeDialogeToFile(Dialog dialog, CtClass componentClass)
+			throws OutputFailureException, IOException, ParserConfigurationException, TransformerException, ClassNotFoundException {
 		File componentOutputDirectory = getOutputDirectoryForComponentClass(componentClass);
 
 		File dialogFile = new File(componentOutputDirectory, "dialog.xml");
@@ -525,7 +553,7 @@ public class ComponentMojo extends AbstractMojo {
 	/*
 	 * http://developer-tips.hubpages.com/hub/Zipping-and-Unzipping-Nested-Directories-in-Java-using-Apache-Commons-Compress
 	 */
-	private void writeDialogToArchiveFile(File dialogFile, Class<?> componentClass, ZipArchiveOutputStream archiveStream, Set<String> reservedNames) throws IOException {
+	private void writeDialogToArchiveFile(File dialogFile, CtClass componentClass, ZipArchiveOutputStream archiveStream, Set<String> reservedNames) throws IOException, ClassNotFoundException {
 		String dialogFilePath = componentPathBase +
 								"/" +
 								getComponentPathSuffixForComponentClass(componentClass) +
@@ -572,7 +600,7 @@ public class ComponentMojo extends AbstractMojo {
 		return new File(buildDirectory, zipFileName);
 	}
 
-	private File getOutputDirectoryForComponentClass(Class<?> componentClass) throws OutputFailureException {
+	private File getOutputDirectoryForComponentClass(CtClass componentClass) throws OutputFailureException, ClassNotFoundException {
 		File buildDirectory = new File(project.getBuild().getDirectory());
 
 		String dialogFilePath = OUTPUT_PATH + "/" + componentPathBase + "/" + getComponentPathSuffixForComponentClass(componentClass) + "/" + getComponentNameForComponentClass(componentClass);
@@ -588,10 +616,10 @@ public class ComponentMojo extends AbstractMojo {
 		return componentOutputDirectory;
 	}
 
-	private String getComponentPathSuffixForComponentClass(Class<?> componentClass) {
-		Component componentAnnotation = componentClass.getAnnotation(Component.class);
+	private String getComponentPathSuffixForComponentClass(CtClass componentClass) throws ClassNotFoundException {
+		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
-		if (componentAnnotation instanceof Component) {
+		if (componentAnnotation != null) {
 			String path = componentAnnotation.path();
 
 			if (StringUtils.isNotEmpty(path)) {
@@ -602,10 +630,10 @@ public class ComponentMojo extends AbstractMojo {
 		return componentPathSuffix;
 	}
 
-	private String getComponentNameForComponentClass(Class<?> componentClass) {
-		Component componentAnnotation = componentClass.getAnnotation(Component.class);
+	private String getComponentNameForComponentClass(CtClass componentClass) throws ClassNotFoundException {
+		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
-		if (componentAnnotation instanceof Component) {
+		if (componentAnnotation != null) {
 			String name = componentAnnotation.name();
 
 			if (StringUtils.isNotEmpty(name)) {

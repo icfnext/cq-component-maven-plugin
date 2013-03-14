@@ -10,6 +10,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javassist.CannotCompileException;
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.CtField;
+import javassist.NotFoundException;
+
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.DialogField;
@@ -35,35 +41,37 @@ public class WidgetFactory {
 	public static final String SELECTION_XTYPE = "selection";
 	public static final String MULTIFIELD_XTYPE = "multifield";
 
-	public static Widget make(Class<?> componentClass, Field widgetField, Map<Class<?>, String> xtypeMap)
-			throws InvalidComponentFieldException {
+	public static Widget make(CtClass componentClass, CtField annotatedWidgetField, Field widgetField, Map<Class<?>, String> xtypeMap, ClassLoader classLoader, ClassPool classPool)
+			throws InvalidComponentFieldException, ClassNotFoundException, CannotCompileException, NotFoundException {
 
-		DialogField propertyAnnotation = widgetField.getAnnotation(DialogField.class);
+		DialogField propertyAnnotation = (DialogField) annotatedWidgetField.getAnnotation(DialogField.class);
 
 		if (propertyAnnotation == null) {
 			throw new InvalidComponentFieldException();
 		}
 
-		String xtype = getXTypeForField(widgetField, propertyAnnotation, xtypeMap);
-		String name = getNameForField(widgetField, propertyAnnotation);
-		String fieldName = getFieldNameForField(widgetField, propertyAnnotation);
-		String fieldLabel = getFieldLabelForField(widgetField, propertyAnnotation);
-		String fieldDescription = getFieldDescriptionForField(widgetField, propertyAnnotation);
-		Boolean isRequired = getIsRequiredPropertyForField(widgetField, propertyAnnotation);
-		Map<String, String> additionalProperties = getAdditionalPropertiesForField(widgetField, propertyAnnotation);
+		String xtype = getXTypeForField(widgetField, propertyAnnotation, xtypeMap, classLoader);
+		String name = getNameForField(annotatedWidgetField, propertyAnnotation);
+		String fieldName = getFieldNameForField(annotatedWidgetField, propertyAnnotation);
+		String fieldLabel = getFieldLabelForField(annotatedWidgetField, propertyAnnotation);
+		String fieldDescription = getFieldDescriptionForField(annotatedWidgetField, propertyAnnotation);
+		Boolean isRequired = getIsRequiredPropertyForField(annotatedWidgetField, propertyAnnotation);
+		Map<String, String> additionalProperties = getAdditionalPropertiesForField(annotatedWidgetField, propertyAnnotation);
 
 		if (xtype.equals(SELECTION_XTYPE)) {
 
 			return buildSelectionWidget(
 					componentClass,
-					widgetField,
+					annotatedWidgetField,
 					propertyAnnotation,
 					name,
 					fieldName,
 					fieldLabel,
 					fieldDescription,
 					isRequired,
-					additionalProperties);
+					additionalProperties,
+					classLoader,
+					classPool);
 
 		}
 
@@ -86,7 +94,7 @@ public class WidgetFactory {
 
 	}
 
-	private static final Map<String, String> getAdditionalPropertiesForField(Field widgetField, DialogField propertyAnnotation) {
+	private static final Map<String, String> getAdditionalPropertiesForField(CtField widgetField, DialogField propertyAnnotation) {
 
 		if (propertyAnnotation.additionalProperties().length > 0) {
 			Map<String, String> properties = new HashMap<String, String>();
@@ -102,11 +110,11 @@ public class WidgetFactory {
 
 	}
 
-	private static final Boolean getIsRequiredPropertyForField(Field widgetField, DialogField propertyAnnotation) {
+	private static final Boolean getIsRequiredPropertyForField(CtField widgetField, DialogField propertyAnnotation) {
 		return propertyAnnotation.required().equals(BooleanEnum.TRUE);
 	}
 
-	private static final String getNameForField(Field widgetField, DialogField propertyAnnotation) {
+	private static final String getNameForField(CtField widgetField, DialogField propertyAnnotation) {
 
 		String overrideName = propertyAnnotation.name();
 
@@ -117,7 +125,7 @@ public class WidgetFactory {
 		return "./" + widgetField.getName();
 	}
 
-	private static final String getFieldLabelForField(Field widgetField, DialogField propertyAnnotation) {
+	private static final String getFieldLabelForField(CtField widgetField, DialogField propertyAnnotation) {
 
 		String overrideLabel = propertyAnnotation.fieldLabel();
 
@@ -128,7 +136,7 @@ public class WidgetFactory {
 		return widgetField.getName();
 	}
 
-	private static final String getFieldNameForField(Field widgetField, DialogField propertyAnnotation) {
+	private static final String getFieldNameForField(CtField widgetField, DialogField propertyAnnotation) {
 
 		String overrideFieldName = propertyAnnotation.fieldName();
 
@@ -139,7 +147,7 @@ public class WidgetFactory {
 		return widgetField.getName();
 	}
 
-	private static final String getFieldDescriptionForField(Field widgetField, DialogField propertyAnnotation) {
+	private static final String getFieldDescriptionForField(CtField widgetField, DialogField propertyAnnotation) {
 
 		String overrideFieldDescription = propertyAnnotation.fieldDescription();
 
@@ -150,21 +158,8 @@ public class WidgetFactory {
 		return null;
 	}
 
-	/*
-	return buildMultiFieldWidget(
-			componentClass,
-			widgetField,
-			propertyAnnotation,
-			name,
-			fieldName,
-			fieldLabel,
-			fieldDescription,
-			isRequired,
-			additionalProperties);
-*/
-
 	private static final MultiValueWidget buildMultiFieldWidget(
-			Class<?> componentClass,
+			CtClass componentClass,
 			Field widgetField,
 			DialogField fieldAnnotation,
 			String name,
@@ -214,17 +209,19 @@ public class WidgetFactory {
 	}
 
 	private static final SelectionWidget buildSelectionWidget(
-			Class<?> componentClass,
-			Field widgetField,
+			CtClass componentClass,
+			CtField widgetField,
 			DialogField fieldAnnotation,
 			String name,
 			String fieldName,
 			String fieldLabel,
 			String fieldDescription,
 			Boolean isRequired,
-			Map<String, String> additionalProperties) throws InvalidComponentFieldException {
+			Map<String, String> additionalProperties,
+			ClassLoader classLoader,
+			ClassPool classPool) throws InvalidComponentFieldException, CannotCompileException, NotFoundException, ClassNotFoundException {
 
-		List<Option> options = buildSelectionOptionsForField(widgetField, fieldAnnotation);
+		List<Option> options = buildSelectionOptionsForField(widgetField, fieldAnnotation, classLoader, classPool);
 
 		String selectionType = getSelectionTypeForField(widgetField, fieldAnnotation);
 
@@ -232,11 +229,11 @@ public class WidgetFactory {
 
 	}
 
-	private static final String getSelectionTypeForField(Field widgetField, DialogField fieldAnnotation) {
+	private static final String getSelectionTypeForField(CtField widgetField, DialogField fieldAnnotation) {
 		return fieldAnnotation.selectionType().name().toLowerCase();
 	}
 
-	private static final List<Option> buildSelectionOptionsForField(Field widgetField, DialogField fieldAnnotation) throws InvalidComponentFieldException {
+	private static final List<Option> buildSelectionOptionsForField(CtField widgetField, DialogField fieldAnnotation, ClassLoader classLoader, ClassPool classPool) throws InvalidComponentFieldException, CannotCompileException, NotFoundException, ClassNotFoundException {
 
 		List<Option> options = new ArrayList<Option>();
 
@@ -257,10 +254,10 @@ public class WidgetFactory {
 		 * from the Enum definition
 		 */
 		else if (widgetField.getType().isEnum()) {
-			for(Object curEnumObject : widgetField.getType().getEnumConstants()) {
+			for(Object curEnumObject : classLoader.loadClass(widgetField.getType().getName()).getEnumConstants()) {
 				Enum<?> curEnum = (Enum<?>) curEnumObject;
 				try {
-					options.add(buildSelectionOptionForEnum(curEnum));
+					options.add(buildSelectionOptionForEnum(curEnum, classPool));
 				} catch (SecurityException e) {
 					throw new InvalidComponentFieldException("Invalid Enum Field", e);
 				} catch (NoSuchFieldException e) {
@@ -273,15 +270,18 @@ public class WidgetFactory {
 
 	}
 
-	private static final Option buildSelectionOptionForEnum(Enum<?> optionEnum)
-			throws SecurityException, NoSuchFieldException {
+	//TODO: This isn't going to work
+	private static final Option buildSelectionOptionForEnum(Enum<?> optionEnum, ClassPool classPool)
+			throws SecurityException, NoSuchFieldException, NotFoundException, ClassNotFoundException {
 
 		String text = optionEnum.name();
 		String value = optionEnum.name();
 
-		com.citytechinc.cq.component.annotations.Option optionAnnotation = optionEnum.getDeclaringClass().getField(optionEnum.name()).getAnnotation(com.citytechinc.cq.component.annotations.Option.class);
+		CtClass annotatedEnumClass = classPool.getCtClass(optionEnum.getDeclaringClass().getName());
+		CtField annotatedEnumField = annotatedEnumClass.getField(optionEnum.name());
+		com.citytechinc.cq.component.annotations.Option optionAnnotation = (com.citytechinc.cq.component.annotations.Option) annotatedEnumField.getAnnotation(com.citytechinc.cq.component.annotations.Option.class);
 
-		if (optionAnnotation instanceof com.citytechinc.cq.component.annotations.Option) {
+		if (optionAnnotation != null) {
 			if (StringUtils.isNotEmpty(optionAnnotation.text())) {
 				text = optionAnnotation.text();
 			}
@@ -294,7 +294,7 @@ public class WidgetFactory {
 
 	}
 
-	private static final String getXTypeForField(Field widgetField, DialogField propertyAnnotation, Map<Class<?>, String> xtypeMap) throws InvalidComponentFieldException {
+	private static final String getXTypeForField(Field widgetField, DialogField propertyAnnotation, Map<Class<?>, String> xtypeMap, ClassLoader classLoader) throws InvalidComponentFieldException, CannotCompileException, NotFoundException, ClassNotFoundException {
 
 		/*
 		 * Handle annotated xtypes
@@ -305,7 +305,7 @@ public class WidgetFactory {
 			return overrideXType;
 		}
 
-		Class<?> fieldClass = widgetField.getType();
+		Class<?> fieldClass = classLoader.loadClass(widgetField.getType().getName());
 
 		/*
 		 * Handle custom types
@@ -376,6 +376,7 @@ public class WidgetFactory {
 	}
 
 	private static final String getInnerXTypeForParameterizedField(Field widgetField, Map<Class<?>, String> xtypeMap) throws InvalidComponentFieldException {
+
 		ParameterizedType parameterizedType = (ParameterizedType) widgetField.getGenericType();
 
 		if (parameterizedType.getActualTypeArguments().length == 0 || parameterizedType.getActualTypeArguments().length > 1) {
@@ -385,6 +386,7 @@ public class WidgetFactory {
 		String simpleXtype = getSimpleXTypeForClass((Class<?>) parameterizedType.getActualTypeArguments()[0], xtypeMap);
 
 		return simpleXtype;
+
 	}
 
 	private static final String getSimpleXTypeForClass(Class<?> fieldClass, Map<Class<?>, String> xtypeMap) {

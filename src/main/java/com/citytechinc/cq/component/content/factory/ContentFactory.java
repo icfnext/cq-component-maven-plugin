@@ -1,5 +1,7 @@
 package com.citytechinc.cq.component.content.factory;
 
+import javassist.CtClass;
+
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.Component;
@@ -9,11 +11,11 @@ import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassExcept
 
 public class ContentFactory {
 
-	public static final Content make (Class<?> componentClass, String defaultGroup) throws InvalidComponentClassException {
+	public static final Content make (CtClass componentClass, String defaultGroup) throws InvalidComponentClassException, ClassNotFoundException {
 
-		Component componentAnnotation = componentClass.getAnnotation(Component.class);
+		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
-		if (!(componentAnnotation instanceof Component)) {
+		if (componentAnnotation == null) {
 			throw new InvalidComponentClassException();
 		}
 
@@ -24,13 +26,13 @@ public class ContentFactory {
 		return new ContentImpl(title, group, isContainer);
 	}
 
-	private static final Boolean getIsContainerForComponent(Class<?> componentClass, Component componentAnnotation) {
+	private static final Boolean getIsContainerForComponent(CtClass componentClass, Component componentAnnotation) {
 		String overrideIsContainer = componentAnnotation.isContainer();
 
 		return !overrideIsContainer.equals("false");
 	}
 
-	private static final String getTitleForComponent(Class<?> componentClass, Component componentAnnotation) {
+	private static final String getTitleForComponent(CtClass componentClass, Component componentAnnotation) {
 		String overrideTitle = componentAnnotation.title();
 
 		if (StringUtils.isNotEmpty(overrideTitle)) {
@@ -40,7 +42,7 @@ public class ContentFactory {
 		return componentClass.getSimpleName();
 	}
 
-	private static final String getGroupForComponent(Class<?> componentClass, Component componentAnnotation, String defaultGroup) {
+	private static final String getGroupForComponent(CtClass componentClass, Component componentAnnotation, String defaultGroup) {
 		String overrideGroup = componentAnnotation.group();
 
 		if (StringUtils.isNotEmpty(overrideGroup)) {

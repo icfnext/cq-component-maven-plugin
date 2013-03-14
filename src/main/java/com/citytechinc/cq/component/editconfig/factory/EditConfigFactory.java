@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javassist.CtClass;
+
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.Component;
@@ -13,11 +15,11 @@ import com.citytechinc.cq.component.editconfig.impl.SimpleEditConfig;
 
 public class EditConfigFactory {
 
-	public static final EditConfig make(Class<?> componentClass) throws InvalidComponentClassException {
+	public static final EditConfig make(CtClass componentClass) throws InvalidComponentClassException, ClassNotFoundException {
 
-		Component componentAnnotation = componentClass.getAnnotation(Component.class);
+		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
-		if (!(componentAnnotation instanceof Component)) {
+		if (componentAnnotation == null) {
 			throw new InvalidComponentClassException("Class provided is not property annotated");
 		}
 
@@ -29,7 +31,7 @@ public class EditConfigFactory {
 		return new SimpleEditConfig(title, actions, dialogMode, layout, "cq:EditConfig");
 	}
 
-	private static final String getTitleForEditConfig(Class<?> componentClass, Component componentAnnotation) {
+	private static final String getTitleForEditConfig(CtClass componentClass, Component componentAnnotation) {
 		if (StringUtils.isNotEmpty(componentAnnotation.title())) {
 			return componentAnnotation.title();
 		}

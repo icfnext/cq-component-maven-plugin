@@ -234,7 +234,7 @@ the project module(s) wherein you are defining the Java objects representing you
           </tr>
           <tr>
             <td>required</td>
-            <td>A BooleanEnum representing whether population of the field by an author is required.</td>
+            <td>A boolean representing whether population of the field by an author is required.</td>
           </tr>
           <tr>
             <td>tab</td>

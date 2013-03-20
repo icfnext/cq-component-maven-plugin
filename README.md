@@ -115,7 +115,9 @@ Specific files will only be generated if such files do not already exist for the
 if you have created a dialog.xml file for the component already, this plugin will not overwrite your dialog.xml,
 as it is assumed that you created yours for a reason and which to keep it.
 
-Annotations are defined under the `com.citytechinc.cq.component.annotations` package.
+Annotations are defined under the `com.citytechinc.cq.component.annotations` package within the
+cq-component-annotations module. The cq-component-annotations artifact will necessarily be a dependency of
+the project module(s) wherein you are defining the Java objects representing your components.
 
 <table>
   <thead>

@@ -32,7 +32,7 @@ public @interface Component {
 	 */
 	String name() default "";
 
-	String title() default "Component";
+	String title();
 
 	/**
 	 * The component group into which this component will be placed.  This overrides any default group
@@ -47,7 +47,7 @@ public @interface Component {
 	 *
 	 * @return
 	 */
-	String isContainer() default "false";
+	boolean isContainer() default false;
 
 	String[] tabs() default {};
 

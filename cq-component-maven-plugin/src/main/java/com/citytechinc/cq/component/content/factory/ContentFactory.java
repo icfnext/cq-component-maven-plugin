@@ -27,9 +27,7 @@ public class ContentFactory {
 	}
 
 	private static final Boolean getIsContainerForComponent(CtClass componentClass, Component componentAnnotation) {
-		String overrideIsContainer = componentAnnotation.isContainer();
-
-		return !overrideIsContainer.equals("false");
+		return componentAnnotation.isContainer();
 	}
 
 	private static final String getTitleForComponent(CtClass componentClass, Component componentAnnotation) {

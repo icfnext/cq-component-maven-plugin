@@ -144,7 +144,7 @@ the project module(s) wherein you are defining the Java objects representing you
                 indicate the component folder into which the component files will be placed.</td>
           </tr>
           <tr>
-            <td>title</td>
+            <td>title - <em>required</em></td>
             <td>The title of the component which will be presented in the Sidekick and Edit Bar (presuming
                 an editbar layout).</td>
           </tr>

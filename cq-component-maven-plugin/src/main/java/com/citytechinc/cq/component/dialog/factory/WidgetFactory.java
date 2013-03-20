@@ -1,5 +1,6 @@
 package com.citytechinc.cq.component.dialog.factory;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.net.URI;
@@ -198,7 +199,7 @@ public class WidgetFactory {
 		/*
 		 * Otherwise, see if we can derive the xtype from the parameterized field
 		 */
-		String innerXType = getInnerXTypeForParameterizedField(widgetField, xtypeMap);
+		String innerXType = getInnerXTypeForField(widgetField, xtypeMap);
 
 		if (innerXType != null) {
 			return innerXType;
@@ -304,7 +305,7 @@ public class WidgetFactory {
 			return overrideXType;
 		}
 
-		Class<?> fieldClass = classLoader.loadClass(widgetField.getType().getName());
+		Class<?> fieldClass = widgetField.getType();
 
 		/*
 		 * Handle custom types
@@ -351,9 +352,9 @@ public class WidgetFactory {
 			return SELECTION_XTYPE;
 		}
 
-		if (List.class.isAssignableFrom(fieldClass)) {
+		if (List.class.isAssignableFrom(fieldClass) || fieldClass.isArray()) {
 
-			String simpleXtype = getInnerXTypeForParameterizedField(widgetField, xtypeMap);
+			String simpleXtype = getInnerXTypeForField(widgetField, xtypeMap);
 
 			/*
 			 * TODO: This is where the multicompositefield would end up being selected once implemented
@@ -374,8 +375,22 @@ public class WidgetFactory {
 		return TEXTFIELD_XTYPE;
 	}
 
-	private static final String getInnerXTypeForParameterizedField(Field widgetField, Map<Class<?>, String> xtypeMap) throws InvalidComponentFieldException {
+	private static final String getInnerXTypeForField(Field widgetField, Map<Class<?>, String> xtypeMap) throws InvalidComponentFieldException {
 
+		Class<?> fieldClass = widgetField.getType();
+
+		if (List.class.isAssignableFrom(fieldClass)) {
+			return getInnerXTypeForListField(widgetField, xtypeMap);
+		}
+		if (fieldClass.isArray()) {
+			return getInnerXTypeForArrayField(widgetField, xtypeMap);
+		}
+
+		throw new InvalidComponentFieldException("List dialog property found with a paramaterized type count not equal to 1");
+
+	}
+
+	private static final String getInnerXTypeForListField(Field widgetField, Map<Class<?>, String> xtypeMap) throws InvalidComponentFieldException {
 		ParameterizedType parameterizedType = (ParameterizedType) widgetField.getGenericType();
 
 		if (parameterizedType.getActualTypeArguments().length == 0 || parameterizedType.getActualTypeArguments().length > 1) {
@@ -385,7 +400,12 @@ public class WidgetFactory {
 		String simpleXtype = getSimpleXTypeForClass((Class<?>) parameterizedType.getActualTypeArguments()[0], xtypeMap);
 
 		return simpleXtype;
+	}
 
+	private static final String getInnerXTypeForArrayField(Field widgetField, Map<Class<?>, String> xtypeMap) {
+		Class<?> fieldClass = widgetField.getType();
+
+		return getSimpleXTypeForClass(fieldClass.getComponentType(), xtypeMap);
 	}
 
 	private static final String getSimpleXTypeForClass(Class<?> fieldClass, Map<Class<?>, String> xtypeMap) {

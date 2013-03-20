@@ -31,7 +31,7 @@ public class ContentFactory {
 	}
 
 	private static final String getTitleForComponent(CtClass componentClass, Component componentAnnotation) {
-		String overrideTitle = componentAnnotation.title();
+		String overrideTitle = componentAnnotation.value();
 
 		if (StringUtils.isNotEmpty(overrideTitle)) {
 			return overrideTitle;

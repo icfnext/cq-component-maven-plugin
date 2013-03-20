@@ -32,8 +32,8 @@ public class EditConfigFactory {
 	}
 
 	private static final String getTitleForEditConfig(CtClass componentClass, Component componentAnnotation) {
-		if (StringUtils.isNotEmpty(componentAnnotation.title())) {
-			return componentAnnotation.title();
+		if (StringUtils.isNotEmpty(componentAnnotation.value())) {
+			return componentAnnotation.value();
 		}
 
 		return componentClass.getSimpleName();

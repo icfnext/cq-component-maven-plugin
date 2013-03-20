@@ -91,7 +91,7 @@ public class DialogFactory {
 
 	private static final String getDialogTitleForComponent(Component component) {
 
-		String title = component.title();
+		String title = component.value();
 
 		if (StringUtils.isNotEmpty(title)) {
 			return title;

@@ -32,7 +32,7 @@ public @interface Component {
 	 */
 	String name() default "";
 
-	String title();
+	String value();
 
 	/**
 	 * The component group into which this component will be placed.  This overrides any default group

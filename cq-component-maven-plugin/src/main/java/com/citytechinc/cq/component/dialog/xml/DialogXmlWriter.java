@@ -60,9 +60,6 @@ public class DialogXmlWriter {
 
 		jcrRootElement.setAttributeNS(JCR_NS_URI, PRIMARY_TYPE_ATTRIBUTE, "cq:Dialog");
 
-		//TODO: Title
-		jcrRootElement.setAttribute("title", "Test Title");
-
 		jcrRootElement.setAttribute("xtype", "dialog");
 
 		jcrRootElement.setAttribute("activeTab", "0");

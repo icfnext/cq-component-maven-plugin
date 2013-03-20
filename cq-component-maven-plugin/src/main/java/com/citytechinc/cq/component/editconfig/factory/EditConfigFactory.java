@@ -2,13 +2,16 @@ package com.citytechinc.cq.component.editconfig.factory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javassist.CtClass;
 
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.Component;
+import com.citytechinc.cq.component.annotations.Listener;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
 import com.citytechinc.cq.component.editconfig.EditConfig;
 import com.citytechinc.cq.component.editconfig.impl.SimpleEditConfig;
@@ -27,8 +30,9 @@ public class EditConfigFactory {
 		List<String> actions = getActionsForEditConfig(componentAnnotation, title);
 		String dialogMode = getDialogModeForEditConfig(componentAnnotation);
 		String layout = getLayoutForEditConfig(componentAnnotation);
+		Map<String,String> listeners=getListenersForEditConfig(componentAnnotation);
 
-		return new SimpleEditConfig(title, actions, dialogMode, layout, "cq:EditConfig");
+		return new SimpleEditConfig(title, actions, dialogMode, layout, "cq:EditConfig",listeners);
 	}
 
 	private static final String getTitleForEditConfig(CtClass componentClass, Component componentAnnotation) {
@@ -73,5 +77,18 @@ public class EditConfigFactory {
 		}
 
 		return "editbar";
+	}
+	
+	private static final Map<String,String> getListenersForEditConfig(Component componenetAnnotation){
+		if (componenetAnnotation.listeners().length > 0) {
+			Map<String, String> listeners = new HashMap<String, String>();
+
+			for (Listener listener : componenetAnnotation.listeners()) {
+				listeners.put(listener.name(), listener.value());
+			}
+
+			return listeners;
+		}
+		return null;
 	}
 }

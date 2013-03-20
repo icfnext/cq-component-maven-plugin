@@ -1,6 +1,7 @@
 package com.citytechinc.cq.component.editconfig;
 
 import java.util.List;
+import java.util.Map;
 
 public interface EditConfig {
 
@@ -21,5 +22,7 @@ public interface EditConfig {
 	public String getLayout();
 
 	public String getPrimaryType();
+	
+	public Map<String,String> getListeners();
 
 }

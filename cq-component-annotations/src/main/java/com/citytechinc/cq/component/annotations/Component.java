@@ -56,4 +56,6 @@ public @interface Component {
 	String dialogMode() default "floating";
 
 	String layout() default "editbar";
+	
+	Listener[] listeners() default {};
 }

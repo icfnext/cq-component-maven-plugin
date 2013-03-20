@@ -53,7 +53,14 @@ public class EditConfigXmlWriter {
 		jcrRootElement.setAttributeNS(Constants.CQ_NS_URI, "cq:dialogMode", editConfig.getDialogMode());
 		jcrRootElement.setAttributeNS(Constants.CQ_NS_URI, "cq:layout", editConfig.getLayout());
 		jcrRootElement.setAttributeNS(Constants.CQ_NS_URI, "cq:actions", getActionsStringForEditConfig(editConfig));
-
+		if(editConfig.getListeners()!=null){
+			Element cqListeners = document.createElementNS(Constants.CQ_NS_URI, "cq:listeners");
+			cqListeners.setAttributeNS(Constants.JCR_NS_URI, "jcr:primaryType", "cq:EditListenersConfig");
+			for(String key:editConfig.getListeners().keySet()){
+				cqListeners.setAttribute(key, editConfig.getListeners().get(key));
+			}
+			jcrRootElement.appendChild(cqListeners);
+		}
 		document.appendChild(jcrRootElement);
 
 		return document;

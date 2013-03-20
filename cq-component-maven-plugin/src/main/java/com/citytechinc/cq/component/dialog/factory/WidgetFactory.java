@@ -19,7 +19,6 @@ import javassist.NotFoundException;
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.DialogField;
-import com.citytechinc.cq.component.annotations.DialogField.BooleanEnum;
 import com.citytechinc.cq.component.annotations.FieldConfig;
 import com.citytechinc.cq.component.annotations.FieldProperty;
 import com.citytechinc.cq.component.dialog.MultiValueWidget;
@@ -111,7 +110,7 @@ public class WidgetFactory {
 	}
 
 	private static final Boolean getIsRequiredPropertyForField(CtField widgetField, DialogField propertyAnnotation) {
-		return propertyAnnotation.required().equals(BooleanEnum.TRUE);
+		return propertyAnnotation.required() ==true;
 	}
 
 	private static final String getNameForField(CtField widgetField, DialogField propertyAnnotation) {

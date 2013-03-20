@@ -15,11 +15,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface DialogField {
 
-	public enum BooleanEnum {
-		TRUE,
-		FALSE
-	}
-
 	public enum SelectionType {
 		SELECT,
 		RADIO,
@@ -59,7 +54,7 @@ public @interface DialogField {
 
 	public String fieldDescription() default "";
 
-	public BooleanEnum required() default BooleanEnum.FALSE;
+	public boolean required() default false;
 
 	/**
 	 * The title of the tab in which to place the widget.

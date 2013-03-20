@@ -138,6 +138,10 @@ public class DialogXmlWriter {
 				widgetElement.setAttribute(curKey, additionalProperties.get(curKey));
 			}
 		}
+		
+		if(widget.getDefaultValue()!=null){
+			widgetElement.setAttribute("defaultValue", widget.getDefaultValue());
+		}
 
 		/*
 		 * Special handling for selection widgets

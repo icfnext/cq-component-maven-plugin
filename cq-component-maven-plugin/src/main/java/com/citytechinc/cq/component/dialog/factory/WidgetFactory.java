@@ -55,6 +55,7 @@ public class WidgetFactory {
 		String fieldLabel = getFieldLabelForField(annotatedWidgetField, propertyAnnotation);
 		String fieldDescription = getFieldDescriptionForField(annotatedWidgetField, propertyAnnotation);
 		Boolean isRequired = getIsRequiredPropertyForField(annotatedWidgetField, propertyAnnotation);
+		String defaultValue= getDefaultValueForField(annotatedWidgetField,propertyAnnotation);
 		Map<String, String> additionalProperties = getAdditionalPropertiesForField(annotatedWidgetField, propertyAnnotation);
 
 		if (xtype.equals(SELECTION_XTYPE)) {
@@ -68,6 +69,7 @@ public class WidgetFactory {
 					fieldLabel,
 					fieldDescription,
 					isRequired,
+					defaultValue,
 					additionalProperties,
 					classLoader,
 					classPool);
@@ -85,11 +87,12 @@ public class WidgetFactory {
 					fieldLabel,
 					fieldDescription,
 					isRequired,
+					defaultValue,
 					additionalProperties,
 					xtypeMap);
 		}
 
-		return new SimpleWidget(xtype, name, fieldName, fieldLabel, fieldDescription, isRequired, additionalProperties);
+		return new SimpleWidget(xtype, name, fieldName, fieldLabel, fieldDescription, isRequired, additionalProperties,defaultValue);
 
 	}
 
@@ -156,6 +159,17 @@ public class WidgetFactory {
 
 		return null;
 	}
+	
+	private static final String getDefaultValueForField(CtField widgetField, DialogField propertyAnnotation) {
+
+		String defaultValue = propertyAnnotation.defaultValue();
+
+		if (StringUtils.isNotEmpty(defaultValue)) {
+			return defaultValue;
+		}
+
+		return null;
+	}
 
 	private static final MultiValueWidget buildMultiFieldWidget(
 			CtClass componentClass,
@@ -166,6 +180,7 @@ public class WidgetFactory {
 			String fieldLabel,
 			String fieldDescription,
 			Boolean isRequired,
+			String defaultValue,
 			Map<String, String> additionalProperties,
 			Map<Class<?>, String> xtypeMap) throws InvalidComponentFieldException {
 
@@ -181,7 +196,7 @@ public class WidgetFactory {
 
 		fieldConfigs.add(fieldConfig);
 
-		return new SimpleMultiValueWidget(MULTIFIELD_XTYPE, name, fieldName, fieldLabel, fieldDescription, isRequired, additionalProperties, fieldConfigs);
+		return new SimpleMultiValueWidget(MULTIFIELD_XTYPE, name, fieldName, fieldLabel, fieldDescription, isRequired, defaultValue, additionalProperties, fieldConfigs);
 	}
 
 	private static final String getInnerXTypeForMultiField(Field widgetField, DialogField fieldAnnotation, Map<Class<?>, String> xtypeMap) throws InvalidComponentFieldException {
@@ -216,6 +231,7 @@ public class WidgetFactory {
 			String fieldLabel,
 			String fieldDescription,
 			Boolean isRequired,
+			String defaultValue,
 			Map<String, String> additionalProperties,
 			ClassLoader classLoader,
 			ClassPool classPool) throws InvalidComponentFieldException, CannotCompileException, NotFoundException, ClassNotFoundException {
@@ -224,7 +240,7 @@ public class WidgetFactory {
 
 		String selectionType = getSelectionTypeForField(widgetField, fieldAnnotation);
 
-		return new SimpleSelectionWidget(selectionType, name, fieldLabel, fieldName, fieldDescription, isRequired, additionalProperties, options);
+		return new SimpleSelectionWidget(selectionType, name, fieldLabel, fieldName, fieldDescription, isRequired, defaultValue, additionalProperties, options);
 
 	}
 

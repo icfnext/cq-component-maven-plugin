@@ -51,5 +51,8 @@ public class BasicFieldConfig implements Widget {
 	public Map<String, String> getAdditionalProperties() {
 		return null;
 	}
-
+	
+	public String getDefaultValue() {
+		return null;
+	}
 }

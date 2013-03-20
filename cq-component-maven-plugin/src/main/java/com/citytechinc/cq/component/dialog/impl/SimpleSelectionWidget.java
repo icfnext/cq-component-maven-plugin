@@ -20,6 +20,7 @@ public class SimpleSelectionWidget implements SelectionWidget {
 	private final Boolean isRequired;
 	private final Map<String, String> additionalProperties;
 	private final List<Option> options;
+	private final String defaultValue;
 
 	public SimpleSelectionWidget(
 			String type,
@@ -28,6 +29,7 @@ public class SimpleSelectionWidget implements SelectionWidget {
 			String fieldName,
 			String fieldDescription,
 			Boolean isRequired,
+			String defaultValue,
 			Map<String, String> additionalProperties,
 			List<Option> options) {
 
@@ -40,6 +42,7 @@ public class SimpleSelectionWidget implements SelectionWidget {
 		this.fieldName = fieldName;
 		this.fieldDescription = fieldDescription;
 		this.isRequired = isRequired;
+		this.defaultValue=defaultValue;
 		this.additionalProperties = additionalProperties;
 
 		this.options = options;
@@ -89,5 +92,8 @@ public class SimpleSelectionWidget implements SelectionWidget {
 	public Map<String, String> getAdditionalProperties() {
 		return additionalProperties;
 	}
-
+	
+	public String getDefaultValue() {
+		return defaultValue;
+	}
 }

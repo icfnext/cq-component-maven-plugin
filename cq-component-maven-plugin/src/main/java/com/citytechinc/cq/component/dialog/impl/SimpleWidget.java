@@ -16,8 +16,9 @@ public class SimpleWidget implements Widget {
 	private final String primaryType;
 	private final Boolean isRequired;
 	private final Map<String, String> additionalProperties;
+	private final String defaultValue;
 
-	public SimpleWidget(String xtype, String name, String fieldName, String fieldLabel, String fieldDescription, Boolean isRequired, Map<String, String> additionalProperties) {
+	public SimpleWidget(String xtype, String name, String fieldName, String fieldLabel, String fieldDescription, Boolean isRequired, Map<String, String> additionalProperties,String defaultValue) {
 		this.xtype = xtype;
 		this.name = name;
 		this.fieldName = fieldName;
@@ -25,7 +26,7 @@ public class SimpleWidget implements Widget {
 		this.fieldDescription = fieldDescription;
 		this.isRequired = isRequired;
 		this.additionalProperties = additionalProperties;
-
+		this.defaultValue=defaultValue;
 		this.primaryType = "cq:Widget";
 	}
 
@@ -73,6 +74,10 @@ public class SimpleWidget implements Widget {
 
 	public Map<String, String> getAdditionalProperties() {
 		return additionalProperties;
+	}
+
+	public String getDefaultValue() {
+		return defaultValue;
 	}
 
 }

@@ -37,6 +37,8 @@ public interface Widget extends DialogElement {
 	public Boolean hasFieldDescription();
 
 	public Boolean isRequired();
+	
+	public String getDefaultValue();
 
 	public Map<String, String> getAdditionalProperties();
 

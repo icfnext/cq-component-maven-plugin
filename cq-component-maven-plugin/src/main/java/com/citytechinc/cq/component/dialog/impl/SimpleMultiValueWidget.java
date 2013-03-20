@@ -19,17 +19,19 @@ public class SimpleMultiValueWidget implements MultiValueWidget {
 	private final Map<String, String> additionalProperties;
 	private final String primaryType;
 	private final List<Widget> fieldConfigurations;
-
-	public SimpleMultiValueWidget(String xtype, String name, String fieldName, String fieldLabel, String fieldDescription, Boolean isRequired, Map<String, String> additionalProperties, List<Widget> fieldConfigurations) {
+	private final String defaultValue;
+	
+	public SimpleMultiValueWidget(String xtype, String name, String fieldName, String fieldLabel, String fieldDescription, Boolean isRequired, String defaultValue,Map<String, String> additionalProperties, List<Widget> fieldConfigurations) {
 		this.xtype = xtype;
 		this.name = name;
 		this.fieldName = fieldName;
 		this.fieldLabel = fieldLabel;
 		this.fieldDescription = fieldDescription;
 		this.isRequired = isRequired;
+		this.defaultValue=defaultValue;
 		this.additionalProperties = additionalProperties;
 		this.fieldConfigurations = fieldConfigurations;
-
+		
 		this.primaryType = "cq:Widget";
 	}
 
@@ -76,5 +78,8 @@ public class SimpleMultiValueWidget implements MultiValueWidget {
 	public Boolean isSingleFieldConfiguration() {
 		return fieldConfigurations.size() == 1;
 	}
-
+	
+	public String getDefaultValue() {
+		return defaultValue;
+	}
 }

@@ -55,6 +55,8 @@ public @interface DialogField {
 	public String fieldDescription() default "";
 
 	public boolean required() default false;
+	
+	public String defaultValue() default "";
 
 	/**
 	 * The title of the tab in which to place the widget.

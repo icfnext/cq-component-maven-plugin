@@ -15,18 +15,6 @@
 
   <name>cq-component-maven-plugin</name>
 
-  <distributionManagement>
-    <repository>
-      <id>citytech-releases</id>
-      <url>http://nexus.citytech.ctmsp.com/content/repositories/public-releases</url>
-    </repository>
-    <snapshotRepository>
-      <id>citytech-snapshots</id>
-      <url>http://nexus.citytech.ctmsp.com/content/repositories/public-snapshots</url>
-      <uniqueVersion>false</uniqueVersion>
-    </snapshotRepository>
-  </distributionManagement>
-
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -80,14 +68,14 @@
 	  <version>1.4.1</version>
 	</dependency>
     <dependency>
-	<groupId>javassist</groupId>
-	<artifactId>javassist</artifactId>
-	<version>3.12.1.GA</version>
+	  <groupId>javassist</groupId>
+	  <artifactId>javassist</artifactId>
+	  <version>3.12.1.GA</version>
     </dependency>
     <dependency>
-	<groupId> com.citytechinc.cq </groupId>
-	<artifactId>cq-component-annotations</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	  <groupId> com.citytechinc.cq </groupId>
+	  <artifactId>cq-component-annotations</artifactId>
+	  <version>1.0.0-SNAPSHOT</version>
     </dependency>
   </dependencies>
 

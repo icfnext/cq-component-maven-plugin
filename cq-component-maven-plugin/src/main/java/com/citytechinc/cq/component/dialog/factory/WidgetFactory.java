@@ -21,6 +21,7 @@ import org.codehaus.plexus.util.StringUtils;
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.FieldConfig;
 import com.citytechinc.cq.component.annotations.FieldProperty;
+import com.citytechinc.cq.component.annotations.widgets.Selection;
 import com.citytechinc.cq.component.dialog.MultiValueWidget;
 import com.citytechinc.cq.component.dialog.Option;
 import com.citytechinc.cq.component.dialog.SelectionWidget;
@@ -44,7 +45,7 @@ public class WidgetFactory {
 			throws InvalidComponentFieldException, ClassNotFoundException, CannotCompileException, NotFoundException {
 
 		DialogField propertyAnnotation = (DialogField) annotatedWidgetField.getAnnotation(DialogField.class);
-
+		
 		if (propertyAnnotation == null) {
 			throw new InvalidComponentFieldException();
 		}
@@ -58,8 +59,11 @@ public class WidgetFactory {
 		String defaultValue= getDefaultValueForField(annotatedWidgetField,propertyAnnotation);
 		Map<String, String> additionalProperties = getAdditionalPropertiesForField(annotatedWidgetField, propertyAnnotation);
 
-		if (xtype.equals(SELECTION_XTYPE)) {
-
+		if (xtype.equals(SELECTION_XTYPE) || annotatedWidgetField.hasAnnotation(Selection.class)) {
+			Selection selection=null;
+			if(annotatedWidgetField.hasAnnotation(Selection.class)){
+				selection=(Selection)annotatedWidgetField.getAnnotation(Selection.class);
+			}
 			return buildSelectionWidget(
 					componentClass,
 					annotatedWidgetField,
@@ -72,7 +76,8 @@ public class WidgetFactory {
 					defaultValue,
 					additionalProperties,
 					classLoader,
-					classPool);
+					classPool,
+					selection);
 
 		}
 
@@ -234,29 +239,37 @@ public class WidgetFactory {
 			String defaultValue,
 			Map<String, String> additionalProperties,
 			ClassLoader classLoader,
-			ClassPool classPool) throws InvalidComponentFieldException, CannotCompileException, NotFoundException, ClassNotFoundException {
+			ClassPool classPool,
+			Selection selectionAnnotation) throws InvalidComponentFieldException, CannotCompileException, NotFoundException, ClassNotFoundException {
 
-		List<Option> options = buildSelectionOptionsForField(widgetField, fieldAnnotation, classLoader, classPool);
-
-		String selectionType = getSelectionTypeForField(widgetField, fieldAnnotation);
+		List<Option> options = buildSelectionOptionsForField(widgetField, selectionAnnotation, classLoader, classPool);
+		String selectionType = getSelectionTypeForField(widgetField, selectionAnnotation);
 
 		return new SimpleSelectionWidget(selectionType, name, fieldLabel, fieldName, fieldDescription, isRequired, defaultValue, additionalProperties, options);
 
 	}
 
-	private static final String getSelectionTypeForField(CtField widgetField, DialogField fieldAnnotation) {
-		return fieldAnnotation.selectionType().name().toLowerCase();
+	private static final String getSelectionTypeForField(CtField widgetField, Selection fieldAnnotation) {
+		if(fieldAnnotation!=null && (
+				fieldAnnotation.type().equals(Selection.CHECKBOX) ||
+					fieldAnnotation.type().equals(Selection.COMBOBOX) ||
+					fieldAnnotation.type().equals(Selection.RADIO) || 
+					fieldAnnotation.type().equals(Selection.SELECT))){
+			return fieldAnnotation.type();
+		}else{
+			return Selection.SELECT;
+		}
 	}
 
-	private static final List<Option> buildSelectionOptionsForField(CtField widgetField, DialogField fieldAnnotation, ClassLoader classLoader, ClassPool classPool) throws InvalidComponentFieldException, CannotCompileException, NotFoundException, ClassNotFoundException {
+	private static final List<Option> buildSelectionOptionsForField(CtField widgetField, Selection fieldAnnotation, ClassLoader classLoader, ClassPool classPool) throws InvalidComponentFieldException, CannotCompileException, NotFoundException, ClassNotFoundException {
 
 		List<Option> options = new ArrayList<Option>();
 
 		/*
 		 * Options specified in the annotation take precedence
 		 */
-		if (fieldAnnotation.selectionOptions().length > 0) {
-			for(com.citytechinc.cq.component.annotations.Option curOptionAnnotation : fieldAnnotation.selectionOptions()) {
+		if (fieldAnnotation!=null && fieldAnnotation.options().length > 0) {
+			for(com.citytechinc.cq.component.annotations.Option curOptionAnnotation : fieldAnnotation.options()) {
 				if (StringUtils.isEmpty(curOptionAnnotation.text()) || StringUtils.isEmpty(curOptionAnnotation.value())) {
 					throw new InvalidComponentFieldException("Selection Options specified in the selectionOptions Annotation property must include a non-empty text and value attribute");
 				}

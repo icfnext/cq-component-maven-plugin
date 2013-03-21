@@ -15,13 +15,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface DialogField {
 
-	public enum SelectionType {
-		SELECT,
-		RADIO,
-		CHECKBOX,
-		COMBOBOX
-	}
-
 	/**
 	 * Allows for explicit definition of a dialog xType associated with the field annotated.
 	 * If this property is not present in the annotation, a reasonable default xtype may be chosen.
@@ -74,29 +67,7 @@ public @interface DialogField {
 	 */
 	public int weight() default 0;
 
-	/**
-	 * When specifying a selection xtype, this annotation property can be used to specify the valid
-	 * Options of the field.
-	 *
-	 * @return
-	 */
-	public Option[] selectionOptions() default {};
-
-	/**
-	 * When specifying a selection xtype, this annotation property can be used to specify the type
-	 * of selection to be used.  Valid types are:
-	 *
-	 * <ul>
-	 *   <li>select</li>
-	 *   <li>radio</li>
-	 *   <li>checkbox</li>
-	 *   <li>combobox</li>
-	 * </ul>
-	 *
-	 * @return
-	 */
-	public SelectionType selectionType() default SelectionType.SELECT;
-
+	
 	public FieldConfig[] fieldConfigs() default {};
 
 	/**

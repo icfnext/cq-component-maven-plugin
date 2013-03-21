@@ -8,9 +8,7 @@
     <version>1.0.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>com.citytechinc.cq</groupId>
   <artifactId>cq-component-maven-plugin</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
   <name>cq-component-maven-plugin</name>

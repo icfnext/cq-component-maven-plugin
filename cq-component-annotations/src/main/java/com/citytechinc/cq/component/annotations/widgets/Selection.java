@@ -20,8 +20,4 @@ public @interface Selection {
 	public Option[] options() default {};
 
 	public String type() default SELECT;
-	
-	public boolean allowBlank() default true;
-	
-	public String blankText() default "";	
 }

@@ -5,8 +5,8 @@ public @interface Html5SmartImage {
 	public boolean disableInfo() default false;
 	public boolean disableZoom() default false;
 	public String cropParameter() default "";
-	public String fileNameParameter() default "./fileName";
-	public String fileReferenceParameter() default "./fileReference";
+	public String fileNameParameter() default "fileName";
+	public String fileReferenceParameter() default "fileReference";
 	public String mapParameter() default "";
 	public String rotateParameter() default "";
 	public String uploadUrl() default "/tmp/upload/*";

@@ -121,16 +121,16 @@ public class DialogXmlWriter {
 			element.setAttribute("cropParameter", smartImage.getCropParameter());
 		}
 		if(!StringUtils.isEmpty(smartImage.getFileNameParameter())){
-			element.setAttribute("fileNameParameter", smartImage.getFileNameParameter());
+			element.setAttribute("fileNameParameter", smartImage.getName()+"/"+smartImage.getFileNameParameter());
 		}
 		if(!StringUtils.isEmpty(smartImage.getFileReferenceParameter())){
-			element.setAttribute("fileReferenceParameter", smartImage.getFileReferenceParameter());
+			element.setAttribute("fileReferenceParameter",smartImage.getName()+"/"+smartImage.getFileReferenceParameter());
 		}
 		if(!StringUtils.isEmpty(smartImage.getMapParameter())){
-			element.setAttribute("mapParameter", smartImage.getMapParameter());
+			element.setAttribute("mapParameter", smartImage.getName()+"/"+smartImage.getMapParameter());
 		}
 		if(!StringUtils.isEmpty(smartImage.getRotateParameter())){
-			element.setAttribute("rotateParameter", smartImage.getRotateParameter());
+			element.setAttribute("rotateParameter", smartImage.getName()+"/"+smartImage.getRotateParameter());
 		}
 		if(!StringUtils.isEmpty(smartImage.getUploadUrl())){
 			element.setAttribute("uploadUrl", smartImage.getUploadUrl());

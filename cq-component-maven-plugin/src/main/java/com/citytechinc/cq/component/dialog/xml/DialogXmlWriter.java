@@ -113,12 +113,13 @@ public class DialogXmlWriter {
 
 	private static Element augmentElementForHtml5SmartImageWidget(Html5SmartImageWidget smartImage, Element element) {
 		element.setAttribute("xtype", smartImage.getXType());
-		element.setAttribute("name", smartImage.getName());
+		element.setAttribute("requestSuffix", smartImage.getRequestSuffix());
+		element.setAttribute("name", smartImage.getName()+"/file");
 		element.setAttribute("disableFlush", "{Boolean}"+smartImage.isDisableFlush());
 		element.setAttribute("disableInfo", "{Boolean}"+smartImage.isDisableInfo());
 		element.setAttribute("disableZoom", "{Boolean}"+smartImage.isDisableZoom());
 		if(!StringUtils.isEmpty(smartImage.getCropParameter())){
-			element.setAttribute("cropParameter", smartImage.getCropParameter());
+			element.setAttribute("cropParameter", smartImage.getName()+"/"+smartImage.getCropParameter());
 		}
 		if(!StringUtils.isEmpty(smartImage.getFileNameParameter())){
 			element.setAttribute("fileNameParameter", smartImage.getName()+"/"+smartImage.getFileNameParameter());

@@ -161,4 +161,8 @@ public class SimpleHtml5SmartImageWidget implements Html5SmartImageWidget {
 	public int getHeight() {
 		return height;
 	}
+
+	public String getRequestSuffix() {
+		return name.substring(1)+".img.png";
+	}
 }

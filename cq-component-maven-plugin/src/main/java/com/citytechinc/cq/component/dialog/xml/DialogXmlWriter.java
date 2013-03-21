@@ -13,12 +13,14 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.codehaus.plexus.util.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.citytechinc.cq.component.dialog.Container;
 import com.citytechinc.cq.component.dialog.Dialog;
 import com.citytechinc.cq.component.dialog.DialogElement;
+import com.citytechinc.cq.component.dialog.Html5SmartImageWidget;
 import com.citytechinc.cq.component.dialog.MultiValueWidget;
 import com.citytechinc.cq.component.dialog.Option;
 import com.citytechinc.cq.component.dialog.SelectionWidget;
@@ -86,6 +88,16 @@ public class DialogXmlWriter {
 	}
 
 	private static final Element makeElementForDialogElement(DialogElement element, Document document) {
+		if(element instanceof Html5SmartImageWidget){
+			Element elementReturn=null;
+			Html5SmartImageWidget smartImage=(Html5SmartImageWidget)element;
+			if(smartImage.isTab()){
+				elementReturn=makeElementForTab((Tab) element, document);
+			}else{
+				elementReturn=makeElementForWidget((Widget) element, document);
+			}
+			return augmentElementForHtml5SmartImageWidget(smartImage,elementReturn);
+		}
 		if (element instanceof Container) {
 			return makeElementForContainer((Container) element, document);
 		}
@@ -99,6 +111,47 @@ public class DialogXmlWriter {
 		return null;
 	}
 
+	private static Element augmentElementForHtml5SmartImageWidget(Html5SmartImageWidget smartImage, Element element) {
+		element.setAttribute("xtype", smartImage.getXType());
+		element.setAttribute("name", smartImage.getName());
+		element.setAttribute("disableFlush", "{Boolean}"+smartImage.isDisableFlush());
+		element.setAttribute("disableInfo", "{Boolean}"+smartImage.isDisableInfo());
+		element.setAttribute("disableZoom", "{Boolean}"+smartImage.isDisableZoom());
+		if(!StringUtils.isEmpty(smartImage.getCropParameter())){
+			element.setAttribute("cropParameter", smartImage.getCropParameter());
+		}
+		if(!StringUtils.isEmpty(smartImage.getFileNameParameter())){
+			element.setAttribute("fileNameParameter", smartImage.getFileNameParameter());
+		}
+		if(!StringUtils.isEmpty(smartImage.getFileReferenceParameter())){
+			element.setAttribute("fileReferenceParameter", smartImage.getFileReferenceParameter());
+		}
+		if(!StringUtils.isEmpty(smartImage.getMapParameter())){
+			element.setAttribute("mapParameter", smartImage.getMapParameter());
+		}
+		if(!StringUtils.isEmpty(smartImage.getRotateParameter())){
+			element.setAttribute("rotateParameter", smartImage.getRotateParameter());
+		}
+		if(!StringUtils.isEmpty(smartImage.getUploadUrl())){
+			element.setAttribute("uploadUrl", smartImage.getUploadUrl());
+		}
+		if(!StringUtils.isEmpty(smartImage.getDdGroups())){
+			element.setAttribute("ddGroups", smartImage.getDdGroups());
+		}
+		element.setAttribute("allowUpload", "{Boolean}"+smartImage.isAllowUpload());
+		if (smartImage.isRequired()) {
+			element.setAttribute("allowBlank", "{Boolean}false");
+		}
+		if(smartImage.getHeight()!=0){
+			element.setAttribute("height", Integer.toString(smartImage.getHeight()));
+		}
+		element.setAttribute("fieldLabel", smartImage.getLabel());
+		if (smartImage.hasFieldDescription()) {
+			element.setAttribute("fieldDescription", smartImage.getFieldDescription());
+		}
+		return element;
+	}
+
 	private static final Element makeElementForTab(Tab element, Document document) {
 
 		Element tabElement = document.createElement(sanatize(element.getName()));
@@ -108,8 +161,10 @@ public class DialogXmlWriter {
 		tabElement.setAttribute("title", element.getTitle());
 
 		tabElement.setAttribute("xtype", "panel");
-
-		tabElement.appendChild(makeElementForContainer(element.getWidgetCollection(), document));
+		
+		if(element.getWidgetCollection()!=null){
+			tabElement.appendChild(makeElementForContainer(element.getWidgetCollection(), document));
+		}
 
 		return tabElement;
 	}
@@ -212,7 +267,7 @@ public class DialogXmlWriter {
 	}
 
 	private static final String sanatize(String uncleanString) {
-		return uncleanString.replaceAll(" ", "");
+		return uncleanString.replaceAll(" ", "").replaceAll("./", "");
 	}
 
 }

@@ -21,13 +21,16 @@ import org.codehaus.plexus.util.StringUtils;
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.FieldConfig;
 import com.citytechinc.cq.component.annotations.FieldProperty;
+import com.citytechinc.cq.component.annotations.widgets.Html5SmartImage;
 import com.citytechinc.cq.component.annotations.widgets.Selection;
+import com.citytechinc.cq.component.dialog.Html5SmartImageWidget;
 import com.citytechinc.cq.component.dialog.MultiValueWidget;
 import com.citytechinc.cq.component.dialog.Option;
 import com.citytechinc.cq.component.dialog.SelectionWidget;
 import com.citytechinc.cq.component.dialog.Widget;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.impl.BasicFieldConfig;
+import com.citytechinc.cq.component.dialog.impl.SimpleHtml5SmartImageWidget;
 import com.citytechinc.cq.component.dialog.impl.SimpleMultiValueWidget;
 import com.citytechinc.cq.component.dialog.impl.SimpleOption;
 import com.citytechinc.cq.component.dialog.impl.SimpleSelectionWidget;
@@ -40,6 +43,7 @@ public class WidgetFactory {
 	public static final String PATHFIELD_XTYPE = "pathfield";
 	public static final String SELECTION_XTYPE = "selection";
 	public static final String MULTIFIELD_XTYPE = "multifield";
+	public static final String HTML5SMARTIMAGE_XTYPE = "html5smartimage";
 
 	public static Widget make(CtClass componentClass, CtField annotatedWidgetField, Field widgetField, Map<Class<?>, String> xtypeMap, ClassLoader classLoader, ClassPool classPool)
 			throws InvalidComponentFieldException, ClassNotFoundException, CannotCompileException, NotFoundException {
@@ -58,7 +62,10 @@ public class WidgetFactory {
 		Boolean isRequired = getIsRequiredPropertyForField(annotatedWidgetField, propertyAnnotation);
 		String defaultValue= getDefaultValueForField(annotatedWidgetField,propertyAnnotation);
 		Map<String, String> additionalProperties = getAdditionalPropertiesForField(annotatedWidgetField, propertyAnnotation);
-
+		
+		if(annotatedWidgetField.hasAnnotation(Html5SmartImage.class)){
+			return buildHtml5SmartImageWidget(name,fieldName,fieldLabel,fieldDescription, isRequired,(Html5SmartImage)annotatedWidgetField.getAnnotation(Html5SmartImage.class),propertyAnnotation);
+		}
 		if (xtype.equals(SELECTION_XTYPE) || annotatedWidgetField.hasAnnotation(Selection.class)) {
 			Selection selection=null;
 			if(annotatedWidgetField.hasAnnotation(Selection.class)){
@@ -225,6 +232,23 @@ public class WidgetFactory {
 		}
 
 		return null;
+	}
+	
+	private static final Html5SmartImageWidget buildHtml5SmartImageWidget(String name,String fieldName,String fieldLabel, String fieldDescription,boolean required,Html5SmartImage smartImage,DialogField dialogField){
+		boolean disableFlush=smartImage.disableFlush();
+		boolean disableInfo=smartImage.disableInfo();
+		boolean disableZoom=smartImage.disableZoom();
+		String cropParameter=smartImage.cropParameter();
+		String fileNameParameter=smartImage.fileNameParameter();
+		String fileReferenceParameter=smartImage.fileReferenceParameter();
+		String mapParameter=smartImage.mapParameter();
+		String rotateParameter=smartImage.rotateParameter();
+		String uploadUrl=smartImage.uploadUrl();
+		String ddGroups=smartImage.ddGroups();
+		boolean allowUpload=smartImage.allowUpload();
+		int height=smartImage.height();
+		String title=dialogField.tab();
+		return new SimpleHtml5SmartImageWidget(name, title,disableFlush, disableInfo, disableZoom, cropParameter, fileNameParameter, fileReferenceParameter, mapParameter, rotateParameter, uploadUrl, ddGroups, allowUpload, required, fieldLabel, fieldName, fieldDescription,height,smartImage.tab());
 	}
 
 	private static final SelectionWidget buildSelectionWidget(

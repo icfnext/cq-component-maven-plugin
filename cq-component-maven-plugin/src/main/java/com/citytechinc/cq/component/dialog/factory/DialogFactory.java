@@ -19,6 +19,7 @@ import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.dialog.Dialog;
 import com.citytechinc.cq.component.dialog.DialogElement;
+import com.citytechinc.cq.component.dialog.Html5SmartImageWidget;
 import com.citytechinc.cq.component.dialog.Widget;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
@@ -57,6 +58,7 @@ public class DialogFactory {
 		//Load the true class
 		Class<?> trueComponentClass = classLoader.loadClass(componentClass.getName());
 
+		List<DialogElement> tabList = new ArrayList<DialogElement>();
 		/*
 		 * Iterate through all fields establishing proper widgets for each
 		 */
@@ -68,19 +70,20 @@ public class DialogFactory {
 				Field trueField = trueComponentClass.getDeclaredField(curField.getName());
 
 				Widget builtFieldWidget = WidgetFactory.make(componentClass, curField, trueField, xtypeMap, classLoader, classPool);
+				if(builtFieldWidget instanceof Html5SmartImageWidget && ((Html5SmartImageWidget)builtFieldWidget).isTab()){
+					tabList.add(builtFieldWidget);
+				}else{
+					String tabString = getTabStringForField(curField, dialogProperty);
 
-				String tabString = getTabStringForField(curField, dialogProperty);
+					if (!tabMap.containsKey(tabString)) {
+						tabMap.put(tabString, new ArrayList<DialogElement>());
+					}
 
-				if (!tabMap.containsKey(tabString)) {
-					tabMap.put(tabString, new ArrayList<DialogElement>());
+					tabMap.get(tabString).add(builtFieldWidget);
 				}
-
-				tabMap.get(tabString).add(builtFieldWidget);
-
 			}
 		}
 
-		List<DialogElement> tabList = new ArrayList<DialogElement>();
 
 		for (String curMapKey : tabMap.keySet()) {
 			tabList.add(new SimpleTab(curMapKey, new WidgetCollection(tabMap.get(curMapKey))));

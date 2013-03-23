@@ -55,6 +55,10 @@ public class ContentXmlWriter {
 		else {
 			jcrRootElement.setAttributeNS(Constants.CQ_NS_URI, "cq:isContainer", "{Boolean}false");
 		}
+		
+		if(content.getResourceSuperType()!=null){
+			jcrRootElement.setAttributeNS(Constants.SLING_NS_URI, "sling:resourceSuperType", content.getResourceSuperType());
+		}
 
 		jcrRootElement.setAttributeNS(Constants.JCR_NS_URI, "jcr:title", content.getTitle());
 

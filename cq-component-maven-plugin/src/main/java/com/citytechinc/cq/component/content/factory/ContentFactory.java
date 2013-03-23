@@ -22,8 +22,11 @@ public class ContentFactory {
 		Boolean isContainer = getIsContainerForComponent(componentClass, componentAnnotation);
 		String title = getTitleForComponent(componentClass, componentAnnotation);
 		String group = getGroupForComponent(componentClass, componentAnnotation, defaultGroup);
-
-		return new ContentImpl(title, group, isContainer);
+		String resourceSuperType=null;
+		if(!StringUtils.isEmpty(componentAnnotation.resourceSuperType())){
+			resourceSuperType=componentAnnotation.resourceSuperType();
+		}
+		return new ContentImpl(title, group, resourceSuperType,isContainer);
 	}
 
 	private static final Boolean getIsContainerForComponent(CtClass componentClass, Component componentAnnotation) {

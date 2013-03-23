@@ -23,6 +23,7 @@ import com.citytechinc.cq.component.annotations.FieldConfig;
 import com.citytechinc.cq.component.annotations.FieldProperty;
 import com.citytechinc.cq.component.annotations.widgets.Html5SmartImage;
 import com.citytechinc.cq.component.annotations.widgets.Selection;
+import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.Html5SmartImageWidget;
 import com.citytechinc.cq.component.dialog.MultiValueWidget;
 import com.citytechinc.cq.component.dialog.Option;
@@ -49,7 +50,7 @@ public class WidgetFactory {
 			throws InvalidComponentFieldException, ClassNotFoundException, CannotCompileException, NotFoundException {
 
 		DialogField propertyAnnotation = (DialogField) annotatedWidgetField.getAnnotation(DialogField.class);
-		
+
 		if (propertyAnnotation == null) {
 			throw new InvalidComponentFieldException();
 		}
@@ -62,7 +63,7 @@ public class WidgetFactory {
 		Boolean isRequired = getIsRequiredPropertyForField(annotatedWidgetField, propertyAnnotation);
 		String defaultValue= getDefaultValueForField(annotatedWidgetField,propertyAnnotation);
 		Map<String, String> additionalProperties = getAdditionalPropertiesForField(annotatedWidgetField, propertyAnnotation);
-		
+
 		if(annotatedWidgetField.hasAnnotation(Html5SmartImage.class)){
 			return buildHtml5SmartImageWidget(name,fieldName,fieldLabel,fieldDescription, isRequired,(Html5SmartImage)annotatedWidgetField.getAnnotation(Html5SmartImage.class),propertyAnnotation);
 		}
@@ -171,7 +172,7 @@ public class WidgetFactory {
 
 		return null;
 	}
-	
+
 	private static final String getDefaultValueForField(CtField widgetField, DialogField propertyAnnotation) {
 
 		String defaultValue = propertyAnnotation.defaultValue();
@@ -233,21 +234,45 @@ public class WidgetFactory {
 
 		return null;
 	}
-	
+
 	private static final Html5SmartImageWidget buildHtml5SmartImageWidget(String name,String fieldName,String fieldLabel, String fieldDescription,boolean required,Html5SmartImage smartImage,DialogField dialogField){
 		boolean disableFlush=smartImage.disableFlush();
 		boolean disableInfo=smartImage.disableInfo();
 		boolean disableZoom=smartImage.disableZoom();
-		String cropParameter=smartImage.cropParameter();
-		String fileNameParameter=smartImage.fileNameParameter();
-		String fileReferenceParameter=smartImage.fileReferenceParameter();
-		String mapParameter=smartImage.mapParameter();
-		String rotateParameter=smartImage.rotateParameter();
-		String uploadUrl=smartImage.uploadUrl();
-		String ddGroups=smartImage.ddGroups();
 		boolean allowUpload=smartImage.allowUpload();
-		int height=smartImage.height();
+		String cropParameter=null;
+		String fileNameParameter=null;
+		String fileReferenceParameter=null;
+		String mapParameter=null;
+		String rotateParameter=null;
+		String uploadUrl=null;
+		String ddGroups=null;
+		Integer height=null;
 		String title=dialogField.tab();
+		if(!StringUtils.isEmpty(smartImage.cropParameter())){
+			cropParameter=smartImage.cropParameter();
+		}
+		if(!StringUtils.isEmpty(smartImage.fileNameParameter())){
+			fileNameParameter=smartImage.fileNameParameter();
+		}
+		if(!StringUtils.isEmpty(smartImage.fileReferenceParameter())){
+			fileReferenceParameter=smartImage.fileReferenceParameter();
+		}
+		if(!StringUtils.isEmpty(smartImage.mapParameter())){
+			mapParameter=smartImage.mapParameter();
+		}
+		if(!StringUtils.isEmpty(smartImage.rotateParameter())){
+			rotateParameter=smartImage.rotateParameter();
+		}
+		if(!StringUtils.isEmpty(smartImage.uploadUrl())){
+			uploadUrl=smartImage.uploadUrl();
+		}
+		if(!StringUtils.isEmpty(smartImage.ddGroups())){
+			ddGroups=smartImage.ddGroups();
+		}
+		if(smartImage.height()!=0){
+			height=smartImage.height();
+		}
 		return new SimpleHtml5SmartImageWidget(name, title,disableFlush, disableInfo, disableZoom, cropParameter, fileNameParameter, fileReferenceParameter, mapParameter, rotateParameter, uploadUrl, ddGroups, allowUpload, required, fieldLabel, fieldName, fieldDescription,height,smartImage.tab());
 	}
 
@@ -266,7 +291,7 @@ public class WidgetFactory {
 			ClassPool classPool,
 			Selection selectionAnnotation) throws InvalidComponentFieldException, CannotCompileException, NotFoundException, ClassNotFoundException {
 
-		List<Option> options = buildSelectionOptionsForField(widgetField, selectionAnnotation, classLoader, classPool);
+		List<DialogElement> options = buildSelectionOptionsForField(widgetField, selectionAnnotation, classLoader, classPool);
 		String selectionType = getSelectionTypeForField(widgetField, selectionAnnotation);
 
 		return new SimpleSelectionWidget(selectionType, name, fieldLabel, fieldName, fieldDescription, isRequired, defaultValue, additionalProperties, options);
@@ -276,18 +301,18 @@ public class WidgetFactory {
 	private static final String getSelectionTypeForField(CtField widgetField, Selection fieldAnnotation) {
 		if(fieldAnnotation!=null && (
 				fieldAnnotation.type().equals(Selection.CHECKBOX) ||
-					fieldAnnotation.type().equals(Selection.COMBOBOX) ||
-					fieldAnnotation.type().equals(Selection.RADIO) || 
-					fieldAnnotation.type().equals(Selection.SELECT))){
+				fieldAnnotation.type().equals(Selection.COMBOBOX) ||
+				fieldAnnotation.type().equals(Selection.RADIO) || 
+				fieldAnnotation.type().equals(Selection.SELECT))){
 			return fieldAnnotation.type();
 		}else{
 			return Selection.SELECT;
 		}
 	}
 
-	private static final List<Option> buildSelectionOptionsForField(CtField widgetField, Selection fieldAnnotation, ClassLoader classLoader, ClassPool classPool) throws InvalidComponentFieldException, CannotCompileException, NotFoundException, ClassNotFoundException {
+	private static final List<DialogElement> buildSelectionOptionsForField(CtField widgetField, Selection fieldAnnotation, ClassLoader classLoader, ClassPool classPool) throws InvalidComponentFieldException, CannotCompileException, NotFoundException, ClassNotFoundException {
 
-		List<Option> options = new ArrayList<Option>();
+		List<DialogElement> options = new ArrayList<DialogElement>();
 
 		/*
 		 * Options specified in the annotation take precedence

@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -33,7 +33,6 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -90,34 +89,9 @@ public class ComponentMojo extends AbstractMojo {
 			List<CtClass> compiledClasses = getCompiledClasses(classPool, project.getCompileClasspathElements());
 			Map<Class<?>, String> xtypeMap = getXTypeMapForCustomXTypeMapping(classLoader);
 			buildArchiveFileForProjectAndClassList(compiledClasses, xtypeMap, classLoader, classPool);
-		} catch (MalformedURLException e) {
-			getLog().error(e);
-		} catch (DependencyResolutionRequiredException e) {
-			getLog().error(e);
-		} catch (ClassNotFoundException e) {
-			getLog().error(e);
-		} catch (InvalidComponentClassException e) {
-			getLog().error(e);
-		} catch (InvalidComponentFieldException e) {
-			getLog().error(e);
-		} catch (UnsupportedEncodingException e) {
-			getLog().error(e);
-		} catch (ParserConfigurationException e) {
-			getLog().error(e);
-		} catch (TransformerException e) {
-			getLog().error(e);
-		} catch (OutputFailureException e) {
-			getLog().error(e);
-		} catch (IOException e) {
-			getLog().error(e);
-		} catch (NotFoundException e) {
-			getLog().error(e);
-		} catch (CannotCompileException e) {
-			getLog().error(e);
-		} catch (SecurityException e) {
-			getLog().error(e);
-		} catch (NoSuchFieldException e) {
-			getLog().error(e);
+		} catch (Exception e) {
+			getLog().error(e.getMessage(),e);
+			throw new MojoExecutionException(e.getMessage(),e);
 		}
 
 
@@ -281,9 +255,13 @@ public class ComponentMojo extends AbstractMojo {
 	 * @throws CannotCompileException
 	 * @throws NoSuchFieldException
 	 * @throws SecurityException
+	 * @throws NoSuchMethodException 
+	 * @throws InvocationTargetException 
+	 * @throws IllegalAccessException 
+	 * @throws IllegalArgumentException 
 	 */
 	private void buildArchiveFileForProjectAndClassList(List<CtClass> classList, Map<Class<?>, String> xtypeMap, ClassLoader classLoader, ClassPool classPool)
-			throws OutputFailureException, IOException, InvalidComponentClassException, InvalidComponentFieldException, ParserConfigurationException, TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
+			throws OutputFailureException, IOException, InvalidComponentClassException, InvalidComponentFieldException, ParserConfigurationException, TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 
 		/*
 		 * Get existing archive file
@@ -502,7 +480,7 @@ public class ComponentMojo extends AbstractMojo {
 
 
 	private List<Dialog> buildDialogsFromClassList(List<CtClass> classList, ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames, Map<Class<?>, String> xtypeMap, ClassLoader classLoader, ClassPool classPool)
-			throws InvalidComponentClassException, InvalidComponentFieldException, OutputFailureException, IOException, ParserConfigurationException, TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
+			throws InvalidComponentClassException, InvalidComponentFieldException, OutputFailureException, IOException, ParserConfigurationException, TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 
 		final List<Dialog> dialogList = new ArrayList<Dialog>();
 
@@ -534,7 +512,7 @@ public class ComponentMojo extends AbstractMojo {
 	}
 
 	private File writeDialogeToFile(Dialog dialog, CtClass componentClass)
-			throws OutputFailureException, IOException, ParserConfigurationException, TransformerException, ClassNotFoundException {
+			throws OutputFailureException, IOException, ParserConfigurationException, TransformerException, ClassNotFoundException, IllegalArgumentException, SecurityException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		File componentOutputDirectory = getOutputDirectoryForComponentClass(componentClass);
 
 		File dialogFile = new File(componentOutputDirectory, "dialog.xml");

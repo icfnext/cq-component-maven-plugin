@@ -1,25 +1,25 @@
 package com.citytechinc.cq.component.dialog.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.plexus.util.StringUtils;
-
-import com.citytechinc.cq.component.dialog.Option;
+import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.SelectionWidget;
+import com.citytechinc.cq.component.dialog.impl.WidgetCollection;
 
 public class SimpleSelectionWidget implements SelectionWidget {
 
 	private final String xtype;
 	private final String primaryType;
-	private final String selectionType;
+	private final String type;
 	private final String name;
 	private final String fieldLabel;
 	private final String fieldName;
 	private final String fieldDescription;
 	private final Boolean isRequired;
 	private final Map<String, String> additionalProperties;
-	private final List<Option> options;
+	private final List<DialogElement> containtedElements=new ArrayList<DialogElement>();
 	private final String defaultValue;
 
 	public SimpleSelectionWidget(
@@ -31,12 +31,12 @@ public class SimpleSelectionWidget implements SelectionWidget {
 			Boolean isRequired,
 			String defaultValue,
 			Map<String, String> additionalProperties,
-			List<Option> options) {
+			List<DialogElement> options) {
 
 		this.xtype = "selection";
 		this.primaryType = "cq:Widget";
 
-		this.selectionType = type;
+		this.type = type;
 		this.name = name;
 		this.fieldLabel = fieldLabel;
 		this.fieldName = fieldName;
@@ -45,7 +45,7 @@ public class SimpleSelectionWidget implements SelectionWidget {
 		this.defaultValue=defaultValue;
 		this.additionalProperties = additionalProperties;
 
-		this.options = options;
+		containtedElements.add(new WidgetCollection(options,"options"));
 
 	}
 
@@ -53,19 +53,19 @@ public class SimpleSelectionWidget implements SelectionWidget {
 		return primaryType;
 	}
 
-	public String getXType() {
+	public String getXtype() {
 		return xtype;
 	}
 
-	public String getSelectionType() {
-		return selectionType;
+	public String getType() {
+		return type;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public String getLabel() {
+	public String getFieldLabel() {
 		return fieldLabel;
 	}
 
@@ -75,14 +75,6 @@ public class SimpleSelectionWidget implements SelectionWidget {
 
 	public String getFieldDescription() {
 		return fieldDescription;
-	}
-
-	public Boolean hasFieldDescription() {
-		return StringUtils.isNotEmpty(fieldDescription);
-	}
-
-	public List<Option> getOptions() {
-		return options;
 	}
 
 	public Boolean isRequired() {
@@ -95,5 +87,13 @@ public class SimpleSelectionWidget implements SelectionWidget {
 	
 	public String getDefaultValue() {
 		return defaultValue;
+	}
+	
+	public List<? extends DialogElement> getContainedElements() {
+		return containtedElements;
+	}
+
+	public String getNameSpace() {
+		return null;
 	}
 }

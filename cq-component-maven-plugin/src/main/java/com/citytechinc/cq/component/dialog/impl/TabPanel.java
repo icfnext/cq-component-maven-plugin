@@ -3,10 +3,9 @@ package com.citytechinc.cq.component.dialog.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.citytechinc.cq.component.dialog.Container;
 import com.citytechinc.cq.component.dialog.DialogElement;
 
-public class TabPanel implements Container {
+public class TabPanel implements DialogElement {
 
 	private final String primaryType;
 	private final List<DialogElement> elements;
@@ -36,7 +35,11 @@ public class TabPanel implements Container {
 		return primaryType;
 	}
 
-	public String getName() {
+	public String getNameSpace() {
+		return null;
+	}
+
+	public String getFieldName() {
 		return "tabs";
 	}
 

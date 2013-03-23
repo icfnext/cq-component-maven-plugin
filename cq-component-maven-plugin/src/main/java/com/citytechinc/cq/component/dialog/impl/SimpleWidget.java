@@ -1,9 +1,9 @@
 package com.citytechinc.cq.component.dialog.impl;
 
+import java.util.List;
 import java.util.Map;
 
-import org.codehaus.plexus.util.StringUtils;
-
+import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.Widget;
 
 public class SimpleWidget implements Widget {
@@ -30,7 +30,7 @@ public class SimpleWidget implements Widget {
 		this.primaryType = "cq:Widget";
 	}
 
-	public String getXType() {
+	public String getXtype() {
 		return xtype;
 	}
 
@@ -44,10 +44,6 @@ public class SimpleWidget implements Widget {
 
 	public String getFieldDescription() {
 		return fieldDescription;
-	}
-
-	public Boolean hasFieldDescription() {
-		return StringUtils.isNotEmpty(fieldDescription);
 	}
 
 	public String toString() {
@@ -64,7 +60,7 @@ public class SimpleWidget implements Widget {
 		return primaryType;
 	}
 
-	public String getLabel() {
+	public String getFieldLabel() {
 		return fieldLabel;
 	}
 
@@ -78,6 +74,14 @@ public class SimpleWidget implements Widget {
 
 	public String getDefaultValue() {
 		return defaultValue;
+	}
+	
+	public List<? extends DialogElement> getContainedElements() {
+		return null;
+	}
+
+	public String getNameSpace() {
+		return null;
 	}
 
 }

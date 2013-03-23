@@ -1,5 +1,10 @@
 package com.citytechinc.cq.component.dialog.impl;
 
+import java.util.List;
+
+import org.codehaus.plexus.util.StringUtils;
+
+import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.Option;
 
 public class SimpleOption implements Option {
@@ -27,6 +32,22 @@ public class SimpleOption implements Option {
 
 	public String getValue() {
 		return value;
+	}
+	
+	public List<? extends DialogElement> getContainedElements() {
+		return null;
+	}
+
+	public String getNameSpace() {
+		return null;
+	}
+
+	public String getName() {
+		return null;
+	}
+	
+	public String getFieldName(){
+		return StringUtils.deleteWhitespace(value);
 	}
 
 }

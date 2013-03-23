@@ -13,6 +13,6 @@ public interface Html5SmartImageWidget extends Widget,Tab{
 	public String getDdGroups();
 	public boolean isTab();
 	public boolean isAllowUpload();
-	public int getHeight();
+	public Integer getHeight();
 	public String getRequestSuffix();
 }

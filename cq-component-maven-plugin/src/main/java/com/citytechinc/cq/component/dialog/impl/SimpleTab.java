@@ -1,44 +1,31 @@
 package com.citytechinc.cq.component.dialog.impl;
 
-import com.citytechinc.cq.component.dialog.Container;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.codehaus.plexus.util.StringUtils;
+
+import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.Tab;
 
 public class SimpleTab implements Tab {
 
 	private final String primaryType;
 	private final String xtype;
-	private final Container widgetCollection;
-	private final String name;
+	private final List<DialogElement> containedElements=new ArrayList<DialogElement>();
 	private final String title;
 
 	public SimpleTab() {
 		this("", new WidgetCollection());
 	}
 
-	public SimpleTab(String name, Container widgetCollection) {
-		this.widgetCollection = widgetCollection;
-		this.name = name;
+	public SimpleTab(String name, WidgetCollection widgetCollection) {
+		containedElements.add(widgetCollection);
 
 		this.title = name;
 
 		this.primaryType = "cq:Widget";
 		this.xtype = "panel";
-	}
-
-	public Container getWidgetCollection() {
-		return widgetCollection;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String toString() {
-		StringBuffer retStringBuffer = new StringBuffer(name + " ");
-
-		retStringBuffer.append(widgetCollection.toString());
-
-		return retStringBuffer.toString();
 	}
 
 	public String getPrimaryType() {
@@ -52,5 +39,16 @@ public class SimpleTab implements Tab {
 	public String getTitle() {
 		return title;
 	}
+	
+	public List<? extends DialogElement> getContainedElements() {
+		return containedElements;
+	}
 
+	public String getNameSpace() {
+		return null;
+	}
+
+	public String getFieldName() {
+		return StringUtils.deleteWhitespace(title);
+	}
 }

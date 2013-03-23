@@ -3,8 +3,7 @@ package com.citytechinc.cq.component.dialog.impl;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.plexus.util.StringUtils;
-
+import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.MultiValueWidget;
 import com.citytechinc.cq.component.dialog.Widget;
 
@@ -18,7 +17,7 @@ public class SimpleMultiValueWidget implements MultiValueWidget {
 	private final Boolean isRequired;
 	private final Map<String, String> additionalProperties;
 	private final String primaryType;
-	private final List<Widget> fieldConfigurations;
+	private final List<Widget> containedElements;
 	private final String defaultValue;
 	
 	public SimpleMultiValueWidget(String xtype, String name, String fieldName, String fieldLabel, String fieldDescription, Boolean isRequired, String defaultValue,Map<String, String> additionalProperties, List<Widget> fieldConfigurations) {
@@ -30,12 +29,12 @@ public class SimpleMultiValueWidget implements MultiValueWidget {
 		this.isRequired = isRequired;
 		this.defaultValue=defaultValue;
 		this.additionalProperties = additionalProperties;
-		this.fieldConfigurations = fieldConfigurations;
+		this.containedElements = fieldConfigurations;
 		
 		this.primaryType = "cq:Widget";
 	}
 
-	public String getXType() {
+	public String getXtype() {
 		return xtype;
 	}
 
@@ -43,7 +42,7 @@ public class SimpleMultiValueWidget implements MultiValueWidget {
 		return name;
 	}
 
-	public String getLabel() {
+	public String getFieldLabel() {
 		return fieldLabel;
 	}
 
@@ -53,10 +52,6 @@ public class SimpleMultiValueWidget implements MultiValueWidget {
 
 	public String getFieldDescription() {
 		return fieldDescription;
-	}
-
-	public Boolean hasFieldDescription() {
-		return StringUtils.isNotEmpty(fieldDescription);
 	}
 
 	public Boolean isRequired() {
@@ -71,15 +66,19 @@ public class SimpleMultiValueWidget implements MultiValueWidget {
 		return primaryType;
 	}
 
-	public List<Widget> getFieldConfigurations() {
-		return fieldConfigurations;
-	}
-
 	public Boolean isSingleFieldConfiguration() {
-		return fieldConfigurations.size() == 1;
+		return containedElements.size() == 1;
 	}
 	
 	public String getDefaultValue() {
 		return defaultValue;
+	}
+
+	public String getNameSpace() {
+		return null;
+	}
+
+	public List<? extends DialogElement> getContainedElements() {
+		return containedElements;
 	}
 }

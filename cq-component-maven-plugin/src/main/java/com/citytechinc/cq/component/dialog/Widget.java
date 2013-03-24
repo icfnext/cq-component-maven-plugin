@@ -26,7 +26,7 @@ public interface Widget extends DialogElement {
 
 	public String getFieldDescription();
 
-	public Boolean isRequired();
+	public Boolean isAllowBlank();
 	
 	public String getDefaultValue();
 

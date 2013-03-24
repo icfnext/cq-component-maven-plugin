@@ -54,8 +54,8 @@ public class SimpleMultiValueWidget implements MultiValueWidget {
 		return fieldDescription;
 	}
 
-	public Boolean isRequired() {
-		return isRequired;
+	public Boolean isAllowBlank(){
+		return !isRequired;
 	}
 
 	public Map<String, String> getAdditionalProperties() {

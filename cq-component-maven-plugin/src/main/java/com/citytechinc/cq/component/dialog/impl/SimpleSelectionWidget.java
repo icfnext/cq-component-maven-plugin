@@ -17,7 +17,7 @@ public class SimpleSelectionWidget implements SelectionWidget {
 	private final String fieldLabel;
 	private final String fieldName;
 	private final String fieldDescription;
-	private final Boolean isRequired;
+	private final Boolean required;
 	private final Map<String, String> additionalProperties;
 	private final List<DialogElement> containtedElements=new ArrayList<DialogElement>();
 	private final String defaultValue;
@@ -28,7 +28,7 @@ public class SimpleSelectionWidget implements SelectionWidget {
 			String fieldLabel,
 			String fieldName,
 			String fieldDescription,
-			Boolean isRequired,
+			Boolean required,
 			String defaultValue,
 			Map<String, String> additionalProperties,
 			List<DialogElement> options) {
@@ -41,7 +41,7 @@ public class SimpleSelectionWidget implements SelectionWidget {
 		this.fieldLabel = fieldLabel;
 		this.fieldName = fieldName;
 		this.fieldDescription = fieldDescription;
-		this.isRequired = isRequired;
+		this.required = required;
 		this.defaultValue=defaultValue;
 		this.additionalProperties = additionalProperties;
 
@@ -77,8 +77,8 @@ public class SimpleSelectionWidget implements SelectionWidget {
 		return fieldDescription;
 	}
 
-	public Boolean isRequired() {
-		return isRequired;
+	public Boolean isAllowBlank(){
+		return !required;
 	}
 
 	public Map<String, String> getAdditionalProperties() {

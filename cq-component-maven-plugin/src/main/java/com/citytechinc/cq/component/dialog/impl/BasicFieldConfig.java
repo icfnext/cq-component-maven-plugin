@@ -35,15 +35,15 @@ public class BasicFieldConfig implements Widget {
 	}
 
 	public String getFieldName() {
-		return null;
+		return "fieldConfig";
 	}
 
 	public String getFieldDescription() {
 		return null;
 	}
 
-	public Boolean isRequired() {
-		return null;
+	public Boolean isAllowBlank() {
+		return true;
 	}
 
 	public Map<String, String> getAdditionalProperties() {

@@ -149,8 +149,8 @@ public class SimpleHtml5SmartImageWidget implements Html5SmartImageWidget {
 		return tab;
 	}
 	
-	public Boolean isRequired(){
-		return required;
+	public Boolean isAllowBlank(){
+		return !required;
 	}
 
 	public String getFieldLabel() {

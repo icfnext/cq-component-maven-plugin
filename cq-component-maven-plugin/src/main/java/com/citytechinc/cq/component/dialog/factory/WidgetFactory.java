@@ -65,7 +65,7 @@ public class WidgetFactory {
 		Map<String, String> additionalProperties = getAdditionalPropertiesForField(annotatedWidgetField, propertyAnnotation);
 
 		if(annotatedWidgetField.hasAnnotation(Html5SmartImage.class)){
-			return buildHtml5SmartImageWidget(name,fieldName,fieldLabel,fieldDescription, isRequired,(Html5SmartImage)annotatedWidgetField.getAnnotation(Html5SmartImage.class),propertyAnnotation);
+			return buildHtml5SmartImageWidget(fieldName,fieldLabel,fieldDescription, isRequired,(Html5SmartImage)annotatedWidgetField.getAnnotation(Html5SmartImage.class),propertyAnnotation);
 		}
 		if (xtype.equals(SELECTION_XTYPE) || annotatedWidgetField.hasAnnotation(Selection.class)) {
 			Selection selection=null;
@@ -235,7 +235,7 @@ public class WidgetFactory {
 		return null;
 	}
 
-	private static final Html5SmartImageWidget buildHtml5SmartImageWidget(String name,String fieldName,String fieldLabel, String fieldDescription,boolean required,Html5SmartImage smartImage,DialogField dialogField){
+	private static final Html5SmartImageWidget buildHtml5SmartImageWidget(String fieldName,String fieldLabel, String fieldDescription,boolean required,Html5SmartImage smartImage,DialogField dialogField){
 		boolean disableFlush=smartImage.disableFlush();
 		boolean disableInfo=smartImage.disableInfo();
 		boolean disableZoom=smartImage.disableZoom();
@@ -247,8 +247,11 @@ public class WidgetFactory {
 		String rotateParameter=null;
 		String uploadUrl=null;
 		String ddGroups=null;
+		String name=null;
 		Integer height=null;
-		String title=dialogField.tab();
+		if(!StringUtils.isEmpty(smartImage.name())){
+			name=smartImage.name();
+		}
 		if(!StringUtils.isEmpty(smartImage.cropParameter())){
 			cropParameter=smartImage.cropParameter();
 		}
@@ -273,7 +276,7 @@ public class WidgetFactory {
 		if(smartImage.height()!=0){
 			height=smartImage.height();
 		}
-		return new SimpleHtml5SmartImageWidget(name, title,disableFlush, disableInfo, disableZoom, cropParameter, fileNameParameter, fileReferenceParameter, mapParameter, rotateParameter, uploadUrl, ddGroups, allowUpload, required, fieldLabel, fieldName, fieldDescription,height,smartImage.tab());
+		return new SimpleHtml5SmartImageWidget(name,disableFlush, disableInfo, disableZoom, cropParameter, fileNameParameter, fileReferenceParameter, mapParameter, rotateParameter, uploadUrl, ddGroups, allowUpload, required, fieldLabel, fieldName, fieldDescription,height,smartImage.tab());
 	}
 
 	private static final SelectionWidget buildSelectionWidget(

@@ -10,7 +10,6 @@ import com.citytechinc.cq.component.dialog.Html5SmartImageWidget;
 
 public class SimpleHtml5SmartImageWidget implements Html5SmartImageWidget {
 	private String name;
-	private String title;
 	private final boolean disableFlush;
 	private final boolean disableInfo;
 	private final boolean disableZoom;
@@ -29,7 +28,7 @@ public class SimpleHtml5SmartImageWidget implements Html5SmartImageWidget {
 	private Integer height;
 	private boolean tab;
 
-	public SimpleHtml5SmartImageWidget(String name, String title,boolean disableFlush,
+	public SimpleHtml5SmartImageWidget(String name, boolean disableFlush,
 			boolean disableInfo, boolean disableZoom, String cropParameter,
 			String fileNameParameter, String fileReferenceParameter,
 			String mapParameter, String rotateParameter, String uploadUrl,
@@ -54,9 +53,16 @@ public class SimpleHtml5SmartImageWidget implements Html5SmartImageWidget {
 		this.fieldName=fieldName;
 		this.fieldDescription=fieldDescription;
 		this.name = name;
-		this.title=title;
 		this.height=height;
 		this.tab=tab;
+	}
+	
+	private String getNameAsPrefix(){
+		if(StringUtils.isEmpty(name)){
+			return "./";
+		}else{
+			return "./"+name+"/";
+		}
 	}
 
 	public String getXtype() {
@@ -76,11 +82,11 @@ public class SimpleHtml5SmartImageWidget implements Html5SmartImageWidget {
 	}
 
 	public String getName() {
-		return name+"/file";
+		return getNameAsPrefix()+"file";
 	}
 
 	public String getTitle() {
-		return title;
+		return fieldLabel;
 	}
 
 	public boolean isDisableFlush() {
@@ -101,28 +107,28 @@ public class SimpleHtml5SmartImageWidget implements Html5SmartImageWidget {
 
 	public String getFileNameParameter() {
 		if(!StringUtils.isEmpty(fileNameParameter)){
-			return name+"/"+fileNameParameter;
+			return getNameAsPrefix()+fileNameParameter;
 		}
 		return fileNameParameter;
 	}
 
 	public String getFileReferenceParameter() {
 		if(!StringUtils.isEmpty(fileReferenceParameter)){
-			return name+"/"+fileReferenceParameter;
+			return getNameAsPrefix()+fileReferenceParameter;
 		}
 		return fileReferenceParameter;
 	}
 
 	public String getMapParameter() {
 		if(!StringUtils.isEmpty(mapParameter)){
-			return name+"/"+mapParameter;
+			return getNameAsPrefix()+mapParameter;
 		}
 		return mapParameter;
 	}
 
 	public String getRotateParameter() {
 		if(!StringUtils.isEmpty(rotateParameter)){
-			return name+"/"+rotateParameter;
+			return getNameAsPrefix()+rotateParameter;
 		}
 		return rotateParameter;
 	}
@@ -172,7 +178,11 @@ public class SimpleHtml5SmartImageWidget implements Html5SmartImageWidget {
 	}
 
 	public String getRequestSuffix() {
-		return name.substring(1)+".img.png";
+		if(StringUtils.isEmpty(name)){
+			return ".img.png";
+		}else{
+			return "/"+name+".img.png";
+		}
 	}
 	
 	public List<? extends DialogElement> getContainedElements() {

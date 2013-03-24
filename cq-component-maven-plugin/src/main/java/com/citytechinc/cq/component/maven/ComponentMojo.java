@@ -53,6 +53,12 @@ import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassExcept
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.exception.OutputFailureException;
 import com.citytechinc.cq.component.dialog.factory.DialogFactory;
+import com.citytechinc.cq.component.dialog.factory.WidgetFactory;
+import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
+import com.citytechinc.cq.component.dialog.maker.multifield.MultifieldWidgetMaker;
+import com.citytechinc.cq.component.dialog.maker.selection.SelectionWidgetMaker;
+import com.citytechinc.cq.component.dialog.maker.simple.SimpleWidgetMaker;
+import com.citytechinc.cq.component.dialog.maker.smartimage.Html5SmartImageWidgetMaker;
 import com.citytechinc.cq.component.dialog.xml.DialogXmlWriter;
 import com.citytechinc.cq.component.editconfig.EditConfig;
 import com.citytechinc.cq.component.editconfig.factory.EditConfigFactory;
@@ -81,6 +87,9 @@ public class ComponentMojo extends AbstractMojo {
 	@Parameter ( required = false )
 	private List<XtypeMapping> xtypeMappings;
 
+	@Parameter ( required = false )
+	private List<WidgetMakerMapping> widgetMakerMappings;
+
 	@SuppressWarnings({ "unchecked" })
 	public void execute() throws MojoExecutionException, MojoFailureException {
 
@@ -88,8 +97,9 @@ public class ComponentMojo extends AbstractMojo {
 			ClassLoader classLoader = getClassLoader(project.getCompileClasspathElements());
 			ClassPool classPool = getClassPool(classLoader);
 			List<CtClass> compiledClasses = getCompiledClasses(classPool, project.getCompileClasspathElements());
-			Map<Class<?>, String> xtypeMap = getXTypeMapForCustomXTypeMapping(classLoader);
-			buildArchiveFileForProjectAndClassList(compiledClasses, xtypeMap, classLoader, classPool);
+			Map<Class<?>, String> classToXTypeMap = getXTypeMapForCustomXTypeMapping(classLoader);
+			Map<String, WidgetMaker> xTypeToWidgetMakerMap = getXTypeToWidgetMakerMap(classLoader);
+			buildArchiveFileForProjectAndClassList(compiledClasses, classToXTypeMap, xTypeToWidgetMakerMap, classLoader, classPool);
 		} catch (MalformedURLException e) {
 			getLog().error(e);
 		} catch (DependencyResolutionRequiredException e) {
@@ -118,9 +128,40 @@ public class ComponentMojo extends AbstractMojo {
 			getLog().error(e);
 		} catch (NoSuchFieldException e) {
 			getLog().error(e);
+		} catch (InstantiationException e) {
+			getLog().error(e);
+		} catch (IllegalAccessException e) {
+			getLog().error(e);
 		}
 
 
+	}
+
+	private Map<String, WidgetMaker> getXTypeToWidgetMakerMap(ClassLoader classLoader)
+			throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+		Map<String, WidgetMaker> xTypeToWidgetMakerMap = new HashMap<String, WidgetMaker>();
+
+		WidgetMaker defaultWidgetMaker = new SimpleWidgetMaker();
+		WidgetMaker html5SmartImageWidgetMaker = new Html5SmartImageWidgetMaker();
+		WidgetMaker selectionWidgetMaker = new SelectionWidgetMaker();
+		WidgetMaker multifieldWidgetMaker = new MultifieldWidgetMaker();
+
+		/*
+		 * Set the Default Widget Makers.  This may be overridden by configured makers
+		 * if makers are configured for the same xtype
+		 */
+		xTypeToWidgetMakerMap.put(WidgetFactory.TEXTFIELD_XTYPE, defaultWidgetMaker);
+		xTypeToWidgetMakerMap.put(WidgetFactory.NUMBERFIELD_XTYPE, defaultWidgetMaker);
+		xTypeToWidgetMakerMap.put(WidgetFactory.PATHFIELD_XTYPE, defaultWidgetMaker);
+		xTypeToWidgetMakerMap.put(WidgetFactory.HTML5SMARTIMAGE_XTYPE, html5SmartImageWidgetMaker);
+		xTypeToWidgetMakerMap.put(WidgetFactory.SELECTION_XTYPE, selectionWidgetMaker);
+		xTypeToWidgetMakerMap.put(WidgetFactory.MULTIFIELD_XTYPE, multifieldWidgetMaker);
+
+		for (WidgetMakerMapping curWidgetMakerMapping : widgetMakerMappings) {
+			xTypeToWidgetMakerMap.put(curWidgetMakerMapping.getXtype(), curWidgetMakerMapping.getMaker(classLoader));
+		}
+
+		return xTypeToWidgetMakerMap;
 	}
 
 	private Map<Class<?>, String> getXTypeMapForCustomXTypeMapping(ClassLoader classLoader) throws ClassNotFoundException {
@@ -282,7 +323,7 @@ public class ComponentMojo extends AbstractMojo {
 	 * @throws NoSuchFieldException
 	 * @throws SecurityException
 	 */
-	private void buildArchiveFileForProjectAndClassList(List<CtClass> classList, Map<Class<?>, String> xtypeMap, ClassLoader classLoader, ClassPool classPool)
+	private void buildArchiveFileForProjectAndClassList(List<CtClass> classList, Map<Class<?>, String> classToXTypeMap, Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool)
 			throws OutputFailureException, IOException, InvalidComponentClassException, InvalidComponentFieldException, ParserConfigurationException, TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
 
 		/*
@@ -338,7 +379,7 @@ public class ComponentMojo extends AbstractMojo {
 		/*
 		 * Create Dialogs within temp archive
 		 */
-		buildDialogsFromClassList(classList, tempOutputStream, existingArchiveEntryNames, xtypeMap, classLoader, classPool);
+		buildDialogsFromClassList(classList, tempOutputStream, existingArchiveEntryNames, classToXTypeMap, xTypeToWidgetMakerMap, classLoader, classPool);
 
 		/*
 		 * Create edit config within temp archive
@@ -501,13 +542,13 @@ public class ComponentMojo extends AbstractMojo {
 	}
 
 
-	private List<Dialog> buildDialogsFromClassList(List<CtClass> classList, ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames, Map<Class<?>, String> xtypeMap, ClassLoader classLoader, ClassPool classPool)
+	private List<Dialog> buildDialogsFromClassList(List<CtClass> classList, ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames, Map<Class<?>, String> classToXTypeMap, Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool)
 			throws InvalidComponentClassException, InvalidComponentFieldException, OutputFailureException, IOException, ParserConfigurationException, TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
 
 		final List<Dialog> dialogList = new ArrayList<Dialog>();
 
 		for (CtClass curClass : classList) {
-			getLog().debug("Checking class for Component annotation " + curClass);
+			getLog().debug("Checking class for Component annotation " + curClass.getName());
 
 			Component annotation = (Component) curClass.getAnnotation(Component.class);
 
@@ -515,7 +556,7 @@ public class ComponentMojo extends AbstractMojo {
 
 			if (annotation != null) {
 				getLog().debug("Processing Component Class " + curClass);
-				Dialog builtDialog = buildDialogFromClass(curClass, xtypeMap, classLoader, classPool);
+				Dialog builtDialog = buildDialogFromClass(curClass, classToXTypeMap, xTypeToWidgetMakerMap, classLoader, classPool);
 				dialogList.add(builtDialog);
 				File dialogFile = writeDialogeToFile(builtDialog, curClass);
 				writeDialogToArchiveFile(dialogFile, curClass, zipOutputStream, reservedNames);
@@ -526,10 +567,15 @@ public class ComponentMojo extends AbstractMojo {
 
 	}
 
-	private Dialog buildDialogFromClass(CtClass curClass, Map<Class<?>, String> xtypeMap, ClassLoader classLoader, ClassPool classPool)
+	private Dialog buildDialogFromClass(
+			CtClass curClass,
+			Map<Class<?>, String> classToXTypeMap,
+			Map<String, WidgetMaker> xTypeToWidgetMakerMap,
+			ClassLoader classLoader,
+			ClassPool classPool)
 			throws InvalidComponentClassException, InvalidComponentFieldException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
 
-		return DialogFactory.make(curClass, xtypeMap, classLoader, classPool);
+		return DialogFactory.make(curClass, classToXTypeMap, xTypeToWidgetMakerMap, classLoader, classPool);
 
 	}
 

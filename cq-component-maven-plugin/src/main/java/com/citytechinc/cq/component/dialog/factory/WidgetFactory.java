@@ -4,9 +4,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.net.URI;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,22 +16,9 @@ import javassist.NotFoundException;
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.DialogField;
-import com.citytechinc.cq.component.annotations.FieldConfig;
-import com.citytechinc.cq.component.annotations.FieldProperty;
-import com.citytechinc.cq.component.annotations.widgets.Html5SmartImage;
-import com.citytechinc.cq.component.annotations.widgets.Selection;
-import com.citytechinc.cq.component.dialog.Html5SmartImageWidget;
-import com.citytechinc.cq.component.dialog.MultiValueWidget;
-import com.citytechinc.cq.component.dialog.Option;
-import com.citytechinc.cq.component.dialog.SelectionWidget;
 import com.citytechinc.cq.component.dialog.Widget;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
-import com.citytechinc.cq.component.dialog.impl.BasicFieldConfig;
-import com.citytechinc.cq.component.dialog.impl.SimpleHtml5SmartImageWidget;
-import com.citytechinc.cq.component.dialog.impl.SimpleMultiValueWidget;
-import com.citytechinc.cq.component.dialog.impl.SimpleOption;
-import com.citytechinc.cq.component.dialog.impl.SimpleSelectionWidget;
-import com.citytechinc.cq.component.dialog.impl.SimpleWidget;
+import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 
 public class WidgetFactory {
 
@@ -45,311 +29,41 @@ public class WidgetFactory {
 	public static final String MULTIFIELD_XTYPE = "multifield";
 	public static final String HTML5SMARTIMAGE_XTYPE = "html5smartimage";
 
-	public static Widget make(CtClass componentClass, CtField annotatedWidgetField, Field widgetField, Map<Class<?>, String> xtypeMap, ClassLoader classLoader, ClassPool classPool)
+	public static Widget make(
+			CtClass componentClass,
+			CtField annotatedWidgetField,
+			Field widgetField,
+			Map<Class<?>, String> classToXTypeMap,
+			Map<String, WidgetMaker> xTypeToWidgetMakerMap,
+			ClassLoader classLoader,
+			ClassPool classPool)
 			throws InvalidComponentFieldException, ClassNotFoundException, CannotCompileException, NotFoundException {
 
 		DialogField propertyAnnotation = (DialogField) annotatedWidgetField.getAnnotation(DialogField.class);
-		
+
 		if (propertyAnnotation == null) {
 			throw new InvalidComponentFieldException();
 		}
 
-		String xtype = getXTypeForField(widgetField, propertyAnnotation, xtypeMap, classLoader);
-		String name = getNameForField(annotatedWidgetField, propertyAnnotation);
-		String fieldName = getFieldNameForField(annotatedWidgetField, propertyAnnotation);
-		String fieldLabel = getFieldLabelForField(annotatedWidgetField, propertyAnnotation);
-		String fieldDescription = getFieldDescriptionForField(annotatedWidgetField, propertyAnnotation);
-		Boolean isRequired = getIsRequiredPropertyForField(annotatedWidgetField, propertyAnnotation);
-		String defaultValue= getDefaultValueForField(annotatedWidgetField,propertyAnnotation);
-		Map<String, String> additionalProperties = getAdditionalPropertiesForField(annotatedWidgetField, propertyAnnotation);
-		
-		if(annotatedWidgetField.hasAnnotation(Html5SmartImage.class)){
-			return buildHtml5SmartImageWidget(name,fieldName,fieldLabel,fieldDescription, isRequired,(Html5SmartImage)annotatedWidgetField.getAnnotation(Html5SmartImage.class),propertyAnnotation);
-		}
-		if (xtype.equals(SELECTION_XTYPE) || annotatedWidgetField.hasAnnotation(Selection.class)) {
-			Selection selection=null;
-			if(annotatedWidgetField.hasAnnotation(Selection.class)){
-				selection=(Selection)annotatedWidgetField.getAnnotation(Selection.class);
-			}
-			return buildSelectionWidget(
-					componentClass,
-					annotatedWidgetField,
-					propertyAnnotation,
-					name,
-					fieldName,
-					fieldLabel,
-					fieldDescription,
-					isRequired,
-					defaultValue,
-					additionalProperties,
-					classLoader,
-					classPool,
-					selection);
+		String xtype = getXTypeForField(widgetField, annotatedWidgetField, propertyAnnotation, classToXTypeMap, classLoader, classPool);
 
+		if (!xTypeToWidgetMakerMap.containsKey(xtype)) {
+			throw new InvalidComponentFieldException("xType determined to be " + xtype + " but no Class implementing WidgetMaker is specified for this xtype");
 		}
 
-		if (xtype.equals(MULTIFIELD_XTYPE)) {
+		Class<?> containingClass = classLoader.loadClass(componentClass.getName());
 
-			return buildMultiFieldWidget(
-					componentClass,
-					widgetField,
-					propertyAnnotation,
-					name,
-					fieldName,
-					fieldLabel,
-					fieldDescription,
-					isRequired,
-					defaultValue,
-					additionalProperties,
-					xtypeMap);
-		}
-
-		return new SimpleWidget(xtype, name, fieldName, fieldLabel, fieldDescription, isRequired, additionalProperties,defaultValue);
+		return xTypeToWidgetMakerMap.get(xtype).make(xtype, widgetField, annotatedWidgetField, containingClass, componentClass, classToXTypeMap);
 
 	}
 
-	private static final Map<String, String> getAdditionalPropertiesForField(CtField widgetField, DialogField propertyAnnotation) {
-
-		if (propertyAnnotation.additionalProperties().length > 0) {
-			Map<String, String> properties = new HashMap<String, String>();
-
-			for (FieldProperty curProperty : propertyAnnotation.additionalProperties()) {
-				properties.put(curProperty.name(), curProperty.value());
-			}
-
-			return properties;
-		}
-
-		return null;
-
-	}
-
-	private static final Boolean getIsRequiredPropertyForField(CtField widgetField, DialogField propertyAnnotation) {
-		return propertyAnnotation.required() ==true;
-	}
-
-	private static final String getNameForField(CtField widgetField, DialogField propertyAnnotation) {
-
-		String overrideName = propertyAnnotation.name();
-
-		if (StringUtils.isNotEmpty(overrideName)) {
-			return overrideName;
-		}
-
-		return "./" + widgetField.getName();
-	}
-
-	private static final String getFieldLabelForField(CtField widgetField, DialogField propertyAnnotation) {
-
-		String overrideLabel = propertyAnnotation.fieldLabel();
-
-		if (StringUtils.isNotEmpty(overrideLabel)) {
-			return overrideLabel;
-		}
-
-		return widgetField.getName();
-	}
-
-	private static final String getFieldNameForField(CtField widgetField, DialogField propertyAnnotation) {
-
-		String overrideFieldName = propertyAnnotation.fieldName();
-
-		if (StringUtils.isNotEmpty(overrideFieldName)) {
-			return overrideFieldName;
-		}
-
-		return widgetField.getName();
-	}
-
-	private static final String getFieldDescriptionForField(CtField widgetField, DialogField propertyAnnotation) {
-
-		String overrideFieldDescription = propertyAnnotation.fieldDescription();
-
-		if (StringUtils.isNotEmpty(overrideFieldDescription)) {
-			return overrideFieldDescription;
-		}
-
-		return null;
-	}
-	
-	private static final String getDefaultValueForField(CtField widgetField, DialogField propertyAnnotation) {
-
-		String defaultValue = propertyAnnotation.defaultValue();
-
-		if (StringUtils.isNotEmpty(defaultValue)) {
-			return defaultValue;
-		}
-
-		return null;
-	}
-
-	private static final MultiValueWidget buildMultiFieldWidget(
-			CtClass componentClass,
-			Field widgetField,
-			DialogField fieldAnnotation,
-			String name,
-			String fieldName,
-			String fieldLabel,
-			String fieldDescription,
-			Boolean isRequired,
-			String defaultValue,
-			Map<String, String> additionalProperties,
-			Map<Class<?>, String> xtypeMap) throws InvalidComponentFieldException {
-
-		String innerXType = getInnerXTypeForMultiField(widgetField, fieldAnnotation, xtypeMap);
-
-		if (innerXType == null) {
-			throw new InvalidComponentFieldException("Invalid or unsupported field annotation on a multi valued field");
-		}
-
-		Widget fieldConfig = new BasicFieldConfig(innerXType);
-
-		List<Widget> fieldConfigs = new ArrayList<Widget>();
-
-		fieldConfigs.add(fieldConfig);
-
-		return new SimpleMultiValueWidget(MULTIFIELD_XTYPE, name, fieldName, fieldLabel, fieldDescription, isRequired, defaultValue, additionalProperties, fieldConfigs);
-	}
-
-	private static final String getInnerXTypeForMultiField(Field widgetField, DialogField fieldAnnotation, Map<Class<?>, String> xtypeMap) throws InvalidComponentFieldException {
-
-		List<FieldConfig> fieldConfigs = Arrays.asList(fieldAnnotation.fieldConfigs());
-
-		/*
-		 * Check to see if a field configuration annotation is present.  If so, use that
-		 */
-		if (!fieldConfigs.isEmpty()) {
-			return fieldConfigs.get(0).xtype();
-		}
-
-		/*
-		 * Otherwise, see if we can derive the xtype from the parameterized field
-		 */
-		String innerXType = getInnerXTypeForField(widgetField, xtypeMap);
-
-		if (innerXType != null) {
-			return innerXType;
-		}
-
-		return null;
-	}
-	
-	private static final Html5SmartImageWidget buildHtml5SmartImageWidget(String name,String fieldName,String fieldLabel, String fieldDescription,boolean required,Html5SmartImage smartImage,DialogField dialogField){
-		boolean disableFlush=smartImage.disableFlush();
-		boolean disableInfo=smartImage.disableInfo();
-		boolean disableZoom=smartImage.disableZoom();
-		String cropParameter=smartImage.cropParameter();
-		String fileNameParameter=smartImage.fileNameParameter();
-		String fileReferenceParameter=smartImage.fileReferenceParameter();
-		String mapParameter=smartImage.mapParameter();
-		String rotateParameter=smartImage.rotateParameter();
-		String uploadUrl=smartImage.uploadUrl();
-		String ddGroups=smartImage.ddGroups();
-		boolean allowUpload=smartImage.allowUpload();
-		int height=smartImage.height();
-		String title=dialogField.tab();
-		return new SimpleHtml5SmartImageWidget(name, title,disableFlush, disableInfo, disableZoom, cropParameter, fileNameParameter, fileReferenceParameter, mapParameter, rotateParameter, uploadUrl, ddGroups, allowUpload, required, fieldLabel, fieldName, fieldDescription,height,smartImage.tab());
-	}
-
-	private static final SelectionWidget buildSelectionWidget(
-			CtClass componentClass,
-			CtField widgetField,
-			DialogField fieldAnnotation,
-			String name,
-			String fieldName,
-			String fieldLabel,
-			String fieldDescription,
-			Boolean isRequired,
-			String defaultValue,
-			Map<String, String> additionalProperties,
-			ClassLoader classLoader,
-			ClassPool classPool,
-			Selection selectionAnnotation) throws InvalidComponentFieldException, CannotCompileException, NotFoundException, ClassNotFoundException {
-
-		List<Option> options = buildSelectionOptionsForField(widgetField, selectionAnnotation, classLoader, classPool);
-		String selectionType = getSelectionTypeForField(widgetField, selectionAnnotation);
-
-		return new SimpleSelectionWidget(selectionType, name, fieldLabel, fieldName, fieldDescription, isRequired, defaultValue, additionalProperties, options);
-
-	}
-
-	private static final String getSelectionTypeForField(CtField widgetField, Selection fieldAnnotation) {
-		if(fieldAnnotation!=null && (
-				fieldAnnotation.type().equals(Selection.CHECKBOX) ||
-					fieldAnnotation.type().equals(Selection.COMBOBOX) ||
-					fieldAnnotation.type().equals(Selection.RADIO) || 
-					fieldAnnotation.type().equals(Selection.SELECT))){
-			return fieldAnnotation.type();
-		}else{
-			return Selection.SELECT;
-		}
-	}
-
-	private static final List<Option> buildSelectionOptionsForField(CtField widgetField, Selection fieldAnnotation, ClassLoader classLoader, ClassPool classPool) throws InvalidComponentFieldException, CannotCompileException, NotFoundException, ClassNotFoundException {
-
-		List<Option> options = new ArrayList<Option>();
-
-		/*
-		 * Options specified in the annotation take precedence
-		 */
-		if (fieldAnnotation!=null && fieldAnnotation.options().length > 0) {
-			for(com.citytechinc.cq.component.annotations.Option curOptionAnnotation : fieldAnnotation.options()) {
-				if (StringUtils.isEmpty(curOptionAnnotation.text()) || StringUtils.isEmpty(curOptionAnnotation.value())) {
-					throw new InvalidComponentFieldException("Selection Options specified in the selectionOptions Annotation property must include a non-empty text and value attribute");
-				}
-				options.add(new SimpleOption(curOptionAnnotation.text(), curOptionAnnotation.value()));
-			}
-		}
-		/*
-		 * If options were not specified by the annotation then we check
-		 * to see if the field is an Enum and if so, the options are pulled
-		 * from the Enum definition
-		 */
-		else if (widgetField.getType().isEnum()) {
-			for(Object curEnumObject : classLoader.loadClass(widgetField.getType().getName()).getEnumConstants()) {
-				Enum<?> curEnum = (Enum<?>) curEnumObject;
-				try {
-					options.add(buildSelectionOptionForEnum(curEnum, classPool));
-				} catch (SecurityException e) {
-					throw new InvalidComponentFieldException("Invalid Enum Field", e);
-				} catch (NoSuchFieldException e) {
-					throw new InvalidComponentFieldException("Invalid Enum Field", e);
-				}
-			}
-		}
-
-		return options;
-
-	}
-
-	//TODO: This isn't going to work
-	private static final Option buildSelectionOptionForEnum(Enum<?> optionEnum, ClassPool classPool)
-			throws SecurityException, NoSuchFieldException, NotFoundException, ClassNotFoundException {
-
-		String text = optionEnum.name();
-		String value = optionEnum.name();
-
-		CtClass annotatedEnumClass = classPool.getCtClass(optionEnum.getDeclaringClass().getName());
-		CtField annotatedEnumField = annotatedEnumClass.getField(optionEnum.name());
-		com.citytechinc.cq.component.annotations.Option optionAnnotation = (com.citytechinc.cq.component.annotations.Option) annotatedEnumField.getAnnotation(com.citytechinc.cq.component.annotations.Option.class);
-
-		if (optionAnnotation != null) {
-			if (StringUtils.isNotEmpty(optionAnnotation.text())) {
-				text = optionAnnotation.text();
-			}
-			if (StringUtils.isNotEmpty(optionAnnotation.value())) {
-				value = optionAnnotation.value();
-			}
-		}
-
-		return new SimpleOption(text, value);
-
-	}
-
-	private static final String getXTypeForField(Field widgetField, DialogField propertyAnnotation, Map<Class<?>, String> xtypeMap, ClassLoader classLoader) throws InvalidComponentFieldException, CannotCompileException, NotFoundException, ClassNotFoundException {
+	private static final String getXTypeForField(Field widgetField, CtField ctWidgetField, DialogField propertyAnnotation, Map<Class<?>, String> classToXTypeMap, ClassLoader classLoader, ClassPool classPool) throws InvalidComponentFieldException, CannotCompileException, NotFoundException, ClassNotFoundException {
 
 		/*
 		 * Handle annotated xtypes
+		 *
+		 * The xtype property on the DialogField annotation takes precedence over all other mechanisms
+		 * of determining xtype.
 		 */
 		String overrideXType = propertyAnnotation.xtype();
 
@@ -360,11 +74,20 @@ public class WidgetFactory {
 		Class<?> fieldClass = widgetField.getType();
 
 		/*
-		 * Handle custom types
+		 * Handle custom types.
+		 *
+		 * Custom types may be either Classes or Annotations.
 		 */
-		for (Class<?> curCustomClass : xtypeMap.keySet()) {
-			if (curCustomClass.isAssignableFrom(fieldClass)) {
-				return xtypeMap.get(curCustomClass);
+		for (Class<?> curCustomClass : classToXTypeMap.keySet()) {
+			if (curCustomClass.isAnnotation()) {
+
+				if (ctWidgetField.hasAnnotation(curCustomClass)) {
+					return classToXTypeMap.get(curCustomClass);
+				}
+
+			}
+			else if (curCustomClass.isAssignableFrom(fieldClass)) {
+				return classToXTypeMap.get(curCustomClass);
 			}
 		}
 
@@ -406,7 +129,7 @@ public class WidgetFactory {
 
 		if (List.class.isAssignableFrom(fieldClass) || fieldClass.isArray()) {
 
-			String simpleXtype = getInnerXTypeForField(widgetField, xtypeMap);
+			String simpleXtype = getInnerXTypeForField(widgetField, classToXTypeMap);
 
 			/*
 			 * TODO: This is where the multicompositefield would end up being selected once implemented

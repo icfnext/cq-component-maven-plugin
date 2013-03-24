@@ -26,10 +26,11 @@ import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldExcept
 import com.citytechinc.cq.component.dialog.impl.SimpleDialog;
 import com.citytechinc.cq.component.dialog.impl.SimpleTab;
 import com.citytechinc.cq.component.dialog.impl.WidgetCollection;
+import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 
 public class DialogFactory {
 
-	public static Dialog make(CtClass componentClass, Map<Class<?>, String> xtypeMap, ClassLoader classLoader, ClassPool classPool) throws InvalidComponentClassException, InvalidComponentFieldException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
+	public static Dialog make(CtClass componentClass, Map<Class<?>, String> classToXTypeMap, Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool) throws InvalidComponentClassException, InvalidComponentFieldException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
 
 		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
@@ -69,7 +70,14 @@ public class DialogFactory {
 
 				Field trueField = trueComponentClass.getDeclaredField(curField.getName());
 
-				Widget builtFieldWidget = WidgetFactory.make(componentClass, curField, trueField, xtypeMap, classLoader, classPool);
+				Widget builtFieldWidget = WidgetFactory.make(
+						componentClass,
+						curField,
+						trueField,
+						classToXTypeMap,
+						xTypeToWidgetMakerMap,
+						classLoader,
+						classPool);
 				if(builtFieldWidget instanceof Html5SmartImageWidget && ((Html5SmartImageWidget)builtFieldWidget).isTab()){
 					tabList.add(builtFieldWidget);
 				}else{

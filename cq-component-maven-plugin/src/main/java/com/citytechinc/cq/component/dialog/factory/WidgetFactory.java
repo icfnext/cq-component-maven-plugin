@@ -1,6 +1,8 @@
 package com.citytechinc.cq.component.dialog.factory;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.net.URI;
 import java.net.URL;
@@ -305,7 +307,7 @@ public class WidgetFactory {
 		if(fieldAnnotation!=null && (
 				fieldAnnotation.type().equals(Selection.CHECKBOX) ||
 				fieldAnnotation.type().equals(Selection.COMBOBOX) ||
-				fieldAnnotation.type().equals(Selection.RADIO) || 
+				fieldAnnotation.type().equals(Selection.RADIO) ||
 				fieldAnnotation.type().equals(Selection.SELECT))){
 			return fieldAnnotation.type();
 		}else{
@@ -350,16 +352,30 @@ public class WidgetFactory {
 
 	}
 
-	//TODO: This isn't going to work
 	private static final Option buildSelectionOptionForEnum(Enum<?> optionEnum, ClassPool classPool)
 			throws SecurityException, NoSuchFieldException, NotFoundException, ClassNotFoundException {
 
-		String text = optionEnum.name();
+		String text = optionEnum.toString();
 		String value = optionEnum.name();
 
 		CtClass annotatedEnumClass = classPool.getCtClass(optionEnum.getDeclaringClass().getName());
 		CtField annotatedEnumField = annotatedEnumClass.getField(optionEnum.name());
 		com.citytechinc.cq.component.annotations.Option optionAnnotation = (com.citytechinc.cq.component.annotations.Option) annotatedEnumField.getAnnotation(com.citytechinc.cq.component.annotations.Option.class);
+
+		Method getValueMethod;
+		try {
+			getValueMethod = optionEnum.getDeclaringClass().getMethod("getValue");
+			value = (String) getValueMethod.invoke(optionEnum);
+		} catch (NoSuchMethodException e) {
+			//ignore exception
+		} catch (IllegalArgumentException e) {
+
+		} catch (IllegalAccessException e) {
+
+		} catch (InvocationTargetException e) {
+
+		}
+
 
 		if (optionAnnotation != null) {
 			if (StringUtils.isNotEmpty(optionAnnotation.text())) {

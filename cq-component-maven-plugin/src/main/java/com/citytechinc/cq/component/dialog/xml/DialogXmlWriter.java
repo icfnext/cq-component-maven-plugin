@@ -46,14 +46,14 @@ public class DialogXmlWriter {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private static final Element createElement(DialogElement dialogElement,Document document) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException, SecurityException, NoSuchMethodException{
 		Class dialogClass=dialogElement.getClass();
-		Method namespaceMethod=dialogClass.getMethod("getNameSpace", null);
-		String namespace=(String)namespaceMethod.invoke(dialogElement,  null);
-		Method fieldNameMethod=dialogClass.getMethod("getFieldName",  null);
-		String fieldName=sanatize((String)fieldNameMethod.invoke(dialogElement,  null));
-		Method containedElementsMethod=dialogClass.getMethod("getContainedElements",null);
-		List<DialogElement> containedElementsReturn=(List<DialogElement>)containedElementsMethod.invoke(dialogElement, null);
-		Method primaryTypeMethod=dialogClass.getMethod("getPrimaryType", null);
-		String primaryType=(String)primaryTypeMethod.invoke(dialogElement,  null);
+		Method namespaceMethod=dialogClass.getMethod("getNameSpace", (Class)null);
+		String namespace=(String)namespaceMethod.invoke(dialogElement,  (Class)null);
+		Method fieldNameMethod=dialogClass.getMethod("getFieldName",  (Class)null);
+		String fieldName=sanatize((String)fieldNameMethod.invoke(dialogElement,  (Class)null));
+		Method containedElementsMethod=dialogClass.getMethod("getContainedElements",(Class)null);
+		List<DialogElement> containedElementsReturn=(List<DialogElement>)containedElementsMethod.invoke(dialogElement, (Class)null);
+		Method primaryTypeMethod=dialogClass.getMethod("getPrimaryType", (Class)null);
+		String primaryType=(String)primaryTypeMethod.invoke(dialogElement,  (Class)null);
 		Element createdElement;
 		if(StringUtils.isEmpty(namespace)){
 			createdElement=document.createElement(fieldName);
@@ -65,7 +65,7 @@ public class DialogXmlWriter {
 		for(Method method:methods){
 			String methodName=method.getName();
 			if(!DO_NOT_CALL.contains(methodName) && (methodName.startsWith("get") || methodName.startsWith("is"))){
-				Object methodReturn=method.invoke(dialogElement, null);
+				Object methodReturn=method.invoke(dialogElement, (Class)null);
 				if(methodReturn!=null){
 					String value=methodReturn.toString();
 					String propertyName=null;

@@ -255,10 +255,10 @@ public class ComponentMojo extends AbstractMojo {
 	 * @throws CannotCompileException
 	 * @throws NoSuchFieldException
 	 * @throws SecurityException
-	 * @throws NoSuchMethodException
-	 * @throws InvocationTargetException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
+	 * @throws NoSuchMethodException 
+	 * @throws InvocationTargetException 
+	 * @throws IllegalAccessException 
+	 * @throws IllegalArgumentException 
 	 */
 	private void buildArchiveFileForProjectAndClassList(List<CtClass> classList, Map<Class<?>, String> xtypeMap, ClassLoader classLoader, ClassPool classPool)
 			throws OutputFailureException, IOException, InvalidComponentClassException, InvalidComponentFieldException, ParserConfigurationException, TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {

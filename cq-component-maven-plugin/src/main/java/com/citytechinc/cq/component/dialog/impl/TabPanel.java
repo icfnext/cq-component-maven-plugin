@@ -1,46 +1,25 @@
 package com.citytechinc.cq.component.dialog.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
+import com.citytechinc.cq.component.dialog.AbstractDialogElement;
 import com.citytechinc.cq.component.dialog.DialogElement;
 
-public class TabPanel implements DialogElement {
-
-	private final String primaryType;
-	private final List<DialogElement> elements;
+public class TabPanel extends AbstractDialogElement {
+	private static final String DEFAUL_FIELD_NAME="tabs";
+	private static final String PRIMARY_TYPE="cq:TabPanel";
 
 	public TabPanel() {
 		this(new ArrayList<DialogElement>());
 	}
 
 	public TabPanel(DialogElement element) {
-		elements = new ArrayList<DialogElement>();
-
-		elements.add(element);
-
-		this.primaryType = "cq:TabPanel";
+		this(Arrays.asList(new DialogElement[]{element}));
 	}
 
 	public TabPanel(List<DialogElement> elements) {
-		this.primaryType = "cq:TabPanel";
-		this.elements = elements;
-	}
-
-	public List<DialogElement> getContainedElements() {
-		return elements;
-	}
-
-	public String getPrimaryType() {
-		return primaryType;
-	}
-
-	public String getNameSpace() {
-		return null;
-	}
-
-	public String getFieldName() {
-		return "tabs";
+		super(PRIMARY_TYPE, null, DEFAUL_FIELD_NAME, null, elements);
 	}
 
 }

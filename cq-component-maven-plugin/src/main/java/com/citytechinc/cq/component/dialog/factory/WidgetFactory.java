@@ -1,8 +1,6 @@
 package com.citytechinc.cq.component.dialog.factory;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.net.URI;
 import java.net.URL;
@@ -26,17 +24,12 @@ import com.citytechinc.cq.component.annotations.FieldProperty;
 import com.citytechinc.cq.component.annotations.widgets.Html5SmartImage;
 import com.citytechinc.cq.component.annotations.widgets.Selection;
 import com.citytechinc.cq.component.dialog.DialogElement;
-import com.citytechinc.cq.component.dialog.Html5SmartImageWidget;
-import com.citytechinc.cq.component.dialog.MultiValueWidget;
-import com.citytechinc.cq.component.dialog.Option;
-import com.citytechinc.cq.component.dialog.SelectionWidget;
-import com.citytechinc.cq.component.dialog.Widget;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.impl.BasicFieldConfig;
-import com.citytechinc.cq.component.dialog.impl.SimpleHtml5SmartImageWidget;
-import com.citytechinc.cq.component.dialog.impl.SimpleMultiValueWidget;
-import com.citytechinc.cq.component.dialog.impl.SimpleOption;
-import com.citytechinc.cq.component.dialog.impl.SimpleSelectionWidget;
+import com.citytechinc.cq.component.dialog.impl.Html5SmartImageWidget;
+import com.citytechinc.cq.component.dialog.impl.MultiValueWidget;
+import com.citytechinc.cq.component.dialog.impl.Option;
+import com.citytechinc.cq.component.dialog.impl.SelectionWidget;
 import com.citytechinc.cq.component.dialog.impl.SimpleWidget;
 
 public class WidgetFactory {
@@ -48,7 +41,7 @@ public class WidgetFactory {
 	public static final String MULTIFIELD_XTYPE = "multifield";
 	public static final String HTML5SMARTIMAGE_XTYPE = "html5smartimage";
 
-	public static Widget make(CtClass componentClass, CtField annotatedWidgetField, Field widgetField, Map<Class<?>, String> xtypeMap, ClassLoader classLoader, ClassPool classPool)
+	public static DialogElement make(CtClass componentClass, CtField annotatedWidgetField, Field widgetField, Map<Class<?>, String> xtypeMap, ClassLoader classLoader, ClassPool classPool)
 			throws InvalidComponentFieldException, ClassNotFoundException, CannotCompileException, NotFoundException {
 
 		DialogField propertyAnnotation = (DialogField) annotatedWidgetField.getAnnotation(DialogField.class);
@@ -205,13 +198,8 @@ public class WidgetFactory {
 			throw new InvalidComponentFieldException("Invalid or unsupported field annotation on a multi valued field");
 		}
 
-		Widget fieldConfig = new BasicFieldConfig(innerXType);
-
-		List<Widget> fieldConfigs = new ArrayList<Widget>();
-
-		fieldConfigs.add(fieldConfig);
-
-		return new SimpleMultiValueWidget(MULTIFIELD_XTYPE, name, fieldName, fieldLabel, fieldDescription, isRequired, defaultValue, additionalProperties, fieldConfigs);
+		BasicFieldConfig fieldConfig = new BasicFieldConfig(innerXType,null);
+		return new MultiValueWidget(MULTIFIELD_XTYPE, name, fieldName, fieldLabel, fieldDescription, isRequired, defaultValue,additionalProperties, fieldConfig);
 	}
 
 	private static final String getInnerXTypeForMultiField(Field widgetField, DialogField fieldAnnotation, Map<Class<?>, String> xtypeMap) throws InvalidComponentFieldException {
@@ -278,7 +266,7 @@ public class WidgetFactory {
 		if(smartImage.height()!=0){
 			height=smartImage.height();
 		}
-		return new SimpleHtml5SmartImageWidget(name,disableFlush, disableInfo, disableZoom, cropParameter, fileNameParameter, fileReferenceParameter, mapParameter, rotateParameter, uploadUrl, ddGroups, allowUpload, required, fieldLabel, fieldName, fieldDescription,height,smartImage.tab());
+		return new Html5SmartImageWidget(name,disableFlush, disableInfo, disableZoom, cropParameter, fileNameParameter, fileReferenceParameter, mapParameter, rotateParameter, uploadUrl, ddGroups, allowUpload, required, fieldLabel, fieldName, fieldDescription,height,smartImage.tab());
 	}
 
 	private static final SelectionWidget buildSelectionWidget(
@@ -299,7 +287,7 @@ public class WidgetFactory {
 		List<DialogElement> options = buildSelectionOptionsForField(widgetField, selectionAnnotation, classLoader, classPool);
 		String selectionType = getSelectionTypeForField(widgetField, selectionAnnotation);
 
-		return new SimpleSelectionWidget(selectionType, name, fieldLabel, fieldName, fieldDescription, isRequired, defaultValue, additionalProperties, options);
+		return new SelectionWidget(selectionType, name, fieldLabel, fieldName, fieldDescription, isRequired, defaultValue, additionalProperties, options);
 
 	}
 
@@ -307,7 +295,7 @@ public class WidgetFactory {
 		if(fieldAnnotation!=null && (
 				fieldAnnotation.type().equals(Selection.CHECKBOX) ||
 				fieldAnnotation.type().equals(Selection.COMBOBOX) ||
-				fieldAnnotation.type().equals(Selection.RADIO) ||
+				fieldAnnotation.type().equals(Selection.RADIO) || 
 				fieldAnnotation.type().equals(Selection.SELECT))){
 			return fieldAnnotation.type();
 		}else{
@@ -327,7 +315,7 @@ public class WidgetFactory {
 				if (StringUtils.isEmpty(curOptionAnnotation.text()) || StringUtils.isEmpty(curOptionAnnotation.value())) {
 					throw new InvalidComponentFieldException("Selection Options specified in the selectionOptions Annotation property must include a non-empty text and value attribute");
 				}
-				options.add(new SimpleOption(curOptionAnnotation.text(), curOptionAnnotation.value()));
+				options.add(new Option(curOptionAnnotation.text(), curOptionAnnotation.value()));
 			}
 		}
 		/*
@@ -352,30 +340,16 @@ public class WidgetFactory {
 
 	}
 
+	//TODO: This isn't going to work
 	private static final Option buildSelectionOptionForEnum(Enum<?> optionEnum, ClassPool classPool)
 			throws SecurityException, NoSuchFieldException, NotFoundException, ClassNotFoundException {
 
-		String text = optionEnum.toString();
+		String text = optionEnum.name();
 		String value = optionEnum.name();
 
 		CtClass annotatedEnumClass = classPool.getCtClass(optionEnum.getDeclaringClass().getName());
 		CtField annotatedEnumField = annotatedEnumClass.getField(optionEnum.name());
 		com.citytechinc.cq.component.annotations.Option optionAnnotation = (com.citytechinc.cq.component.annotations.Option) annotatedEnumField.getAnnotation(com.citytechinc.cq.component.annotations.Option.class);
-
-		Method getValueMethod;
-		try {
-			getValueMethod = optionEnum.getDeclaringClass().getMethod("getValue");
-			value = (String) getValueMethod.invoke(optionEnum);
-		} catch (NoSuchMethodException e) {
-			//ignore exception
-		} catch (IllegalArgumentException e) {
-
-		} catch (IllegalAccessException e) {
-
-		} catch (InvocationTargetException e) {
-
-		}
-
 
 		if (optionAnnotation != null) {
 			if (StringUtils.isNotEmpty(optionAnnotation.text())) {
@@ -386,7 +360,7 @@ public class WidgetFactory {
 			}
 		}
 
-		return new SimpleOption(text, value);
+		return new Option(text, value);
 
 	}
 

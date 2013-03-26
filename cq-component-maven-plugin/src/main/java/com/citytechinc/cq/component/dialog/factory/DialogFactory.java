@@ -17,14 +17,12 @@ import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.DialogField;
-import com.citytechinc.cq.component.dialog.Dialog;
 import com.citytechinc.cq.component.dialog.DialogElement;
-import com.citytechinc.cq.component.dialog.Html5SmartImageWidget;
-import com.citytechinc.cq.component.dialog.Widget;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
-import com.citytechinc.cq.component.dialog.impl.SimpleDialog;
-import com.citytechinc.cq.component.dialog.impl.SimpleTab;
+import com.citytechinc.cq.component.dialog.impl.Dialog;
+import com.citytechinc.cq.component.dialog.impl.Html5SmartImageWidget;
+import com.citytechinc.cq.component.dialog.impl.Tab;
 import com.citytechinc.cq.component.dialog.impl.WidgetCollection;
 
 public class DialogFactory {
@@ -69,7 +67,7 @@ public class DialogFactory {
 
 				Field trueField = trueComponentClass.getDeclaredField(curField.getName());
 
-				Widget builtFieldWidget = WidgetFactory.make(componentClass, curField, trueField, xtypeMap, classLoader, classPool);
+				DialogElement builtFieldWidget = WidgetFactory.make(componentClass, curField, trueField, xtypeMap, classLoader, classPool);
 				if(builtFieldWidget instanceof Html5SmartImageWidget && ((Html5SmartImageWidget)builtFieldWidget).isTab()){
 					tabList.add(builtFieldWidget);
 				}else{
@@ -86,10 +84,10 @@ public class DialogFactory {
 
 
 		for (String curMapKey : tabMap.keySet()) {
-			tabList.add(new SimpleTab(curMapKey, new WidgetCollection(tabMap.get(curMapKey))));
+			tabList.add(new Tab(curMapKey, new WidgetCollection(tabMap.get(curMapKey))));
 		}
 
-		return new SimpleDialog(tabList, dialogTitle);
+		return new Dialog(tabList, dialogTitle);
 	}
 
 	private static final String getDialogTitleForComponent(Component component) {

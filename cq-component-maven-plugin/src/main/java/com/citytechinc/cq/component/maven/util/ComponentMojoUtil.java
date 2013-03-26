@@ -40,7 +40,7 @@ import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.content.Content;
 import com.citytechinc.cq.component.content.factory.ContentFactory;
 import com.citytechinc.cq.component.content.xml.ContentXmlWriter;
-import com.citytechinc.cq.component.dialog.Dialog;
+import com.citytechinc.cq.component.dialog.impl.Dialog;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.exception.OutputFailureException;

@@ -1,87 +1,13 @@
 package com.citytechinc.cq.component.dialog.impl;
 
-import java.util.List;
 import java.util.Map;
 
-import com.citytechinc.cq.component.dialog.DialogElement;
-import com.citytechinc.cq.component.dialog.Widget;
+import com.citytechinc.cq.component.dialog.AbstractWidget;
 
-public class SimpleWidget implements Widget {
-
-	private final String xtype;
-	private final String name;
-	private final String fieldLabel;
-	private final String fieldName;
-	private final String fieldDescription;
-	private final String primaryType;
-	private final Boolean required;
-	private final Map<String, String> additionalProperties;
-	private final String defaultValue;
+public class SimpleWidget extends AbstractWidget {
+	private static final String PRIMARY_TYPE="cq:Widget";
 
 	public SimpleWidget(String xtype, String name, String fieldName, String fieldLabel, String fieldDescription, Boolean required, Map<String, String> additionalProperties,String defaultValue) {
-		this.xtype = xtype;
-		this.name = name;
-		this.fieldName = fieldName;
-		this.fieldLabel = fieldLabel;
-		this.fieldDescription = fieldDescription;
-		this.required = required;
-		this.additionalProperties = additionalProperties;
-		this.defaultValue=defaultValue;
-		this.primaryType = "cq:Widget";
+		super(xtype,fieldLabel,fieldDescription,!required,defaultValue,name,PRIMARY_TYPE, null, fieldName,additionalProperties,null);
 	}
-
-	public String getXtype() {
-		return xtype;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getFieldName() {
-		return fieldName;
-	}
-
-	public String getFieldDescription() {
-		return fieldDescription;
-	}
-
-	public String toString() {
-		StringBuffer retStringBuffer = new StringBuffer(name + " ");
-
-		retStringBuffer.append("xtype : " + xtype);
-		retStringBuffer.append(" fieldName : " + fieldName);
-		retStringBuffer.append(" fieldDescription : " + fieldDescription);
-
-		return retStringBuffer.toString();
-	}
-
-	public String getPrimaryType() {
-		return primaryType;
-	}
-
-	public String getFieldLabel() {
-		return fieldLabel;
-	}
-
-	public Boolean isAllowBlank(){
-		return !required;
-	}
-
-	public Map<String, String> getAdditionalProperties() {
-		return additionalProperties;
-	}
-
-	public String getDefaultValue() {
-		return defaultValue;
-	}
-	
-	public List<? extends DialogElement> getContainedElements() {
-		return null;
-	}
-
-	public String getNameSpace() {
-		return null;
-	}
-
 }

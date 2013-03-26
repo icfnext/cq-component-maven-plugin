@@ -5,6 +5,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -27,7 +29,7 @@ public class DialogXmlWriter {
 
 	private static final DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 	private static final TransformerFactory transformerFactory = TransformerFactory.newInstance();
-	private static final List<String> DO_NOT_CALL=Arrays.asList(new String[]{"getPrimaryType","getNameSpace","getContainedElements","getFieldName","getClass"});
+	private static final List<String> DO_NOT_CALL=Arrays.asList(new String[]{"getPrimaryType","getNameSpace","getContainedElements","getFieldName","getClass","getAdditionalProperties"});
 	public static final void writeDialog(Dialog dialog, OutputStream outputStream)
 			throws ParserConfigurationException, TransformerException, IllegalArgumentException, SecurityException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		Document dialogDocument = makeDocument(dialog);
@@ -54,6 +56,8 @@ public class DialogXmlWriter {
 		List<DialogElement> containedElementsReturn=(List<DialogElement>)containedElementsMethod.invoke(dialogElement, null);
 		Method primaryTypeMethod=dialogClass.getMethod("getPrimaryType", null);
 		String primaryType=(String)primaryTypeMethod.invoke(dialogElement,  null);
+		Method additionalPropertiesMethod=dialogClass.getMethod("getAdditionalProperties",null);
+		Map<String,String> additionalPropertiesReturn=(Map<String,String>)additionalPropertiesMethod.invoke(dialogElement, null);
 		Element createdElement;
 		if(StringUtils.isEmpty(namespace)){
 			createdElement=document.createElement(fieldName);
@@ -77,6 +81,11 @@ public class DialogXmlWriter {
 					}
 					createdElement.setAttribute(propertyName, value);
 				}
+			}
+		}
+		if(additionalPropertiesReturn!=null){
+			for(String key:additionalPropertiesReturn.keySet()){
+				createdElement.setAttribute(key, additionalPropertiesReturn.get(key));
 			}
 		}
 		if(containedElementsReturn!=null && containedElementsReturn.size()>0){

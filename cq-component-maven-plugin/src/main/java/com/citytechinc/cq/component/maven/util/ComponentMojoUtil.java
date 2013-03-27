@@ -19,6 +19,7 @@ import java.util.Set;
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
+import javassist.CtField;
 import javassist.LoaderClassPath;
 import javassist.NotFoundException;
 
@@ -37,6 +38,7 @@ import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.Component;
+import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.content.Content;
 import com.citytechinc.cq.component.content.factory.ContentFactory;
 import com.citytechinc.cq.component.content.xml.ContentXmlWriter;
@@ -623,11 +625,20 @@ public class ComponentMojoUtil {
 			getLog().debug("Annotation : " + annotation);
 
 			if (annotation != null) {
-				getLog().debug("Processing Component Class " + curClass);
-				Dialog builtDialog = DialogFactory.make(curClass, xtypeMap, classLoader, classPool);
-				dialogList.add(builtDialog);
-				File dialogFile = writeDialogeToFile(builtDialog, curClass, buildDirectory, componentPathBase, defaultComponentPathSuffix);
-				writeDialogToArchiveFile(dialogFile, curClass, zipOutputStream, reservedNames, componentPathBase, defaultComponentPathSuffix);
+				boolean hasField=false;
+				for (CtField curField : curClass.getDeclaredFields()) {
+					if(curField.hasAnnotation(DialogField.class)){
+						hasField=true;
+						break;
+					}
+				}
+				if(hasField){
+					getLog().debug("Processing Component Class " + curClass);
+					Dialog builtDialog = DialogFactory.make(curClass, xtypeMap, classLoader, classPool);
+					dialogList.add(builtDialog);
+					File dialogFile = writeDialogeToFile(builtDialog, curClass, buildDirectory, componentPathBase, defaultComponentPathSuffix);
+					writeDialogToArchiveFile(dialogFile, curClass, zipOutputStream, reservedNames, componentPathBase, defaultComponentPathSuffix);
+				}
 			}
 		}
 

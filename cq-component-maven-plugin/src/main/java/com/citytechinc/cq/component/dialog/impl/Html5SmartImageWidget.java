@@ -1,15 +1,13 @@
 package com.citytechinc.cq.component.dialog.impl;
 
-import java.util.List;
-import java.util.Map;
-
 import org.codehaus.plexus.util.StringUtils;
 
-import com.citytechinc.cq.component.dialog.DialogElement;
-import com.citytechinc.cq.component.dialog.Html5SmartImageWidget;
+import com.citytechinc.cq.component.dialog.AbstractWidget;
 
-public class SimpleHtml5SmartImageWidget implements Html5SmartImageWidget {
-	private String name;
+public class Html5SmartImageWidget extends AbstractWidget {
+	private static final String XTYPE="html5smartimage";
+	private static final String PRIMARY_TYPE="cq:Widget";
+	private String originalName;
 	private final boolean disableFlush;
 	private final boolean disableInfo;
 	private final boolean disableZoom;
@@ -21,14 +19,10 @@ public class SimpleHtml5SmartImageWidget implements Html5SmartImageWidget {
 	private final String uploadUrl;
 	private final String ddGroups;
 	private final boolean allowUpload;
-	private final boolean required;
-	private final String fieldLabel;
-	private final String fieldName;
-	private final String fieldDescription;
 	private Integer height;
 	private boolean tab;
 
-	public SimpleHtml5SmartImageWidget(String name, boolean disableFlush,
+	public Html5SmartImageWidget(String name, boolean disableFlush,
 			boolean disableInfo, boolean disableZoom, String cropParameter,
 			String fileNameParameter, String fileReferenceParameter,
 			String mapParameter, String rotateParameter, String uploadUrl,
@@ -37,6 +31,8 @@ public class SimpleHtml5SmartImageWidget implements Html5SmartImageWidget {
 			String fieldDescription,
 			Integer height,
 			boolean tab) {
+		super(XTYPE,fieldLabel,fieldDescription,!required,null,getNameAsPrefix(name),PRIMARY_TYPE, null, fieldName,null,null);
+		originalName=name;
 		this.disableFlush = disableFlush;
 		this.disableInfo = disableInfo;
 		this.disableZoom = disableZoom;
@@ -48,16 +44,11 @@ public class SimpleHtml5SmartImageWidget implements Html5SmartImageWidget {
 		this.uploadUrl = uploadUrl;
 		this.ddGroups = ddGroups;
 		this.allowUpload = allowUpload;
-		this.required=required;
-		this.fieldLabel=fieldLabel;
-		this.fieldName=fieldName;
-		this.fieldDescription=fieldDescription;
-		this.name = name;
 		this.height=height;
 		this.tab=tab;
 	}
 	
-	private String getNameAsPrefix(){
+	private static String getNameAsPrefix(String name){
 		if(StringUtils.isEmpty(name)){
 			return "./";
 		}else{
@@ -65,28 +56,8 @@ public class SimpleHtml5SmartImageWidget implements Html5SmartImageWidget {
 		}
 	}
 
-	public String getXtype() {
-		return "html5smartimage";
-	}
-
-	public String getPrimaryType() {
-		return "cq:Widget";
-	}
-
-	public String getDefaultValue() {
-		return null;
-	}
-	
-	public Map<String, String> getAdditionalProperties() {
-		return null;
-	}
-
-	public String getName() {
-		return getNameAsPrefix()+"file";
-	}
-
 	public String getTitle() {
-		return fieldLabel;
+		return getFieldLabel();
 	}
 
 	public boolean isDisableFlush() {
@@ -107,28 +78,28 @@ public class SimpleHtml5SmartImageWidget implements Html5SmartImageWidget {
 
 	public String getFileNameParameter() {
 		if(!StringUtils.isEmpty(fileNameParameter)){
-			return getNameAsPrefix()+fileNameParameter;
+			return getNameAsPrefix(originalName)+fileNameParameter;
 		}
 		return fileNameParameter;
 	}
 
 	public String getFileReferenceParameter() {
 		if(!StringUtils.isEmpty(fileReferenceParameter)){
-			return getNameAsPrefix()+fileReferenceParameter;
+			return getNameAsPrefix(originalName)+fileReferenceParameter;
 		}
 		return fileReferenceParameter;
 	}
 
 	public String getMapParameter() {
 		if(!StringUtils.isEmpty(mapParameter)){
-			return getNameAsPrefix()+mapParameter;
+			return getNameAsPrefix(originalName)+mapParameter;
 		}
 		return mapParameter;
 	}
 
 	public String getRotateParameter() {
 		if(!StringUtils.isEmpty(rotateParameter)){
-			return getNameAsPrefix()+rotateParameter;
+			return getNameAsPrefix(originalName)+rotateParameter;
 		}
 		return rotateParameter;
 	}
@@ -148,29 +119,9 @@ public class SimpleHtml5SmartImageWidget implements Html5SmartImageWidget {
 	public boolean isTab() {
 		return tab;
 	}
-	
-	public Boolean isAllowBlank(){
-		return !required;
-	}
-
-	public String getFieldLabel() {
-		return fieldLabel;
-	}
-
-	public String getFieldName() {
-		return fieldName;
-	}
-
-	public String getFieldDescription() {
-		return fieldDescription;
-	}
 
 	public String getLabel() {
-		return fieldLabel;
-	}
-
-	public Boolean hasFieldDescription() {
-		return StringUtils.isNotEmpty(fieldDescription);
+		return getFieldLabel();
 	}
 
 	public Integer getHeight() {
@@ -178,18 +129,10 @@ public class SimpleHtml5SmartImageWidget implements Html5SmartImageWidget {
 	}
 
 	public String getRequestSuffix() {
-		if(StringUtils.isEmpty(name)){
+		if(StringUtils.isEmpty(originalName)){
 			return ".img.png";
 		}else{
-			return "/"+name+".img.png";
+			return "/"+originalName+".img.png";
 		}
-	}
-	
-	public List<? extends DialogElement> getContainedElements() {
-		return null;
-	}
-
-	public String getNameSpace() {
-		return null;
 	}
 }

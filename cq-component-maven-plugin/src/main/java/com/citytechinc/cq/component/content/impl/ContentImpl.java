@@ -8,12 +8,13 @@ public class ContentImpl implements Content {
 	private final String primaryType;
 	private final String title;
 	private final String group;
+	private final String resourceSuperType;
 
-	public ContentImpl(String title, String group, Boolean isContainer) {
+	public ContentImpl(String title, String group, String resourceSuperType,Boolean isContainer) {
 		this.title = title;
 		this.group = group;
 		this.isContainer = isContainer;
-
+		this.resourceSuperType=resourceSuperType;
 		this.primaryType = "cq:Component";
 	}
 
@@ -31,6 +32,10 @@ public class ContentImpl implements Content {
 
 	public String getGroup() {
 		return group;
+	}
+
+	public String getResourceSuperType() {
+		return resourceSuperType;
 	}
 
 }

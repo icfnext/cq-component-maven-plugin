@@ -13,13 +13,13 @@ import javassist.NotFoundException;
 
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.FieldProperty;
-import com.citytechinc.cq.component.dialog.Widget;
+import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 
 public abstract class AbstractWidgetMaker implements WidgetMaker {
 
-	public abstract Widget make(String xtype, Field widgetField, CtField ctWidgetField,
+	public abstract DialogElement make(String xtype, Field widgetField, CtField ctWidgetField,
 			Class<?> containingClass, CtClass ctContainingClass, Map<Class<?>, String> xtypeMap) throws ClassNotFoundException, InvalidComponentFieldException, CannotCompileException, NotFoundException;
 
 

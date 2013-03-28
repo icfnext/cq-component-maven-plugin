@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.net.URI;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -16,19 +15,20 @@ import javassist.NotFoundException;
 
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.FieldConfig;
-import com.citytechinc.cq.component.dialog.Widget;
+import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.factory.WidgetFactory;
 import com.citytechinc.cq.component.dialog.impl.BasicFieldConfig;
-import com.citytechinc.cq.component.dialog.impl.SimpleMultiValueWidget;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
+
+import com.citytechinc.cq.component.dialog.impl.MultiValueWidget;
 import com.citytechinc.cq.component.dialog.maker.parent.AbstractWidgetMaker;
 
 public class MultifieldWidgetMaker extends AbstractWidgetMaker implements
 		WidgetMaker {
 
 	@Override
-	public Widget make(String xtype, Field widgetField, CtField ctWidgetField,
+	public DialogElement make(String xtype, Field widgetField, CtField ctWidgetField,
 			Class<?> containingClass, CtClass ctContainingClass, Map<Class<?>, String> xtypeMap)
 			throws ClassNotFoundException, InvalidComponentFieldException,
 			CannotCompileException, NotFoundException {
@@ -49,13 +49,18 @@ public class MultifieldWidgetMaker extends AbstractWidgetMaker implements
 			throw new InvalidComponentFieldException("Invalid or unsupported field annotation on a multi valued field");
 		}
 
-		Widget fieldConfig = new BasicFieldConfig(innerXType);
+		BasicFieldConfig fieldConfig = new BasicFieldConfig(innerXType, null);
 
-		List<Widget> fieldConfigs = new ArrayList<Widget>();
-
-		fieldConfigs.add(fieldConfig);
-
-		return new SimpleMultiValueWidget(WidgetFactory.MULTIFIELD_XTYPE, name, fieldName, fieldLabel, fieldDescription, isRequired, defaultValue, additionalProperties, fieldConfigs);
+		return new MultiValueWidget(
+				WidgetFactory.MULTIFIELD_XTYPE,
+				name,
+				fieldName,
+				fieldLabel,
+				fieldDescription,
+				isRequired,
+				defaultValue,
+				additionalProperties,
+				fieldConfig);
 
 	}
 

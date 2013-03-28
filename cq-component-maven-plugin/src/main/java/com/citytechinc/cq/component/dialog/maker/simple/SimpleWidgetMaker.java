@@ -7,7 +7,7 @@ import javassist.CtClass;
 import javassist.CtField;
 
 import com.citytechinc.cq.component.annotations.DialogField;
-import com.citytechinc.cq.component.dialog.Widget;
+import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.impl.SimpleWidget;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 import com.citytechinc.cq.component.dialog.maker.parent.AbstractWidgetMaker;
@@ -16,7 +16,7 @@ public class SimpleWidgetMaker extends AbstractWidgetMaker implements
 		WidgetMaker {
 
 	@Override
-	public Widget make(String xtype, Field widgetField, CtField ctWidgetField,
+	public DialogElement make(String xtype, Field widgetField, CtField ctWidgetField,
 			Class<?> containingClass, CtClass ctContainingClass, Map<Class<?>, String> xtypeMap) throws ClassNotFoundException {
 
 		DialogField dialogFieldAnnotation = (DialogField) ctWidgetField.getAnnotation(DialogField.class);

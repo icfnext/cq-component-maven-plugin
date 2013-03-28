@@ -15,11 +15,10 @@ import javassist.NotFoundException;
 
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.widgets.Selection;
-import com.citytechinc.cq.component.dialog.Option;
-import com.citytechinc.cq.component.dialog.Widget;
+import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
-import com.citytechinc.cq.component.dialog.impl.SimpleOption;
-import com.citytechinc.cq.component.dialog.impl.SimpleSelectionWidget;
+import com.citytechinc.cq.component.dialog.impl.Option;
+import com.citytechinc.cq.component.dialog.impl.SelectionWidget;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 import com.citytechinc.cq.component.dialog.maker.parent.AbstractWidgetMaker;
 
@@ -27,7 +26,7 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker implements
 		WidgetMaker {
 
 	@Override
-	public Widget make(String xtype, Field widgetField, CtField ctWidgetField,
+	public DialogElement make(String xtype, Field widgetField, CtField ctWidgetField,
 			Class<?> containingClass, CtClass ctContainingClass, Map<Class<?>, String> xtypeMap)
 			throws ClassNotFoundException, InvalidComponentFieldException, CannotCompileException, NotFoundException {
 
@@ -45,10 +44,19 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker implements
 		Map<String, String> additionalProperties = getAdditionalPropertiesForField(dialogFieldAnnotation);
 		String defaultValue = getDefaultValueForField(dialogFieldAnnotation);
 
-		List<Option> options = buildSelectionOptionsForField(ctWidgetField, selectionAnnotation, classLoader, classPool);
+		List<DialogElement> options = buildSelectionOptionsForField(ctWidgetField, selectionAnnotation, classLoader, classPool);
 		String selectionType = getSelectionTypeForField(ctWidgetField, selectionAnnotation);
 
-		return new SimpleSelectionWidget(selectionType, name, fieldLabel, fieldName, fieldDescription, isRequired, defaultValue, additionalProperties, options);
+		return new SelectionWidget(
+				selectionType,
+				name,
+				fieldLabel,
+				fieldName,
+				fieldDescription,
+				isRequired,
+				defaultValue,
+				additionalProperties,
+				options);
 
 	}
 
@@ -64,9 +72,9 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker implements
 		}
 	}
 
-	private static final List<Option> buildSelectionOptionsForField(CtField widgetField, Selection fieldAnnotation, ClassLoader classLoader, ClassPool classPool) throws InvalidComponentFieldException, CannotCompileException, NotFoundException, ClassNotFoundException {
+	private static final List<DialogElement> buildSelectionOptionsForField(CtField widgetField, Selection fieldAnnotation, ClassLoader classLoader, ClassPool classPool) throws InvalidComponentFieldException, CannotCompileException, NotFoundException, ClassNotFoundException {
 
-		List<Option> options = new ArrayList<Option>();
+		List<DialogElement> options = new ArrayList<DialogElement>();
 
 		/*
 		 * Options specified in the annotation take precedence
@@ -76,7 +84,7 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker implements
 				if (StringUtils.isEmpty(curOptionAnnotation.text()) || StringUtils.isEmpty(curOptionAnnotation.value())) {
 					throw new InvalidComponentFieldException("Selection Options specified in the selectionOptions Annotation property must include a non-empty text and value attribute");
 				}
-				options.add(new SimpleOption(curOptionAnnotation.text(), curOptionAnnotation.value()));
+				options.add(new Option(curOptionAnnotation.text(), curOptionAnnotation.value()));
 			}
 		}
 		/*
@@ -120,7 +128,7 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker implements
 			}
 		}
 
-		return new SimpleOption(text, value);
+		return new Option(text, value);
 
 	}
 

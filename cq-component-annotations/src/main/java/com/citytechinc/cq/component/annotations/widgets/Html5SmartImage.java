@@ -7,6 +7,7 @@ public @interface Html5SmartImage {
 	public String cropParameter() default "";
 	public String fileNameParameter() default "fileName";
 	public String fileReferenceParameter() default "fileReference";
+	public String name() default "";
 	public String mapParameter() default "";
 	public String rotateParameter() default "";
 	public String uploadUrl() default "/tmp/upload/*";

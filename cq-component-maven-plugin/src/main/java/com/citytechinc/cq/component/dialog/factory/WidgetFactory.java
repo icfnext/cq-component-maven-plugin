@@ -16,9 +16,10 @@ import javassist.NotFoundException;
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.DialogField;
-import com.citytechinc.cq.component.dialog.Widget;
+import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
+
 
 public class WidgetFactory {
 
@@ -29,7 +30,7 @@ public class WidgetFactory {
 	public static final String MULTIFIELD_XTYPE = "multifield";
 	public static final String HTML5SMARTIMAGE_XTYPE = "html5smartimage";
 
-	public static Widget make(
+	public static DialogElement make(
 			CtClass componentClass,
 			CtField annotatedWidgetField,
 			Field widgetField,

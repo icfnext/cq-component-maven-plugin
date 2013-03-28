@@ -58,4 +58,6 @@ public @interface Component {
 	String layout() default "editbar";
 	
 	Listener[] listeners() default {};
+	
+	String resourceSuperType() default "";
 }

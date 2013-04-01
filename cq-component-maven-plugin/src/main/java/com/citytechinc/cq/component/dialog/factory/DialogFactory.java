@@ -96,7 +96,7 @@ public class DialogFactory {
 			tabList.add(new Tab(curMapKey, new WidgetCollection(tabMap.get(curMapKey))));
 		}
 
-		return new Dialog(tabList, dialogTitle);
+		return new Dialog(tabList, dialogTitle,componentAnnotation.fileName());
 	}
 
 	private static final String getDialogTitleForComponent(Component component) {

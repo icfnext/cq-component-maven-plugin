@@ -9,13 +9,13 @@ import javassist.CtField;
 import javassist.NotFoundException;
 
 import com.citytechinc.cq.component.annotations.DialogField;
-import com.citytechinc.cq.component.annotations.widgets.NumberField;
+import com.citytechinc.cq.component.annotations.widgets.DateField;
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
-import com.citytechinc.cq.component.dialog.impl.NumberFieldWidget;
+import com.citytechinc.cq.component.dialog.impl.DateFieldWidget;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 
-public class NumberFieldMaker extends AbstractWidgetMaker{
+public class DateFieldWidgetMaker extends AbstractWidgetMaker{
 
 	@Override
 	public DialogElement make(String xtype, Field widgetField,
@@ -23,13 +23,13 @@ public class NumberFieldMaker extends AbstractWidgetMaker{
 			CtClass ctContainingClass, Map<Class<?>, String> xtypeMap)
 			throws ClassNotFoundException, InvalidComponentFieldException,
 			CannotCompileException, NotFoundException {
-		NumberField numberFieldAnnotation = (NumberField) ctWidgetField.getAnnotation(NumberField.class);
+		
+		DateField dateFieldAnnotation = (DateField) ctWidgetField.getAnnotation(DateField.class);
 		DialogField dialogFieldAnnotation = (DialogField) ctWidgetField.getAnnotation(DialogField.class);
 		
-		boolean allowDecimals=numberFieldAnnotation.allowDecimals();
-		boolean allowNegative=numberFieldAnnotation.allowNegative();
-		int decimalPrecision=numberFieldAnnotation.decimalPrecision();
-		String decimalSeparator=numberFieldAnnotation.decimalSeparator();
+		int startDay=dateFieldAnnotation.startDay();
+		boolean showToday=dateFieldAnnotation.showToday();
+		String format=dateFieldAnnotation.format();
 		
 		String name = getNameForField(dialogFieldAnnotation, widgetField);
 		String fieldName = getFieldNameForField(dialogFieldAnnotation, widgetField);
@@ -40,7 +40,7 @@ public class NumberFieldMaker extends AbstractWidgetMaker{
 		String defaultValue = getDefaultValueForField(dialogFieldAnnotation);
 		
 		
-		return new NumberFieldWidget(allowDecimals, allowNegative, decimalPrecision, decimalSeparator, fieldLabel, fieldDescription, !isRequired, defaultValue, name, fieldName, additionalProperties);
+		return new DateFieldWidget(startDay, showToday, format, fieldLabel, fieldDescription, !isRequired, defaultValue, name, fieldName, additionalProperties);
 	}
 
 }

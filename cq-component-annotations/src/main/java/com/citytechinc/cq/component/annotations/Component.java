@@ -60,4 +60,8 @@ public @interface Component {
 	Listener[] listeners() default {};
 	
 	String resourceSuperType() default "";
+	
+	String fileName() default "dialog";
+	
+	boolean editConfig() default true;
 }

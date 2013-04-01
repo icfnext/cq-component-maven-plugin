@@ -412,7 +412,7 @@ public class ComponentMojoUtil {
 		for (CtClass curClass : classList) {
 			Component annotation = (Component) curClass.getAnnotation(Component.class);
 
-			if (annotation != null) {
+			if (annotation != null && annotation.editConfig()) {
 				EditConfig builtEditConfig = EditConfigFactory.make(curClass);
 
 				builtEditConfigs.add(builtEditConfig);
@@ -664,7 +664,7 @@ public class ComponentMojoUtil {
 					getLog().debug("Processing Component Class " + curClass);
 					Dialog builtDialog = DialogFactory.make(curClass, xtypeMap, widgetMakerMap, classLoader, classPool);
 					dialogList.add(builtDialog);
-					File dialogFile = writeDialogeToFile(builtDialog, curClass, buildDirectory, componentPathBase, defaultComponentPathSuffix);
+					File dialogFile = writeDialogToFile(builtDialog, curClass, buildDirectory, componentPathBase, defaultComponentPathSuffix);
 					writeDialogToArchiveFile(dialogFile, curClass, zipOutputStream, reservedNames, componentPathBase, defaultComponentPathSuffix);
 				}
 			}
@@ -691,11 +691,11 @@ public class ComponentMojoUtil {
 	 * @throws InvocationTargetException
 	 * @throws NoSuchMethodException
 	 */
-	protected static File writeDialogeToFile(Dialog dialog, CtClass componentClass,  File buildDirectory, String componentPathBase, String defaultComponentPathSuffix)
+	protected static File writeDialogToFile(Dialog dialog, CtClass componentClass,  File buildDirectory, String componentPathBase, String defaultComponentPathSuffix)
 			throws OutputFailureException, IOException, ParserConfigurationException, TransformerException, ClassNotFoundException, IllegalArgumentException, SecurityException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		File componentOutputDirectory = getOutputDirectoryForComponentClass(componentClass, buildDirectory, componentPathBase, defaultComponentPathSuffix);
 
-		File dialogFile = new File(componentOutputDirectory, "dialog.xml");
+		File dialogFile = new File(componentOutputDirectory, dialog.getFileName());
 
 		if (dialogFile.exists()) {
 			dialogFile.delete();
@@ -727,7 +727,8 @@ public class ComponentMojoUtil {
 				getComponentPathSuffixForComponentClass(componentClass, defaultComponentPathSuffix) +
 				"/" +
 				getComponentNameForComponentClass(componentClass) +
-				"/dialog.xml";
+				"/" +
+				dialogFile.getName();
 
 		getLog().debug("Archiving dialog file " + dialogFilePath);
 

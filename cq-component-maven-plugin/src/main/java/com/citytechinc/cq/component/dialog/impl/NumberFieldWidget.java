@@ -1,11 +1,9 @@
 package com.citytechinc.cq.component.dialog.impl;
 
-import java.util.List;
 import java.util.Map;
 
 import com.citytechinc.cq.component.annotations.config.Widget;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
-import com.citytechinc.cq.component.dialog.DialogElement;
 
 @Widget(annotationClass="com.citytechinc.cq.component.annotations.widgets.NumberField",makerClass="com.citytechinc.cq.component.dialog.maker.impl.NumberFieldMaker",xtypes=NumberFieldWidget.XTYPE)
 public class NumberFieldWidget extends AbstractWidget {
@@ -21,11 +19,10 @@ public class NumberFieldWidget extends AbstractWidget {
 			int decimalPrecision, String decimalSeparator, String fieldLabel,
 			String fieldDescription, boolean allowBlank, String defaultValue,
 			String name, String fieldName,
-			Map<String, String> additionalProperties,
-			List<? extends DialogElement> containedElements) {
+			Map<String, String> additionalProperties) {
 		super(XTYPE, fieldLabel, fieldDescription, allowBlank, defaultValue,
 				name, PRIMARY_TYPE, null, fieldName, additionalProperties,
-				containedElements);
+				null);
 		this.allowDecimals=allowDecimals;
 		this.allowNegative=allowNegative;
 		this.decimalPrecision=decimalPrecision;

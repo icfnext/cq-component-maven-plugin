@@ -50,7 +50,7 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 			return overrideLabel;
 		}
 
-		return dialogField.getName();
+		return null;
 	}
 
 	protected String getFieldDescriptionForField(DialogField dialogFieldAnnotation) {

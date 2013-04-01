@@ -79,7 +79,7 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker{
 		 */
 		if (fieldAnnotation!=null && fieldAnnotation.options().length > 0) {
 			for(com.citytechinc.cq.component.annotations.Option curOptionAnnotation : fieldAnnotation.options()) {
-				if (StringUtils.isEmpty(curOptionAnnotation.text()) || StringUtils.isEmpty(curOptionAnnotation.value())) {
+				if (StringUtils.isEmpty(curOptionAnnotation.value())) {
 					throw new InvalidComponentFieldException("Selection Options specified in the selectionOptions Annotation property must include a non-empty text and value attribute");
 				}
 				options.add(new Option(curOptionAnnotation.text(), curOptionAnnotation.value()));

@@ -1,4 +1,4 @@
-package com.citytechinc.cq.component.dialog.maker.smartimage;
+package com.citytechinc.cq.component.dialog.maker.impl;
 
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -12,11 +12,9 @@ import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.widgets.Html5SmartImage;
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.impl.Html5SmartImageWidget;
-import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
-import com.citytechinc.cq.component.dialog.maker.parent.AbstractWidgetMaker;
+import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 
-public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker implements
-		WidgetMaker {
+public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker{
 
 	@Override
 	public DialogElement make(String xtype, Field widgetField, CtField ctWidgetField,

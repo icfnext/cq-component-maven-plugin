@@ -36,37 +36,37 @@ import org.apache.commons.io.IOUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.StringUtils;
+import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
+import org.reflections.scanners.TypeAnnotationsScanner;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
+import org.reflections.util.FilterBuilder;
 
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.DialogField;
-import com.citytechinc.cq.component.annotations.widgets.Html5SmartImage;
-import com.citytechinc.cq.component.annotations.widgets.Selection;
+import com.citytechinc.cq.component.annotations.config.Widget;
 import com.citytechinc.cq.component.content.Content;
 import com.citytechinc.cq.component.content.factory.ContentFactory;
 import com.citytechinc.cq.component.content.xml.ContentXmlWriter;
+import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.impl.Dialog;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
-import com.citytechinc.cq.component.dialog.maker.multifield.MultifieldWidgetMaker;
-import com.citytechinc.cq.component.dialog.maker.selection.SelectionWidgetMaker;
-import com.citytechinc.cq.component.dialog.maker.simple.SimpleWidgetMaker;
-import com.citytechinc.cq.component.dialog.maker.smartimage.Html5SmartImageWidgetMaker;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.exception.OutputFailureException;
 import com.citytechinc.cq.component.dialog.factory.DialogFactory;
-import com.citytechinc.cq.component.dialog.factory.WidgetFactory;
 import com.citytechinc.cq.component.dialog.xml.DialogXmlWriter;
 import com.citytechinc.cq.component.editconfig.EditConfig;
 import com.citytechinc.cq.component.editconfig.factory.EditConfigFactory;
 import com.citytechinc.cq.component.editconfig.xml.EditConfigXmlWriter;
 import com.citytechinc.cq.component.maven.Dependency;
-import com.citytechinc.cq.component.maven.WidgetMakerMapping;
-import com.citytechinc.cq.component.maven.XtypeMapping;
+import com.google.common.base.Predicate;
 
 public class ComponentMojoUtil {
 
 	private static final String OUTPUT_PATH = "tempComponentConfig";
-
+	private static final String CITYTECH_PACKAGE="com.citytechinc.cq.component.dialog.impl";
 	private static final LogSingleton getLog() {
 		return LogSingleton.getInstance();
 	}
@@ -109,50 +109,27 @@ public class ComponentMojoUtil {
 	 *
 	 * @throws ClassNotFoundException
 	 */
-	public static Map<Class<?>, String> getXTypeMapForCustomXTypeMapping(ClassLoader classLoader, List<XtypeMapping> xtypeMappings) throws ClassNotFoundException {
+	public static Map<Class<?>, String> getXTypeMapForCustomXTypeMapping(List<WidgetConfigHolder> widgetConfigs) throws ClassNotFoundException {
 		Map<Class<?>, String> retMap = new HashMap<Class<?>, String>();
 
-		/*
-		 * Setup some default mappings
-		 */
-		retMap.put(Html5SmartImage.class, WidgetFactory.HTML5SMARTIMAGE_XTYPE);
-		retMap.put(Selection.class, WidgetFactory.SELECTION_XTYPE);
-
-		/*
-		 * Populate the map with any POM configured mappings.  These override defaults
-		 */
-		if (xtypeMappings != null) {
-			for (XtypeMapping curXTypeMapping : xtypeMappings) {
-				retMap.put(curXTypeMapping.getClassObject(classLoader), curXTypeMapping.getXtype());
+		for(WidgetConfigHolder widgetConfig:widgetConfigs){
+			if(widgetConfig.getAnnotationClass()!=null){
+				for(String xtype:widgetConfig.getXtypes()){
+					retMap.put(widgetConfig.getAnnotationClass(), xtype);
+				}
 			}
 		}
 
 		return retMap;
 	}
 
-	public static Map<String, WidgetMaker> getXTypeToWidgetMakerMap(ClassLoader classLoader, List<WidgetMakerMapping> widgetMakerMappings)
+	public static Map<String, WidgetMaker> getXTypeToWidgetMakerMap(List<WidgetConfigHolder> widgetConfigs)
 			throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		Map<String, WidgetMaker> xTypeToWidgetMakerMap = new HashMap<String, WidgetMaker>();
 
-		WidgetMaker defaultWidgetMaker = new SimpleWidgetMaker();
-		WidgetMaker html5SmartImageWidgetMaker = new Html5SmartImageWidgetMaker();
-		WidgetMaker selectionWidgetMaker = new SelectionWidgetMaker();
-		WidgetMaker multifieldWidgetMaker = new MultifieldWidgetMaker();
-
-		/*
-		 * Set the Default Widget Makers.  This may be overridden by configured makers
-		 * if makers are configured for the same xtype
-		 */
-		xTypeToWidgetMakerMap.put(WidgetFactory.TEXTFIELD_XTYPE, defaultWidgetMaker);
-		xTypeToWidgetMakerMap.put(WidgetFactory.NUMBERFIELD_XTYPE, defaultWidgetMaker);
-		xTypeToWidgetMakerMap.put(WidgetFactory.PATHFIELD_XTYPE, defaultWidgetMaker);
-		xTypeToWidgetMakerMap.put(WidgetFactory.HTML5SMARTIMAGE_XTYPE, html5SmartImageWidgetMaker);
-		xTypeToWidgetMakerMap.put(WidgetFactory.SELECTION_XTYPE, selectionWidgetMaker);
-		xTypeToWidgetMakerMap.put(WidgetFactory.MULTIFIELD_XTYPE, multifieldWidgetMaker);
-
-		if (widgetMakerMappings != null) {
-			for (WidgetMakerMapping curWidgetMakerMapping : widgetMakerMappings) {
-				xTypeToWidgetMakerMap.put(curWidgetMakerMapping.getXtype(), curWidgetMakerMapping.getMaker(classLoader));
+		for(WidgetConfigHolder widgetConfig:widgetConfigs){
+			for(String xtype:widgetConfig.getXtypes()){
+				xTypeToWidgetMakerMap.put(xtype, widgetConfig.getMakerClass().newInstance());
 			}
 		}
 
@@ -176,7 +153,7 @@ public class ComponentMojoUtil {
 			List<String> classPaths,
 			List<Dependency> includedDependencies,
 			Set<Artifact> projectArtifacts)
-			throws ClassNotFoundException, IOException, NotFoundException {
+					throws ClassNotFoundException, IOException, NotFoundException {
 
 		final List<CtClass> classList = new ArrayList<CtClass>();
 
@@ -349,7 +326,7 @@ public class ComponentMojoUtil {
 			String defaultComponentGroup,
 			File existingArchiveFile,
 			File tempArchiveFile)
-			throws OutputFailureException, IOException, InvalidComponentClassException, InvalidComponentFieldException, ParserConfigurationException, TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+					throws OutputFailureException, IOException, InvalidComponentClassException, InvalidComponentFieldException, ParserConfigurationException, TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 
 		if (!existingArchiveFile.exists()) {
 			throw new  OutputFailureException("Archive file does not exist");
@@ -664,7 +641,7 @@ public class ComponentMojoUtil {
 			File buildDirectory,
 			String componentPathBase,
 			String defaultComponentPathSuffix)
-			throws InvalidComponentClassException, InvalidComponentFieldException, OutputFailureException, IOException, ParserConfigurationException, TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+					throws InvalidComponentClassException, InvalidComponentFieldException, OutputFailureException, IOException, ParserConfigurationException, TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 
 		final List<Dialog> dialogList = new ArrayList<Dialog>();
 
@@ -746,11 +723,11 @@ public class ComponentMojoUtil {
 	 */
 	protected static void writeDialogToArchiveFile(File dialogFile, CtClass componentClass, ZipArchiveOutputStream archiveStream, Set<String> reservedNames, String componentPathBase, String defaultComponentPathSuffix) throws IOException, ClassNotFoundException {
 		String dialogFilePath = componentPathBase +
-								"/" +
-								getComponentPathSuffixForComponentClass(componentClass, defaultComponentPathSuffix) +
-								"/" +
-								getComponentNameForComponentClass(componentClass) +
-								"/dialog.xml";
+				"/" +
+				getComponentPathSuffixForComponentClass(componentClass, defaultComponentPathSuffix) +
+				"/" +
+				getComponentNameForComponentClass(componentClass) +
+				"/dialog.xml";
 
 		getLog().debug("Archiving dialog file " + dialogFilePath);
 
@@ -871,6 +848,35 @@ public class ComponentMojoUtil {
 		}
 
 		return StringUtils.uncapitalise(componentClass.getSimpleName());
+	}
+
+	public static List<WidgetConfigHolder> getAllWidgetAnnotations(ClassPool classPool) throws ClassNotFoundException, NotFoundException{
+		List<WidgetConfigHolder> builtInWidgets=new ArrayList<WidgetConfigHolder>();
+		List<WidgetConfigHolder> extendedWidgets=new ArrayList<WidgetConfigHolder>();
+		
+		Predicate<String> filter = new FilterBuilder().include("com.citytechinc.cq.component.dialog.AbstractWidget\\$.*");
+		Reflections reflections=new Reflections(new ConfigurationBuilder()
+			.setUrls(ClasspathHelper.forClassLoader())
+			.setScanners(new SubTypesScanner().filterResultsBy(filter), new TypeAnnotationsScanner()));
+
+		for(Class<?> c:reflections.getTypesAnnotatedWith(Widget.class)){
+			CtClass clazz=classPool.getCtClass(c.getName());
+			Widget widgetAnnotation=(Widget)clazz.getAnnotation(Widget.class);
+			Class<?> annotationClass=null;
+			if(!StringUtils.isEmpty(widgetAnnotation.annotationClass())){
+				annotationClass=Class.forName(widgetAnnotation.annotationClass());
+			}
+			Class<? extends WidgetMaker> makerClass=Class.forName(widgetAnnotation.makerClass()).asSubclass(WidgetMaker.class);
+			Class<? extends AbstractWidget> widgetClass=Class.forName(clazz.getName()).asSubclass(AbstractWidget.class);
+			WidgetConfigHolder widgetConfig=new WidgetConfigHolder(annotationClass,widgetClass, makerClass,widgetAnnotation.xtypes());
+			if(clazz.getPackageName().equals(CITYTECH_PACKAGE)){
+				builtInWidgets.add(widgetConfig);
+			}else{
+				extendedWidgets.add(widgetConfig);
+			}
+		}
+		builtInWidgets.addAll(extendedWidgets);
+		return builtInWidgets;
 	}
 
 

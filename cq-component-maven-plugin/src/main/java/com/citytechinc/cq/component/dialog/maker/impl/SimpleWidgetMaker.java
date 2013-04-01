@@ -1,4 +1,4 @@
-package com.citytechinc.cq.component.dialog.maker.simple;
+package com.citytechinc.cq.component.dialog.maker.impl;
 
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -9,11 +9,9 @@ import javassist.CtField;
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.impl.SimpleWidget;
-import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
-import com.citytechinc.cq.component.dialog.maker.parent.AbstractWidgetMaker;
+import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 
-public class SimpleWidgetMaker extends AbstractWidgetMaker implements
-		WidgetMaker {
+public class SimpleWidgetMaker extends AbstractWidgetMaker{
 
 	@Override
 	public DialogElement make(String xtype, Field widgetField, CtField ctWidgetField,

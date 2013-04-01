@@ -3,9 +3,12 @@ package com.citytechinc.cq.component.dialog.impl;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.citytechinc.cq.component.annotations.config.Widget;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.DialogElement;
+import com.citytechinc.cq.component.dialog.factory.WidgetFactory;
 
+@Widget(makerClass="com.citytechinc.cq.component.dialog.maker.impl.MultifieldWidgetMaker",xtypes=WidgetFactory.MULTIFIELD_XTYPE)
 public class MultiValueWidget extends AbstractWidget {
 	private static final String PRIMARY_TYPE = "cq:Widget";
 	

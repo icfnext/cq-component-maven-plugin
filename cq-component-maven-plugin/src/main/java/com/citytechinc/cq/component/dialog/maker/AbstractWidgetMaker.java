@@ -1,4 +1,4 @@
-package com.citytechinc.cq.component.dialog.maker.parent;
+package com.citytechinc.cq.component.dialog.maker;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;

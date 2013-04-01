@@ -1,4 +1,4 @@
-package com.citytechinc.cq.component.dialog.maker.selection;
+package com.citytechinc.cq.component.dialog.maker.impl;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -19,11 +19,9 @@ import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.impl.Option;
 import com.citytechinc.cq.component.dialog.impl.SelectionWidget;
-import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
-import com.citytechinc.cq.component.dialog.maker.parent.AbstractWidgetMaker;
+import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 
-public class SelectionWidgetMaker extends AbstractWidgetMaker implements
-		WidgetMaker {
+public class SelectionWidgetMaker extends AbstractWidgetMaker{
 
 	@Override
 	public DialogElement make(String xtype, Field widgetField, CtField ctWidgetField,

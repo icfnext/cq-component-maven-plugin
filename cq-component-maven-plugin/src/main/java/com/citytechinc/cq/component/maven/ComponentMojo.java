@@ -19,6 +19,7 @@ import org.apache.maven.project.MavenProject;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 import com.citytechinc.cq.component.maven.util.LogSingleton;
+import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;
 
 @Mojo( name="component", defaultPhase = LifecyclePhase.PACKAGE, requiresDependencyResolution = ResolutionScope.COMPILE )
 public class ComponentMojo extends AbstractMojo {
@@ -38,12 +39,6 @@ public class ComponentMojo extends AbstractMojo {
 	@Parameter ( required = false )
 	private List<Dependency> includeDependencies;
 
-	@Parameter ( required = false )
-	private List<XtypeMapping> xtypeMappings;
-
-	@Parameter ( required = false )
-	private List<WidgetMakerMapping> widgetMakerMappings;
-
 	@SuppressWarnings({ "unchecked" })
 	public void execute() throws MojoExecutionException, MojoFailureException {
 
@@ -60,10 +55,12 @@ public class ComponentMojo extends AbstractMojo {
 					project.getCompileClasspathElements(),
 					includeDependencies,
 					project.getArtifacts());
+			
+			List<WidgetConfigHolder> widgetConfigs = ComponentMojoUtil.getAllWidgetAnnotations(classPool);
+			
+			Map<Class<?>, String> classToXTypeMap = ComponentMojoUtil.getXTypeMapForCustomXTypeMapping(widgetConfigs);
 
-			Map<Class<?>, String> classToXTypeMap = ComponentMojoUtil.getXTypeMapForCustomXTypeMapping(classLoader, xtypeMappings);
-
-			Map<String, WidgetMaker> xTypeToWidgetMakerMap = ComponentMojoUtil.getXTypeToWidgetMakerMap(classLoader, widgetMakerMappings);
+			Map<String, WidgetMaker> xTypeToWidgetMakerMap = ComponentMojoUtil.getXTypeToWidgetMakerMap(widgetConfigs);
 
 			ComponentMojoUtil.buildArchiveFileForProjectAndClassList(
 					classList,

@@ -850,13 +850,13 @@ public class ComponentMojoUtil {
 		return StringUtils.uncapitalise(componentClass.getSimpleName());
 	}
 
-	public static List<WidgetConfigHolder> getAllWidgetAnnotations(ClassPool classPool) throws ClassNotFoundException, NotFoundException{
+	public static List<WidgetConfigHolder> getAllWidgetAnnotations(ClassPool classPool,ClassLoader classLoader) throws ClassNotFoundException, NotFoundException, MalformedURLException{
 		List<WidgetConfigHolder> builtInWidgets=new ArrayList<WidgetConfigHolder>();
 		List<WidgetConfigHolder> extendedWidgets=new ArrayList<WidgetConfigHolder>();
 		
 		Predicate<String> filter = new FilterBuilder().include("com.citytechinc.cq.component.dialog.AbstractWidget\\$.*");
 		Reflections reflections=new Reflections(new ConfigurationBuilder()
-			.setUrls(ClasspathHelper.forClassLoader())
+			.setUrls(ClasspathHelper.forClassLoader(new ClassLoader[]{Thread.currentThread().getContextClassLoader(),classPool.getClassLoader(),classLoader}))
 			.setScanners(new SubTypesScanner().filterResultsBy(filter), new TypeAnnotationsScanner()));
 
 		for(Class<?> c:reflections.getTypesAnnotatedWith(Widget.class)){

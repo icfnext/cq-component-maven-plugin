@@ -113,5 +113,4 @@ public class DialogXmlWriter {
 	private static final String sanatize(String uncleanString) {
 		return uncleanString.replaceAll(" ", "").replaceAll("./", "");
 	}
-
 }

@@ -56,7 +56,7 @@ public class ComponentMojo extends AbstractMojo {
 					includeDependencies,
 					project.getArtifacts());
 			
-			List<WidgetConfigHolder> widgetConfigs = ComponentMojoUtil.getAllWidgetAnnotations(classPool);
+			List<WidgetConfigHolder> widgetConfigs = ComponentMojoUtil.getAllWidgetAnnotations(classPool,classLoader);
 			
 			Map<Class<?>, String> classToXTypeMap = ComponentMojoUtil.getXTypeMapForCustomXTypeMapping(widgetConfigs);
 

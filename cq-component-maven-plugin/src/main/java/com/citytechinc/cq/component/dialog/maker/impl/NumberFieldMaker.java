@@ -26,10 +26,16 @@ public class NumberFieldMaker extends AbstractWidgetMaker{
 		NumberField numberFieldAnnotation = (NumberField) ctWidgetField.getAnnotation(NumberField.class);
 		DialogField dialogFieldAnnotation = (DialogField) ctWidgetField.getAnnotation(DialogField.class);
 		
-		boolean allowDecimals=numberFieldAnnotation.allowDecimals();
-		boolean allowNegative=numberFieldAnnotation.allowNegative();
-		int decimalPrecision=numberFieldAnnotation.decimalPrecision();
-		String decimalSeparator=numberFieldAnnotation.decimalSeparator();
+		boolean allowDecimals=true;
+		boolean allowNegative=true;
+		int decimalPrecision=2;
+		String decimalSeparator=".";
+		if(numberFieldAnnotation!=null){
+			allowDecimals=numberFieldAnnotation.allowDecimals();
+			allowNegative=numberFieldAnnotation.allowNegative();
+			decimalPrecision=numberFieldAnnotation.decimalPrecision();
+			decimalSeparator=numberFieldAnnotation.decimalSeparator();			
+		}
 		
 		String name = getNameForField(dialogFieldAnnotation, widgetField);
 		String fieldName = getFieldNameForField(dialogFieldAnnotation, widgetField);

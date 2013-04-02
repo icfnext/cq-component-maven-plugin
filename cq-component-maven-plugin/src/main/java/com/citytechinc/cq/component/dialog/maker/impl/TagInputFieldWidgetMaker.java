@@ -38,7 +38,11 @@ public class TagInputFieldWidgetMaker extends AbstractWidgetMaker{
 		if(tagAnnotation.namespaces().length>0){
 			List<DialogElement> namespaces=new ArrayList<DialogElement>();
 			for(TagNameSpace ns:tagAnnotation.namespaces()){
-				Namespace n=new Namespace(ns.value(), Integer.toString(ns.maximum()));
+				String max=null;
+				if(ns.maximum()>-1){
+					max=Integer.toString(ns.maximum());
+				}
+				Namespace n=new Namespace(ns.value(), max);
 				namespaces.add(n);
 			}
 			widgetCollectionHolder=Arrays.asList(new DialogElement[]{new WidgetCollection(namespaces,"namespaces")});

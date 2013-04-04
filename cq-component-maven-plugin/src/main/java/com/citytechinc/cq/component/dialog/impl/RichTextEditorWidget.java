@@ -35,7 +35,7 @@ public class RichTextEditorWidget extends AbstractWidget {
 				null,
 				fieldName,
 				additionalProperties,
-				Arrays.asList(new DialogElement[]{new WidgetCollection(rtePlugins,"rtePlugins")}));
+				Arrays.asList(new DialogElement[]{new RtePlugins(rtePlugins)}));
 
 	}
 

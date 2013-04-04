@@ -2,6 +2,7 @@ package com.citytechinc.cq.component.dialog.maker.impl;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -74,7 +75,7 @@ public class RichTextEditorMaker extends AbstractWidgetMaker {
 		return new RichTextEditorWidget(
 				fieldLabel,
 				fieldDescription,
-				isRequired,
+				!isRequired,
 				defaultValue,
 				name,
 				fieldName,
@@ -386,7 +387,9 @@ public class RichTextEditorMaker extends AbstractWidgetMaker {
 				}
 			}
 
-			return new RtePlugin("paraformat", "*", formatList);
+			List<DialogElement> formats = Arrays.asList(new DialogElement[] {new WidgetCollection(formatList, "formats")});
+
+			return new RtePlugin("paraformat", "*", formats);
 		}
 
 		return null;

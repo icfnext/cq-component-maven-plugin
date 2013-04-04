@@ -76,7 +76,7 @@ public class RichTextEditorMaker extends AbstractWidgetMaker {
 		return new RichTextEditorWidget(
 				fieldLabel,
 				fieldDescription,
-				isRequired,
+				!isRequired,
 				hideLabel,
 				defaultValue,
 				name,

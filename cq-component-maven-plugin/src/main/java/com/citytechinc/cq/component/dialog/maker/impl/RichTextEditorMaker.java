@@ -68,13 +68,15 @@ public class RichTextEditorMaker extends AbstractWidgetMaker {
 		Boolean isRequired = getIsRequiredForField(dialogFieldAnnotation);
 		Map<String, String> additionalProperties = getAdditionalPropertiesForField(dialogFieldAnnotation);
 		String defaultValue = getDefaultValueForField(dialogFieldAnnotation);
-
+		boolean hideLabel=dialogFieldAnnotation.hideLabel();
+		
 		final List<DialogElement> rtePlugins = buildRtePlugins(rteAnnotation);
 
 		return new RichTextEditorWidget(
 				fieldLabel,
 				fieldDescription,
 				isRequired,
+				hideLabel,
 				defaultValue,
 				name,
 				fieldName,

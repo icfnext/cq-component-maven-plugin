@@ -40,7 +40,8 @@ public class MultifieldWidgetMaker extends AbstractWidgetMaker{
 		Boolean isRequired = getIsRequiredForField(dialogFieldAnnotation);
 		Map<String, String> additionalProperties = getAdditionalPropertiesForField(dialogFieldAnnotation);
 		String defaultValue = getDefaultValueForField(dialogFieldAnnotation);
-
+		boolean hideLabel=dialogFieldAnnotation.hideLabel();
+		
 		String innerXType = getInnerXTypeForMultiField(widgetField, dialogFieldAnnotation, xtypeMap);
 
 		if (innerXType == null) {
@@ -56,6 +57,7 @@ public class MultifieldWidgetMaker extends AbstractWidgetMaker{
 				fieldLabel,
 				fieldDescription,
 				isRequired,
+				hideLabel,
 				defaultValue,
 				additionalProperties,
 				fieldConfig);

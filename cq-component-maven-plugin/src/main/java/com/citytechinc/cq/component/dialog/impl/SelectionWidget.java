@@ -17,10 +17,10 @@ public class SelectionWidget extends AbstractWidget {
 	private final String type;
 
 	public SelectionWidget(String type, String name, String fieldLabel,
-			String fieldName, String fieldDescription, Boolean required,
+			String fieldName, String fieldDescription, Boolean required, boolean hideLabel,
 			String defaultValue, Map<String, String> additionalProperties,
 			List<DialogElement> options) {
-		super(XTYPE, fieldLabel, fieldDescription, !required, defaultValue, name, PRIMARY_TYPE, null, fieldName, additionalProperties, Arrays.asList(new DialogElement[]{new WidgetCollection(options,"options")}));
+		super(XTYPE, fieldLabel, fieldDescription, !required, hideLabel,defaultValue, name, PRIMARY_TYPE, null, fieldName, additionalProperties, Arrays.asList(new DialogElement[]{new WidgetCollection(options,"options")}));
 		this.type=type;
 	}
 

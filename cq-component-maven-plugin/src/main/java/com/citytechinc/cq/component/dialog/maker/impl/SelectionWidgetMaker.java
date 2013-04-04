@@ -41,7 +41,8 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker{
 		Boolean isRequired = getIsRequiredForField(dialogFieldAnnotation);
 		Map<String, String> additionalProperties = getAdditionalPropertiesForField(dialogFieldAnnotation);
 		String defaultValue = getDefaultValueForField(dialogFieldAnnotation);
-
+		boolean hideLabel=dialogFieldAnnotation.hideLabel();
+		
 		List<DialogElement> options = buildSelectionOptionsForField(ctWidgetField, selectionAnnotation, classLoader, classPool);
 		String selectionType = getSelectionTypeForField(ctWidgetField, selectionAnnotation);
 
@@ -52,6 +53,7 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker{
 				fieldName,
 				fieldDescription,
 				isRequired,
+				hideLabel,
 				defaultValue,
 				additionalProperties,
 				options);

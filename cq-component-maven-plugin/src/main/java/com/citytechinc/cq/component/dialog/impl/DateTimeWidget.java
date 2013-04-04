@@ -11,9 +11,9 @@ public class DateTimeWidget extends AbstractWidget {
 	private static final String PRIMARY_TYPE = "cq:Widget";
 
 	public DateTimeWidget(String fieldLabel, String fieldDescription,
-			boolean allowBlank, String defaultValue, String name,
+			boolean allowBlank, boolean hideLabel,String defaultValue, String name,
 			String fieldName, Map<String, String> additionalProperties) {
-		super(XTYPE, fieldLabel, fieldDescription, allowBlank, defaultValue,
+		super(XTYPE, fieldLabel, fieldDescription, allowBlank, hideLabel,defaultValue,
 				name, PRIMARY_TYPE, null, fieldName, additionalProperties, null);
 	}
 }

@@ -10,8 +10,9 @@ public abstract class AbstractWidget extends AbstractDialogElement{
 	private boolean allowBlank;
 	private String defaultValue;
 	private String name;
+	private boolean hideLabel;
 	
-	public AbstractWidget(String xtype,String fieldLabel,String fieldDescription,boolean allowBlank,String defaultValue,String name,String primaryType, String nameSpace, String fieldName,Map<String, String> additionalProperties,List<? extends DialogElement> containedElements) {
+	public AbstractWidget(String xtype,String fieldLabel,String fieldDescription,boolean allowBlank,boolean hideLabel,String defaultValue,String name,String primaryType, String nameSpace, String fieldName,Map<String, String> additionalProperties,List<? extends DialogElement> containedElements) {
 		super(primaryType, nameSpace, fieldName, additionalProperties,containedElements);
 		this.xtype=xtype;
 		this.fieldLabel=fieldLabel;
@@ -19,6 +20,7 @@ public abstract class AbstractWidget extends AbstractDialogElement{
 		this.allowBlank=allowBlank;
 		this.defaultValue=defaultValue;
 		this.name=name;
+		this.hideLabel=hideLabel;
 	}
 
 	public final String getXtype(){
@@ -38,6 +40,10 @@ public abstract class AbstractWidget extends AbstractDialogElement{
 
 	public final boolean isAllowBlank(){
 		return allowBlank;
+	}
+	
+	public final boolean isHideLabel(){
+		return hideLabel;
 	}
 	
 	public final String getDefaultValue(){

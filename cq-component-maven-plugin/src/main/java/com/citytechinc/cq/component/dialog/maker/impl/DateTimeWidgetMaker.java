@@ -32,9 +32,9 @@ public class DateTimeWidgetMaker extends AbstractWidgetMaker{
 		Boolean isRequired = getIsRequiredForField(dialogFieldAnnotation);
 		Map<String, String> additionalProperties = getAdditionalPropertiesForField(dialogFieldAnnotation);
 		String defaultValue = getDefaultValueForField(dialogFieldAnnotation);
+		boolean hideLabel=dialogFieldAnnotation.hideLabel();
 		
-		
-		return new DateTimeWidget(fieldLabel, fieldDescription, !isRequired, defaultValue, name, fieldName, additionalProperties);
+		return new DateTimeWidget(fieldLabel, fieldDescription, !isRequired, hideLabel,defaultValue, name, fieldName, additionalProperties);
 	}
 
 }

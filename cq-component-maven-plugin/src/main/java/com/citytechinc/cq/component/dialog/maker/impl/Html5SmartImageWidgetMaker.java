@@ -73,7 +73,8 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker{
 		String fieldName = getFieldNameForField(dialogFieldAnnotation, widgetField);
 		String fieldLabel = getFieldLabelForField(dialogFieldAnnotation, widgetField);
 		String fieldDescription = getFieldDescriptionForField(dialogFieldAnnotation);
-
+		boolean hideLabel=dialogFieldAnnotation.hideLabel();
+		
 		boolean disableFlush=smartImageAnnotation.disableFlush();
 		boolean disableInfo=smartImageAnnotation.disableInfo();
 		boolean disableZoom=smartImageAnnotation.disableZoom();
@@ -93,6 +94,7 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker{
 				ddGroups,
 				allowUpload,
 				isRequired,
+				hideLabel,
 				fieldLabel,
 				fieldName,
 				fieldDescription,

@@ -49,6 +49,8 @@ public @interface DialogField {
 
 	public boolean required() default false;
 	
+	public boolean hideLabel() default false;
+	
 	public String defaultValue() default "";
 
 	/**

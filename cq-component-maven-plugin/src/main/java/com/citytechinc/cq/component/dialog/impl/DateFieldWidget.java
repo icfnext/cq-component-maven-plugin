@@ -15,10 +15,10 @@ public class DateFieldWidget extends AbstractWidget{
 	private String format;
 	
 	public DateFieldWidget(int startDay,boolean showToday,String format, String fieldLabel,
-			String fieldDescription, boolean allowBlank, String defaultValue,
+			String fieldDescription, boolean allowBlank, boolean hideLabel,String defaultValue,
 			String name,
 			String fieldName, Map<String, String> additionalProperties) {
-		super(XTYPE, fieldLabel, fieldDescription, allowBlank, defaultValue,
+		super(XTYPE, fieldLabel, fieldDescription, allowBlank, hideLabel,defaultValue,
 				name, PRIMARY_TYPE, null, fieldName, additionalProperties,
 				null);
 		this.startDay=startDay;

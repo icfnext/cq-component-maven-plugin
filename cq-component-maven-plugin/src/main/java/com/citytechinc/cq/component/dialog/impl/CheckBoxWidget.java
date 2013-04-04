@@ -13,10 +13,10 @@ public class CheckBoxWidget extends AbstractWidget{
 	private boolean checked;
 	
 	public CheckBoxWidget(String inputValue,boolean checked,String fieldLabel,
-			String fieldDescription, boolean allowBlank, String defaultValue,
+			String fieldDescription, boolean allowBlank, boolean hideLabel,String defaultValue,
 			String name,
 			String fieldName, Map<String, String> additionalProperties) {
-		super(XTYPE, fieldLabel, fieldDescription, allowBlank, defaultValue, name, PRIMARY_TYPE, null, fieldName, additionalProperties, null);
+		super(XTYPE, fieldLabel, fieldDescription, allowBlank, hideLabel,defaultValue, name, PRIMARY_TYPE, null, fieldName, additionalProperties, null);
 		this.inputValue=inputValue;
 		this.checked=checked;
 	}

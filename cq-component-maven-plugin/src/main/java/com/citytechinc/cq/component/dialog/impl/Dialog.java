@@ -20,7 +20,7 @@ public class Dialog extends AbstractWidget  {
 	}
 
 	public Dialog(List<DialogElement> tabs, String title, String fileName) {
-		super(XTYPE,null,null,false,null,null,PRIMARY_TYPE, null, FIELD_NAME,null,buildTabPanel(tabs));
+		super(XTYPE,null,null,false,false,null,null,PRIMARY_TYPE, null, FIELD_NAME,null,buildTabPanel(tabs));
 		this.title = title;
 		this.activeTab = "0";
 		this.fileName=fileName;

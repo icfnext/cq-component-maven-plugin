@@ -10,6 +10,6 @@ public class BasicFieldConfig extends AbstractWidget {
 	private static final String PRIMARY_TYPE="nt:unstructured";
 	
 	public BasicFieldConfig(String xtype,Map<String,String> additionalProperties){
-		super(xtype,null,null,false,null,null,PRIMARY_TYPE, null, FIELD_NAME,additionalProperties,null);
+		super(xtype,null,null,false,false,null,null,PRIMARY_TYPE, null, FIELD_NAME,additionalProperties,null);
 	}
 }

@@ -17,10 +17,10 @@ public class NumberFieldWidget extends AbstractWidget {
 	
 	public NumberFieldWidget(boolean allowDecimals, boolean allowNegative,
 			int decimalPrecision, String decimalSeparator, String fieldLabel,
-			String fieldDescription, boolean allowBlank, String defaultValue,
+			String fieldDescription, boolean allowBlank, boolean hideLabel,String defaultValue,
 			String name, String fieldName,
 			Map<String, String> additionalProperties) {
-		super(XTYPE, fieldLabel, fieldDescription, allowBlank, defaultValue,
+		super(XTYPE, fieldLabel, fieldDescription, allowBlank, hideLabel,defaultValue,
 				name, PRIMARY_TYPE, null, fieldName, additionalProperties,
 				null);
 		this.allowDecimals=allowDecimals;

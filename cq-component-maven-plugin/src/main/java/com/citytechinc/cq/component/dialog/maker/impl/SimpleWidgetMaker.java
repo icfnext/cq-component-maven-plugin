@@ -26,7 +26,8 @@ public class SimpleWidgetMaker extends AbstractWidgetMaker{
 		Boolean isRequired = getIsRequiredForField(dialogFieldAnnotation);
 		Map<String, String> additionalProperties = getAdditionalPropertiesForField(dialogFieldAnnotation);
 		String defaultValue = getDefaultValueForField(dialogFieldAnnotation);
-
+		boolean hideLabel=dialogFieldAnnotation.hideLabel();
+		
 		return new SimpleWidget(
 				xtype,
 				name,
@@ -34,6 +35,7 @@ public class SimpleWidgetMaker extends AbstractWidgetMaker{
 				fieldLabel,
 				fieldDescription,
 				isRequired,
+				hideLabel,
 				additionalProperties,
 				defaultValue);
 	}

@@ -28,12 +28,12 @@ public class Html5SmartImageWidget extends AbstractWidget {
 			boolean disableInfo, boolean disableZoom, String cropParameter,
 			String fileNameParameter, String fileReferenceParameter,
 			String mapParameter, String rotateParameter, String uploadUrl,
-			String ddGroups, boolean allowUpload,boolean required,String fieldLabel,
+			String ddGroups, boolean allowUpload,boolean required,boolean hideLabel,String fieldLabel,
 			String fieldName,
 			String fieldDescription,
 			Integer height,
 			boolean tab) {
-		super(XTYPE,fieldLabel,fieldDescription,!required,null,getNameAsPrefix(name),PRIMARY_TYPE, null, fieldName,null,null);
+		super(XTYPE,fieldLabel,fieldDescription,!required,hideLabel,null,getNameAsPrefix(name),PRIMARY_TYPE, null, fieldName,null,null);
 		originalName=name;
 		this.disableFlush = disableFlush;
 		this.disableInfo = disableInfo;

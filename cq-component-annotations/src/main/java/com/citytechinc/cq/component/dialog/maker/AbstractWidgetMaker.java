@@ -7,6 +7,7 @@ import java.util.Map;
 import org.codehaus.plexus.util.StringUtils;
 
 import javassist.CannotCompileException;
+import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
 import javassist.NotFoundException;
@@ -20,16 +21,18 @@ import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 public abstract class AbstractWidgetMaker implements WidgetMaker {
 
 	public abstract DialogElement make(String xtype, Field widgetField, CtField ctWidgetField,
-			Class<?> containingClass, CtClass ctContainingClass, Map<Class<?>, String> xtypeMap) throws ClassNotFoundException, InvalidComponentFieldException, CannotCompileException, NotFoundException;
+			Class<?> containingClass, CtClass ctContainingClass, Map<Class<?>, String> xtypeMap,Map<String, WidgetMaker> xTypeToWidgetMakerMap,ClassLoader classLoader, ClassPool classPool,boolean useDotSlashInName) throws ClassNotFoundException, InvalidComponentFieldException, CannotCompileException, NotFoundException,SecurityException, NoSuchFieldException;
 
 
-	protected String getNameForField(DialogField dialogFieldAnnotation, Field dialogField) {
+	protected String getNameForField(DialogField dialogFieldAnnotation, Field dialogField,boolean useDotSlash) {
 		String overrideName = dialogFieldAnnotation.name();
 
 		if (StringUtils.isNotEmpty(overrideName)) {
 			return overrideName;
 		}
-
+		if(!useDotSlash){
+			return dialogField.getName();
+		}
 		return "./" + dialogField.getName();
 	}
 

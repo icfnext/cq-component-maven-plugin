@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javassist.CannotCompileException;
+import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
 import javassist.NotFoundException;
@@ -20,13 +21,14 @@ import com.citytechinc.cq.component.dialog.impl.Namespace;
 import com.citytechinc.cq.component.dialog.impl.TagInputFieldWidget;
 import com.citytechinc.cq.component.dialog.impl.WidgetCollection;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
+import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 
 public class TagInputFieldWidgetMaker extends AbstractWidgetMaker{
 
 	@Override
 	public DialogElement make(String xtype, Field widgetField,
 			CtField ctWidgetField, Class<?> containingClass,
-			CtClass ctContainingClass, Map<Class<?>, String> xtypeMap)
+			CtClass ctContainingClass, Map<Class<?>, String> xtypeMap,Map<String, WidgetMaker> xTypeToWidgetMakerMap,ClassLoader classLoader, ClassPool classPool,boolean useDotSlashInName)
 			throws ClassNotFoundException, InvalidComponentFieldException,
 			CannotCompileException, NotFoundException {
 	
@@ -48,7 +50,7 @@ public class TagInputFieldWidgetMaker extends AbstractWidgetMaker{
 			widgetCollectionHolder=Arrays.asList(new DialogElement[]{new WidgetCollection(namespaces,"namespaces")});
 		}
 		
-		String name = getNameForField(dialogFieldAnnotation, widgetField);
+		String name = getNameForField(dialogFieldAnnotation, widgetField,useDotSlashInName);
 		String fieldName = getFieldNameForField(dialogFieldAnnotation, widgetField);
 		String fieldLabel = getFieldLabelForField(dialogFieldAnnotation, widgetField);
 		String fieldDescription = getFieldDescriptionForField(dialogFieldAnnotation);

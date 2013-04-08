@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.codehaus.plexus.util.StringUtils;
 
+import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
 
@@ -13,12 +14,13 @@ import com.citytechinc.cq.component.annotations.widgets.Html5SmartImage;
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.impl.Html5SmartImageWidget;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
+import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 
 public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker{
 
 	@Override
 	public DialogElement make(String xtype, Field widgetField, CtField ctWidgetField,
-			Class<?> containingClass, CtClass ctContainingClass, Map<Class<?>, String> xtypeMap)
+			Class<?> containingClass, CtClass ctContainingClass, Map<Class<?>, String> xtypeMap,Map<String, WidgetMaker> xTypeToWidgetMakerMap,ClassLoader classLoader, ClassPool classPool,boolean useDotSlashInName)
 			throws ClassNotFoundException {
 
 		Html5SmartImage smartImageAnnotation = (Html5SmartImage) ctWidgetField.getAnnotation(Html5SmartImage.class);

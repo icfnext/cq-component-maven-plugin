@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import javassist.CannotCompileException;
+import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
 import javassist.NotFoundException;
@@ -22,18 +23,19 @@ import com.citytechinc.cq.component.dialog.impl.BasicFieldConfig;
 
 import com.citytechinc.cq.component.dialog.impl.MultiValueWidget;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
+import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 
 public class MultifieldWidgetMaker extends AbstractWidgetMaker{
 
 	@Override
 	public DialogElement make(String xtype, Field widgetField, CtField ctWidgetField,
-			Class<?> containingClass, CtClass ctContainingClass, Map<Class<?>, String> xtypeMap)
+			Class<?> containingClass, CtClass ctContainingClass, Map<Class<?>, String> xtypeMap,Map<String, WidgetMaker> xTypeToWidgetMakerMap,ClassLoader classLoader, ClassPool classPool,boolean useDotSlashInName)
 			throws ClassNotFoundException, InvalidComponentFieldException,
 			CannotCompileException, NotFoundException {
 
 		DialogField dialogFieldAnnotation = (DialogField) ctWidgetField.getAnnotation(DialogField.class);
 
-		String name = getNameForField(dialogFieldAnnotation, widgetField);
+		String name = getNameForField(dialogFieldAnnotation, widgetField,useDotSlashInName);
 		String fieldName = getFieldNameForField(dialogFieldAnnotation, widgetField);
 		String fieldLabel = getFieldLabelForField(dialogFieldAnnotation, widgetField);
 		String fieldDescription = getFieldDescriptionForField(dialogFieldAnnotation);

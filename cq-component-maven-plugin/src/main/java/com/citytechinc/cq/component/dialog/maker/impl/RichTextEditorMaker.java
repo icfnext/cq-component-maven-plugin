@@ -9,6 +9,7 @@ import java.util.Map;
 import org.codehaus.plexus.util.StringUtils;
 
 import javassist.CannotCompileException;
+import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
 import javassist.NotFoundException;
@@ -40,6 +41,7 @@ import com.citytechinc.cq.component.dialog.impl.RteStyle;
 import com.citytechinc.cq.component.dialog.impl.UndoRtePlugin;
 import com.citytechinc.cq.component.dialog.impl.WidgetCollection;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
+import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 
 /**
  *
@@ -55,14 +57,14 @@ public class RichTextEditorMaker extends AbstractWidgetMaker {
 	@Override
 	public DialogElement make(String xtype, Field widgetField,
 			CtField ctWidgetField, Class<?> containingClass,
-			CtClass ctContainingClass, Map<Class<?>, String> xtypeMap)
+			CtClass ctContainingClass, Map<Class<?>, String> xtypeMap,Map<String, WidgetMaker> xTypeToWidgetMakerMap,ClassLoader classLoader, ClassPool classPool,boolean useDotSlashInName)
 			throws ClassNotFoundException, InvalidComponentFieldException,
 			CannotCompileException, NotFoundException {
 
 		DialogField dialogFieldAnnotation = (DialogField) ctWidgetField.getAnnotation(DialogField.class);
 		RichTextEditor rteAnnotation = (RichTextEditor) ctWidgetField.getAnnotation(RichTextEditor.class);
 
-		String name = getNameForField(dialogFieldAnnotation, widgetField);
+		String name = getNameForField(dialogFieldAnnotation, widgetField,useDotSlashInName);
 		String fieldName = getFieldNameForField(dialogFieldAnnotation, widgetField);
 		String fieldLabel = getFieldLabelForField(dialogFieldAnnotation, widgetField);
 		String fieldDescription = getFieldDescriptionForField(dialogFieldAnnotation);

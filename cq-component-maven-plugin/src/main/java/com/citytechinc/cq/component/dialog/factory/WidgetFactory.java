@@ -37,8 +37,8 @@ public class WidgetFactory {
 			Map<Class<?>, String> classToXTypeMap,
 			Map<String, WidgetMaker> xTypeToWidgetMakerMap,
 			ClassLoader classLoader,
-			ClassPool classPool)
-			throws InvalidComponentFieldException, ClassNotFoundException, CannotCompileException, NotFoundException {
+			ClassPool classPool,boolean useDotSlashInName)
+			throws InvalidComponentFieldException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
 
 		DialogField propertyAnnotation = (DialogField) annotatedWidgetField.getAnnotation(DialogField.class);
 
@@ -54,7 +54,7 @@ public class WidgetFactory {
 
 		Class<?> containingClass = classLoader.loadClass(componentClass.getName());
 
-		return xTypeToWidgetMakerMap.get(xtype).make(xtype, widgetField, annotatedWidgetField, containingClass, componentClass, classToXTypeMap);
+		return xTypeToWidgetMakerMap.get(xtype).make(xtype, widgetField, annotatedWidgetField, containingClass, componentClass, classToXTypeMap,xTypeToWidgetMakerMap,classLoader,classPool,useDotSlashInName);
 
 	}
 

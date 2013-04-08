@@ -20,21 +20,19 @@ import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldExcept
 import com.citytechinc.cq.component.dialog.impl.Option;
 import com.citytechinc.cq.component.dialog.impl.SelectionWidget;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
+import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 
 public class SelectionWidgetMaker extends AbstractWidgetMaker{
 
 	@Override
 	public DialogElement make(String xtype, Field widgetField, CtField ctWidgetField,
-			Class<?> containingClass, CtClass ctContainingClass, Map<Class<?>, String> xtypeMap)
+			Class<?> containingClass, CtClass ctContainingClass, Map<Class<?>, String> xtypeMap,Map<String, WidgetMaker> xTypeToWidgetMakerMap,ClassLoader classLoader, ClassPool classPool,boolean useDotSlashInName)
 			throws ClassNotFoundException, InvalidComponentFieldException, CannotCompileException, NotFoundException {
-
-		ClassPool classPool = ctContainingClass.getClassPool();
-		ClassLoader classLoader = containingClass.getClassLoader();
 
 		DialogField dialogFieldAnnotation = (DialogField) ctWidgetField.getAnnotation(DialogField.class);
 		Selection selectionAnnotation = (Selection) ctWidgetField.getAnnotation(Selection.class);
 
-		String name = getNameForField(dialogFieldAnnotation, widgetField);
+		String name = getNameForField(dialogFieldAnnotation, widgetField,useDotSlashInName);
 		String fieldName = getFieldNameForField(dialogFieldAnnotation, widgetField);
 		String fieldLabel = getFieldLabelForField(dialogFieldAnnotation, widgetField);
 		String fieldDescription = getFieldDescriptionForField(dialogFieldAnnotation);

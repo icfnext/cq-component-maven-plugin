@@ -10,14 +10,14 @@ import javassist.CtField;
 import javassist.NotFoundException;
 
 import com.citytechinc.cq.component.annotations.DialogField;
-import com.citytechinc.cq.component.annotations.widgets.NumberField;
+import com.citytechinc.cq.component.annotations.widgets.PathField;
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
-import com.citytechinc.cq.component.dialog.impl.NumberFieldWidget;
+import com.citytechinc.cq.component.dialog.impl.PathFieldWidget;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 
-public class NumberFieldMaker extends AbstractWidgetMaker{
+public class PathFieldWidgetMaker extends AbstractWidgetMaker{
 
 	@Override
 	public DialogElement make(String xtype, Field widgetField,
@@ -25,18 +25,23 @@ public class NumberFieldMaker extends AbstractWidgetMaker{
 			CtClass ctContainingClass, Map<Class<?>, String> xtypeMap,Map<String, WidgetMaker> xTypeToWidgetMakerMap,ClassLoader classLoader, ClassPool classPool,boolean useDotSlashInName)
 			throws ClassNotFoundException, InvalidComponentFieldException,
 			CannotCompileException, NotFoundException {
-		NumberField numberFieldAnnotation = (NumberField) ctWidgetField.getAnnotation(NumberField.class);
+		PathField pathFieldAnnotation = (PathField) ctWidgetField.getAnnotation(PathField.class);
 		DialogField dialogFieldAnnotation = (DialogField) ctWidgetField.getAnnotation(DialogField.class);
 		
-		boolean allowDecimals=true;
-		boolean allowNegative=true;
-		int decimalPrecision=2;
-		String decimalSeparator=".";
-		if(numberFieldAnnotation!=null){
-			allowDecimals=numberFieldAnnotation.allowDecimals();
-			allowNegative=numberFieldAnnotation.allowNegative();
-			decimalPrecision=numberFieldAnnotation.decimalPrecision();
-			decimalSeparator=numberFieldAnnotation.decimalSeparator();			
+		
+		boolean escapeAmp=false;
+		boolean hideTrigger=false;
+		boolean parBrowse=false;
+		String rootPath="/";
+		String rootTitle="Websites";
+		boolean showTitleInTree=true;
+		if(pathFieldAnnotation!=null){
+			escapeAmp=pathFieldAnnotation.escapeAmp();
+			hideTrigger=pathFieldAnnotation.hideTrigger();
+			parBrowse=pathFieldAnnotation.parBrowse();
+			rootPath=pathFieldAnnotation.rootPath();
+			rootTitle=pathFieldAnnotation.rootTitle();	
+			showTitleInTree=pathFieldAnnotation.showTitleInTree();
 		}
 		
 		String name = getNameForField(dialogFieldAnnotation, widgetField,useDotSlashInName);
@@ -48,7 +53,7 @@ public class NumberFieldMaker extends AbstractWidgetMaker{
 		String defaultValue = getDefaultValueForField(dialogFieldAnnotation);
 		boolean hideLabel=dialogFieldAnnotation.hideLabel();
 		
-		return new NumberFieldWidget(allowDecimals, allowNegative, decimalPrecision, decimalSeparator, fieldLabel, fieldDescription, !isRequired, hideLabel,defaultValue, name, fieldName, additionalProperties);
+		return new PathFieldWidget(escapeAmp, hideTrigger, parBrowse, rootPath, rootTitle,showTitleInTree,fieldLabel, fieldDescription, !isRequired, hideLabel,defaultValue, name, fieldName, additionalProperties);
 	}
 
 }

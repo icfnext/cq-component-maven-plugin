@@ -95,8 +95,15 @@ public class DialogFactory {
 		for (String curMapKey : tabMap.keySet()) {
 			tabList.add(new Tab(curMapKey, new WidgetCollection(tabMap.get(curMapKey))));
 		}
-
-		return new Dialog(tabList, dialogTitle,componentAnnotation.fileName());
+		Integer width=null;
+		Integer height=null;
+		if(componentAnnotation.dialogWidth()>0){
+			width=componentAnnotation.dialogWidth();
+		}
+		if(componentAnnotation.dialogHeight()>0){
+			height=componentAnnotation.dialogHeight();
+		}
+		return new Dialog(tabList, dialogTitle,componentAnnotation.fileName(),width,height);
 	}
 
 	private static final String getDialogTitleForComponent(Component component) {

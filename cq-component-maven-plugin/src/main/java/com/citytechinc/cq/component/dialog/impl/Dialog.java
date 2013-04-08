@@ -14,16 +14,20 @@ public class Dialog extends AbstractWidget  {
 	private final String title;
 	private final String activeTab;
 	private final String fileName;
-	
+	private final Integer width;
+	private final Integer height;
+
 	public Dialog() {
-		this(new ArrayList<DialogElement>(), DEFAULT_TITLE,DEFAULT_FILE_NAME);
+		this(new ArrayList<DialogElement>(), DEFAULT_TITLE,DEFAULT_FILE_NAME,null,null);
 	}
 
-	public Dialog(List<DialogElement> tabs, String title, String fileName) {
+	public Dialog(List<DialogElement> tabs, String title, String fileName,Integer width,Integer height) {
 		super(XTYPE,null,null,false,false,null,null,PRIMARY_TYPE, null, FIELD_NAME,null,buildTabPanel(tabs));
 		this.title = title;
 		this.activeTab = "0";
 		this.fileName=fileName;
+		this.height=height;
+		this.width=width;
 	}
 	
 	private static final List<DialogElement> buildTabPanel(List<DialogElement> tabs){
@@ -44,5 +48,13 @@ public class Dialog extends AbstractWidget  {
 	
 	public String getFileName(){
 		return fileName+".xml";
+	}
+	
+	public Integer getWidth() {
+		return width;
+	}
+	
+	public Integer getHeight() {
+		return height;
 	}
 }

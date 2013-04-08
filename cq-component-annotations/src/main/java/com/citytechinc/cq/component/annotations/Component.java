@@ -64,4 +64,8 @@ public @interface Component {
 	String fileName() default "dialog";
 	
 	boolean editConfig() default true;
+	
+	int dialogWidth() default -1;
+	
+	int dialogHeight() default -1;
 }

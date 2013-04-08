@@ -22,6 +22,7 @@ import com.citytechinc.cq.component.dialog.impl.MultiCompositeFieldWidget;
 import com.citytechinc.cq.component.dialog.impl.WidgetCollection;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
+import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 
 public class MultiCompositeFieldWidgetMaker extends AbstractWidgetMaker{
 	private static final String FIELD_CONFIGS="fieldConfigs";
@@ -61,12 +62,11 @@ public class MultiCompositeFieldWidgetMaker extends AbstractWidgetMaker{
 		if (clazz.isArray()) {
 			clazz=clazz.getComponentType();
 		}
-		CtField[] fields=clazz.getDeclaredFields();
+		CtField[] fields=ComponentMojoUtil.collectFields(clazz).toArray(new CtField[0]);
 		List<DialogElement> elements=new ArrayList<DialogElement>();
 		for(CtField field:fields){
 			if(field.hasAnnotation(DialogField.class)){
-				
-				Field mcTrueField = classLoader.loadClass(clazz.getName()).getDeclaredField(field.getName());
+				Field mcTrueField = classLoader.loadClass(field.getDeclaringClass().getName()).getDeclaredField(field.getName());
 				DialogElement builtFieldWidget = WidgetFactory.make( componentClass,
 						field,
 						mcTrueField,

@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -880,5 +881,12 @@ public class ComponentMojoUtil {
 		return builtInWidgets;
 	}
 
-
+	public static List<CtField> collectFields(CtClass ctClass) throws NotFoundException{
+		List<CtField> fields=new ArrayList<CtField>();
+		if(ctClass!=null){
+			fields.addAll(Arrays.asList(ctClass.getDeclaredFields()));
+			fields.addAll(collectFields(ctClass.getSuperclass()));
+		}
+		return fields;
+	}
 }

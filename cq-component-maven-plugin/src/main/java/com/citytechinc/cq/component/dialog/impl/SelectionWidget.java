@@ -7,7 +7,6 @@ import java.util.Map;
 import com.citytechinc.cq.component.annotations.config.Widget;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.DialogElement;
-import com.citytechinc.cq.component.dialog.impl.WidgetCollection;
 
 @Widget(annotationClass="com.citytechinc.cq.component.annotations.widgets.Selection",makerClass="com.citytechinc.cq.component.dialog.maker.impl.SelectionWidgetMaker",xtypes=SelectionWidget.XTYPE)
 public class SelectionWidget extends AbstractWidget {

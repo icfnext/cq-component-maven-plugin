@@ -273,7 +273,7 @@ public class ComponentMojoUtil {
 			placeholder = placeholder.replace(rootPath, "");
 		}
 
-		if (placeholder.startsWith("/")) {
+		if (placeholder.charAt(0)=='/') {
 			placeholder = placeholder.substring(1);
 		}
 

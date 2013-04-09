@@ -69,11 +69,11 @@ public class EditConfigXmlWriter {
 	private static final String getActionsStringForEditConfig(EditConfig editConfig) {
 		StringBuilder retStringBuilder = new StringBuilder();
 
-		retStringBuilder.append("[");
+		retStringBuilder.append('[');
 
 		retStringBuilder.append(StringUtils.join(editConfig.getActions().toArray(), ","));
 
-		retStringBuilder.append("]");
+		retStringBuilder.append(']');
 
 		return retStringBuilder.toString();
 	}

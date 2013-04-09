@@ -16,7 +16,6 @@ import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.FieldProperty;
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
-import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 
 public abstract class AbstractWidgetMaker implements WidgetMaker {
 
@@ -67,7 +66,7 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 	}
 
 	protected Boolean getIsRequiredForField(DialogField dialogFieldAnnotation) {
-		return dialogFieldAnnotation.required() == true;
+		return dialogFieldAnnotation.required();
 	}
 
 	protected Map<String, String> getAdditionalPropertiesForField(DialogField dialogFieldAnnotation) {

@@ -23,8 +23,9 @@ public class ContentXmlWriter {
 	private static final DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 	private static final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
-	private ContentXmlWriter(){}
-	
+	private ContentXmlWriter() {
+	}
+
 	public static final void writeContent(Content content, OutputStream outputStream) throws TransformerException,
 		ParserConfigurationException {
 

@@ -10,7 +10,7 @@ import com.citytechinc.cq.component.content.impl.ContentImpl;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
 
 public class ContentFactory {
-	
+
 	private ContentFactory() {
 	}
 

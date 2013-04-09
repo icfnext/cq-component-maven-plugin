@@ -18,8 +18,9 @@ import com.citytechinc.cq.component.editconfig.impl.SimpleEditConfig;
 
 public class EditConfigFactory {
 
-	private EditConfigFactory(){}
-	
+	private EditConfigFactory() {
+	}
+
 	public static final EditConfig make(CtClass componentClass) throws InvalidComponentClassException,
 		ClassNotFoundException {
 

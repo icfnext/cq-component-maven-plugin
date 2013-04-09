@@ -28,8 +28,9 @@ import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 
 public class DialogFactory {
 
-	private DialogFactory(){}
-	
+	private DialogFactory() {
+	}
+
 	public static Dialog make(CtClass componentClass, Map<Class<?>, String> classToXTypeMap,
 		Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool)
 		throws InvalidComponentClassException, InvalidComponentFieldException, ClassNotFoundException,

@@ -29,8 +29,9 @@ public class WidgetFactory {
 	public static final String MULTIFIELD_XTYPE = "multifield";
 	public static final String HTML5SMARTIMAGE_XTYPE = "html5smartimage";
 
-	private WidgetFactory(){}
-	
+	private WidgetFactory() {
+	}
+
 	public static DialogElement make(CtClass componentClass, CtField annotatedWidgetField, Field widgetField,
 		Map<Class<?>, String> classToXTypeMap, Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader,
 		ClassPool classPool, boolean useDotSlashInName) throws InvalidComponentFieldException, ClassNotFoundException,

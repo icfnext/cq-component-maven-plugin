@@ -61,10 +61,11 @@ import com.citytechinc.cq.component.editconfig.xml.EditConfigXmlWriter;
 import com.citytechinc.cq.component.maven.Dependency;
 
 public class ComponentMojoUtil {
-
 	private static final String OUTPUT_PATH = "tempComponentConfig";
 	private static final String CITYTECH_PACKAGE = "com.citytechinc.cq.component.dialog.impl";
 
+	private ComponentMojoUtil(){};
+	
 	private static final LogSingleton getLog() {
 		return LogSingleton.getInstance();
 	}

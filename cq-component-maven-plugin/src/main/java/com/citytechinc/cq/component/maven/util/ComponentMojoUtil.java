@@ -94,10 +94,11 @@ public class ComponentMojoUtil {
 	 *
 	 * @param classLoader
 	 * @return The constructed ClassPool
+	 * @throws NotFoundException 
 	 */
-	public static ClassPool getClassPool(ClassLoader classLoader) {
+	public static ClassPool getClassPool(ClassLoader loader){
 		ClassPool classPool = new ClassPool();
-		classPool.appendClassPath(new LoaderClassPath(classLoader));
+		classPool.appendClassPath(new LoaderClassPath(loader));
 		return classPool;
 	}
 
@@ -856,20 +857,20 @@ public class ComponentMojoUtil {
 		List<WidgetConfigHolder> builtInWidgets=new ArrayList<WidgetConfigHolder>();
 		List<WidgetConfigHolder> extendedWidgets=new ArrayList<WidgetConfigHolder>();
 		
-		Predicate<String> filter = new FilterBuilder().include("com.citytechinc.cq.component.dialog.AbstractWidget\\$.*");
 		Reflections reflections=new Reflections(new ConfigurationBuilder()
+			.addClassLoader(classLoader)
 			.setUrls(ClasspathHelper.forClassLoader(new ClassLoader[]{Thread.currentThread().getContextClassLoader(),classPool.getClassLoader(),classLoader}))
-			.setScanners(new SubTypesScanner().filterResultsBy(filter), new TypeAnnotationsScanner()));
+			.setScanners(new TypeAnnotationsScanner()));
 
 		for(Class<?> c:reflections.getTypesAnnotatedWith(Widget.class)){
 			CtClass clazz=classPool.getCtClass(c.getName());
 			Widget widgetAnnotation=(Widget)clazz.getAnnotation(Widget.class);
 			Class<?> annotationClass=null;
 			if(!StringUtils.isEmpty(widgetAnnotation.annotationClass())){
-				annotationClass=Class.forName(widgetAnnotation.annotationClass());
+				annotationClass=classLoader.loadClass(widgetAnnotation.annotationClass());
 			}
-			Class<? extends WidgetMaker> makerClass=Class.forName(widgetAnnotation.makerClass()).asSubclass(WidgetMaker.class);
-			Class<? extends AbstractWidget> widgetClass=Class.forName(clazz.getName()).asSubclass(AbstractWidget.class);
+			Class<? extends WidgetMaker> makerClass=classLoader.loadClass(widgetAnnotation.makerClass()).asSubclass(WidgetMaker.class);
+			Class<? extends AbstractWidget> widgetClass=classLoader.loadClass(clazz.getName()).asSubclass(AbstractWidget.class);
 			WidgetConfigHolder widgetConfig=new WidgetConfigHolder(annotationClass,widgetClass, makerClass,widgetAnnotation.xtypes());
 			if(clazz.getPackageName().equals(CITYTECH_PACKAGE)){
 				builtInWidgets.add(widgetConfig);
@@ -879,6 +880,20 @@ public class ComponentMojoUtil {
 		}
 		builtInWidgets.addAll(extendedWidgets);
 		return builtInWidgets;
+	}
+	
+	public static List<CtClass> getAllComponentAnnotations(ClassPool classPool,ClassLoader classLoader) throws ClassNotFoundException, NotFoundException, MalformedURLException{
+		List<CtClass> classes=new ArrayList<CtClass>();
+		
+		Reflections reflections=new Reflections(new ConfigurationBuilder()
+			.addClassLoader(classLoader)
+			.setUrls(ClasspathHelper.forClassLoader(new ClassLoader[]{Thread.currentThread().getContextClassLoader(),classPool.getClassLoader(),classLoader}))
+			.setScanners(new TypeAnnotationsScanner()));
+
+		for(Class<?> c:reflections.getTypesAnnotatedWith(Component.class)){
+			classes.add(classPool.getCtClass(c.getName()));
+		}
+		return classes;
 	}
 
 	public static List<CtField> collectFields(CtClass ctClass) throws NotFoundException{

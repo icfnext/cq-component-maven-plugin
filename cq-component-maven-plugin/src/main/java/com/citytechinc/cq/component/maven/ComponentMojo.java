@@ -36,25 +36,17 @@ public class ComponentMojo extends AbstractMojo {
 	@Parameter ( defaultValue = "Components" )
 	private String defaultComponentGroup;
 
-	@Parameter ( required = false )
-	private List<Dependency> includeDependencies;
-
 	@SuppressWarnings({ "unchecked" })
 	public void execute() throws MojoExecutionException, MojoFailureException {
 
 		LogSingleton.getInstance().setLogger(getLog());
 
 		try {
-
 			ClassLoader classLoader = ComponentMojoUtil.getClassLoader(project.getCompileClasspathElements(), this.getClass().getClassLoader());
 
 			ClassPool classPool = ComponentMojoUtil.getClassPool(classLoader);
 
-			List<CtClass> classList = ComponentMojoUtil.getCompiledClasses(
-					classPool,
-					project.getCompileClasspathElements(),
-					includeDependencies,
-					project.getArtifacts());
+			List<CtClass> classList = ComponentMojoUtil.getAllComponentAnnotations(classPool,classLoader);
 			
 			List<WidgetConfigHolder> widgetConfigs = ComponentMojoUtil.getAllWidgetAnnotations(classPool,classLoader);
 			

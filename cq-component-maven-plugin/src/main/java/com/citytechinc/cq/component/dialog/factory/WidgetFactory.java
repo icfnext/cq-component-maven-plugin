@@ -20,7 +20,6 @@ import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 
-
 public class WidgetFactory {
 
 	public static final String TEXTFIELD_XTYPE = "textfield";
@@ -30,15 +29,10 @@ public class WidgetFactory {
 	public static final String MULTIFIELD_XTYPE = "multifield";
 	public static final String HTML5SMARTIMAGE_XTYPE = "html5smartimage";
 
-	public static DialogElement make(
-			CtClass componentClass,
-			CtField annotatedWidgetField,
-			Field widgetField,
-			Map<Class<?>, String> classToXTypeMap,
-			Map<String, WidgetMaker> xTypeToWidgetMakerMap,
-			ClassLoader classLoader,
-			ClassPool classPool,boolean useDotSlashInName)
-			throws InvalidComponentFieldException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
+	public static DialogElement make(CtClass componentClass, CtField annotatedWidgetField, Field widgetField,
+		Map<Class<?>, String> classToXTypeMap, Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader,
+		ClassPool classPool, boolean useDotSlashInName) throws InvalidComponentFieldException, ClassNotFoundException,
+		CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
 
 		DialogField propertyAnnotation = (DialogField) annotatedWidgetField.getAnnotation(DialogField.class);
 
@@ -46,25 +40,31 @@ public class WidgetFactory {
 			throw new InvalidComponentFieldException();
 		}
 
-		String xtype = getXTypeForField(widgetField, annotatedWidgetField, propertyAnnotation, classToXTypeMap, classLoader, classPool);
+		String xtype = getXTypeForField(widgetField, annotatedWidgetField, propertyAnnotation, classToXTypeMap,
+			classLoader, classPool);
 
 		if (!xTypeToWidgetMakerMap.containsKey(xtype)) {
-			throw new InvalidComponentFieldException("xType determined to be " + xtype + " but no Class implementing WidgetMaker is specified for this xtype");
+			throw new InvalidComponentFieldException("xType determined to be " + xtype
+				+ " but no Class implementing WidgetMaker is specified for this xtype");
 		}
 
 		Class<?> containingClass = classLoader.loadClass(componentClass.getName());
 
-		return xTypeToWidgetMakerMap.get(xtype).make(xtype, widgetField, annotatedWidgetField, containingClass, componentClass, classToXTypeMap,xTypeToWidgetMakerMap,classLoader,classPool,useDotSlashInName);
+		return xTypeToWidgetMakerMap.get(xtype).make(xtype, widgetField, annotatedWidgetField, containingClass,
+			componentClass, classToXTypeMap, xTypeToWidgetMakerMap, classLoader, classPool, useDotSlashInName);
 
 	}
 
-	private static final String getXTypeForField(Field widgetField, CtField ctWidgetField, DialogField propertyAnnotation, Map<Class<?>, String> classToXTypeMap, ClassLoader classLoader, ClassPool classPool) throws InvalidComponentFieldException, CannotCompileException, NotFoundException, ClassNotFoundException {
+	private static final String getXTypeForField(Field widgetField, CtField ctWidgetField,
+		DialogField propertyAnnotation, Map<Class<?>, String> classToXTypeMap, ClassLoader classLoader,
+		ClassPool classPool) throws InvalidComponentFieldException, CannotCompileException, NotFoundException,
+		ClassNotFoundException {
 
 		/*
 		 * Handle annotated xtypes
-		 *
-		 * The xtype property on the DialogField annotation takes precedence over all other mechanisms
-		 * of determining xtype.
+		 * 
+		 * The xtype property on the DialogField annotation takes precedence
+		 * over all other mechanisms of determining xtype.
 		 */
 		String overrideXType = propertyAnnotation.xtype();
 
@@ -76,7 +76,7 @@ public class WidgetFactory {
 
 		/*
 		 * Handle custom types.
-		 *
+		 * 
 		 * Custom types may be either Classes or Annotations.
 		 */
 		for (Class<?> curCustomClass : classToXTypeMap.keySet()) {
@@ -86,8 +86,7 @@ public class WidgetFactory {
 					return classToXTypeMap.get(curCustomClass);
 				}
 
-			}
-			else if (curCustomClass.isAssignableFrom(fieldClass)) {
+			} else if (curCustomClass.isAssignableFrom(fieldClass)) {
 				return classToXTypeMap.get(curCustomClass);
 			}
 		}
@@ -99,11 +98,8 @@ public class WidgetFactory {
 		/*
 		 * numberfield
 		 */
-		if (
-				Number.class.isAssignableFrom(fieldClass) ||
-				fieldClass.equals(int.class) ||
-				fieldClass.equals(double.class) ||
-				fieldClass.equals(float.class)) {
+		if (Number.class.isAssignableFrom(fieldClass) || fieldClass.equals(int.class)
+			|| fieldClass.equals(double.class) || fieldClass.equals(float.class)) {
 			return NUMBERFIELD_XTYPE;
 		}
 
@@ -115,7 +111,7 @@ public class WidgetFactory {
 		}
 
 		/*
-		 *  pathfield
+		 * pathfield
 		 */
 		if (URI.class.isAssignableFrom(fieldClass) || URL.class.isAssignableFrom(fieldClass)) {
 			return PATHFIELD_XTYPE;
@@ -133,10 +129,12 @@ public class WidgetFactory {
 			String simpleXtype = getInnerXTypeForField(widgetField, classToXTypeMap);
 
 			/*
-			 * TODO: This is where the multicompositefield would end up being selected once implemented
+			 * TODO: This is where the multicompositefield would end up being
+			 * selected once implemented
 			 */
 			if (simpleXtype == null) {
-				throw new InvalidComponentFieldException("Parameterized class for List is not of a supported type.  Currently supported types are numbers, strings, and links");
+				throw new InvalidComponentFieldException(
+					"Parameterized class for List is not of a supported type.  Currently supported types are numbers, strings, and links");
 			}
 
 			return MULTIFIELD_XTYPE;
@@ -145,13 +143,15 @@ public class WidgetFactory {
 
 		/*
 		 * If we could not determine an xtype, return textfield
-		 *
-		 * TODO: Determine if this is appropriate or if this should throw an Exception
+		 * 
+		 * TODO: Determine if this is appropriate or if this should throw an
+		 * Exception
 		 */
 		return TEXTFIELD_XTYPE;
 	}
 
-	private static final String getInnerXTypeForField(Field widgetField, Map<Class<?>, String> xtypeMap) throws InvalidComponentFieldException {
+	private static final String getInnerXTypeForField(Field widgetField, Map<Class<?>, String> xtypeMap)
+		throws InvalidComponentFieldException {
 
 		Class<?> fieldClass = widgetField.getType();
 
@@ -162,15 +162,19 @@ public class WidgetFactory {
 			return getInnerXTypeForArrayField(widgetField, xtypeMap);
 		}
 
-		throw new InvalidComponentFieldException("List dialog property found with a paramaterized type count not equal to 1");
+		throw new InvalidComponentFieldException(
+			"List dialog property found with a paramaterized type count not equal to 1");
 
 	}
 
-	private static final String getInnerXTypeForListField(Field widgetField, Map<Class<?>, String> xtypeMap) throws InvalidComponentFieldException {
+	private static final String getInnerXTypeForListField(Field widgetField, Map<Class<?>, String> xtypeMap)
+		throws InvalidComponentFieldException {
 		ParameterizedType parameterizedType = (ParameterizedType) widgetField.getGenericType();
 
-		if (parameterizedType.getActualTypeArguments().length == 0 || parameterizedType.getActualTypeArguments().length > 1) {
-			throw new InvalidComponentFieldException("List dialog property found with a paramaterized type count not equal to 1");
+		if (parameterizedType.getActualTypeArguments().length == 0
+			|| parameterizedType.getActualTypeArguments().length > 1) {
+			throw new InvalidComponentFieldException(
+				"List dialog property found with a paramaterized type count not equal to 1");
 		}
 
 		String simpleXtype = getSimpleXTypeForClass((Class<?>) parameterizedType.getActualTypeArguments()[0], xtypeMap);
@@ -198,11 +202,8 @@ public class WidgetFactory {
 		/*
 		 * numberfield
 		 */
-		if (
-				Number.class.isAssignableFrom(fieldClass) ||
-				fieldClass.equals(int.class) ||
-				fieldClass.equals(double.class) ||
-				fieldClass.equals(float.class)) {
+		if (Number.class.isAssignableFrom(fieldClass) || fieldClass.equals(int.class)
+			|| fieldClass.equals(double.class) || fieldClass.equals(float.class)) {
 			return NUMBERFIELD_XTYPE;
 		}
 
@@ -214,7 +215,7 @@ public class WidgetFactory {
 		}
 
 		/*
-		 *  pathfield
+		 * pathfield
 		 */
 		if (URI.class.isAssignableFrom(fieldClass) || URL.class.isAssignableFrom(fieldClass)) {
 			return PATHFIELD_XTYPE;

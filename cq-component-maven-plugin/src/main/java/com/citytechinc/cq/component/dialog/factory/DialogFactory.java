@@ -28,7 +28,10 @@ import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 
 public class DialogFactory {
 
-	public static Dialog make(CtClass componentClass, Map<Class<?>, String> classToXTypeMap, Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool) throws InvalidComponentClassException, InvalidComponentFieldException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
+	public static Dialog make(CtClass componentClass, Map<Class<?>, String> classToXTypeMap,
+		Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool)
+		throws InvalidComponentClassException, InvalidComponentFieldException, ClassNotFoundException,
+		CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
 
 		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
@@ -54,7 +57,7 @@ public class DialogFactory {
 
 		List<CtField> fields = Arrays.asList(componentClass.getDeclaredFields());
 
-		//Load the true class
+		// Load the true class
 		Class<?> trueComponentClass = classLoader.loadClass(componentClass.getName());
 
 		List<DialogElement> tabList = new ArrayList<DialogElement>();
@@ -68,18 +71,13 @@ public class DialogFactory {
 
 				Field trueField = trueComponentClass.getDeclaredField(curField.getName());
 
-				DialogElement builtFieldWidget = WidgetFactory.make(
-						componentClass,
-						curField,
-						trueField,
-						classToXTypeMap,
-						xTypeToWidgetMakerMap,
-						classLoader,
-						classPool,true);
+				DialogElement builtFieldWidget = WidgetFactory.make(componentClass, curField, trueField,
+					classToXTypeMap, xTypeToWidgetMakerMap, classLoader, classPool, true);
 
-				if(builtFieldWidget instanceof Html5SmartImageWidget && ((Html5SmartImageWidget)builtFieldWidget).isTab()){
+				if (builtFieldWidget instanceof Html5SmartImageWidget
+					&& ((Html5SmartImageWidget) builtFieldWidget).isTab()) {
 					tabList.add(builtFieldWidget);
-				}else{
+				} else {
 					String tabString = getTabStringForField(curField, dialogProperty);
 
 					if (!tabMap.containsKey(tabString)) {
@@ -91,19 +89,18 @@ public class DialogFactory {
 			}
 		}
 
-
 		for (String curMapKey : tabMap.keySet()) {
 			tabList.add(new Tab(curMapKey, new WidgetCollection(tabMap.get(curMapKey))));
 		}
-		Integer width=null;
-		Integer height=null;
-		if(componentAnnotation.dialogWidth()>0){
-			width=componentAnnotation.dialogWidth();
+		Integer width = null;
+		Integer height = null;
+		if (componentAnnotation.dialogWidth() > 0) {
+			width = componentAnnotation.dialogWidth();
 		}
-		if(componentAnnotation.dialogHeight()>0){
-			height=componentAnnotation.dialogHeight();
+		if (componentAnnotation.dialogHeight() > 0) {
+			height = componentAnnotation.dialogHeight();
 		}
-		return new Dialog(tabList, dialogTitle,componentAnnotation.fileName(),width,height);
+		return new Dialog(tabList, dialogTitle, componentAnnotation.fileName(), width, height);
 	}
 
 	private static final String getDialogTitleForComponent(Component component) {

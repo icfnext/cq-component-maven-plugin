@@ -8,7 +8,8 @@ public class LogSingleton {
 
 	private Log logger;
 
-	private LogSingleton() { }
+	private LogSingleton() {
+	}
 
 	public static final LogSingleton getInstance() {
 		if (instance == null) {

@@ -22,7 +22,7 @@ public interface EditConfig {
 	public String getLayout();
 
 	public String getPrimaryType();
-	
-	public Map<String,String> getListeners();
+
+	public Map<String, String> getListeners();
 
 }

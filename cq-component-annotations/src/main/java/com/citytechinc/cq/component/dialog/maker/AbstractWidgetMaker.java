@@ -20,16 +20,18 @@ import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldExcept
 public abstract class AbstractWidgetMaker implements WidgetMaker {
 
 	public abstract DialogElement make(String xtype, Field widgetField, CtField ctWidgetField,
-			Class<?> containingClass, CtClass ctContainingClass, Map<Class<?>, String> xtypeMap,Map<String, WidgetMaker> xTypeToWidgetMakerMap,ClassLoader classLoader, ClassPool classPool,boolean useDotSlashInName) throws ClassNotFoundException, InvalidComponentFieldException, CannotCompileException, NotFoundException,SecurityException, NoSuchFieldException;
+		Class<?> containingClass, CtClass ctContainingClass, Map<Class<?>, String> xtypeMap,
+		Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool,
+		boolean useDotSlashInName) throws ClassNotFoundException, InvalidComponentFieldException,
+		CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException;
 
-
-	protected String getNameForField(DialogField dialogFieldAnnotation, Field dialogField,boolean useDotSlash) {
+	protected String getNameForField(DialogField dialogFieldAnnotation, Field dialogField, boolean useDotSlash) {
 		String overrideName = dialogFieldAnnotation.name();
 
 		if (StringUtils.isNotEmpty(overrideName)) {
 			return overrideName;
 		}
-		if(!useDotSlash){
+		if (!useDotSlash) {
 			return dialogField.getName();
 		}
 		return "./" + dialogField.getName();

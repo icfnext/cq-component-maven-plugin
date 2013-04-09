@@ -24,7 +24,8 @@ public class EditConfigXmlWriter {
 	private static final DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 	private static final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
-	public static final void writeEditConfig(EditConfig editConfig, OutputStream outputStream) throws TransformerException, ParserConfigurationException {
+	public static final void writeEditConfig(EditConfig editConfig, OutputStream outputStream)
+		throws TransformerException, ParserConfigurationException {
 
 		Document contentDocument = makeDocument(editConfig);
 
@@ -48,15 +49,16 @@ public class EditConfigXmlWriter {
 
 		Element jcrRootElement = document.createElementNS(Constants.JCR_NS_URI, "jcr:root");
 
-		jcrRootElement.setAttributeNS(Constants.JCR_NS_URI, Constants.PRIMARY_TYPE_ATTRIBUTE, editConfig.getPrimaryType());
+		jcrRootElement.setAttributeNS(Constants.JCR_NS_URI, Constants.PRIMARY_TYPE_ATTRIBUTE,
+			editConfig.getPrimaryType());
 
 		jcrRootElement.setAttributeNS(Constants.CQ_NS_URI, "cq:dialogMode", editConfig.getDialogMode());
 		jcrRootElement.setAttributeNS(Constants.CQ_NS_URI, "cq:layout", editConfig.getLayout());
 		jcrRootElement.setAttributeNS(Constants.CQ_NS_URI, "cq:actions", getActionsStringForEditConfig(editConfig));
-		if(editConfig.getListeners()!=null){
+		if (editConfig.getListeners() != null) {
 			Element cqListeners = document.createElementNS(Constants.CQ_NS_URI, "cq:listeners");
 			cqListeners.setAttributeNS(Constants.JCR_NS_URI, "jcr:primaryType", "cq:EditListenersConfig");
-			for(String key:editConfig.getListeners().keySet()){
+			for (String key : editConfig.getListeners().keySet()) {
 				cqListeners.setAttribute(key, editConfig.getListeners().get(key));
 			}
 			jcrRootElement.appendChild(cqListeners);

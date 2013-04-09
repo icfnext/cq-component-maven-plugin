@@ -7,15 +7,15 @@ import com.citytechinc.cq.component.dialog.AbstractDialogElement;
 import com.citytechinc.cq.component.dialog.DialogElement;
 
 public class TabPanel extends AbstractDialogElement {
-	private static final String DEFAUL_FIELD_NAME="tabs";
-	private static final String PRIMARY_TYPE="cq:TabPanel";
+	private static final String DEFAUL_FIELD_NAME = "tabs";
+	private static final String PRIMARY_TYPE = "cq:TabPanel";
 
 	public TabPanel() {
 		this(new ArrayList<DialogElement>());
 	}
 
 	public TabPanel(DialogElement element) {
-		this(Arrays.asList(new DialogElement[]{element}));
+		this(Arrays.asList(new DialogElement[] { element }));
 	}
 
 	public TabPanel(List<DialogElement> elements) {

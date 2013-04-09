@@ -11,7 +11,8 @@ import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassExcept
 
 public class ContentFactory {
 
-	public static final Content make (CtClass componentClass, String defaultGroup) throws InvalidComponentClassException, ClassNotFoundException {
+	public static final Content make(CtClass componentClass, String defaultGroup)
+		throws InvalidComponentClassException, ClassNotFoundException {
 
 		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
@@ -22,11 +23,11 @@ public class ContentFactory {
 		Boolean isContainer = getIsContainerForComponent(componentClass, componentAnnotation);
 		String title = getTitleForComponent(componentClass, componentAnnotation);
 		String group = getGroupForComponent(componentClass, componentAnnotation, defaultGroup);
-		String resourceSuperType=null;
-		if(!StringUtils.isEmpty(componentAnnotation.resourceSuperType())){
-			resourceSuperType=componentAnnotation.resourceSuperType();
+		String resourceSuperType = null;
+		if (!StringUtils.isEmpty(componentAnnotation.resourceSuperType())) {
+			resourceSuperType = componentAnnotation.resourceSuperType();
 		}
-		return new ContentImpl(title, group, resourceSuperType,isContainer);
+		return new ContentImpl(title, group, resourceSuperType, isContainer);
 	}
 
 	private static final Boolean getIsContainerForComponent(CtClass componentClass, Component componentAnnotation) {
@@ -43,7 +44,8 @@ public class ContentFactory {
 		return componentClass.getSimpleName();
 	}
 
-	private static final String getGroupForComponent(CtClass componentClass, Component componentAnnotation, String defaultGroup) {
+	private static final String getGroupForComponent(CtClass componentClass, Component componentAnnotation,
+		String defaultGroup) {
 		String overrideGroup = componentAnnotation.group();
 
 		if (StringUtils.isNotEmpty(overrideGroup)) {

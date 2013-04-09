@@ -18,7 +18,8 @@ import com.citytechinc.cq.component.editconfig.impl.SimpleEditConfig;
 
 public class EditConfigFactory {
 
-	public static final EditConfig make(CtClass componentClass) throws InvalidComponentClassException, ClassNotFoundException {
+	public static final EditConfig make(CtClass componentClass) throws InvalidComponentClassException,
+		ClassNotFoundException {
 
 		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
@@ -30,9 +31,9 @@ public class EditConfigFactory {
 		List<String> actions = getActionsForEditConfig(componentAnnotation, title);
 		String dialogMode = getDialogModeForEditConfig(componentAnnotation);
 		String layout = getLayoutForEditConfig(componentAnnotation);
-		Map<String,String> listeners=getListenersForEditConfig(componentAnnotation);
+		Map<String, String> listeners = getListenersForEditConfig(componentAnnotation);
 
-		return new SimpleEditConfig(title, actions, dialogMode, layout, "cq:EditConfig",listeners);
+		return new SimpleEditConfig(title, actions, dialogMode, layout, "cq:EditConfig", listeners);
 	}
 
 	private static final String getTitleForEditConfig(CtClass componentClass, Component componentAnnotation) {
@@ -78,8 +79,8 @@ public class EditConfigFactory {
 
 		return "editbar";
 	}
-	
-	private static final Map<String,String> getListenersForEditConfig(Component componenetAnnotation){
+
+	private static final Map<String, String> getListenersForEditConfig(Component componenetAnnotation) {
 		if (componenetAnnotation.listeners().length > 0) {
 			Map<String, String> listeners = new HashMap<String, String>();
 

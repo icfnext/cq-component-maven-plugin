@@ -9,7 +9,7 @@ public interface Content {
 	public String getTitle();
 
 	public String getGroup();
-	
+
 	public String getResourceSuperType();
 
 }

@@ -13,33 +13,21 @@ public class RtePlugin extends AbstractDialogElement {
 
 	private final String features;
 
-	public RtePlugin(
-			String fieldName,
-			List<String> featuresList) {
+	public RtePlugin(String fieldName, List<String> featuresList) {
 
 		this(fieldName, "[" + StringUtils.join(featuresList.iterator(), ",") + "]");
 
 	}
 
-	public RtePlugin(
-			String fieldName,
-			String features) {
+	public RtePlugin(String fieldName, String features) {
 
 		this(fieldName, features, null);
 
 	}
 
-	public RtePlugin(
-			String fieldName,
-			String features,
-			List<? extends DialogElement> containedElements) {
+	public RtePlugin(String fieldName, String features, List<? extends DialogElement> containedElements) {
 
-		super(
-				PRIMARY_TYPE,
-				null,
-				fieldName,
-				null,
-				containedElements);
+		super(PRIMARY_TYPE, null, fieldName, null, containedElements);
 
 		this.features = features;
 	}

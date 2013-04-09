@@ -16,12 +16,12 @@ import com.citytechinc.cq.component.dialog.impl.Html5SmartImageWidget;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 
-public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker{
+public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
 
 	@Override
-	public DialogElement make(String xtype, Field widgetField, CtField ctWidgetField,
-			Class<?> containingClass, CtClass ctContainingClass, Map<Class<?>, String> xtypeMap,Map<String, WidgetMaker> xTypeToWidgetMakerMap,ClassLoader classLoader, ClassPool classPool,boolean useDotSlashInName)
-			throws ClassNotFoundException {
+	public DialogElement make(String xtype, Field widgetField, CtField ctWidgetField, Class<?> containingClass,
+		CtClass ctContainingClass, Map<Class<?>, String> xtypeMap, Map<String, WidgetMaker> xTypeToWidgetMakerMap,
+		ClassLoader classLoader, ClassPool classPool, boolean useDotSlashInName) throws ClassNotFoundException {
 
 		Html5SmartImage smartImageAnnotation = (Html5SmartImage) ctWidgetField.getAnnotation(Html5SmartImage.class);
 		DialogField dialogFieldAnnotation = (DialogField) ctWidgetField.getAnnotation(DialogField.class);
@@ -75,33 +75,16 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker{
 		String fieldName = getFieldNameForField(dialogFieldAnnotation, widgetField);
 		String fieldLabel = getFieldLabelForField(dialogFieldAnnotation, widgetField);
 		String fieldDescription = getFieldDescriptionForField(dialogFieldAnnotation);
-		boolean hideLabel=dialogFieldAnnotation.hideLabel();
-		
-		boolean disableFlush=smartImageAnnotation.disableFlush();
-		boolean disableInfo=smartImageAnnotation.disableInfo();
-		boolean disableZoom=smartImageAnnotation.disableZoom();
-		boolean allowUpload=smartImageAnnotation.allowUpload();
+		boolean hideLabel = dialogFieldAnnotation.hideLabel();
 
-		return new Html5SmartImageWidget(
-				name,
-				disableFlush,
-				disableInfo,
-				disableZoom,
-				cropParameter,
-				fileNameParameter,
-				fileReferenceParameter,
-				mapParameter,
-				rotateParameter,
-				uploadUrl,
-				ddGroups,
-				allowUpload,
-				isRequired,
-				hideLabel,
-				fieldLabel,
-				fieldName,
-				fieldDescription,
-				height,
-				smartImageAnnotation.tab());
+		boolean disableFlush = smartImageAnnotation.disableFlush();
+		boolean disableInfo = smartImageAnnotation.disableInfo();
+		boolean disableZoom = smartImageAnnotation.disableZoom();
+		boolean allowUpload = smartImageAnnotation.allowUpload();
+
+		return new Html5SmartImageWidget(name, disableFlush, disableInfo, disableZoom, cropParameter,
+			fileNameParameter, fileReferenceParameter, mapParameter, rotateParameter, uploadUrl, ddGroups, allowUpload,
+			isRequired, hideLabel, fieldLabel, fieldName, fieldDescription, height, smartImageAnnotation.tab());
 
 	}
 

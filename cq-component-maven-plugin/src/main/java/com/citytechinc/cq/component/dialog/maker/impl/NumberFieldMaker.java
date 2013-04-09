@@ -17,38 +17,38 @@ import com.citytechinc.cq.component.dialog.impl.NumberFieldWidget;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 
-public class NumberFieldMaker extends AbstractWidgetMaker{
+public class NumberFieldMaker extends AbstractWidgetMaker {
 
 	@Override
-	public DialogElement make(String xtype, Field widgetField,
-			CtField ctWidgetField, Class<?> containingClass,
-			CtClass ctContainingClass, Map<Class<?>, String> xtypeMap,Map<String, WidgetMaker> xTypeToWidgetMakerMap,ClassLoader classLoader, ClassPool classPool,boolean useDotSlashInName)
-			throws ClassNotFoundException, InvalidComponentFieldException,
-			CannotCompileException, NotFoundException {
+	public DialogElement make(String xtype, Field widgetField, CtField ctWidgetField, Class<?> containingClass,
+		CtClass ctContainingClass, Map<Class<?>, String> xtypeMap, Map<String, WidgetMaker> xTypeToWidgetMakerMap,
+		ClassLoader classLoader, ClassPool classPool, boolean useDotSlashInName) throws ClassNotFoundException,
+		InvalidComponentFieldException, CannotCompileException, NotFoundException {
 		NumberField numberFieldAnnotation = (NumberField) ctWidgetField.getAnnotation(NumberField.class);
 		DialogField dialogFieldAnnotation = (DialogField) ctWidgetField.getAnnotation(DialogField.class);
-		
-		boolean allowDecimals=true;
-		boolean allowNegative=true;
-		int decimalPrecision=2;
-		String decimalSeparator=".";
-		if(numberFieldAnnotation!=null){
-			allowDecimals=numberFieldAnnotation.allowDecimals();
-			allowNegative=numberFieldAnnotation.allowNegative();
-			decimalPrecision=numberFieldAnnotation.decimalPrecision();
-			decimalSeparator=numberFieldAnnotation.decimalSeparator();			
+
+		boolean allowDecimals = true;
+		boolean allowNegative = true;
+		int decimalPrecision = 2;
+		String decimalSeparator = ".";
+		if (numberFieldAnnotation != null) {
+			allowDecimals = numberFieldAnnotation.allowDecimals();
+			allowNegative = numberFieldAnnotation.allowNegative();
+			decimalPrecision = numberFieldAnnotation.decimalPrecision();
+			decimalSeparator = numberFieldAnnotation.decimalSeparator();
 		}
-		
-		String name = getNameForField(dialogFieldAnnotation, widgetField,useDotSlashInName);
+
+		String name = getNameForField(dialogFieldAnnotation, widgetField, useDotSlashInName);
 		String fieldName = getFieldNameForField(dialogFieldAnnotation, widgetField);
 		String fieldLabel = getFieldLabelForField(dialogFieldAnnotation, widgetField);
 		String fieldDescription = getFieldDescriptionForField(dialogFieldAnnotation);
 		Boolean isRequired = getIsRequiredForField(dialogFieldAnnotation);
 		Map<String, String> additionalProperties = getAdditionalPropertiesForField(dialogFieldAnnotation);
 		String defaultValue = getDefaultValueForField(dialogFieldAnnotation);
-		boolean hideLabel=dialogFieldAnnotation.hideLabel();
-		
-		return new NumberFieldWidget(allowDecimals, allowNegative, decimalPrecision, decimalSeparator, fieldLabel, fieldDescription, !isRequired, hideLabel,defaultValue, name, fieldName, additionalProperties);
+		boolean hideLabel = dialogFieldAnnotation.hideLabel();
+
+		return new NumberFieldWidget(allowDecimals, allowNegative, decimalPrecision, decimalSeparator, fieldLabel,
+			fieldDescription, !isRequired, hideLabel, defaultValue, name, fieldName, additionalProperties);
 	}
 
 }

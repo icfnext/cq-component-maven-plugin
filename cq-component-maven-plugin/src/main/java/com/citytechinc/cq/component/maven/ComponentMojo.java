@@ -21,19 +21,19 @@ import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 import com.citytechinc.cq.component.maven.util.LogSingleton;
 import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;
 
-@Mojo( name="component", defaultPhase = LifecyclePhase.PACKAGE, requiresDependencyResolution = ResolutionScope.COMPILE )
+@Mojo(name = "component", defaultPhase = LifecyclePhase.PACKAGE, requiresDependencyResolution = ResolutionScope.COMPILE)
 public class ComponentMojo extends AbstractMojo {
 
-	@Parameter ( defaultValue = "${project}" )
+	@Parameter(defaultValue = "${project}")
 	private MavenProject project;
 
 	@Parameter
 	private String componentPathBase;
 
-	@Parameter ( defaultValue = "content" )
+	@Parameter(defaultValue = "content")
 	private String componentPathSuffix;
 
-	@Parameter ( defaultValue = "Components" )
+	@Parameter(defaultValue = "Components")
 	private String defaultComponentGroup;
 
 	@SuppressWarnings({ "unchecked" })
@@ -42,30 +42,22 @@ public class ComponentMojo extends AbstractMojo {
 		LogSingleton.getInstance().setLogger(getLog());
 
 		try {
-			ClassLoader classLoader = ComponentMojoUtil.getClassLoader(project.getCompileClasspathElements(), this.getClass().getClassLoader());
+			ClassLoader classLoader = ComponentMojoUtil.getClassLoader(project.getCompileClasspathElements(), this
+				.getClass().getClassLoader());
 
 			ClassPool classPool = ComponentMojoUtil.getClassPool(classLoader);
 
-			List<CtClass> classList = ComponentMojoUtil.getAllComponentAnnotations(classPool,classLoader);
-			
-			List<WidgetConfigHolder> widgetConfigs = ComponentMojoUtil.getAllWidgetAnnotations(classPool,classLoader);
-			
+			List<CtClass> classList = ComponentMojoUtil.getAllComponentAnnotations(classPool, classLoader);
+
+			List<WidgetConfigHolder> widgetConfigs = ComponentMojoUtil.getAllWidgetAnnotations(classPool, classLoader);
+
 			Map<Class<?>, String> classToXTypeMap = ComponentMojoUtil.getXTypeMapForCustomXTypeMapping(widgetConfigs);
 
 			Map<String, WidgetMaker> xTypeToWidgetMakerMap = ComponentMojoUtil.getXTypeToWidgetMakerMap(widgetConfigs);
 
-			ComponentMojoUtil.buildArchiveFileForProjectAndClassList(
-					classList,
-					classToXTypeMap,
-					xTypeToWidgetMakerMap,
-					classLoader,
-					classPool,
-					new File(project.getBuild().getDirectory()),
-					componentPathBase,
-					componentPathSuffix,
-					defaultComponentGroup,
-					getArchiveFileForProject(),
-					getTempArchiveFileForProject());
+			ComponentMojoUtil.buildArchiveFileForProjectAndClassList(classList, classToXTypeMap, xTypeToWidgetMakerMap,
+				classLoader, classPool, new File(project.getBuild().getDirectory()), componentPathBase,
+				componentPathSuffix, defaultComponentGroup, getArchiveFileForProject(), getTempArchiveFileForProject());
 
 		} catch (Exception e) {
 			getLog().error(e.getMessage(), e);

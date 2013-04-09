@@ -12,15 +12,16 @@ public class SimpleEditConfig implements EditConfig {
 	private final String dialogMode;
 	private final String layout;
 	private final String primaryType;
-	private final Map<String,String> listeners;
+	private final Map<String, String> listeners;
 
-	public SimpleEditConfig(String title, List<String> actions, String dialogMode, String layout, String primaryType,Map<String,String> listeners) {
+	public SimpleEditConfig(String title, List<String> actions, String dialogMode, String layout, String primaryType,
+		Map<String, String> listeners) {
 		this.title = title;
 		this.actions = actions;
 		this.dialogMode = dialogMode;
 		this.layout = layout;
 		this.primaryType = primaryType;
-		this.listeners=listeners;
+		this.listeners = listeners;
 	}
 
 	public String getTitle() {
@@ -42,8 +43,8 @@ public class SimpleEditConfig implements EditConfig {
 	public String getPrimaryType() {
 		return primaryType;
 	}
-	
-	public Map<String,String> getListeners(){
+
+	public Map<String, String> getListeners() {
 		return listeners;
 	}
 }

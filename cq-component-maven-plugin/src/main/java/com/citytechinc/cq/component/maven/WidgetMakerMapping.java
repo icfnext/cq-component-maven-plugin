@@ -19,8 +19,8 @@ public class WidgetMakerMapping {
 		return classLoader.loadClass(getMakerClassName());
 	}
 
-	public WidgetMaker getMaker(ClassLoader classLoader)
-			throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+	public WidgetMaker getMaker(ClassLoader classLoader) throws InstantiationException, IllegalAccessException,
+		ClassNotFoundException {
 		return (WidgetMaker) getMakerClass(classLoader).newInstance();
 	}
 }

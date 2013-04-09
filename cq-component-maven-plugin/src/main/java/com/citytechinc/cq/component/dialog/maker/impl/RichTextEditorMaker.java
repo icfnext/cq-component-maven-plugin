@@ -44,48 +44,37 @@ import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 
 /**
- *
- * Based on http://dev.day.com/docs/en/cq/current/administering/configuring_rich_text_editor.html
- *
+ * 
+ * Based on http://dev.day.com/docs/en/cq/current/administering/
+ * configuring_rich_text_editor.html
+ * 
  * @author paulmichelotti
- *
+ * 
  */
 public class RichTextEditorMaker extends AbstractWidgetMaker {
 
-
-
 	@Override
-	public DialogElement make(String xtype, Field widgetField,
-			CtField ctWidgetField, Class<?> containingClass,
-			CtClass ctContainingClass, Map<Class<?>, String> xtypeMap,Map<String, WidgetMaker> xTypeToWidgetMakerMap,ClassLoader classLoader, ClassPool classPool,boolean useDotSlashInName)
-			throws ClassNotFoundException, InvalidComponentFieldException,
-			CannotCompileException, NotFoundException {
+	public DialogElement make(String xtype, Field widgetField, CtField ctWidgetField, Class<?> containingClass,
+		CtClass ctContainingClass, Map<Class<?>, String> xtypeMap, Map<String, WidgetMaker> xTypeToWidgetMakerMap,
+		ClassLoader classLoader, ClassPool classPool, boolean useDotSlashInName) throws ClassNotFoundException,
+		InvalidComponentFieldException, CannotCompileException, NotFoundException {
 
 		DialogField dialogFieldAnnotation = (DialogField) ctWidgetField.getAnnotation(DialogField.class);
 		RichTextEditor rteAnnotation = (RichTextEditor) ctWidgetField.getAnnotation(RichTextEditor.class);
 
-		String name = getNameForField(dialogFieldAnnotation, widgetField,useDotSlashInName);
+		String name = getNameForField(dialogFieldAnnotation, widgetField, useDotSlashInName);
 		String fieldName = getFieldNameForField(dialogFieldAnnotation, widgetField);
 		String fieldLabel = getFieldLabelForField(dialogFieldAnnotation, widgetField);
 		String fieldDescription = getFieldDescriptionForField(dialogFieldAnnotation);
 		Boolean isRequired = getIsRequiredForField(dialogFieldAnnotation);
 		Map<String, String> additionalProperties = getAdditionalPropertiesForField(dialogFieldAnnotation);
 		String defaultValue = getDefaultValueForField(dialogFieldAnnotation);
-		boolean hideLabel=dialogFieldAnnotation.hideLabel();
-		
+		boolean hideLabel = dialogFieldAnnotation.hideLabel();
+
 		final List<DialogElement> rtePlugins = buildRtePlugins(rteAnnotation);
 
-		return new RichTextEditorWidget(
-				fieldLabel,
-				fieldDescription,
-				!isRequired,
-				hideLabel,
-				defaultValue,
-				name,
-				fieldName,
-				additionalProperties,
-				rtePlugins
-				);
+		return new RichTextEditorWidget(fieldLabel, fieldDescription, !isRequired, hideLabel, defaultValue, name,
+			fieldName, additionalProperties, rtePlugins);
 	}
 
 	private List<DialogElement> buildRtePlugins(RichTextEditor rteAnnotation) {
@@ -360,10 +349,11 @@ public class RichTextEditorMaker extends AbstractWidgetMaker {
 
 			List<DialogElement> styleList = new ArrayList<DialogElement>();
 
-			for (int i=0; i<stylesAnnotation.styles().length; i++) {
+			for (int i = 0; i < stylesAnnotation.styles().length; i++) {
 				String styleFieldName = "style" + i;
 
-				styleList.add(new RteStyle(styleFieldName, stylesAnnotation.styles()[i].cssName(), stylesAnnotation.styles()[i].text()));
+				styleList.add(new RteStyle(styleFieldName, stylesAnnotation.styles()[i].cssName(), stylesAnnotation
+					.styles()[i].text()));
 			}
 
 			return new RtePlugin("styles", "*", styleList);
@@ -382,7 +372,7 @@ public class RichTextEditorMaker extends AbstractWidgetMaker {
 			if (paraFormatAnnotation.formats().length > 0) {
 				formatList = new ArrayList<DialogElement>();
 
-				for (int i=0; i<paraFormatAnnotation.formats().length; i++) {
+				for (int i = 0; i < paraFormatAnnotation.formats().length; i++) {
 					String formatFieldName = "format" + i;
 
 					ParaFormatFormat curFormat = paraFormatAnnotation.formats()[i];
@@ -391,7 +381,8 @@ public class RichTextEditorMaker extends AbstractWidgetMaker {
 				}
 			}
 
-			List<DialogElement> formats = Arrays.asList(new DialogElement[] {new WidgetCollection(formatList, "formats")});
+			List<DialogElement> formats = Arrays.asList(new DialogElement[] { new WidgetCollection(formatList,
+				"formats") });
 
 			return new RtePlugin("paraformat", "*", formats);
 		}
@@ -462,7 +453,7 @@ public class RichTextEditorMaker extends AbstractWidgetMaker {
 			if (tableAnnotation.tableStyles().length > 0) {
 				tableStyles = new ArrayList<DialogElement>();
 
-				for (int i=0; i<tableAnnotation.tableStyles().length; i++) {
+				for (int i = 0; i < tableAnnotation.tableStyles().length; i++) {
 					Style curTableStyle = tableAnnotation.tableStyles()[i];
 					String curFieldName = "tablestyle" + i;
 
@@ -475,7 +466,7 @@ public class RichTextEditorMaker extends AbstractWidgetMaker {
 			if (tableAnnotation.cellStyles().length > 0) {
 				cellStyles = new ArrayList<DialogElement>();
 
-				for (int i=0; i<tableAnnotation.cellStyles().length; i++) {
+				for (int i = 0; i < tableAnnotation.cellStyles().length; i++) {
 					Style curCellStyle = tableAnnotation.cellStyles()[i];
 					String curFieldName = "cellstyle" + i;
 
@@ -516,7 +507,9 @@ public class RichTextEditorMaker extends AbstractWidgetMaker {
 		return null;
 	}
 
-	//TODO: Build out mechanism to add own special characters per http://dev.day.com/docs/en/cq/current/administering/configuring_rich_text_editor.html#Special Characters
+	// TODO: Build out mechanism to add own special characters per
+	// http://dev.day.com/docs/en/cq/current/administering/configuring_rich_text_editor.html#Special
+	// Characters
 	private RtePlugin buildMiscToolsPlugin(RichTextEditor rteAnnotation) {
 
 		if (rteAnnotation.misctools().length > 0) {

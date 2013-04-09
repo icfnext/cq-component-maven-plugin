@@ -2,9 +2,9 @@ package com.citytechinc.cq.component.dialog.impl;
 
 import com.citytechinc.cq.component.dialog.AbstractDialogElement;
 
-public class Namespace extends AbstractDialogElement{
+public class Namespace extends AbstractDialogElement {
 
-	private static final String PRIMARY_TYPE="nt:unstructured";
+	private static final String PRIMARY_TYPE = "nt:unstructured";
 	private final String name;
 	private final String maximum;
 

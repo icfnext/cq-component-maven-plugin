@@ -5,10 +5,10 @@ import org.codehaus.plexus.util.StringUtils;
 import com.citytechinc.cq.component.annotations.config.Widget;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
 
-@Widget(annotationClass="com.citytechinc.cq.component.annotations.widgets.Html5SmartImage",makerClass="com.citytechinc.cq.component.dialog.maker.impl.Html5SmartImageWidgetMaker",xtypes=Html5SmartImageWidget.XTYPE)
+@Widget(annotationClass = "com.citytechinc.cq.component.annotations.widgets.Html5SmartImage", makerClass = "com.citytechinc.cq.component.dialog.maker.impl.Html5SmartImageWidgetMaker", xtypes = Html5SmartImageWidget.XTYPE)
 public class Html5SmartImageWidget extends AbstractWidget {
-	public static final String XTYPE="html5smartimage";
-	private static final String PRIMARY_TYPE="cq:Widget";
+	public static final String XTYPE = "html5smartimage";
+	private static final String PRIMARY_TYPE = "cq:Widget";
 	private String originalName;
 	private final boolean disableFlush;
 	private final boolean disableInfo;
@@ -24,17 +24,13 @@ public class Html5SmartImageWidget extends AbstractWidget {
 	private Integer height;
 	private boolean tab;
 
-	public Html5SmartImageWidget(String name, boolean disableFlush,
-			boolean disableInfo, boolean disableZoom, String cropParameter,
-			String fileNameParameter, String fileReferenceParameter,
-			String mapParameter, String rotateParameter, String uploadUrl,
-			String ddGroups, boolean allowUpload,boolean required,boolean hideLabel,String fieldLabel,
-			String fieldName,
-			String fieldDescription,
-			Integer height,
-			boolean tab) {
-		super(XTYPE,fieldLabel,fieldDescription,!required,hideLabel,null,getNameAsPrefix(name),PRIMARY_TYPE, null, fieldName,null,null);
-		originalName=name;
+	public Html5SmartImageWidget(String name, boolean disableFlush, boolean disableInfo, boolean disableZoom,
+		String cropParameter, String fileNameParameter, String fileReferenceParameter, String mapParameter,
+		String rotateParameter, String uploadUrl, String ddGroups, boolean allowUpload, boolean required,
+		boolean hideLabel, String fieldLabel, String fieldName, String fieldDescription, Integer height, boolean tab) {
+		super(XTYPE, fieldLabel, fieldDescription, !required, hideLabel, null, getNameAsPrefix(name), PRIMARY_TYPE,
+			null, fieldName, null, null);
+		originalName = name;
 		this.disableFlush = disableFlush;
 		this.disableInfo = disableInfo;
 		this.disableZoom = disableZoom;
@@ -46,15 +42,15 @@ public class Html5SmartImageWidget extends AbstractWidget {
 		this.uploadUrl = uploadUrl;
 		this.ddGroups = ddGroups;
 		this.allowUpload = allowUpload;
-		this.height=height;
-		this.tab=tab;
+		this.height = height;
+		this.tab = tab;
 	}
-	
-	private static String getNameAsPrefix(String name){
-		if(StringUtils.isEmpty(name)){
+
+	private static String getNameAsPrefix(String name) {
+		if (StringUtils.isEmpty(name)) {
 			return "./";
-		}else{
-			return "./"+name+"/";
+		} else {
+			return "./" + name + "/";
 		}
 	}
 
@@ -79,29 +75,29 @@ public class Html5SmartImageWidget extends AbstractWidget {
 	}
 
 	public String getFileNameParameter() {
-		if(!StringUtils.isEmpty(fileNameParameter)){
-			return getNameAsPrefix(originalName)+fileNameParameter;
+		if (!StringUtils.isEmpty(fileNameParameter)) {
+			return getNameAsPrefix(originalName) + fileNameParameter;
 		}
 		return fileNameParameter;
 	}
 
 	public String getFileReferenceParameter() {
-		if(!StringUtils.isEmpty(fileReferenceParameter)){
-			return getNameAsPrefix(originalName)+fileReferenceParameter;
+		if (!StringUtils.isEmpty(fileReferenceParameter)) {
+			return getNameAsPrefix(originalName) + fileReferenceParameter;
 		}
 		return fileReferenceParameter;
 	}
 
 	public String getMapParameter() {
-		if(!StringUtils.isEmpty(mapParameter)){
-			return getNameAsPrefix(originalName)+mapParameter;
+		if (!StringUtils.isEmpty(mapParameter)) {
+			return getNameAsPrefix(originalName) + mapParameter;
 		}
 		return mapParameter;
 	}
 
 	public String getRotateParameter() {
-		if(!StringUtils.isEmpty(rotateParameter)){
-			return getNameAsPrefix(originalName)+rotateParameter;
+		if (!StringUtils.isEmpty(rotateParameter)) {
+			return getNameAsPrefix(originalName) + rotateParameter;
 		}
 		return rotateParameter;
 	}
@@ -131,10 +127,10 @@ public class Html5SmartImageWidget extends AbstractWidget {
 	}
 
 	public String getRequestSuffix() {
-		if(StringUtils.isEmpty(originalName)){
+		if (StringUtils.isEmpty(originalName)) {
 			return ".img.png";
-		}else{
-			return "/"+originalName+".img.png";
+		} else {
+			return "/" + originalName + ".img.png";
 		}
 	}
 }

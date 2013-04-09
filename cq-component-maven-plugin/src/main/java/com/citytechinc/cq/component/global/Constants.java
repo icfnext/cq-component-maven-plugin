@@ -8,5 +8,4 @@ public class Constants {
 
 	public static final String PRIMARY_TYPE_ATTRIBUTE = "jcr:primaryType";
 
-
 }

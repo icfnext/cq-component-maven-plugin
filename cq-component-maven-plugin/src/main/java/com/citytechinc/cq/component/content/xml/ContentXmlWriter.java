@@ -23,8 +23,8 @@ public class ContentXmlWriter {
 	private static final DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 	private static final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
-	public static final void writeContent(Content content, OutputStream outputStream)
-			throws TransformerException, ParserConfigurationException {
+	public static final void writeContent(Content content, OutputStream outputStream) throws TransformerException,
+		ParserConfigurationException {
 
 		Document contentDocument = makeDocument(content);
 
@@ -51,13 +51,13 @@ public class ContentXmlWriter {
 
 		if (content.isContainer()) {
 			jcrRootElement.setAttributeNS(Constants.CQ_NS_URI, "cq:isContainer", "{Boolean}true");
-		}
-		else {
+		} else {
 			jcrRootElement.setAttributeNS(Constants.CQ_NS_URI, "cq:isContainer", "{Boolean}false");
 		}
-		
-		if(content.getResourceSuperType()!=null){
-			jcrRootElement.setAttributeNS(Constants.SLING_NS_URI, "sling:resourceSuperType", content.getResourceSuperType());
+
+		if (content.getResourceSuperType() != null) {
+			jcrRootElement.setAttributeNS(Constants.SLING_NS_URI, "sling:resourceSuperType",
+				content.getResourceSuperType());
 		}
 
 		jcrRootElement.setAttributeNS(Constants.JCR_NS_URI, "jcr:title", content.getTitle());

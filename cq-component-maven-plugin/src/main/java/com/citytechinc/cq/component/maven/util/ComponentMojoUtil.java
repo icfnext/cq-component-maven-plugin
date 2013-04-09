@@ -881,16 +881,10 @@ public class ComponentMojoUtil {
 		return StringUtils.uncapitalise(componentClass.getSimpleName());
 	}
 
-	public static List<WidgetConfigHolder> getAllWidgetAnnotations(ClassPool classPool, ClassLoader classLoader)
-		throws ClassNotFoundException, NotFoundException, MalformedURLException {
+	public static List<WidgetConfigHolder> getAllWidgetAnnotations(ClassPool classPool, ClassLoader classLoader,
+		Reflections reflections) throws ClassNotFoundException, NotFoundException, MalformedURLException {
 		List<WidgetConfigHolder> builtInWidgets = new ArrayList<WidgetConfigHolder>();
 		List<WidgetConfigHolder> extendedWidgets = new ArrayList<WidgetConfigHolder>();
-
-		Reflections reflections = new Reflections(new ConfigurationBuilder()
-			.addClassLoader(classLoader)
-			.setUrls(
-				ClasspathHelper.forClassLoader(new ClassLoader[] { Thread.currentThread().getContextClassLoader(),
-					classPool.getClassLoader(), classLoader })).setScanners(new TypeAnnotationsScanner()));
 
 		for (Class<?> c : reflections.getTypesAnnotatedWith(Widget.class)) {
 			CtClass clazz = classPool.getCtClass(c.getName());
@@ -915,15 +909,9 @@ public class ComponentMojoUtil {
 		return builtInWidgets;
 	}
 
-	public static List<CtClass> getAllComponentAnnotations(ClassPool classPool, ClassLoader classLoader)
+	public static List<CtClass> getAllComponentAnnotations(ClassPool classPool, Reflections reflections)
 		throws ClassNotFoundException, NotFoundException, MalformedURLException {
 		List<CtClass> classes = new ArrayList<CtClass>();
-
-		Reflections reflections = new Reflections(new ConfigurationBuilder()
-			.addClassLoader(classLoader)
-			.setUrls(
-				ClasspathHelper.forClassLoader(new ClassLoader[] { Thread.currentThread().getContextClassLoader(),
-					classPool.getClassLoader(), classLoader })).setScanners(new TypeAnnotationsScanner()));
 
 		for (Class<?> c : reflections.getTypesAnnotatedWith(Component.class)) {
 			classes.add(classPool.getCtClass(c.getName()));
@@ -938,5 +926,12 @@ public class ComponentMojoUtil {
 			fields.addAll(collectFields(ctClass.getSuperclass()));
 		}
 		return fields;
+	}
+
+	public static Reflections getReflections(ClassLoader classLoader) {
+		Reflections reflections = new Reflections(new ConfigurationBuilder().addClassLoader(classLoader)
+			.setUrls(ClasspathHelper.forClassLoader(new ClassLoader[] { classLoader }))
+			.setScanners(new TypeAnnotationsScanner()));
+		return reflections;
 	}
 }

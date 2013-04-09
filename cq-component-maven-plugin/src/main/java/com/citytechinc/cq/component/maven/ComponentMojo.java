@@ -15,6 +15,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
+import org.reflections.Reflections;
 
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
@@ -47,9 +48,12 @@ public class ComponentMojo extends AbstractMojo {
 
 			ClassPool classPool = ComponentMojoUtil.getClassPool(classLoader);
 
-			List<CtClass> classList = ComponentMojoUtil.getAllComponentAnnotations(classPool, classLoader);
+			Reflections reflections = ComponentMojoUtil.getReflections(classLoader);
 
-			List<WidgetConfigHolder> widgetConfigs = ComponentMojoUtil.getAllWidgetAnnotations(classPool, classLoader);
+			List<CtClass> classList = ComponentMojoUtil.getAllComponentAnnotations(classPool, reflections);
+
+			List<WidgetConfigHolder> widgetConfigs = ComponentMojoUtil.getAllWidgetAnnotations(classPool, classLoader,
+				reflections);
 
 			Map<Class<?>, String> classToXTypeMap = ComponentMojoUtil.getXTypeMapForCustomXTypeMapping(widgetConfigs);
 

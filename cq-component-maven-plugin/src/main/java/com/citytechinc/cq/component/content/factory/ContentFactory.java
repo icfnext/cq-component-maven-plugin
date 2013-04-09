@@ -10,6 +10,9 @@ import com.citytechinc.cq.component.content.impl.ContentImpl;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
 
 public class ContentFactory {
+	
+	private ContentFactory() {
+	}
 
 	public static final Content make(CtClass componentClass, String defaultGroup)
 		throws InvalidComponentClassException, ClassNotFoundException {

@@ -23,7 +23,9 @@ public class EditConfigXmlWriter {
 
 	private static final DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 	private static final TransformerFactory transformerFactory = TransformerFactory.newInstance();
-
+	
+	private EditConfigXmlWriter(){}
+	
 	public static final void writeEditConfig(EditConfig editConfig, OutputStream outputStream)
 		throws TransformerException, ParserConfigurationException {
 

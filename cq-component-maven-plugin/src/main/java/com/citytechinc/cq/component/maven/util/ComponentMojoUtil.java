@@ -10,7 +10,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -32,9 +31,7 @@ import org.apache.commons.compress.archivers.jar.JarArchiveInputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.maven.artifact.Artifact;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.StringUtils;
 import org.reflections.Reflections;
@@ -58,7 +55,6 @@ import com.citytechinc.cq.component.dialog.xml.DialogXmlWriter;
 import com.citytechinc.cq.component.editconfig.EditConfig;
 import com.citytechinc.cq.component.editconfig.factory.EditConfigFactory;
 import com.citytechinc.cq.component.editconfig.xml.EditConfigXmlWriter;
-import com.citytechinc.cq.component.maven.Dependency;
 
 public class ComponentMojoUtil {
 	private static final String OUTPUT_PATH = "tempComponentConfig";
@@ -137,91 +133,6 @@ public class ComponentMojoUtil {
 		}
 
 		return xTypeToWidgetMakerMap;
-	}
-
-	/**
-	 * Constructs a list of all Classes which are to be Scanned for component
-	 * annotations.
-	 * 
-	 * @param classPool
-	 * @param classPaths
-	 * @param includedDependencies
-	 * @param projectArtifacts
-	 * @return The constructed Class list
-	 * @throws ClassNotFoundException
-	 * @throws IOException
-	 * @throws NotFoundException
-	 */
-	public static List<CtClass> getCompiledClasses(ClassPool classPool, List<String> classPaths,
-		List<Dependency> includedDependencies, Set<Artifact> projectArtifacts) throws ClassNotFoundException,
-		IOException, NotFoundException {
-
-		final List<CtClass> classList = new ArrayList<CtClass>();
-
-		String[] extensions = { "class" };
-
-		for (String curClassPath : classPaths) {
-			getLog().debug("Current Class Path : " + curClassPath);
-
-			File curClassPathFile = new File(curClassPath);
-
-			/*
-			 * Handle loading of those classes compiled as part of this project
-			 */
-			if (curClassPathFile.isDirectory()) {
-
-				Collection<File> classFiles = FileUtils.listFiles(curClassPathFile, extensions, true);
-
-				for (File curClassFile : classFiles) {
-					String curClassString = classNameFromFilePath(curClassFile.getPath(), curClassPath);
-
-					getLog().debug("Loading class : " + curClassString);
-
-					classList.add(classPool.getCtClass(curClassString));
-				}
-
-			}
-
-		}
-
-		/*
-		 * Look through the project artifacts to find any matching the
-		 * dependency definition given in the project parameters. If one does,
-		 * look through it for classes to add to our class list.
-		 */
-		if (includedDependencies != null && !includedDependencies.isEmpty()) {
-			for (Artifact curArtifact : projectArtifacts) {
-
-				if (includeJarClasses(curArtifact, includedDependencies)) {
-					classList.addAll(getClassListForJarFile(curArtifact.getFile(), classPool));
-				}
-
-			}
-		}
-
-		return classList;
-	}
-
-	/**
-	 * Determines whether a particular JAR should be included in the component
-	 * scan based on the configured set of dependencies.
-	 * 
-	 * @param jarArtifact
-	 * @param dependencies
-	 * @return True if the provided artifact should be included, False otherwise
-	 */
-	protected static Boolean includeJarClasses(Artifact jarArtifact, List<Dependency> dependencies) {
-		for (Dependency curDependency : dependencies) {
-			if (jarArtifact.getArtifactId().equals(curDependency.getArtifactId())
-				&& jarArtifact.getGroupId().equals(curDependency.getGroupId())) {
-
-				getLog().debug("Including artifact " + jarArtifact.getArtifactId() + " : " + jarArtifact.getGroupId());
-
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	/**

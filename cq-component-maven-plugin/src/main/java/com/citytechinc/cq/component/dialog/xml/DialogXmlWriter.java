@@ -32,6 +32,8 @@ public class DialogXmlWriter {
 	private static final List<String> DO_NOT_CALL = Arrays.asList(new String[] { "getPrimaryType", "getNameSpace",
 		"getContainedElements", "getFieldName", "getClass", "getAdditionalProperties" });
 
+	private DialogXmlWriter(){}
+	
 	public static final void writeDialog(Dialog dialog, OutputStream outputStream) throws ParserConfigurationException,
 		TransformerException, IllegalArgumentException, SecurityException, IllegalAccessException,
 		InvocationTargetException, NoSuchMethodException {

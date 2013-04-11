@@ -25,6 +25,7 @@ import com.citytechinc.cq.component.dialog.impl.Html5SmartImageWidget;
 import com.citytechinc.cq.component.dialog.impl.Tab;
 import com.citytechinc.cq.component.dialog.impl.WidgetCollection;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
+import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 
 public class DialogFactory {
 
@@ -58,7 +59,7 @@ public class DialogFactory {
 			tabMap.put(curTab, new ArrayList<DialogElement>());
 		}
 
-		List<CtField> fields = Arrays.asList(componentClass.getDeclaredFields());
+		List<CtField> fields = ComponentMojoUtil.collectFields(componentClass);
 
 		// Load the true class
 		Class<?> trueComponentClass = classLoader.loadClass(componentClass.getName());
@@ -72,7 +73,7 @@ public class DialogFactory {
 
 			if (dialogProperty != null) {
 
-				Field trueField = trueComponentClass.getDeclaredField(curField.getName());
+				Field trueField = ComponentMojoUtil.getField(trueComponentClass, curField.getName());
 
 				DialogElement builtFieldWidget = WidgetFactory.make(componentClass, curField, trueField,
 					classToXTypeMap, xTypeToWidgetMakerMap, classLoader, classPool, true);

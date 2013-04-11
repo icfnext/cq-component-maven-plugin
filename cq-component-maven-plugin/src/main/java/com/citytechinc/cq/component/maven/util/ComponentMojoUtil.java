@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -87,7 +88,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Constructs as Javassist ClassPool which pulls resources based on the
 	 * paths provided by the passed in ClassLoader
-	 * 
+	 *
 	 * @param classLoader
 	 * @return The constructed ClassPool
 	 * @throws NotFoundException
@@ -101,11 +102,11 @@ public class ComponentMojoUtil {
 	/**
 	 * Given a set of configured xtype mappings, construct a mapping from Class
 	 * objects to xtype Strings
-	 * 
+	 *
 	 * @param classLoader
 	 * @param xtypeMappings
 	 * @return The constructed mapping
-	 * 
+	 *
 	 * @throws ClassNotFoundException
 	 */
 	public static Map<Class<?>, String> getXTypeMapForCustomXTypeMapping(List<WidgetConfigHolder> widgetConfigs)
@@ -138,7 +139,7 @@ public class ComponentMojoUtil {
 
 	/**
 	 * Constructs the list of classes present in a given JAR file
-	 * 
+	 *
 	 * @param jarFile
 	 * @param classPool
 	 * @return The list of classes present in the provided JAR file
@@ -172,7 +173,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Constructs a fully qualified class name based on the path to the class
 	 * file
-	 * 
+	 *
 	 * @param filePath
 	 * @param rootPath
 	 * @return The constructed class name
@@ -201,7 +202,7 @@ public class ComponentMojoUtil {
 	 * Add files to the already constructed Archive file by creating a new
 	 * Archive file, appending the contents of the existing Archive file to it,
 	 * and then adding additional entries for the newly constructed artifacts.
-	 * 
+	 *
 	 * @param classList
 	 * @param xtypeMap
 	 * @param classLoader
@@ -306,7 +307,7 @@ public class ComponentMojoUtil {
 	 * For each class in the provided classList which is annotated with a
 	 * Component annotation, an EditConfig object is built and added to the
 	 * returned list. Classes which are not thusly annotated are ignored.
-	 * 
+	 *
 	 * @param classList
 	 * @param zipOutputStream
 	 * @param reservedNames
@@ -347,7 +348,7 @@ public class ComponentMojoUtil {
 	 * Determines the name of the edit config file to be written and writes the
 	 * the edit config xml which the provided EditConfig object represents to
 	 * that determined file.
-	 * 
+	 *
 	 * @param editConfig
 	 * @param componentClass
 	 * @return The file written
@@ -379,7 +380,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Writes a provided file to a provided archive output stream at a path
 	 * determined by the class of the component.
-	 * 
+	 *
 	 * @param editConfigFile
 	 * @param componentClass
 	 * @param archiveStream
@@ -418,7 +419,7 @@ public class ComponentMojoUtil {
 	 * Constructs a list of Content objects representing .content.xml files from
 	 * a list of Classes. For each Class annotated with a Component annotation a
 	 * Content object is constructed.
-	 * 
+	 *
 	 * @param classList
 	 * @param zipOutputStream
 	 * @param reservedNames
@@ -466,7 +467,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Write the content.xml to an output file, the path of which is determined
 	 * by the component class
-	 * 
+	 *
 	 * @param content
 	 * @param componentClass
 	 * @return The written file
@@ -498,7 +499,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Writes a provided content file to a provided archive output stream at a
 	 * path determined by the class of the component.
-	 * 
+	 *
 	 * @param contentFile
 	 * @param componentClass
 	 * @param archiveStream
@@ -539,7 +540,7 @@ public class ComponentMojoUtil {
 	 * Dialog object for each one annotated with the Component annotation. Any
 	 * classes provided in the class list which are not thusly annotated are
 	 * ignored.
-	 * 
+	 *
 	 * @param classList
 	 * @param zipOutputStream
 	 * @param reservedNames
@@ -583,7 +584,7 @@ public class ComponentMojoUtil {
 
 			if (annotation != null) {
 				boolean hasField = false;
-				for (CtField curField : curClass.getDeclaredFields()) {
+				for (CtField curField : collectFields(curClass)) {
 					if (curField.hasAnnotation(DialogField.class)) {
 						hasField = true;
 						break;
@@ -608,7 +609,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Writes a dialog.xml file, the path of which being based on the component
 	 * Class.
-	 * 
+	 *
 	 * @param dialog
 	 * @param componentClass
 	 * @return The written file
@@ -646,7 +647,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Writes a provided dialog file to a provided archive output stream at a
 	 * path determined by the class of the component.
-	 * 
+	 *
 	 * @param dialogFile
 	 * @param componentClass
 	 * @param archiveStream
@@ -686,7 +687,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Finds and retrieves the constructed CQ Package archive file for the
 	 * project
-	 * 
+	 *
 	 * @param project
 	 * @return
 	 */
@@ -703,7 +704,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Create a temporary archive file which will live alongside the constructed
 	 * project CQ5 Package archive.
-	 * 
+	 *
 	 * @param project
 	 * @return
 	 */
@@ -720,7 +721,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Determine the appropriate output directory for a component's artifacts
 	 * based on the component class as well as POM configuration.
-	 * 
+	 *
 	 * @param componentClass
 	 * @param project
 	 * @param componentPathBase
@@ -751,7 +752,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Determines the suffix portion of the path leading to the artifacts of a
 	 * particular component
-	 * 
+	 *
 	 * @param componentClass
 	 * @param defaultComponentPathSuffix
 	 * @return
@@ -775,7 +776,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Determines the name of the component class for use in constructing file
 	 * paths
-	 * 
+	 *
 	 * @param componentClass
 	 * @return
 	 * @throws ClassNotFoundException
@@ -839,6 +840,27 @@ public class ComponentMojoUtil {
 			fields.addAll(collectFields(ctClass.getSuperclass()));
 		}
 		return fields;
+	}
+
+	public static Field getField(Class<?> clazz, String fieldName) {
+		Field retField = null;
+		Class<?> curClass = clazz;
+
+		while(retField == null && curClass != null) {
+			try {
+				retField = curClass.getDeclaredField(fieldName);
+				curClass = curClass.getSuperclass();
+			} catch (SecurityException e) {
+
+			} catch (NoSuchFieldException e) {
+
+			}
+			finally {
+				curClass = curClass.getSuperclass();
+			}
+		}
+
+		return retField;
 	}
 
 	public static Reflections getReflections(ClassLoader classLoader) {

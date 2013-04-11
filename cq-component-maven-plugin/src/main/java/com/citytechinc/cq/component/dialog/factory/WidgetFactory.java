@@ -58,6 +58,41 @@ public class WidgetFactory {
 
 	}
 
+	/**
+	 * <p>Three mechanisms are employed in attempting to determine the xtype of a particular field.</p>
+	 *
+	 * <ol>
+	 *   <li>Declared xtype: If the xtype property of the DialogField annotation is set, this xtype is used</li>
+	 *   <li>Mapped Classes: If an xtype is defined explicitly for the class of the field or if a stacked annotation
+	 *                       is present to which an xtype is mapped, this xtype is used</li>
+	 *   <li>Guessed xtype: If mechanism 1 and 2 do not produce an xtype, a guessed xtype may be provided for a number of
+	 *                      simple xtypes.</li>
+	 * </ol>
+	 *
+	 * <p>If none of these mechanisms produce an xtype, an InvalidComponentFieldException is thrown.</p>
+	 *
+	 * <p>The following mapping is the basis for xtype guessing:</p>
+	 *
+	 * <ul>
+	 *   <li>Numbers and primative numeric types -&gt; numberfield</li>
+	 *   <li>String -&gt; textfield</li>
+	 *   <li>URI and URL -&gt; pathfield</li>
+	 *   <li>Enum -&gt; selection</li>
+	 *   <li>List and Array -&gt; multifield</li>
+	 * </ul>
+	 *
+	 * @param widgetField
+	 * @param ctWidgetField
+	 * @param propertyAnnotation
+	 * @param classToXTypeMap
+	 * @param classLoader
+	 * @param classPool
+	 * @return
+	 * @throws InvalidComponentFieldException
+	 * @throws CannotCompileException
+	 * @throws NotFoundException
+	 * @throws ClassNotFoundException
+	 */
 	private static final String getXTypeForField(Field widgetField, CtField ctWidgetField,
 		DialogField propertyAnnotation, Map<Class<?>, String> classToXTypeMap, ClassLoader classLoader,
 		ClassPool classPool) throws InvalidComponentFieldException, CannotCompileException, NotFoundException,

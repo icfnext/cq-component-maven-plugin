@@ -65,7 +65,7 @@ public class WidgetFactory {
 
 		/*
 		 * Handle annotated xtypes
-		 * 
+		 *
 		 * The xtype property on the DialogField annotation takes precedence
 		 * over all other mechanisms of determining xtype.
 		 */
@@ -79,7 +79,7 @@ public class WidgetFactory {
 
 		/*
 		 * Handle custom types.
-		 * 
+		 *
 		 * Custom types may be either Classes or Annotations.
 		 */
 		for (Class<?> curCustomClass : classToXTypeMap.keySet()) {
@@ -131,10 +131,6 @@ public class WidgetFactory {
 
 			String simpleXtype = getInnerXTypeForField(widgetField, classToXTypeMap);
 
-			/*
-			 * TODO: This is where the multicompositefield would end up being
-			 * selected once implemented
-			 */
 			if (simpleXtype == null) {
 				throw new InvalidComponentFieldException(
 					"Parameterized class for List is not of a supported type.  Currently supported types are numbers, strings, and links");
@@ -145,12 +141,9 @@ public class WidgetFactory {
 		}
 
 		/*
-		 * If we could not determine an xtype, return textfield
-		 * 
-		 * TODO: Determine if this is appropriate or if this should throw an
-		 * Exception
+		 * If we could not determine an xtype, throw an exception
 		 */
-		return TEXTFIELD_XTYPE;
+		throw new InvalidComponentFieldException("An xtype could not be determined for the field " + widgetField.getName());
 	}
 
 	private static final String getInnerXTypeForField(Field widgetField, Map<Class<?>, String> xtypeMap)

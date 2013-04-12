@@ -32,6 +32,7 @@ import org.apache.commons.compress.archivers.jar.JarArchiveInputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.StringUtils;
@@ -68,6 +69,14 @@ public class ComponentMojoUtil {
 		return LogSingleton.getInstance();
 	}
 
+	/**
+	 * Constructs a Class Loader based on a list of paths to classes and a parent Class Loader
+	 *
+	 * @param paths
+	 * @param mojoClassLoader
+	 * @return The constructed ClassLoader
+	 * @throws MalformedURLException
+	 */
 	public static ClassLoader getClassLoader(List<String> paths, ClassLoader mojoClassLoader)
 		throws MalformedURLException {
 		final List<URL> pathURLs = new ArrayList<URL>();
@@ -124,6 +133,15 @@ public class ComponentMojoUtil {
 		return retMap;
 	}
 
+	/**
+	 * Transforms a List of WidgetConfigHolders into a mapping between xtypes and WidgetMakers
+	 *
+	 * @param widgetConfigs
+	 * @return Mapping from xtype to WidgetMaker
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws ClassNotFoundException
+	 */
 	public static Map<String, WidgetMaker> getXTypeToWidgetMakerMap(List<WidgetConfigHolder> widgetConfigs)
 		throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		Map<String, WidgetMaker> xTypeToWidgetMakerMap = new HashMap<String, WidgetMaker>();
@@ -243,10 +261,12 @@ public class ComponentMojoUtil {
 		}
 
 		if (tempArchiveFile.exists()) {
-			throw new OutputFailureException("Temporary file already exists");
+			tempArchiveFile.delete();
 		}
 
 		tempArchiveFile.createNewFile();
+
+		deleteTemporaryComponentOutputDirectory(buildDirectory);
 
 		/*
 		 * Create archive input stream
@@ -423,7 +443,7 @@ public class ComponentMojoUtil {
 	 * @param classList
 	 * @param zipOutputStream
 	 * @param reservedNames
-	 * @return
+	 * @return The constructed Content objects
 	 * @throws InvalidComponentClassException
 	 * @throws TransformerException
 	 * @throws ParserConfigurationException
@@ -689,7 +709,7 @@ public class ComponentMojoUtil {
 	 * project
 	 *
 	 * @param project
-	 * @return
+	 * @return The archive file found for the project
 	 */
 	protected static File getArchiveFileForProject(MavenProject project) {
 		File buildDirectory = new File(project.getBuild().getDirectory());
@@ -706,7 +726,7 @@ public class ComponentMojoUtil {
 	 * project CQ5 Package archive.
 	 *
 	 * @param project
-	 * @return
+	 * @return The temporary archive file
 	 */
 	protected static File getTempArchiveFileForProject(MavenProject project) {
 		File buildDirectory = new File(project.getBuild().getDirectory());
@@ -725,7 +745,7 @@ public class ComponentMojoUtil {
 	 * @param componentClass
 	 * @param project
 	 * @param componentPathBase
-	 * @return
+	 * @return The determined output directory
 	 * @throws OutputFailureException
 	 * @throws ClassNotFoundException
 	 */
@@ -750,12 +770,27 @@ public class ComponentMojoUtil {
 	}
 
 	/**
+	 * Deletes the temporary output directory which is created as part of the build process to temporarily hold
+	 * the generated files for components.
+	 *
+	 * @param buildDirectory
+	 * @throws IOException
+	 */
+	protected static void deleteTemporaryComponentOutputDirectory(File buildDirectory) throws IOException {
+		File componentOutputDirectory = new File(buildDirectory, OUTPUT_PATH);
+
+		if (componentOutputDirectory.exists()) {
+			FileUtils.deleteDirectory(componentOutputDirectory);
+		}
+	}
+
+	/**
 	 * Determines the suffix portion of the path leading to the artifacts of a
 	 * particular component
 	 *
 	 * @param componentClass
 	 * @param defaultComponentPathSuffix
-	 * @return
+	 * @return The determined suffix
 	 * @throws ClassNotFoundException
 	 */
 	protected static String getComponentPathSuffixForComponentClass(CtClass componentClass,
@@ -778,7 +813,7 @@ public class ComponentMojoUtil {
 	 * paths
 	 *
 	 * @param componentClass
-	 * @return
+	 * @return The determined name
 	 * @throws ClassNotFoundException
 	 */
 	protected static String getComponentNameForComponentClass(CtClass componentClass) throws ClassNotFoundException {
@@ -795,6 +830,18 @@ public class ComponentMojoUtil {
 		return StringUtils.uncapitalise(componentClass.getSimpleName());
 	}
 
+	/**
+	 * Constructs a list of widget configurations based on the information provided by classes annotated
+	 * as Widgets.
+	 *
+	 * @param classPool
+	 * @param classLoader
+	 * @param reflections
+	 * @return The constructed widget configurations
+	 * @throws ClassNotFoundException
+	 * @throws NotFoundException
+	 * @throws MalformedURLException
+	 */
 	public static List<WidgetConfigHolder> getAllWidgetAnnotations(ClassPool classPool, ClassLoader classLoader,
 		Reflections reflections) throws ClassNotFoundException, NotFoundException, MalformedURLException {
 		List<WidgetConfigHolder> builtInWidgets = new ArrayList<WidgetConfigHolder>();
@@ -823,6 +870,17 @@ public class ComponentMojoUtil {
 		return builtInWidgets;
 	}
 
+	/**
+	 * Retrieves a List of all classes which are annotated as Components and are within the scope of the provided
+	 * Reflections purview.
+	 *
+	 * @param classPool
+	 * @param reflections
+	 * @return A List of classes annotated as Components
+	 * @throws ClassNotFoundException
+	 * @throws NotFoundException
+	 * @throws MalformedURLException
+	 */
 	public static List<CtClass> getAllComponentAnnotations(ClassPool classPool, Reflections reflections)
 		throws ClassNotFoundException, NotFoundException, MalformedURLException {
 		List<CtClass> classes = new ArrayList<CtClass>();
@@ -833,6 +891,13 @@ public class ComponentMojoUtil {
 		return classes;
 	}
 
+	/**
+	 * Constructs a list of all fields contained in the provided CtClass and any of its parent classes.
+	 *
+	 * @param ctClass
+	 * @return The constructed list of fields
+	 * @throws NotFoundException
+	 */
 	public static List<CtField> collectFields(CtClass ctClass) throws NotFoundException {
 		List<CtField> fields = new ArrayList<CtField>();
 		if (ctClass != null) {
@@ -842,6 +907,16 @@ public class ComponentMojoUtil {
 		return fields;
 	}
 
+	/**
+	 * Retrieves a field for a Class.  To allow for the retrieval of inherited fields, the class hierarchy
+	 * is traversed upwards starting at the provided class.  If the top of the hierarchy is reached without
+	 * finding a field of the specified name, null is returned.
+	 *
+	 * @param clazz
+	 * @param fieldName
+	 * @return The Field specified by the provided name or null if no such field could be found for the Class
+	 *         or its parents.
+	 */
 	public static Field getField(Class<?> clazz, String fieldName) {
 		Field retField = null;
 		Class<?> curClass = clazz;
@@ -863,6 +938,12 @@ public class ComponentMojoUtil {
 		return retField;
 	}
 
+	/**
+	 * Constructs a Reflections object suitable for reflecting on classes accessible via the provided ClassLoader
+	 *
+	 * @param classLoader The ClassLoader containing classes to be reflected upon
+	 * @return The constructed Reflections object
+	 */
 	public static Reflections getReflections(ClassLoader classLoader) {
 		Reflections reflections = new Reflections(new ConfigurationBuilder().addClassLoader(classLoader)
 			.setUrls(ClasspathHelper.forClassLoader(new ClassLoader[] { classLoader }))

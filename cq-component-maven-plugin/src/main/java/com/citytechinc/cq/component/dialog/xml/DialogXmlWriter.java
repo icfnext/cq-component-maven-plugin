@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -122,6 +123,10 @@ public class DialogXmlWriter {
 	}
 
 	private static final String sanatize(String uncleanString) {
-		return uncleanString.replaceAll(" ", "").replaceAll("./", "");
+		uncleanString=uncleanString.replaceAll("[^A-Za-z0-9:_.-]","");
+		if(uncleanString.matches("^(\\d(.*)|(?i)XML|:(.*)|\\.(.*))")){
+			uncleanString=UUID.randomUUID().toString().replaceAll("-","").replaceAll("[0-9]","") + uncleanString;
+		}
+		return uncleanString;
 	}
 }

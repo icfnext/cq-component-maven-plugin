@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
@@ -850,12 +851,15 @@ public class ComponentMojoUtil {
 		for (Class<?> c : reflections.getTypesAnnotatedWith(Widget.class)) {
 			CtClass clazz = classPool.getCtClass(c.getName());
 			Widget widgetAnnotation = (Widget) clazz.getAnnotation(Widget.class);
-			Class<?> annotationClass = null;
-			if (!StringUtils.isEmpty(widgetAnnotation.annotationClass())) {
-				annotationClass = classLoader.loadClass(widgetAnnotation.annotationClass());
+			Class<? extends Annotation> annotationClass = null;
+			if (widgetAnnotation.annotationClass()!=null) {
+				if(widgetAnnotation.annotationClass().length==1){
+					annotationClass = widgetAnnotation.annotationClass()[0];
+				}else if(widgetAnnotation.annotationClass().length>1){
+					throw new RuntimeException("A widget must have a single annotation");
+				}
 			}
-			Class<? extends WidgetMaker> makerClass = classLoader.loadClass(widgetAnnotation.makerClass()).asSubclass(
-				WidgetMaker.class);
+			Class<? extends WidgetMaker> makerClass =widgetAnnotation.makerClass();
 			Class<? extends AbstractWidget> widgetClass = classLoader.loadClass(clazz.getName()).asSubclass(
 				AbstractWidget.class);
 			WidgetConfigHolder widgetConfig = new WidgetConfigHolder(annotationClass, widgetClass, makerClass,

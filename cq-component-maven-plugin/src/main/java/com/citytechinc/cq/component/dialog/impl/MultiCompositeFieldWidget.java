@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.citytechinc.cq.component.annotations.config.Widget;
+import com.citytechinc.cq.component.annotations.widgets.MultiCompositeField;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.DialogElement;
+import com.citytechinc.cq.component.dialog.maker.impl.MultiCompositeFieldWidgetMaker;
 
-@Widget(annotationClass = "com.citytechinc.cq.component.annotations.widgets.MultiCompositeField", makerClass = "com.citytechinc.cq.component.dialog.maker.impl.MultiCompositeFieldWidgetMaker", xtypes = MultiCompositeFieldWidget.XTYPE)
+@Widget(annotationClass = MultiCompositeField.class, makerClass = MultiCompositeFieldWidgetMaker.class, xtypes = MultiCompositeFieldWidget.XTYPE)
 public class MultiCompositeFieldWidget extends AbstractWidget {
 	public static final String XTYPE = "multicompositefield";
 	private static final String PRIMARY_TYPE = "cq:Widget";

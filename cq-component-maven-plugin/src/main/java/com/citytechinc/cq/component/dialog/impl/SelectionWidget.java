@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.citytechinc.cq.component.annotations.config.Widget;
+import com.citytechinc.cq.component.annotations.widgets.Selection;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.DialogElement;
+import com.citytechinc.cq.component.dialog.maker.impl.SelectionWidgetMaker;
 
-@Widget(annotationClass = "com.citytechinc.cq.component.annotations.widgets.Selection", makerClass = "com.citytechinc.cq.component.dialog.maker.impl.SelectionWidgetMaker", xtypes = SelectionWidget.XTYPE)
+@Widget(annotationClass =Selection.class, makerClass =SelectionWidgetMaker.class, xtypes = SelectionWidget.XTYPE)
 public class SelectionWidget extends AbstractWidget {
 
 	public static final String XTYPE = "selection";

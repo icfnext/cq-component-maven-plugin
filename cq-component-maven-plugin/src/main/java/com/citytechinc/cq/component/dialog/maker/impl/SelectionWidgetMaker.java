@@ -22,9 +22,18 @@ import com.citytechinc.cq.component.dialog.impl.SelectionWidget;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 
+/**
+ * Builds a SelectionWidget from an annotated field. This maker will operate with or without a stacked
+ * Selection annotation.
+ *
+ * @author paulmichelotti
+ *
+ */
 public class SelectionWidgetMaker extends AbstractWidgetMaker {
 
-	@Override
+	/* (non-Javadoc)
+	 * @see com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker#make(java.lang.String, java.lang.reflect.Field, javassist.CtField, java.lang.Class, javassist.CtClass, java.util.Map, java.util.Map, java.lang.ClassLoader, javassist.ClassPool, boolean)
+	 */
 	public DialogElement make(String xtype, Field widgetField, CtField ctWidgetField, Class<?> containingClass,
 		CtClass ctContainingClass, Map<Class<?>, String> xtypeMap, Map<String, WidgetMaker> xTypeToWidgetMakerMap,
 		ClassLoader classLoader, ClassPool classPool, boolean useDotSlashInName) throws ClassNotFoundException,
@@ -45,10 +54,34 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 		List<DialogElement> options = buildSelectionOptionsForField(ctWidgetField, selectionAnnotation, classLoader,
 			classPool);
 		String selectionType = getSelectionTypeForField(ctWidgetField, selectionAnnotation);
+		String optionsUrl = getOptionsUrlForField(ctWidgetField, selectionAnnotation);
+		String optionsProvider = getOptionsProviderForField(ctWidgetField, selectionAnnotation);
+		String sortDir = getSortDirForField(ctWidgetField, selectionAnnotation);
 
 		return new SelectionWidget(selectionType, name, fieldLabel, fieldName, fieldDescription, isRequired, hideLabel,
-			defaultValue, additionalProperties, options);
+			defaultValue, additionalProperties, options, optionsUrl, optionsProvider, sortDir);
 
+	}
+
+	private static final String getOptionsUrlForField(CtField widgetField, Selection fieldAnnotation) {
+		if (fieldAnnotation != null && StringUtils.isNotEmpty(fieldAnnotation.optionsUrl())) {
+			return fieldAnnotation.optionsUrl();
+		}
+		return null;
+	}
+
+	private static final String getOptionsProviderForField(CtField widgetField, Selection fieldAnnotation) {
+		if (fieldAnnotation != null && StringUtils.isNotEmpty(fieldAnnotation.optionsProvider())) {
+			return fieldAnnotation.optionsProvider();
+		}
+		return null;
+	}
+
+	private static final String getSortDirForField(CtField widgetField, Selection fieldAnnotation) {
+		if (fieldAnnotation != null && StringUtils.isNotEmpty(fieldAnnotation.sortDir())) {
+			return fieldAnnotation.sortDir();
+		}
+		return null;
 	}
 
 	private static final String getSelectionTypeForField(CtField widgetField, Selection fieldAnnotation) {
@@ -57,7 +90,7 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 				|| fieldAnnotation.type().equals(Selection.RADIO) || fieldAnnotation.type().equals(Selection.SELECT))) {
 			return fieldAnnotation.type();
 		} else {
-			return Selection.SELECT;
+			return Selection.RADIO;
 		}
 	}
 
@@ -76,7 +109,11 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 					throw new InvalidComponentFieldException(
 						"Selection Options specified in the selectionOptions Annotation property must include a non-empty text and value attribute");
 				}
-				options.add(new Option(curOptionAnnotation.text(), curOptionAnnotation.value()));
+				String qtip = null;
+				if (StringUtils.isNotEmpty(curOptionAnnotation.qtip())) {
+					qtip = curOptionAnnotation.qtip();
+				}
+				options.add(new Option(curOptionAnnotation.text(), curOptionAnnotation.value(), qtip));
 			}
 		}
 		/*
@@ -106,6 +143,7 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 
 		String text = optionEnum.name();
 		String value = optionEnum.name();
+		String qtip = null;
 
 		CtClass annotatedEnumClass = classPool.getCtClass(optionEnum.getDeclaringClass().getName());
 		CtField annotatedEnumField = annotatedEnumClass.getField(optionEnum.name());
@@ -119,9 +157,12 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 			if (StringUtils.isNotEmpty(optionAnnotation.value())) {
 				value = optionAnnotation.value();
 			}
+			if (StringUtils.isNotEmpty(optionAnnotation.qtip())) {
+				qtip = optionAnnotation.qtip();
+			}
 		}
 
-		return new Option(text, value);
+		return new Option(text, value, qtip);
 
 	}
 

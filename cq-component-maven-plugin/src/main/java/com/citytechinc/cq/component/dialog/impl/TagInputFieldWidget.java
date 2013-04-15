@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.citytechinc.cq.component.annotations.config.Widget;
+import com.citytechinc.cq.component.annotations.widgets.TagInputField;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.DialogElement;
+import com.citytechinc.cq.component.dialog.maker.impl.TagInputFieldWidgetMaker;
 
-@Widget(annotationClass = "com.citytechinc.cq.component.annotations.widgets.TagInputField", makerClass = "com.citytechinc.cq.component.dialog.maker.impl.TagInputFieldWidgetMaker", xtypes = TagInputFieldWidget.XTYPE)
+@Widget(annotationClass = TagInputField.class, makerClass = TagInputFieldWidgetMaker.class, xtypes = TagInputFieldWidget.XTYPE)
 public class TagInputFieldWidget extends AbstractWidget {
 	public static final String XTYPE = "tags";
 	private static final String PRIMARY_TYPE = "cq:Widget";

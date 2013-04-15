@@ -3,9 +3,11 @@ package com.citytechinc.cq.component.dialog.impl;
 import java.util.Map;
 
 import com.citytechinc.cq.component.annotations.config.Widget;
+import com.citytechinc.cq.component.annotations.widgets.Hidden;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
+import com.citytechinc.cq.component.dialog.maker.impl.HiddenWidgetMaker;
 
-@Widget(annotationClass = "com.citytechinc.cq.component.annotations.widgets.Hidden", makerClass = "com.citytechinc.cq.component.dialog.maker.impl.HiddenWidgetMaker", xtypes = HiddenWidget.XTYPE)
+@Widget(annotationClass = Hidden.class, makerClass = HiddenWidgetMaker.class, xtypes = HiddenWidget.XTYPE)
 public class HiddenWidget extends AbstractWidget {
 	public static final String XTYPE = "hidden";
 	private static final String PRIMARY_TYPE = "cq:Widget";

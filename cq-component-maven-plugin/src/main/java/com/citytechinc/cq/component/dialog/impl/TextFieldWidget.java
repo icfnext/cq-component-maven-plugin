@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.citytechinc.cq.component.annotations.config.Widget;
+import com.citytechinc.cq.component.annotations.widgets.TextField;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.DialogElement;
+import com.citytechinc.cq.component.dialog.maker.impl.SimpleWidgetMaker;
 
-@Widget(annotationClass = "com.citytechinc.cq.component.annotations.widgets.TextField", makerClass = "com.citytechinc.cq.component.dialog.maker.impl.SimpleWidgetMaker", xtypes = TextFieldWidget.XTYPE)
+@Widget(annotationClass = TextField.class, makerClass = SimpleWidgetMaker.class, xtypes = TextFieldWidget.XTYPE)
 public class TextFieldWidget extends AbstractWidget {
 
 	public static final String XTYPE = "textfield";

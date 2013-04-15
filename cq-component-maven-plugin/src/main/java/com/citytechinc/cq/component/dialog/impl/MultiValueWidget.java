@@ -7,8 +7,9 @@ import com.citytechinc.cq.component.annotations.config.Widget;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.factory.WidgetFactory;
+import com.citytechinc.cq.component.dialog.maker.impl.MultifieldWidgetMaker;
 
-@Widget(makerClass = "com.citytechinc.cq.component.dialog.maker.impl.MultifieldWidgetMaker", xtypes = WidgetFactory.MULTIFIELD_XTYPE)
+@Widget(makerClass = MultifieldWidgetMaker.class, xtypes = WidgetFactory.MULTIFIELD_XTYPE)
 public class MultiValueWidget extends AbstractWidget {
 	private static final String PRIMARY_TYPE = "cq:Widget";
 

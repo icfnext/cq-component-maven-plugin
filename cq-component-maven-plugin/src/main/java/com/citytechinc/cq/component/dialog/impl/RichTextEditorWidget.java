@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.citytechinc.cq.component.annotations.config.Widget;
+import com.citytechinc.cq.component.annotations.widgets.RichTextEditor;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.DialogElement;
+import com.citytechinc.cq.component.dialog.maker.impl.RichTextEditorMaker;
 
-@Widget(annotationClass = "com.citytechinc.cq.component.annotations.widgets.RichTextEditor", makerClass = "com.citytechinc.cq.component.dialog.maker.impl.RichTextEditorMaker", xtypes = "richtext")
+@Widget(annotationClass = RichTextEditor.class, makerClass = RichTextEditorMaker.class, xtypes = "richtext")
 public class RichTextEditorWidget extends AbstractWidget {
 
 	public static final String XTYPE = "richtext";

@@ -65,6 +65,7 @@ public class DialogFactory {
 		Class<?> trueComponentClass = classLoader.loadClass(componentClass.getName());
 
 		List<DialogElement> tabList = new ArrayList<DialogElement>();
+		List<DialogElement> imageTabList = new ArrayList<DialogElement>();
 		/*
 		 * Iterate through all fields establishing proper widgets for each
 		 */
@@ -80,7 +81,7 @@ public class DialogFactory {
 
 				if (builtFieldWidget instanceof Html5SmartImageWidget
 					&& ((Html5SmartImageWidget) builtFieldWidget).isTab()) {
-					tabList.add(builtFieldWidget);
+					imageTabList.add(builtFieldWidget);
 				} else {
 					String tabString = getTabStringForField(curField, dialogProperty);
 
@@ -96,6 +97,7 @@ public class DialogFactory {
 		for (String curMapKey : tabMap.keySet()) {
 			tabList.add(new Tab(curMapKey, new WidgetCollection(tabMap.get(curMapKey))));
 		}
+		tabList.addAll(imageTabList);
 		Integer width = null;
 		Integer height = null;
 		if (componentAnnotation.dialogWidth() > 0) {

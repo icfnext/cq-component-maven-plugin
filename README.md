@@ -28,18 +28,6 @@ plugin creating the aforementioned .zip file.
 	<configuration>
 		<componentPathBase>jcr_root/apps/client/components</componentPathBase>
 		<defaultComponentGroup>Client Group</defaultComponentGroup>
-		<includeDependencies>
-			<dependency>
-				<groupId>com.client.web</groupId>
-				<artifactId>client-core</artifactId>
-			</dependency>
-		</includeDependencies>
-		<xtypeMappings>
-			<xtypeMapping>
-				<className>com.example.cq.types.Color</className>
-				<className>colorfield</className>
-			</xtypeMapping>
-		</xtypeMappings>
 	</configuration>
 </plugin>
 
@@ -79,25 +67,6 @@ plugin creating the aforementioned .zip file.
       <td>The group to which Components whose files are generated via this plugin will be added in the
           CQ Sidekick.  This can be overridden at the component level via the <span style="font-family:courier">group</span> property of the
           <span style="font-family:courier">@Component</span> annotation.</td>
-    </tr>
-    <tr>
-      <td>includeDependencies</td>
-      <td>List&lt;dependency&gt;</td>
-      <td>Empty List</td>
-      <td>An optional list of Dependencies whose classes should be included in the plugins search for
-          annotated components.  Each dependency included in the list has two required child elements,
-          <span style="font-family:courier">artifactId</span> and <span style="font-family:courier">groupId</span>.  These should match the <span style="font-family:courier">artifactId</span> and <span style="font-family:courier">groupId</span> for the dependency
-          as specified in the dependency section of your POM.</td>
-    </tr>
-    <tr>
-      <td>xtypeMappings</td>
-      <td>List&lt;xtypeMapping&gt;</td>
-      <td>Empty List</td>
-      <td>
-        An optional mapping of Classes to xtypes.  If you are using custom Classes to represent your dialog fields this configuration
-        can be used to define a mapping between your Classes and xtypes which will remove the need to annotate the xtype of the dialog field
-        wherever the Class is used.
-      </td>
     </tr>
   </tbody>
 </table>

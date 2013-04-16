@@ -20,6 +20,7 @@ import org.codehaus.plexus.util.StringUtils;
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
+import com.citytechinc.cq.component.dialog.impl.MultiFieldWidget;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;
 
@@ -150,13 +151,7 @@ public class WidgetFactory {
 			}
 		}
 		if (possibleMatches.size() > 0) {
-			WidgetConfigHolder match = null;
-			for (WidgetConfigHolder possibleMatch : possibleMatches) {
-				if (match == null || match.getRanking() < possibleMatch.getRanking()) {
-					match = possibleMatch;
-				}
-			}
-			return match.getXtype();
+			return getMatchFromPossibleSet(possibleMatches).getXtype();
 		}
 
 		/*
@@ -194,14 +189,17 @@ public class WidgetFactory {
 
 		if (List.class.isAssignableFrom(fieldClass) || fieldClass.isArray()) {
 
-			String simpleXtype = getInnerXTypeForField(widgetField, classToXTypeMap);
+			String simpleXtype = getInnerXTypeForField(widgetField, classToXTypeMap, rankingCeiling);
 
 			if (simpleXtype == null) {
 				throw new InvalidComponentFieldException(
 					"Parameterized class for List is not of a supported type.  Currently supported types are numbers, strings, and links");
 			}
-
-			return MULTIFIELD_XTYPE;
+			if (rankingCeiling < MultiFieldWidget.RANKING) {
+				return MULTIFIELD_XTYPE;
+			} else {
+				return simpleXtype;
+			}
 
 		}
 
@@ -212,16 +210,16 @@ public class WidgetFactory {
 			+ widgetField.getName());
 	}
 
-	private static final String getInnerXTypeForField(Field widgetField, Map<Class<?>, WidgetConfigHolder> xtypeMap)
-		throws InvalidComponentFieldException {
+	private static final String getInnerXTypeForField(Field widgetField, Map<Class<?>, WidgetConfigHolder> xtypeMap,
+		int rankingCeiling) throws InvalidComponentFieldException {
 
 		Class<?> fieldClass = widgetField.getType();
 
 		if (List.class.isAssignableFrom(fieldClass)) {
-			return getInnerXTypeForListField(widgetField, xtypeMap);
+			return getInnerXTypeForListField(widgetField, xtypeMap, rankingCeiling);
 		}
 		if (fieldClass.isArray()) {
-			return getInnerXTypeForArrayField(widgetField, xtypeMap);
+			return getInnerXTypeForArrayField(widgetField, xtypeMap, rankingCeiling);
 		}
 
 		throw new InvalidComponentFieldException(
@@ -229,8 +227,8 @@ public class WidgetFactory {
 
 	}
 
-	private static final String getInnerXTypeForListField(Field widgetField, Map<Class<?>, WidgetConfigHolder> xtypeMap)
-		throws InvalidComponentFieldException {
+	private static final String getInnerXTypeForListField(Field widgetField,
+		Map<Class<?>, WidgetConfigHolder> xtypeMap, int rankingCeiling) throws InvalidComponentFieldException {
 		ParameterizedType parameterizedType = (ParameterizedType) widgetField.getGenericType();
 
 		if (parameterizedType.getActualTypeArguments().length == 0
@@ -239,26 +237,34 @@ public class WidgetFactory {
 				"List dialog property found with a paramaterized type count not equal to 1");
 		}
 
-		String simpleXtype = getSimpleXTypeForClass((Class<?>) parameterizedType.getActualTypeArguments()[0], xtypeMap);
+		String simpleXtype = getSimpleXTypeForClass((Class<?>) parameterizedType.getActualTypeArguments()[0], xtypeMap,
+			rankingCeiling);
 
 		return simpleXtype;
 	}
 
-	private static final String getInnerXTypeForArrayField(Field widgetField, Map<Class<?>, WidgetConfigHolder> xtypeMap) {
+	private static final String getInnerXTypeForArrayField(Field widgetField,
+		Map<Class<?>, WidgetConfigHolder> xtypeMap, int rankingCeiling) {
 		Class<?> fieldClass = widgetField.getType();
 
-		return getSimpleXTypeForClass(fieldClass.getComponentType(), xtypeMap);
+		return getSimpleXTypeForClass(fieldClass.getComponentType(), xtypeMap, rankingCeiling);
 	}
 
-	private static final String getSimpleXTypeForClass(Class<?> fieldClass, Map<Class<?>, WidgetConfigHolder> xtypeMap) {
+	private static final String getSimpleXTypeForClass(Class<?> fieldClass, Map<Class<?>, WidgetConfigHolder> xtypeMap,
+		int rankingCeiling) {
 
 		/*
 		 * Handle custom types
 		 */
+		Set<WidgetConfigHolder> possibleMatches = new HashSet<WidgetConfigHolder>();
 		for (Class<?> curCustomClass : xtypeMap.keySet()) {
-			if (curCustomClass.isAssignableFrom(fieldClass)) {
-				return xtypeMap.get(curCustomClass).getXtype();
+			WidgetConfigHolder widget = xtypeMap.get(curCustomClass);
+			if (curCustomClass.isAssignableFrom(fieldClass) && isBelowRankingCeiling(rankingCeiling, widget)) {
+				possibleMatches.add(widget);
 			}
+		}
+		if (possibleMatches.size() > 0) {
+			return getMatchFromPossibleSet(possibleMatches).getXtype();
 		}
 
 		/*
@@ -293,5 +299,15 @@ public class WidgetFactory {
 		} else {
 			return true;
 		}
+	}
+
+	private static final WidgetConfigHolder getMatchFromPossibleSet(Set<WidgetConfigHolder> possibleMatches) {
+		WidgetConfigHolder match = null;
+		for (WidgetConfigHolder possibleMatch : possibleMatches) {
+			if (match == null || match.getRanking() < possibleMatch.getRanking()) {
+				match = possibleMatch;
+			}
+		}
+		return match;
 	}
 }

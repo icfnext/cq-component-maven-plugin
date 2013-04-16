@@ -43,12 +43,19 @@ public class MultifieldWidgetMaker extends AbstractWidgetMaker {
 		String defaultValue = getDefaultValueForField(dialogFieldAnnotation);
 		boolean hideLabel = dialogFieldAnnotation.hideLabel();
 
+		boolean orderable=true;
+		String addItemLabel="Add Item";
+		if(multiFieldAnnotation!=null){
+			orderable=multiFieldAnnotation.orderable();
+			addItemLabel=multiFieldAnnotation.addItemLabel();
+		}
+		
 		DialogElement element = WidgetFactory.make(ctContainingClass, ctWidgetField, widgetField, xtypeMap,
 			xTypeToWidgetMakerMap, classLoader, classPool, false, MultiFieldWidget.RANKING);
 		element.setFieldName("fieldConfig");
 		List<DialogElement> elements = new ArrayList<DialogElement>();
 		elements.add(element);
-		return new MultiFieldWidget(multiFieldAnnotation.orderable(), multiFieldAnnotation.addItemLabel(), fieldLabel,
+		return new MultiFieldWidget(orderable, addItemLabel, fieldLabel,
 			fieldDescription, !isRequired, hideLabel, defaultValue, name, fieldName, additionalProperties, elements);
 
 	}

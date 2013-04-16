@@ -10,7 +10,7 @@ import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.maker.impl.SelectionWidgetMaker;
 
-@Widget(annotationClass =Selection.class, makerClass =SelectionWidgetMaker.class, xtypes = SelectionWidget.XTYPE)
+@Widget(annotationClass =Selection.class, makerClass =SelectionWidgetMaker.class, xtype = SelectionWidget.XTYPE)
 public class SelectionWidget extends AbstractWidget {
 
 	public static final String XTYPE = "selection";

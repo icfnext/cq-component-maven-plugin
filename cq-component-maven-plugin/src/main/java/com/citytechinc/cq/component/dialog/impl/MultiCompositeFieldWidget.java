@@ -9,7 +9,7 @@ import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.maker.impl.MultiCompositeFieldWidgetMaker;
 
-@Widget(annotationClass = MultiCompositeField.class, makerClass = MultiCompositeFieldWidgetMaker.class, xtypes = MultiCompositeFieldWidget.XTYPE)
+@Widget(annotationClass = MultiCompositeField.class, makerClass = MultiCompositeFieldWidgetMaker.class, xtype = MultiCompositeFieldWidget.XTYPE)
 public class MultiCompositeFieldWidget extends AbstractWidget {
 	public static final String XTYPE = "multicompositefield";
 	private static final String PRIMARY_TYPE = "cq:Widget";

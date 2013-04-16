@@ -7,7 +7,7 @@ import com.citytechinc.cq.component.annotations.widgets.NumberField;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.maker.impl.NumberFieldMaker;
 
-@Widget(annotationClass = NumberField.class, makerClass = NumberFieldMaker.class, xtypes = NumberFieldWidget.XTYPE)
+@Widget(annotationClass = NumberField.class, makerClass = NumberFieldMaker.class, xtype = NumberFieldWidget.XTYPE)
 public class NumberFieldWidget extends AbstractWidget {
 	public static final String XTYPE = "numberfield";
 	private static final String PRIMARY_TYPE = "cq:Widget";

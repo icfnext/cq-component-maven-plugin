@@ -7,7 +7,7 @@ import com.citytechinc.cq.component.annotations.widgets.DateTime;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.maker.impl.DateTimeWidgetMaker;
 
-@Widget(annotationClass = DateTime.class, makerClass = DateTimeWidgetMaker.class, xtypes = DateTimeWidget.XTYPE)
+@Widget(annotationClass = DateTime.class, makerClass = DateTimeWidgetMaker.class, xtype = DateTimeWidget.XTYPE)
 public class DateTimeWidget extends AbstractWidget {
 	public static final String XTYPE = "datetime";
 	private static final String PRIMARY_TYPE = "cq:Widget";

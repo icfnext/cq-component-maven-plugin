@@ -23,16 +23,17 @@ import com.citytechinc.cq.component.dialog.impl.WidgetCollection;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
+import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;
 
 public class MultiCompositeFieldWidgetMaker extends AbstractWidgetMaker {
 	private static final String FIELD_CONFIGS = "fieldConfigs";
 
 	@Override
 	public DialogElement make(String xtype, Field widgetField, CtField ctWidgetField, Class<?> containingClass,
-		CtClass ctContainingClass, Map<Class<?>, String> xtypeMap, Map<String, WidgetMaker> xTypeToWidgetMakerMap,
-		ClassLoader classLoader, ClassPool classPool, boolean useDotSlashInName) throws ClassNotFoundException,
-		InvalidComponentFieldException, CannotCompileException, NotFoundException, SecurityException,
-		NoSuchFieldException {
+		CtClass ctContainingClass, Map<Class<?>, WidgetConfigHolder> xtypeMap,
+		Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool,
+		boolean useDotSlashInName) throws ClassNotFoundException, InvalidComponentFieldException,
+		CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
 
 		MultiCompositeField multiCompositeFieldAnnotation = (MultiCompositeField) ctWidgetField
 			.getAnnotation(MultiCompositeField.class);
@@ -58,9 +59,9 @@ public class MultiCompositeFieldWidgetMaker extends AbstractWidgetMaker {
 	}
 
 	private List<DialogElement> buildWidgetCollection(CtClass componentClass, CtField curField, Field trueField,
-		Map<Class<?>, String> classToXTypeMap, Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader,
-		ClassPool classPool) throws InvalidComponentFieldException, ClassNotFoundException, CannotCompileException,
-		NotFoundException, SecurityException, NoSuchFieldException {
+		Map<Class<?>, WidgetConfigHolder> classToXTypeMap, Map<String, WidgetMaker> xTypeToWidgetMakerMap,
+		ClassLoader classLoader, ClassPool classPool) throws InvalidComponentFieldException, ClassNotFoundException,
+		CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
 		CtClass clazz = curField.getType();
 		if (List.class.isAssignableFrom(trueField.getType())) {
 			ParameterizedType parameterizedType = (ParameterizedType) trueField.getGenericType();
@@ -76,7 +77,7 @@ public class MultiCompositeFieldWidgetMaker extends AbstractWidgetMaker {
 				Field mcTrueField = classLoader.loadClass(field.getDeclaringClass().getName()).getDeclaredField(
 					field.getName());
 				DialogElement builtFieldWidget = WidgetFactory.make(componentClass, field, mcTrueField,
-					classToXTypeMap, xTypeToWidgetMakerMap, classLoader, classPool, false);
+					classToXTypeMap, xTypeToWidgetMakerMap, classLoader, classPool, false, -1);
 				elements.add(builtFieldWidget);
 			}
 		}

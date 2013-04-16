@@ -7,7 +7,7 @@ import com.citytechinc.cq.component.annotations.widgets.CheckBox;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.maker.impl.CheckBoxWidgetMaker;
 
-@Widget(annotationClass = CheckBox.class, makerClass = CheckBoxWidgetMaker.class, xtypes = CheckBoxWidget.XTYPE)
+@Widget(annotationClass = CheckBox.class, makerClass = CheckBoxWidgetMaker.class, xtype = CheckBoxWidget.XTYPE)
 public class CheckBoxWidget extends AbstractWidget {
 	public static final String XTYPE = "checkbox";
 	private static final String PRIMARY_TYPE = "cq:Widget";

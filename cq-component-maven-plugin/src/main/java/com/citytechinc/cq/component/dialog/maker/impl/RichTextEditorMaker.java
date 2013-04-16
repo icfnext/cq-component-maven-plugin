@@ -42,6 +42,7 @@ import com.citytechinc.cq.component.dialog.impl.UndoRtePlugin;
 import com.citytechinc.cq.component.dialog.impl.WidgetCollection;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
+import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;
 
 /**
  * 
@@ -55,7 +56,7 @@ public class RichTextEditorMaker extends AbstractWidgetMaker {
 
 	@Override
 	public DialogElement make(String xtype, Field widgetField, CtField ctWidgetField, Class<?> containingClass,
-		CtClass ctContainingClass, Map<Class<?>, String> xtypeMap, Map<String, WidgetMaker> xTypeToWidgetMakerMap,
+		CtClass ctContainingClass, Map<Class<?>, WidgetConfigHolder> xtypeMap, Map<String, WidgetMaker> xTypeToWidgetMakerMap,
 		ClassLoader classLoader, ClassPool classPool, boolean useDotSlashInName) throws ClassNotFoundException,
 		InvalidComponentFieldException, CannotCompileException, NotFoundException {
 

@@ -7,7 +7,7 @@ import com.citytechinc.cq.component.annotations.widgets.DateField;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.maker.impl.DateFieldWidgetMaker;
 
-@Widget(annotationClass = DateField.class, makerClass = DateFieldWidgetMaker.class, xtypes = DateFieldWidget.XTYPE)
+@Widget(annotationClass = DateField.class, makerClass = DateFieldWidgetMaker.class, xtype = DateFieldWidget.XTYPE)
 public class DateFieldWidget extends AbstractWidget {
 	public static final String XTYPE = "datefield";
 	private static final String PRIMARY_TYPE = "cq:Widget";

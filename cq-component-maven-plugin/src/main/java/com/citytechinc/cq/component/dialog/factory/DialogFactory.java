@@ -26,13 +26,14 @@ import com.citytechinc.cq.component.dialog.impl.Tab;
 import com.citytechinc.cq.component.dialog.impl.WidgetCollection;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
+import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;
 
 public class DialogFactory {
 
 	private DialogFactory() {
 	}
 
-	public static Dialog make(CtClass componentClass, Map<Class<?>, String> classToXTypeMap,
+	public static Dialog make(CtClass componentClass, Map<Class<?>, WidgetConfigHolder> classToXTypeMap,
 		Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool)
 		throws InvalidComponentClassException, InvalidComponentFieldException, ClassNotFoundException,
 		CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
@@ -77,7 +78,7 @@ public class DialogFactory {
 				Field trueField = ComponentMojoUtil.getField(trueComponentClass, curField.getName());
 
 				DialogElement builtFieldWidget = WidgetFactory.make(componentClass, curField, trueField,
-					classToXTypeMap, xTypeToWidgetMakerMap, classLoader, classPool, true);
+					classToXTypeMap, xTypeToWidgetMakerMap, classLoader, classPool, true, -1);
 
 				if (builtFieldWidget instanceof Html5SmartImageWidget
 					&& ((Html5SmartImageWidget) builtFieldWidget).isTab()) {

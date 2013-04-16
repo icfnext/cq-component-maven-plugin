@@ -16,6 +16,7 @@ import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.FieldProperty;
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
+import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;
 
 public abstract class AbstractWidgetMaker implements WidgetMaker {
 
@@ -23,7 +24,7 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 	 * @see com.citytechinc.cq.component.dialog.maker.WidgetMaker#make(java.lang.String, java.lang.reflect.Field, javassist.CtField, java.lang.Class, javassist.CtClass, java.util.Map, java.util.Map, java.lang.ClassLoader, javassist.ClassPool, boolean)
 	 */
 	public abstract DialogElement make(String xtype, Field widgetField, CtField ctWidgetField,
-		Class<?> containingClass, CtClass ctContainingClass, Map<Class<?>, String> xtypeMap,
+		Class<?> containingClass, CtClass ctContainingClass, Map<Class<?>, WidgetConfigHolder> xtypeMap,
 		Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool,
 		boolean useDotSlashInName) throws ClassNotFoundException, InvalidComponentFieldException,
 		CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException;

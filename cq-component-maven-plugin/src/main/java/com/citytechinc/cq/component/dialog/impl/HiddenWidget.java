@@ -7,7 +7,7 @@ import com.citytechinc.cq.component.annotations.widgets.Hidden;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.maker.impl.HiddenWidgetMaker;
 
-@Widget(annotationClass = Hidden.class, makerClass = HiddenWidgetMaker.class, xtypes = HiddenWidget.XTYPE)
+@Widget(annotationClass = Hidden.class, makerClass = HiddenWidgetMaker.class, xtype = HiddenWidget.XTYPE)
 public class HiddenWidget extends AbstractWidget {
 	public static final String XTYPE = "hidden";
 	private static final String PRIMARY_TYPE = "cq:Widget";

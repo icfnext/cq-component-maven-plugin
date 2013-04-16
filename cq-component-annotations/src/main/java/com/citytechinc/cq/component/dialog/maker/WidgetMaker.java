@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
+import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;
 
 import javassist.CannotCompileException;
 import javassist.ClassPool;
@@ -38,7 +39,7 @@ public interface WidgetMaker {
 	 * @throws NoSuchFieldException
 	 */
 	public DialogElement make(String xtype, Field widgetField, CtField ctWidgetField, Class<?> containingClass,
-		CtClass ctContainingClass, Map<Class<?>, String> xtypeMap, Map<String, WidgetMaker> xTypeToWidgetMakerMap,
+		CtClass ctContainingClass, Map<Class<?>, WidgetConfigHolder> xtypeMap, Map<String, WidgetMaker> xTypeToWidgetMakerMap,
 		ClassLoader classLoader, ClassPool classPool, boolean useDotSlashInName) throws ClassNotFoundException,
 		InvalidComponentFieldException, CannotCompileException, NotFoundException, SecurityException,
 		NoSuchFieldException;

@@ -71,8 +71,9 @@ public class ComponentMojoUtil {
 	}
 
 	/**
-	 * Constructs a Class Loader based on a list of paths to classes and a parent Class Loader
-	 *
+	 * Constructs a Class Loader based on a list of paths to classes and a
+	 * parent Class Loader
+	 * 
 	 * @param paths
 	 * @param mojoClassLoader
 	 * @return The constructed ClassLoader
@@ -98,7 +99,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Constructs as Javassist ClassPool which pulls resources based on the
 	 * paths provided by the passed in ClassLoader
-	 *
+	 * 
 	 * @param classLoader
 	 * @return The constructed ClassPool
 	 * @throws NotFoundException
@@ -112,22 +113,21 @@ public class ComponentMojoUtil {
 	/**
 	 * Given a set of configured xtype mappings, construct a mapping from Class
 	 * objects to xtype Strings
-	 *
+	 * 
 	 * @param classLoader
 	 * @param xtypeMappings
 	 * @return The constructed mapping
-	 *
+	 * 
 	 * @throws ClassNotFoundException
 	 */
-	public static Map<Class<?>, String> getXTypeMapForCustomXTypeMapping(List<WidgetConfigHolder> widgetConfigs)
+	public static Map<Class<?>, WidgetConfigHolder> getXTypeMapForCustomXTypeMapping(List<WidgetConfigHolder> widgetConfigs)
 		throws ClassNotFoundException {
-		Map<Class<?>, String> retMap = new HashMap<Class<?>, String>();
+		Map<Class<?>, WidgetConfigHolder> retMap = new HashMap<Class<?>, WidgetConfigHolder>();
 
 		for (WidgetConfigHolder widgetConfig : widgetConfigs) {
 			if (widgetConfig.getAnnotationClass() != null) {
-				for (String xtype : widgetConfig.getXtypes()) {
-					retMap.put(widgetConfig.getAnnotationClass(), xtype);
-				}
+				retMap.put(widgetConfig.getAnnotationClass(), widgetConfig);
+
 			}
 		}
 
@@ -135,8 +135,9 @@ public class ComponentMojoUtil {
 	}
 
 	/**
-	 * Transforms a List of WidgetConfigHolders into a mapping between xtypes and WidgetMakers
-	 *
+	 * Transforms a List of WidgetConfigHolders into a mapping between xtypes
+	 * and WidgetMakers
+	 * 
 	 * @param widgetConfigs
 	 * @return Mapping from xtype to WidgetMaker
 	 * @throws InstantiationException
@@ -148,9 +149,7 @@ public class ComponentMojoUtil {
 		Map<String, WidgetMaker> xTypeToWidgetMakerMap = new HashMap<String, WidgetMaker>();
 
 		for (WidgetConfigHolder widgetConfig : widgetConfigs) {
-			for (String xtype : widgetConfig.getXtypes()) {
-				xTypeToWidgetMakerMap.put(xtype, widgetConfig.getMakerClass().newInstance());
-			}
+			xTypeToWidgetMakerMap.put(widgetConfig.getXtype(), widgetConfig.getMakerClass().newInstance());
 		}
 
 		return xTypeToWidgetMakerMap;
@@ -158,7 +157,7 @@ public class ComponentMojoUtil {
 
 	/**
 	 * Constructs the list of classes present in a given JAR file
-	 *
+	 * 
 	 * @param jarFile
 	 * @param classPool
 	 * @return The list of classes present in the provided JAR file
@@ -192,7 +191,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Constructs a fully qualified class name based on the path to the class
 	 * file
-	 *
+	 * 
 	 * @param filePath
 	 * @param rootPath
 	 * @return The constructed class name
@@ -221,7 +220,7 @@ public class ComponentMojoUtil {
 	 * Add files to the already constructed Archive file by creating a new
 	 * Archive file, appending the contents of the existing Archive file to it,
 	 * and then adding additional entries for the newly constructed artifacts.
-	 *
+	 * 
 	 * @param classList
 	 * @param xtypeMap
 	 * @param classLoader
@@ -248,7 +247,7 @@ public class ComponentMojoUtil {
 	 * @throws InvocationTargetException
 	 * @throws NoSuchMethodException
 	 */
-	public static void buildArchiveFileForProjectAndClassList(List<CtClass> classList, Map<Class<?>, String> xtypeMap,
+	public static void buildArchiveFileForProjectAndClassList(List<CtClass> classList, Map<Class<?>, WidgetConfigHolder> xtypeMap,
 		Map<String, WidgetMaker> widgetMakerMap, ClassLoader classLoader, ClassPool classPool, File buildDirectory,
 		String componentPathBase, String defaultComponentPathSuffix, String defaultComponentGroup,
 		File existingArchiveFile, File tempArchiveFile) throws OutputFailureException, IOException,
@@ -328,7 +327,7 @@ public class ComponentMojoUtil {
 	 * For each class in the provided classList which is annotated with a
 	 * Component annotation, an EditConfig object is built and added to the
 	 * returned list. Classes which are not thusly annotated are ignored.
-	 *
+	 * 
 	 * @param classList
 	 * @param zipOutputStream
 	 * @param reservedNames
@@ -369,7 +368,7 @@ public class ComponentMojoUtil {
 	 * Determines the name of the edit config file to be written and writes the
 	 * the edit config xml which the provided EditConfig object represents to
 	 * that determined file.
-	 *
+	 * 
 	 * @param editConfig
 	 * @param componentClass
 	 * @return The file written
@@ -401,7 +400,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Writes a provided file to a provided archive output stream at a path
 	 * determined by the class of the component.
-	 *
+	 * 
 	 * @param editConfigFile
 	 * @param componentClass
 	 * @param archiveStream
@@ -440,7 +439,7 @@ public class ComponentMojoUtil {
 	 * Constructs a list of Content objects representing .content.xml files from
 	 * a list of Classes. For each Class annotated with a Component annotation a
 	 * Content object is constructed.
-	 *
+	 * 
 	 * @param classList
 	 * @param zipOutputStream
 	 * @param reservedNames
@@ -488,7 +487,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Write the content.xml to an output file, the path of which is determined
 	 * by the component class
-	 *
+	 * 
 	 * @param content
 	 * @param componentClass
 	 * @return The written file
@@ -520,7 +519,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Writes a provided content file to a provided archive output stream at a
 	 * path determined by the class of the component.
-	 *
+	 * 
 	 * @param contentFile
 	 * @param componentClass
 	 * @param archiveStream
@@ -561,7 +560,7 @@ public class ComponentMojoUtil {
 	 * Dialog object for each one annotated with the Component annotation. Any
 	 * classes provided in the class list which are not thusly annotated are
 	 * ignored.
-	 *
+	 * 
 	 * @param classList
 	 * @param zipOutputStream
 	 * @param reservedNames
@@ -586,7 +585,7 @@ public class ComponentMojoUtil {
 	 * @throws NoSuchMethodException
 	 */
 	protected static List<Dialog> buildDialogsFromClassList(List<CtClass> classList,
-		ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames, Map<Class<?>, String> xtypeMap,
+		ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames, Map<Class<?>, WidgetConfigHolder> xtypeMap,
 		Map<String, WidgetMaker> widgetMakerMap, ClassLoader classLoader, ClassPool classPool, File buildDirectory,
 		String componentPathBase, String defaultComponentPathSuffix) throws InvalidComponentClassException,
 		InvalidComponentFieldException, OutputFailureException, IOException, ParserConfigurationException,
@@ -630,7 +629,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Writes a dialog.xml file, the path of which being based on the component
 	 * Class.
-	 *
+	 * 
 	 * @param dialog
 	 * @param componentClass
 	 * @return The written file
@@ -668,7 +667,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Writes a provided dialog file to a provided archive output stream at a
 	 * path determined by the class of the component.
-	 *
+	 * 
 	 * @param dialogFile
 	 * @param componentClass
 	 * @param archiveStream
@@ -708,7 +707,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Finds and retrieves the constructed CQ Package archive file for the
 	 * project
-	 *
+	 * 
 	 * @param project
 	 * @return The archive file found for the project
 	 */
@@ -725,7 +724,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Create a temporary archive file which will live alongside the constructed
 	 * project CQ5 Package archive.
-	 *
+	 * 
 	 * @param project
 	 * @return The temporary archive file
 	 */
@@ -742,7 +741,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Determine the appropriate output directory for a component's artifacts
 	 * based on the component class as well as POM configuration.
-	 *
+	 * 
 	 * @param componentClass
 	 * @param project
 	 * @param componentPathBase
@@ -771,9 +770,9 @@ public class ComponentMojoUtil {
 	}
 
 	/**
-	 * Deletes the temporary output directory which is created as part of the build process to temporarily hold
-	 * the generated files for components.
-	 *
+	 * Deletes the temporary output directory which is created as part of the
+	 * build process to temporarily hold the generated files for components.
+	 * 
 	 * @param buildDirectory
 	 * @throws IOException
 	 */
@@ -788,7 +787,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Determines the suffix portion of the path leading to the artifacts of a
 	 * particular component
-	 *
+	 * 
 	 * @param componentClass
 	 * @param defaultComponentPathSuffix
 	 * @return The determined suffix
@@ -812,7 +811,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Determines the name of the component class for use in constructing file
 	 * paths
-	 *
+	 * 
 	 * @param componentClass
 	 * @return The determined name
 	 * @throws ClassNotFoundException
@@ -832,9 +831,9 @@ public class ComponentMojoUtil {
 	}
 
 	/**
-	 * Constructs a list of widget configurations based on the information provided by classes annotated
-	 * as Widgets.
-	 *
+	 * Constructs a list of widget configurations based on the information
+	 * provided by classes annotated as Widgets.
+	 * 
 	 * @param classPool
 	 * @param classLoader
 	 * @param reflections
@@ -852,18 +851,18 @@ public class ComponentMojoUtil {
 			CtClass clazz = classPool.getCtClass(c.getName());
 			Widget widgetAnnotation = (Widget) clazz.getAnnotation(Widget.class);
 			Class<? extends Annotation> annotationClass = null;
-			if (widgetAnnotation.annotationClass()!=null) {
-				if(widgetAnnotation.annotationClass().length==1){
+			if (widgetAnnotation.annotationClass() != null) {
+				if (widgetAnnotation.annotationClass().length == 1) {
 					annotationClass = widgetAnnotation.annotationClass()[0];
-				}else if(widgetAnnotation.annotationClass().length>1){
+				} else if (widgetAnnotation.annotationClass().length > 1) {
 					throw new RuntimeException("A widget must have a single annotation");
 				}
 			}
-			Class<? extends WidgetMaker> makerClass =widgetAnnotation.makerClass();
+			Class<? extends WidgetMaker> makerClass = widgetAnnotation.makerClass();
 			Class<? extends AbstractWidget> widgetClass = classLoader.loadClass(clazz.getName()).asSubclass(
 				AbstractWidget.class);
 			WidgetConfigHolder widgetConfig = new WidgetConfigHolder(annotationClass, widgetClass, makerClass,
-				widgetAnnotation.xtypes());
+				widgetAnnotation.xtype(), widgetAnnotation.ranking());
 			if (clazz.getPackageName().equals(CITYTECH_PACKAGE)) {
 				builtInWidgets.add(widgetConfig);
 			} else {
@@ -875,9 +874,9 @@ public class ComponentMojoUtil {
 	}
 
 	/**
-	 * Retrieves a List of all classes which are annotated as Components and are within the scope of the provided
-	 * Reflections purview.
-	 *
+	 * Retrieves a List of all classes which are annotated as Components and are
+	 * within the scope of the provided Reflections purview.
+	 * 
 	 * @param classPool
 	 * @param reflections
 	 * @return A List of classes annotated as Components
@@ -896,8 +895,9 @@ public class ComponentMojoUtil {
 	}
 
 	/**
-	 * Constructs a list of all fields contained in the provided CtClass and any of its parent classes.
-	 *
+	 * Constructs a list of all fields contained in the provided CtClass and any
+	 * of its parent classes.
+	 * 
 	 * @param ctClass
 	 * @return The constructed list of fields
 	 * @throws NotFoundException
@@ -912,20 +912,21 @@ public class ComponentMojoUtil {
 	}
 
 	/**
-	 * Retrieves a field for a Class.  To allow for the retrieval of inherited fields, the class hierarchy
-	 * is traversed upwards starting at the provided class.  If the top of the hierarchy is reached without
-	 * finding a field of the specified name, null is returned.
-	 *
+	 * Retrieves a field for a Class. To allow for the retrieval of inherited
+	 * fields, the class hierarchy is traversed upwards starting at the provided
+	 * class. If the top of the hierarchy is reached without finding a field of
+	 * the specified name, null is returned.
+	 * 
 	 * @param clazz
 	 * @param fieldName
-	 * @return The Field specified by the provided name or null if no such field could be found for the Class
-	 *         or its parents.
+	 * @return The Field specified by the provided name or null if no such field
+	 *         could be found for the Class or its parents.
 	 */
 	public static Field getField(Class<?> clazz, String fieldName) {
 		Field retField = null;
 		Class<?> curClass = clazz;
 
-		while(retField == null && curClass != null) {
+		while (retField == null && curClass != null) {
 			try {
 				retField = curClass.getDeclaredField(fieldName);
 				curClass = curClass.getSuperclass();
@@ -933,8 +934,7 @@ public class ComponentMojoUtil {
 
 			} catch (NoSuchFieldException e) {
 
-			}
-			finally {
+			} finally {
 				curClass = curClass.getSuperclass();
 			}
 		}
@@ -943,9 +943,11 @@ public class ComponentMojoUtil {
 	}
 
 	/**
-	 * Constructs a Reflections object suitable for reflecting on classes accessible via the provided ClassLoader
-	 *
-	 * @param classLoader The ClassLoader containing classes to be reflected upon
+	 * Constructs a Reflections object suitable for reflecting on classes
+	 * accessible via the provided ClassLoader
+	 * 
+	 * @param classLoader The ClassLoader containing classes to be reflected
+	 *            upon
 	 * @return The constructed Reflections object
 	 */
 	public static Reflections getReflections(ClassLoader classLoader) {

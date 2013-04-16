@@ -7,7 +7,7 @@ import com.citytechinc.cq.component.annotations.widgets.Html5SmartImage;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.maker.impl.Html5SmartImageWidgetMaker;
 
-@Widget(annotationClass = Html5SmartImage.class, makerClass = Html5SmartImageWidgetMaker.class, xtypes = Html5SmartImageWidget.XTYPE)
+@Widget(annotationClass = Html5SmartImage.class, makerClass = Html5SmartImageWidgetMaker.class, xtype = Html5SmartImageWidget.XTYPE)
 public class Html5SmartImageWidget extends AbstractWidget {
 	public static final String XTYPE = "html5smartimage";
 	private static final String PRIMARY_TYPE = "cq:Widget";

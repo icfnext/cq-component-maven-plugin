@@ -9,7 +9,7 @@ import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.maker.impl.TagInputFieldWidgetMaker;
 
-@Widget(annotationClass = TagInputField.class, makerClass = TagInputFieldWidgetMaker.class, xtypes = TagInputFieldWidget.XTYPE)
+@Widget(annotationClass = TagInputField.class, makerClass = TagInputFieldWidgetMaker.class, xtype = TagInputFieldWidget.XTYPE)
 public class TagInputFieldWidget extends AbstractWidget {
 	public static final String XTYPE = "tags";
 	private static final String PRIMARY_TYPE = "cq:Widget";

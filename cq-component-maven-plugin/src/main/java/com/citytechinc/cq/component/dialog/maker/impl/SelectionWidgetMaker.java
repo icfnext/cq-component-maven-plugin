@@ -21,6 +21,7 @@ import com.citytechinc.cq.component.dialog.impl.Option;
 import com.citytechinc.cq.component.dialog.impl.SelectionWidget;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
+import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;
 
 /**
  * Builds a SelectionWidget from an annotated field. This maker will operate with or without a stacked
@@ -35,7 +36,7 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 	 * @see com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker#make(java.lang.String, java.lang.reflect.Field, javassist.CtField, java.lang.Class, javassist.CtClass, java.util.Map, java.util.Map, java.lang.ClassLoader, javassist.ClassPool, boolean)
 	 */
 	public DialogElement make(String xtype, Field widgetField, CtField ctWidgetField, Class<?> containingClass,
-		CtClass ctContainingClass, Map<Class<?>, String> xtypeMap, Map<String, WidgetMaker> xTypeToWidgetMakerMap,
+		CtClass ctContainingClass, Map<Class<?>, WidgetConfigHolder> xtypeMap, Map<String, WidgetMaker> xTypeToWidgetMakerMap,
 		ClassLoader classLoader, ClassPool classPool, boolean useDotSlashInName) throws ClassNotFoundException,
 		InvalidComponentFieldException, CannotCompileException, NotFoundException {
 

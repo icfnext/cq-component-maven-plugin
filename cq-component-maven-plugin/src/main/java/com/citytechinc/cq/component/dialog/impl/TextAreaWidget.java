@@ -9,7 +9,7 @@ import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.maker.impl.SimpleWidgetMaker;
 
-@Widget(annotationClass = TextArea.class, makerClass = SimpleWidgetMaker.class, xtypes = TextAreaWidget.XTYPE)
+@Widget(annotationClass = TextArea.class, makerClass = SimpleWidgetMaker.class, xtype = TextAreaWidget.XTYPE)
 public class TextAreaWidget extends AbstractWidget {
 
 	public static final String XTYPE = "textarea";

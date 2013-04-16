@@ -38,4 +38,8 @@ public abstract class AbstractDialogElement implements DialogElement {
 	public final List<? extends DialogElement> getContainedElements() {
 		return containedElements;
 	}
+	
+	public void setFieldName(String fieldName){
+		this.fieldName=fieldName;
+	}
 }

@@ -4,17 +4,19 @@ import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 
 public class WidgetConfigHolder {
-	private Class<?> annotationClass;
-	private Class<? extends AbstractWidget> widgetClass;
-	private Class<? extends WidgetMaker> makerClass;
-	private String[] xtypes;
+	private final Class<?> annotationClass;
+	private final Class<? extends AbstractWidget> widgetClass;
+	private final Class<? extends WidgetMaker> makerClass;
+	private final String xtype;
+	private final int ranking;
 
 	public WidgetConfigHolder(Class<?> annotationClass, Class<? extends AbstractWidget> widgetClass,
-		Class<? extends WidgetMaker> makerClass, String[] xtypes) {
+		Class<? extends WidgetMaker> makerClass, String xtype,int ranking) {
 		this.annotationClass = annotationClass;
 		this.widgetClass = widgetClass;
 		this.makerClass = makerClass;
-		this.xtypes = xtypes;
+		this.xtype = xtype;
+		this.ranking=ranking;
 	}
 
 	public Class<?> getAnnotationClass() {
@@ -29,7 +31,11 @@ public class WidgetConfigHolder {
 		return makerClass;
 	}
 
-	public String[] getXtypes() {
-		return xtypes;
+	public String getXtype() {
+		return xtype;
+	}
+	
+	public int getRanking(){
+		return ranking;
 	}
 }

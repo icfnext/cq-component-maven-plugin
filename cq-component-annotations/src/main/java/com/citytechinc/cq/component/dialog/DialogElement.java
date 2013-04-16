@@ -13,4 +13,6 @@ public interface DialogElement {
 	public Map<String, String> getAdditionalProperties();
 
 	public List<? extends DialogElement> getContainedElements();
+	
+	public void setFieldName(String fieldName);
 }

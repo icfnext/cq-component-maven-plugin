@@ -7,7 +7,7 @@ import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.factory.WidgetFactory;
 import com.citytechinc.cq.component.dialog.maker.impl.SimpleWidgetMaker;
 
-@Widget(makerClass = SimpleWidgetMaker.class, xtypes = { WidgetFactory.TEXTFIELD_XTYPE })
+@Widget(makerClass = SimpleWidgetMaker.class, xtype = WidgetFactory.TEXTFIELD_XTYPE)
 public class SimpleWidget extends AbstractWidget {
 	private static final String PRIMARY_TYPE = "cq:Widget";
 

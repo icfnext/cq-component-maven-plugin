@@ -9,7 +9,7 @@ import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.maker.impl.SimpleWidgetMaker;
 
-@Widget(annotationClass = TextField.class, makerClass = SimpleWidgetMaker.class, xtypes = TextFieldWidget.XTYPE)
+@Widget(annotationClass = TextField.class, makerClass = SimpleWidgetMaker.class, xtype = TextFieldWidget.XTYPE)
 public class TextFieldWidget extends AbstractWidget {
 
 	public static final String XTYPE = "textfield";

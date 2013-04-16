@@ -90,13 +90,6 @@ public @interface DialogField {
 	public String tab() default "";
 
 	/**
-	 * Method fieldConfigs.
-	 *
-	 * @return FieldConfig[]
-	 */
-	public FieldConfig[] fieldConfigs() default {};
-
-	/**
 	 * A list of additional properties not already represented by properties of
 	 * the annotation
 	 *

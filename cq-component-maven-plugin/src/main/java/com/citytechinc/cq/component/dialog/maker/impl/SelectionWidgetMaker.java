@@ -2,6 +2,7 @@ package com.citytechinc.cq.component.dialog.maker.impl;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,7 @@ import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.impl.Option;
 import com.citytechinc.cq.component.dialog.impl.SelectionWidget;
+import com.citytechinc.cq.component.dialog.impl.WidgetCollection;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;
@@ -59,8 +61,14 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 		String optionsProvider = getOptionsProviderForField(ctWidgetField, selectionAnnotation);
 		String sortDir = getSortDirForField(ctWidgetField, selectionAnnotation);
 
+		List<DialogElement> optionsList = null;
+
+		if (StringUtils.isEmpty(optionsUrl)) {
+			optionsList = Arrays.asList(new DialogElement[] { new WidgetCollection(options, "options") });
+		}
+
 		return new SelectionWidget(selectionType, name, fieldLabel, fieldName, fieldDescription, isRequired, hideLabel,
-			defaultValue, additionalProperties, options, optionsUrl, optionsProvider, sortDir);
+			defaultValue, additionalProperties, optionsList, optionsUrl, optionsProvider, sortDir);
 
 	}
 

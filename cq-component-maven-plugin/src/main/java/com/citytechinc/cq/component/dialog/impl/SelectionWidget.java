@@ -1,6 +1,5 @@
 package com.citytechinc.cq.component.dialog.impl;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +15,7 @@ public class SelectionWidget extends AbstractWidget {
 	public static final String XTYPE = "selection";
 	private static final String PRIMARY_TYPE = "cq:Widget";
 	private final String type;
-	private final String optionsUrl;
+	private final String options;
 	private final String optionsProvider;
 	private final String sortDir;
 
@@ -24,11 +23,10 @@ public class SelectionWidget extends AbstractWidget {
 		Boolean required, boolean hideLabel, String defaultValue, Map<String, String> additionalProperties,
 		List<DialogElement> options, String optionsUrl, String optionsProvider, String sortDir) {
 		super(XTYPE, fieldLabel, fieldDescription, !required, hideLabel, defaultValue, name, PRIMARY_TYPE, null,
-			fieldName, additionalProperties, Arrays.asList(new DialogElement[] { new WidgetCollection(options,
-				"options") }));
+			fieldName, additionalProperties, options);
 
 		this.type = type;
-		this.optionsUrl = optionsUrl;
+		this.options = optionsUrl;
 		this.optionsProvider = optionsProvider;
 		this.sortDir = sortDir;
 	}
@@ -37,8 +35,8 @@ public class SelectionWidget extends AbstractWidget {
 		return type;
 	}
 
-	public String getOptionsUrl() {
-		return optionsUrl;
+	public String getOptions() {
+		return options;
 	}
 
 	public String getOptionsProvider() {

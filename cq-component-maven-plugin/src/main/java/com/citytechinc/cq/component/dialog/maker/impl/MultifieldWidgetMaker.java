@@ -38,7 +38,6 @@ public class MultifieldWidgetMaker extends AbstractWidgetMaker {
 		String fieldName = getFieldNameForField(dialogFieldAnnotation, widgetField);
 		String fieldLabel = getFieldLabelForField(dialogFieldAnnotation, widgetField);
 		String fieldDescription = getFieldDescriptionForField(dialogFieldAnnotation);
-		Boolean isRequired = getIsRequiredForField(dialogFieldAnnotation);
 		Map<String, String> additionalProperties = getAdditionalPropertiesForField(dialogFieldAnnotation);
 		String defaultValue = getDefaultValueForField(dialogFieldAnnotation);
 		boolean hideLabel = dialogFieldAnnotation.hideLabel();
@@ -56,7 +55,7 @@ public class MultifieldWidgetMaker extends AbstractWidgetMaker {
 		List<DialogElement> elements = new ArrayList<DialogElement>();
 		elements.add(element);
 		return new MultiFieldWidget(orderable, addItemLabel, fieldLabel,
-			fieldDescription, !isRequired, hideLabel, defaultValue, name, fieldName, additionalProperties, elements);
+			fieldDescription, true, hideLabel, defaultValue, name, fieldName, additionalProperties, elements);
 
 	}
 

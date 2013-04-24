@@ -55,7 +55,7 @@ public class WidgetFactory {
 		Class<?> containingClass = classLoader.loadClass(componentClass.getName());
 
 		if (!xTypeToWidgetMakerMap.containsKey(xtype)) {
-			new SimpleWidgetMaker().make(xtype, widgetField, annotatedWidgetField, containingClass, componentClass,
+			return new SimpleWidgetMaker().make(xtype, widgetField, annotatedWidgetField, containingClass, componentClass,
 				classToXTypeMap, xTypeToWidgetMakerMap, classLoader, classPool, useDotSlashInName);
 		}
 

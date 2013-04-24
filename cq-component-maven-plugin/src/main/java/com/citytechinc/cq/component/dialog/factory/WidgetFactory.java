@@ -22,6 +22,7 @@ import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.impl.MultiFieldWidget;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
+import com.citytechinc.cq.component.dialog.maker.impl.SimpleWidgetMaker;
 import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;
 
 public class WidgetFactory {
@@ -50,13 +51,13 @@ public class WidgetFactory {
 
 		String xtype = getXTypeForField(widgetField, annotatedWidgetField, propertyAnnotation, classToXTypeMap,
 			classLoader, classPool, rankingCeiling);
+		
+		Class<?> containingClass = classLoader.loadClass(componentClass.getName());
 
 		if (!xTypeToWidgetMakerMap.containsKey(xtype)) {
-			throw new InvalidComponentFieldException("xType determined to be " + xtype
-				+ " but no Class implementing WidgetMaker is specified for this xtype");
+			new SimpleWidgetMaker().make(xtype, widgetField, annotatedWidgetField, containingClass, componentClass,
+				classToXTypeMap, xTypeToWidgetMakerMap, classLoader, classPool, useDotSlashInName);
 		}
-
-		Class<?> containingClass = classLoader.loadClass(componentClass.getName());
 
 		return xTypeToWidgetMakerMap.get(xtype).make(xtype, widgetField, annotatedWidgetField, containingClass,
 			componentClass, classToXTypeMap, xTypeToWidgetMakerMap, classLoader, classPool, useDotSlashInName);

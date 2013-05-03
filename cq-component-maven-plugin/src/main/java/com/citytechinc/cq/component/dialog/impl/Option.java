@@ -9,8 +9,8 @@ public class Option extends AbstractDialogElement {
 	private final String value;
 	private final String qtip;
 
-	public Option(String text, String value, String qtip) {
-		super(PRIMARY_TYPE, null, value, null, null);
+	public Option(String text, String value, String qtip, String fieldName) {
+		super(PRIMARY_TYPE, null, fieldName, null, null);
 		this.text = text;
 		this.value = value;
 		this.qtip = qtip;

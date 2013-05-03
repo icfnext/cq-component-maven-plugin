@@ -26,21 +26,29 @@ import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;
 
 /**
- * Builds a SelectionWidget from an annotated field. This maker will operate with or without a stacked
- * Selection annotation.
- *
+ * Builds a SelectionWidget from an annotated field. This maker will operate
+ * with or without a stacked Selection annotation.
+ * 
  * @author paulmichelotti
- *
+ * 
  */
 public class SelectionWidgetMaker extends AbstractWidgetMaker {
+	private static final String OPTION_FIELD_NAME_PREFIX = "option";
 
-	/* (non-Javadoc)
-	 * @see com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker#make(java.lang.String, java.lang.reflect.Field, javassist.CtField, java.lang.Class, javassist.CtClass, java.util.Map, java.util.Map, java.lang.ClassLoader, javassist.ClassPool, boolean)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker#make(java
+	 * .lang.String, java.lang.reflect.Field, javassist.CtField,
+	 * java.lang.Class, javassist.CtClass, java.util.Map, java.util.Map,
+	 * java.lang.ClassLoader, javassist.ClassPool, boolean)
 	 */
 	public DialogElement make(String xtype, Field widgetField, CtField ctWidgetField, Class<?> containingClass,
-		CtClass ctContainingClass, Map<Class<?>, WidgetConfigHolder> xtypeMap, Map<String, WidgetMaker> xTypeToWidgetMakerMap,
-		ClassLoader classLoader, ClassPool classPool, boolean useDotSlashInName) throws ClassNotFoundException,
-		InvalidComponentFieldException, CannotCompileException, NotFoundException {
+		CtClass ctContainingClass, Map<Class<?>, WidgetConfigHolder> xtypeMap,
+		Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool,
+		boolean useDotSlashInName) throws ClassNotFoundException, InvalidComponentFieldException,
+		CannotCompileException, NotFoundException {
 
 		DialogField dialogFieldAnnotation = (DialogField) ctWidgetField.getAnnotation(DialogField.class);
 		Selection selectionAnnotation = (Selection) ctWidgetField.getAnnotation(Selection.class);
@@ -113,6 +121,7 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 		 * Options specified in the annotation take precedence
 		 */
 		if (fieldAnnotation != null && fieldAnnotation.options().length > 0) {
+			int i = 0;
 			for (com.citytechinc.cq.component.annotations.Option curOptionAnnotation : fieldAnnotation.options()) {
 				if (StringUtils.isEmpty(curOptionAnnotation.value())) {
 					throw new InvalidComponentFieldException(
@@ -122,7 +131,8 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 				if (StringUtils.isNotEmpty(curOptionAnnotation.qtip())) {
 					qtip = curOptionAnnotation.qtip();
 				}
-				options.add(new Option(curOptionAnnotation.text(), curOptionAnnotation.value(), qtip));
+				options.add(new Option(curOptionAnnotation.text(), curOptionAnnotation.value(), qtip,
+					OPTION_FIELD_NAME_PREFIX + (i++)));
 			}
 		}
 		/*
@@ -131,10 +141,11 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 		 * Enum definition
 		 */
 		else if (widgetField.getType().isEnum()) {
+			int i = 0;
 			for (Object curEnumObject : classLoader.loadClass(widgetField.getType().getName()).getEnumConstants()) {
 				Enum<?> curEnum = (Enum<?>) curEnumObject;
 				try {
-					options.add(buildSelectionOptionForEnum(curEnum, classPool));
+					options.add(buildSelectionOptionForEnum(curEnum, classPool, OPTION_FIELD_NAME_PREFIX + (i++)));
 				} catch (SecurityException e) {
 					throw new InvalidComponentFieldException("Invalid Enum Field", e);
 				} catch (NoSuchFieldException e) {
@@ -147,7 +158,7 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 
 	}
 
-	private static final Option buildSelectionOptionForEnum(Enum<?> optionEnum, ClassPool classPool)
+	private static final Option buildSelectionOptionForEnum(Enum<?> optionEnum, ClassPool classPool, String fieldName)
 		throws SecurityException, NoSuchFieldException, NotFoundException, ClassNotFoundException {
 
 		String text = optionEnum.name();
@@ -171,7 +182,7 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 			}
 		}
 
-		return new Option(text, value, qtip);
+		return new Option(text, value, qtip, fieldName);
 
 	}
 

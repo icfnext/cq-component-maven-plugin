@@ -6,7 +6,7 @@
 	<artifactId>cq-component-plugin</artifactId>
 	<packaging>pom</packaging>
 	<version>1.0.0-SNAPSHOT</version>
-	<name>CQ Component</name>
+	<name>CQ Component Plugin</name>
 
 	<modules>
 		<module>cq-component-annotations</module>

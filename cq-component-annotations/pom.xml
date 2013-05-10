@@ -11,7 +11,7 @@
 	<artifactId>cq-component-annotations</artifactId>
 	<packaging>jar</packaging>
 
-	<name>CQ Component Annotations</name>
+	<name>CQ Component Plugin Annotations</name>
 
 	<dependencies>
 		<dependency>

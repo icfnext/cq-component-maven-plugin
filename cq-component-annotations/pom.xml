@@ -3,8 +3,8 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.citytechinc.cq</groupId>
-		<artifactId>cq-component</artifactId>
+		<groupId>com.citytechinc.cq.cq-component-plugin</groupId>
+		<artifactId>cq-component-plugin</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 

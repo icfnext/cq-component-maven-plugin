@@ -61,7 +61,7 @@
 			<artifactId>javassist</artifactId>
 		</dependency>
 		<dependency>
-			<groupId> com.citytechinc.cq </groupId>
+			<groupId> com.citytechinc.cq.cq-component-plugin</groupId>
 			<artifactId>cq-component-annotations</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>

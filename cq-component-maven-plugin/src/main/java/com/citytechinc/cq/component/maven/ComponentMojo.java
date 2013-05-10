@@ -47,7 +47,7 @@ public class ComponentMojo extends AbstractMojo {
 				.getClass().getClassLoader());
 
 			ClassPool classPool = ComponentMojoUtil.getClassPool(classLoader);
-
+			
 			Reflections reflections = ComponentMojoUtil.getReflections(classLoader);
 
 			List<CtClass> classList = ComponentMojoUtil.getAllComponentAnnotations(classPool, reflections);

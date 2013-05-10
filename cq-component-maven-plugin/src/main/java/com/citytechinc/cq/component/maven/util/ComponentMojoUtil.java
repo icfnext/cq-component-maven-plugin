@@ -22,7 +22,6 @@ import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
-import javassist.LoaderClassPath;
 import javassist.NotFoundException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -41,6 +40,8 @@ import org.reflections.Reflections;
 import org.reflections.scanners.TypeAnnotationsScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
+
+import com.citytechinc.cq.classpool.ClassLoaderClassPool;
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.config.Widget;
@@ -105,8 +106,7 @@ public class ComponentMojoUtil {
 	 * @throws NotFoundException
 	 */
 	public static ClassPool getClassPool(ClassLoader loader) {
-		ClassPool classPool = new ClassPool();
-		classPool.appendClassPath(new LoaderClassPath(loader));
+		ClassPool classPool = new ClassLoaderClassPool(loader);
 		return classPool;
 	}
 
@@ -850,6 +850,7 @@ public class ComponentMojoUtil {
 		for (Class<?> c : reflections.getTypesAnnotatedWith(Widget.class)) {
 			CtClass clazz = classPool.getCtClass(c.getName());
 			Widget widgetAnnotation = (Widget) clazz.getAnnotation(Widget.class);
+			
 			Class<? extends Annotation> annotationClass = null;
 			if (widgetAnnotation.annotationClass() != null) {
 				if (widgetAnnotation.annotationClass().length == 1) {

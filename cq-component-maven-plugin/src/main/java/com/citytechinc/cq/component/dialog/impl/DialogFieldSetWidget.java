@@ -47,8 +47,8 @@ public class DialogFieldSetWidget extends AbstractWidget {
 	public boolean isBorder() {
 		return border;
 	}
-	
-	public String getTitle(){
+
+	public String getTitle() {
 		return title;
 	}
 }

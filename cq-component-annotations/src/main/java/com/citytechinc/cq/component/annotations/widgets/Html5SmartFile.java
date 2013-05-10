@@ -25,9 +25,11 @@ public @interface Html5SmartFile {
 
 	public String fileReferenceParameter();
 
-	//TODO: Consider implementing footPanel if we move forward with panel support
+	// TODO: Consider implementing footPanel if we move forward with panel
+	// support
 
-	//TODO: Consider implementing headPanel if we move forward with panel support
+	// TODO: Consider implementing headPanel if we move forward with panel
+	// support
 
 	public String mimeTypes() default "*.*";
 

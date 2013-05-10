@@ -18,8 +18,9 @@ public class SimpleWidgetMaker extends AbstractWidgetMaker {
 
 	@Override
 	public DialogElement make(String xtype, Field widgetField, CtField ctWidgetField, Class<?> containingClass,
-		CtClass ctContainingClass, Map<Class<?>, WidgetConfigHolder> xtypeMap, Map<String, WidgetMaker> xTypeToWidgetMakerMap,
-		ClassLoader classLoader, ClassPool classPool, boolean useDotSlashInName) throws ClassNotFoundException {
+		CtClass ctContainingClass, Map<Class<?>, WidgetConfigHolder> xtypeMap,
+		Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool,
+		boolean useDotSlashInName) throws ClassNotFoundException {
 
 		DialogField dialogFieldAnnotation = (DialogField) ctWidgetField.getAnnotation(DialogField.class);
 

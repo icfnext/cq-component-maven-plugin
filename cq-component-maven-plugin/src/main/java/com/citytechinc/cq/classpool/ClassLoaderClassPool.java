@@ -5,13 +5,13 @@ import javassist.LoaderClassPath;
 
 public class ClassLoaderClassPool extends ClassPool {
 	private ClassLoader classLoader;
-	
-	public ClassLoaderClassPool(ClassLoader classLoader){
+
+	public ClassLoaderClassPool(ClassLoader classLoader) {
 		super();
-		this.classLoader=classLoader;
+		this.classLoader = classLoader;
 		this.appendClassPath(new LoaderClassPath(classLoader));
 	}
-	
+
 	public ClassLoader getClassLoader() {
 		return classLoader;
 	}

@@ -20,8 +20,14 @@ import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;
 
 public abstract class AbstractWidgetMaker implements WidgetMaker {
 
-	/* (non-Javadoc)
-	 * @see com.citytechinc.cq.component.dialog.maker.WidgetMaker#make(java.lang.String, java.lang.reflect.Field, javassist.CtField, java.lang.Class, javassist.CtClass, java.util.Map, java.util.Map, java.lang.ClassLoader, javassist.ClassPool, boolean)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.citytechinc.cq.component.dialog.maker.WidgetMaker#make(java.lang.
+	 * String, java.lang.reflect.Field, javassist.CtField, java.lang.Class,
+	 * javassist.CtClass, java.util.Map, java.util.Map, java.lang.ClassLoader,
+	 * javassist.ClassPool, boolean)
 	 */
 	public abstract DialogElement make(String xtype, Field widgetField, CtField ctWidgetField,
 		Class<?> containingClass, CtClass ctContainingClass, Map<Class<?>, WidgetConfigHolder> xtypeMap,

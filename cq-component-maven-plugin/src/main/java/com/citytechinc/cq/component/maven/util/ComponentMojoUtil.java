@@ -120,8 +120,8 @@ public class ComponentMojoUtil {
 	 * 
 	 * @throws ClassNotFoundException
 	 */
-	public static Map<Class<?>, WidgetConfigHolder> getXTypeMapForCustomXTypeMapping(List<WidgetConfigHolder> widgetConfigs)
-		throws ClassNotFoundException {
+	public static Map<Class<?>, WidgetConfigHolder> getXTypeMapForCustomXTypeMapping(
+		List<WidgetConfigHolder> widgetConfigs) throws ClassNotFoundException {
 		Map<Class<?>, WidgetConfigHolder> retMap = new HashMap<Class<?>, WidgetConfigHolder>();
 
 		for (WidgetConfigHolder widgetConfig : widgetConfigs) {
@@ -247,11 +247,11 @@ public class ComponentMojoUtil {
 	 * @throws InvocationTargetException
 	 * @throws NoSuchMethodException
 	 */
-	public static void buildArchiveFileForProjectAndClassList(List<CtClass> classList, Map<Class<?>, WidgetConfigHolder> xtypeMap,
-		Map<String, WidgetMaker> widgetMakerMap, ClassLoader classLoader, ClassPool classPool, File buildDirectory,
-		String componentPathBase, String defaultComponentPathSuffix, String defaultComponentGroup,
-		File existingArchiveFile, File tempArchiveFile) throws OutputFailureException, IOException,
-		InvalidComponentClassException, InvalidComponentFieldException, ParserConfigurationException,
+	public static void buildArchiveFileForProjectAndClassList(List<CtClass> classList,
+		Map<Class<?>, WidgetConfigHolder> xtypeMap, Map<String, WidgetMaker> widgetMakerMap, ClassLoader classLoader,
+		ClassPool classPool, File buildDirectory, String componentPathBase, String defaultComponentPathSuffix,
+		String defaultComponentGroup, File existingArchiveFile, File tempArchiveFile) throws OutputFailureException,
+		IOException, InvalidComponentClassException, InvalidComponentFieldException, ParserConfigurationException,
 		TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException,
 		NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException,
 		NoSuchMethodException {
@@ -850,7 +850,7 @@ public class ComponentMojoUtil {
 		for (Class<?> c : reflections.getTypesAnnotatedWith(Widget.class)) {
 			CtClass clazz = classPool.getCtClass(c.getName());
 			Widget widgetAnnotation = (Widget) clazz.getAnnotation(Widget.class);
-			
+
 			Class<? extends Annotation> annotationClass = null;
 			if (widgetAnnotation.annotationClass() != null) {
 				if (widgetAnnotation.annotationClass().length == 1) {

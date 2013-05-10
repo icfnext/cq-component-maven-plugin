@@ -47,7 +47,7 @@ public class ComponentMojo extends AbstractMojo {
 				.getClass().getClassLoader());
 
 			ClassPool classPool = ComponentMojoUtil.getClassPool(classLoader);
-			
+
 			Reflections reflections = ComponentMojoUtil.getReflections(classLoader);
 
 			List<CtClass> classList = ComponentMojoUtil.getAllComponentAnnotations(classPool, reflections);
@@ -55,7 +55,8 @@ public class ComponentMojo extends AbstractMojo {
 			List<WidgetConfigHolder> widgetConfigs = ComponentMojoUtil.getAllWidgetAnnotations(classPool, classLoader,
 				reflections);
 
-			Map<Class<?>, WidgetConfigHolder> classToXTypeMap = ComponentMojoUtil.getXTypeMapForCustomXTypeMapping(widgetConfigs);
+			Map<Class<?>, WidgetConfigHolder> classToXTypeMap = ComponentMojoUtil
+				.getXTypeMapForCustomXTypeMapping(widgetConfigs);
 
 			Map<String, WidgetMaker> xTypeToWidgetMakerMap = ComponentMojoUtil.getXTypeToWidgetMakerMap(widgetConfigs);
 

@@ -49,10 +49,9 @@ public class SizeFieldMaker extends AbstractWidgetMaker {
 		String widthSuffix = getWidthSuffixForField(sizeFieldAnnotation);
 		int fieldWidth = getFieldWidthForField(sizeFieldAnnotation);
 
-		return new SizeFieldWidget(xtype, fieldLabel, fieldDescription, !isRequired,
-			hideLabel, defaultValue, name, fieldName,
-			additionalProperties, heightParameter, heightPrefix, heightSuffix,
-			widthParameter, widthPrefix, widthSuffix, fieldWidth);
+		return new SizeFieldWidget(xtype, fieldLabel, fieldDescription, !isRequired, hideLabel, defaultValue, name,
+			fieldName, additionalProperties, heightParameter, heightPrefix, heightSuffix, widthParameter, widthPrefix,
+			widthSuffix, fieldWidth);
 
 	}
 

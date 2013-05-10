@@ -51,12 +51,12 @@ public class WidgetFactory {
 
 		String xtype = getXTypeForField(widgetField, annotatedWidgetField, propertyAnnotation, classToXTypeMap,
 			classLoader, classPool, rankingCeiling);
-		
+
 		Class<?> containingClass = classLoader.loadClass(componentClass.getName());
 
 		if (!xTypeToWidgetMakerMap.containsKey(xtype)) {
-			return new SimpleWidgetMaker().make(xtype, widgetField, annotatedWidgetField, containingClass, componentClass,
-				classToXTypeMap, xTypeToWidgetMakerMap, classLoader, classPool, useDotSlashInName);
+			return new SimpleWidgetMaker().make(xtype, widgetField, annotatedWidgetField, containingClass,
+				componentClass, classToXTypeMap, xTypeToWidgetMakerMap, classLoader, classPool, useDotSlashInName);
 		}
 
 		return xTypeToWidgetMakerMap.get(xtype).make(xtype, widgetField, annotatedWidgetField, containingClass,

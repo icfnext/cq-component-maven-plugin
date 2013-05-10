@@ -21,8 +21,9 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
 
 	@Override
 	public DialogElement make(String xtype, Field widgetField, CtField ctWidgetField, Class<?> containingClass,
-		CtClass ctContainingClass, Map<Class<?>, WidgetConfigHolder> xtypeMap, Map<String, WidgetMaker> xTypeToWidgetMakerMap,
-		ClassLoader classLoader, ClassPool classPool, boolean useDotSlashInName) throws ClassNotFoundException {
+		CtClass ctContainingClass, Map<Class<?>, WidgetConfigHolder> xtypeMap,
+		Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool,
+		boolean useDotSlashInName) throws ClassNotFoundException {
 
 		Html5SmartImage smartImageAnnotation = (Html5SmartImage) ctWidgetField.getAnnotation(Html5SmartImage.class);
 		DialogField dialogFieldAnnotation = (DialogField) ctWidgetField.getAnnotation(DialogField.class);

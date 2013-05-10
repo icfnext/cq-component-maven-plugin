@@ -20,8 +20,8 @@ public class PanelWidget extends AbstractWidget {
 	private final boolean border;
 	private final String title;
 
-	public PanelWidget(boolean collapseFirst, boolean collapsible, boolean collapsed, boolean border,
-		String title, String fieldLabel, String fieldDescription, boolean hideLabel, String fieldName,
+	public PanelWidget(boolean collapseFirst, boolean collapsible, boolean collapsed, boolean border, String title,
+		String fieldLabel, String fieldDescription, boolean hideLabel, String fieldName,
 		Map<String, String> additionalProperties, List<? extends DialogElement> containedElements) {
 		super(XTYPE, fieldLabel, fieldDescription, true, hideLabel, null, null, PRIMARY_TYPE, null, fieldName,
 			additionalProperties, containedElements);
@@ -47,8 +47,8 @@ public class PanelWidget extends AbstractWidget {
 	public boolean isBorder() {
 		return border;
 	}
-	
-	public String getTitle(){
+
+	public String getTitle() {
 		return title;
 	}
 }

@@ -22,9 +22,10 @@ public class NumberFieldMaker extends AbstractWidgetMaker {
 
 	@Override
 	public DialogElement make(String xtype, Field widgetField, CtField ctWidgetField, Class<?> containingClass,
-		CtClass ctContainingClass, Map<Class<?>, WidgetConfigHolder> xtypeMap, Map<String, WidgetMaker> xTypeToWidgetMakerMap,
-		ClassLoader classLoader, ClassPool classPool, boolean useDotSlashInName) throws ClassNotFoundException,
-		InvalidComponentFieldException, CannotCompileException, NotFoundException {
+		CtClass ctContainingClass, Map<Class<?>, WidgetConfigHolder> xtypeMap,
+		Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool,
+		boolean useDotSlashInName) throws ClassNotFoundException, InvalidComponentFieldException,
+		CannotCompileException, NotFoundException {
 		NumberField numberFieldAnnotation = (NumberField) ctWidgetField.getAnnotation(NumberField.class);
 		DialogField dialogFieldAnnotation = (DialogField) ctWidgetField.getAnnotation(DialogField.class);
 

@@ -57,8 +57,8 @@ public class DialogFieldSetWidgetMaker extends AbstractWidgetMaker {
 		List<DialogElement> widgetCollection = buildWidgetCollection(ctContainingClass, ctWidgetField, widgetField,
 			xtypeMap, xTypeToWidgetMakerMap, classLoader, classPool);
 
-		return new DialogFieldSetWidget(collapseFirst, collapsible, collapsed, border, title, fieldLabel, fieldDescription,
-			hideLabel, fieldName, additionalProperties, widgetCollection);
+		return new DialogFieldSetWidget(collapseFirst, collapsible, collapsed, border, title, fieldLabel,
+			fieldDescription, hideLabel, fieldName, additionalProperties, widgetCollection);
 	}
 
 	private List<DialogElement> buildWidgetCollection(CtClass componentClass, CtField curField, Field trueField,

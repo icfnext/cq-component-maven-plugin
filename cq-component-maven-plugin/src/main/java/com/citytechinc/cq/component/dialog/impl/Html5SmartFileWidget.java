@@ -24,13 +24,12 @@ public class Html5SmartFileWidget extends AbstractWidget {
 	private final String mimeTypesDescription;
 	private final int sizeLimit;
 
-	public Html5SmartFileWidget(String fieldLabel, String fieldDescription, boolean allowBlank,
-		boolean hideLabel, String name, String fieldName,
-		Map<String, String> additionalProperties, boolean allowFileNameEditing, boolean allowFileReference, boolean allowUpload,
-		String ddAccept, String ddGroups, String fileNameParameter, String fileReferenceParameter, String mimeTypes,
-		String mimeTypesDescription, int sizeLimit) {
-		super(XTYPE, fieldLabel, fieldDescription, allowBlank, hideLabel, null, name, PRIMARY_TYPE, null,
-			fieldName, additionalProperties, null);
+	public Html5SmartFileWidget(String fieldLabel, String fieldDescription, boolean allowBlank, boolean hideLabel,
+		String name, String fieldName, Map<String, String> additionalProperties, boolean allowFileNameEditing,
+		boolean allowFileReference, boolean allowUpload, String ddAccept, String ddGroups, String fileNameParameter,
+		String fileReferenceParameter, String mimeTypes, String mimeTypesDescription, int sizeLimit) {
+		super(XTYPE, fieldLabel, fieldDescription, allowBlank, hideLabel, null, name, PRIMARY_TYPE, null, fieldName,
+			additionalProperties, null);
 
 		this.allowFileNameEditing = allowFileNameEditing;
 		this.allowFileReference = allowFileReference;
@@ -84,6 +83,5 @@ public class Html5SmartFileWidget extends AbstractWidget {
 	public int getSizeLimit() {
 		return sizeLimit;
 	}
-
 
 }

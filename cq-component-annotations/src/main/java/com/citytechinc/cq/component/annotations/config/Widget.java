@@ -16,6 +16,6 @@ public @interface Widget {
 	Class<? extends AbstractWidgetMaker> makerClass();
 
 	String xtype();
-	
+
 	int ranking() default -1;
 }

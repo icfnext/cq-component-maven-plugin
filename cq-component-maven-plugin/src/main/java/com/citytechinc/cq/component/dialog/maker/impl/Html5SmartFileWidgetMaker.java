@@ -51,10 +51,9 @@ public class Html5SmartFileWidgetMaker extends AbstractWidgetMaker {
 		String mimeTypesDescription = getMimeTypesDescriptionForField(smartFileAnnotation);
 		int sizeLimit = getSizeLimitForField(smartFileAnnotation);
 
-		return new Html5SmartFileWidget(fieldLabel, fieldDescription, !isRequired,
-			hideLabel, name, fieldName, additionalProperties, allowFileNameEditing,
-			allowFileReference, allowUpload, ddAccept, ddGroups, fileNameParameter,
-			fileReferenceParameter, mimeTypes, mimeTypesDescription, sizeLimit);
+		return new Html5SmartFileWidget(fieldLabel, fieldDescription, !isRequired, hideLabel, name, fieldName,
+			additionalProperties, allowFileNameEditing, allowFileReference, allowUpload, ddAccept, ddGroups,
+			fileNameParameter, fileReferenceParameter, mimeTypes, mimeTypesDescription, sizeLimit);
 	}
 
 	private int getSizeLimitForField(Html5SmartFile smartFileAnnotation) {
@@ -109,7 +108,8 @@ public class Html5SmartFileWidgetMaker extends AbstractWidgetMaker {
 		return smartFileAnnotation.allowFileNameEditing();
 	}
 
-	private String getNameForField(Html5SmartFile smartFileAnnotation, DialogField dialogFieldAnnotation, Field widgetField, boolean useDotSlashInName) {
+	private String getNameForField(Html5SmartFile smartFileAnnotation, DialogField dialogFieldAnnotation,
+		Field widgetField, boolean useDotSlashInName) {
 		if (StringUtils.isNotEmpty(smartFileAnnotation.name())) {
 			return smartFileAnnotation.name();
 		}

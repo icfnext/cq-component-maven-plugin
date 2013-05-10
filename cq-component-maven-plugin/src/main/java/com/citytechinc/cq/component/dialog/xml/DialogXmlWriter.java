@@ -123,9 +123,9 @@ public class DialogXmlWriter {
 	}
 
 	private static final String sanatize(String uncleanString) {
-		uncleanString=uncleanString.replaceAll("[^A-Za-z0-9:_.-]","");
-		if(uncleanString.matches("^(\\d(.*)|(?i)XML|:(.*)|\\.(.*))")){
-			uncleanString=UUID.randomUUID().toString().replaceAll("-","").replaceAll("[0-9]","") + uncleanString;
+		uncleanString = uncleanString.replaceAll("[^A-Za-z0-9:_.-]", "");
+		if (uncleanString.matches("^(\\d(.*)|(?i)XML|:(.*)|\\.(.*))")) {
+			uncleanString = UUID.randomUUID().toString().replaceAll("-", "").replaceAll("[0-9]", "") + uncleanString;
 		}
 		return uncleanString;
 	}

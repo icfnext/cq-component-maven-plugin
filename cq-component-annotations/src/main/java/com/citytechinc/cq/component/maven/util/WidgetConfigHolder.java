@@ -11,12 +11,12 @@ public class WidgetConfigHolder {
 	private final int ranking;
 
 	public WidgetConfigHolder(Class<?> annotationClass, Class<? extends AbstractWidget> widgetClass,
-		Class<? extends WidgetMaker> makerClass, String xtype,int ranking) {
+		Class<? extends WidgetMaker> makerClass, String xtype, int ranking) {
 		this.annotationClass = annotationClass;
 		this.widgetClass = widgetClass;
 		this.makerClass = makerClass;
 		this.xtype = xtype;
-		this.ranking=ranking;
+		this.ranking = ranking;
 	}
 
 	public Class<?> getAnnotationClass() {
@@ -34,8 +34,8 @@ public class WidgetConfigHolder {
 	public String getXtype() {
 		return xtype;
 	}
-	
-	public int getRanking(){
+
+	public int getRanking() {
 		return ranking;
 	}
 }

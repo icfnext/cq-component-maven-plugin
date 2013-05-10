@@ -9,8 +9,12 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface Panel {
 	boolean collapseFirst() default true;
+
 	boolean collapsible() default false;
+
 	boolean collapsed() default false;
+
 	boolean border() default true;
+
 	String title() default "";
 }

@@ -14,9 +14,9 @@ plugin creating the aforementioned .zip file.
 
 ```xml
 <plugin>
-	<groupId>com.citytechinc.cq</groupId>
+	<groupId>com.citytechinc.cq.cq-component-plugin</groupId>
 	<artifactId>cq-component-maven-plugin</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<extensions>true</extensions>
 	<executions>
 		<execution>

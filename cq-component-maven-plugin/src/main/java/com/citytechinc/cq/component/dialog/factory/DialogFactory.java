@@ -79,7 +79,9 @@ public class DialogFactory {
 
 				DialogElement builtFieldWidget = WidgetFactory.make(componentClass, curField, trueField,
 					classToXTypeMap, xTypeToWidgetMakerMap, classLoader, classPool, true, -1);
-
+				
+				builtFieldWidget.setRanking(dialogProperty.ranking());
+				
 				if (builtFieldWidget instanceof Html5SmartImageWidget
 					&& ((Html5SmartImageWidget) builtFieldWidget).isTab()) {
 					imageTabList.add(builtFieldWidget);

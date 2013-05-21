@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+import javax.naming.ConfigurationException;
+
 import javassist.ClassPool;
 import javassist.CtClass;
 
@@ -17,6 +19,7 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 import org.reflections.Reflections;
 
+import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 import com.citytechinc.cq.component.maven.util.LogSingleton;
@@ -36,6 +39,9 @@ public class ComponentMojo extends AbstractMojo {
 
 	@Parameter(defaultValue = "Components")
 	private String defaultComponentGroup;
+	
+	@Parameter(defaultValue = "camel-case")
+	private String transformerName;
 
 	@SuppressWarnings({ "unchecked" })
 	public void execute() throws MojoExecutionException, MojoFailureException {
@@ -59,10 +65,18 @@ public class ComponentMojo extends AbstractMojo {
 				.getXTypeMapForCustomXTypeMapping(widgetConfigs);
 
 			Map<String, WidgetMaker> xTypeToWidgetMakerMap = ComponentMojoUtil.getXTypeToWidgetMakerMap(widgetConfigs);
-
+			
+			Map<String,ComponentNameTransformer> transformers=ComponentMojoUtil.getAllTransformers(classPool, reflections);
+			
+			ComponentNameTransformer transformer=transformers.get(transformerName);
+			
+			if(transformer==null){
+				throw new ConfigurationException("The configured transformer wasn't found");
+			}
+			
 			ComponentMojoUtil.buildArchiveFileForProjectAndClassList(classList, classToXTypeMap, xTypeToWidgetMakerMap,
 				classLoader, classPool, new File(project.getBuild().getDirectory()), componentPathBase,
-				componentPathSuffix, defaultComponentGroup, getArchiveFileForProject(), getTempArchiveFileForProject());
+				componentPathSuffix, defaultComponentGroup, getArchiveFileForProject(), getTempArchiveFileForProject(),transformer);
 
 		} catch (Exception e) {
 			getLog().error(e.getMessage(), e);

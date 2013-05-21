@@ -3,6 +3,13 @@ package com.citytechinc.cq.component.maven.util;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 
+/**
+ * A container for the elements of configuration which define a Widget.
+ *
+ * @see com.citytechinc.cq.component.annotations.config.Widget
+ * @see com.citytechinc.cq.component.dialog.AbstractWidget
+ * @see com.citytechinc.cq.component.dialog.maker.WidgetMaker
+ */
 public class WidgetConfigHolder {
 	private final Class<?> annotationClass;
 	private final Class<? extends AbstractWidget> widgetClass;

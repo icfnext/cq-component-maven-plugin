@@ -21,7 +21,7 @@ import com.citytechinc.cq.component.annotations.Option;
  * 
  */
 @Retention(RetentionPolicy.CLASS)
-@Target(ElementType.FIELD)
+@Target({ElementType.FIELD,ElementType.METHOD})
 public @interface Selection {
 	public static final String SELECT = "select";
 	public static final String RADIO = "radio";

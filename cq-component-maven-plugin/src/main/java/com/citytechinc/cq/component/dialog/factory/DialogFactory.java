@@ -1,6 +1,6 @@
 package com.citytechinc.cq.component.dialog.factory;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.AccessibleObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -11,6 +11,7 @@ import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
+import javassist.CtMember;
 import javassist.NotFoundException;
 
 import org.codehaus.plexus.util.StringUtils;
@@ -59,9 +60,11 @@ public class DialogFactory {
 		for (String curTab : tabsList) {
 			tabMap.put(curTab, new ArrayList<DialogElement>());
 		}
-
-		List<CtField> fields = ComponentMojoUtil.collectFields(componentClass);
-
+		
+		List<CtMember> fieldsAndMethods = new ArrayList<CtMember>();
+		fieldsAndMethods.addAll(ComponentMojoUtil.collectFields(componentClass));
+		fieldsAndMethods.addAll(ComponentMojoUtil.collectMethods(componentClass));
+		
 		// Load the true class
 		Class<?> trueComponentClass = classLoader.loadClass(componentClass.getName());
 
@@ -70,14 +73,19 @@ public class DialogFactory {
 		/*
 		 * Iterate through all fields establishing proper widgets for each
 		 */
-		for (CtField curField : fields) {
-			DialogField dialogProperty = (DialogField) curField.getAnnotation(DialogField.class);
+		for (CtMember member : fieldsAndMethods) {
+			DialogField dialogProperty = (DialogField) member.getAnnotation(DialogField.class);
 
 			if (dialogProperty != null) {
 
-				Field trueField = ComponentMojoUtil.getField(trueComponentClass, curField.getName());
+				AccessibleObject trueObject = null;
+				if(member instanceof CtField){
+					trueObject=ComponentMojoUtil.getField(trueComponentClass, member.getName());					
+				}else{
+					trueObject=ComponentMojoUtil.getMethod(trueComponentClass,member.getName());
+				}
 
-				DialogElement builtFieldWidget = WidgetFactory.make(componentClass, curField, trueField,
+				DialogElement builtFieldWidget = WidgetFactory.make(componentClass, member, trueObject,
 					classToXTypeMap, xTypeToWidgetMakerMap, classLoader, classPool, true, -1);
 				
 				builtFieldWidget.setRanking(dialogProperty.ranking());
@@ -86,7 +94,7 @@ public class DialogFactory {
 					&& ((Html5SmartImageWidget) builtFieldWidget).isTab()) {
 					imageTabList.add(builtFieldWidget);
 				} else {
-					String tabString = getTabStringForField(curField, dialogProperty);
+					String tabString = getTabStringForField(dialogProperty);
 
 					if (!tabMap.containsKey(tabString)) {
 						tabMap.put(tabString, new ArrayList<DialogElement>());
@@ -124,7 +132,7 @@ public class DialogFactory {
 
 	}
 
-	private static final String getTabStringForField(CtField field, DialogField dialogProperty) {
+	private static final String getTabStringForField(DialogField dialogProperty) {
 
 		String tabString = dialogProperty.tab();
 

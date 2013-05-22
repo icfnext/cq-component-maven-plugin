@@ -1,6 +1,8 @@
 package com.citytechinc.cq.component.dialog.maker;
 
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,7 +11,7 @@ import org.codehaus.plexus.util.StringUtils;
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
-import javassist.CtField;
+import javassist.CtMember;
 import javassist.NotFoundException;
 
 import com.citytechinc.cq.component.annotations.DialogField;
@@ -25,39 +27,51 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 	 * 
 	 * @see
 	 * com.citytechinc.cq.component.dialog.maker.WidgetMaker#make(java.lang.
-	 * String, java.lang.reflect.Field, javassist.CtField, java.lang.Class,
+	 * String, java.lang.reflect.AccessibleObject, javassist.CtField, java.lang.Class,
 	 * javassist.CtClass, java.util.Map, java.util.Map, java.lang.ClassLoader,
 	 * javassist.ClassPool, boolean)
 	 */
-	public abstract DialogElement make(String xtype, Field widgetField, CtField ctWidgetField,
+	public abstract DialogElement make(String xtype, AccessibleObject widgetField, CtMember ctWidgetField,
 		Class<?> containingClass, CtClass ctContainingClass, Map<Class<?>, WidgetConfigHolder> xtypeMap,
 		Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool,
 		boolean useDotSlashInName) throws ClassNotFoundException, InvalidComponentFieldException,
 		CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException;
 
-	protected String getNameForField(DialogField dialogFieldAnnotation, Field dialogField, boolean useDotSlash) {
+	protected String getNameForField(DialogField dialogFieldAnnotation, AccessibleObject dialogField, boolean useDotSlash) {
 		String overrideName = dialogFieldAnnotation.name();
 
 		if (StringUtils.isNotEmpty(overrideName)) {
 			return overrideName;
 		}
-		if (!useDotSlash) {
-			return dialogField.getName();
+		String name=null;
+		if(dialogField instanceof Field){
+			name=((Field)dialogField).getName();
+		}else{
+			name=getFieldNameFromMethodName(((Method)dialogField).getName());
 		}
-		return "./" + dialogField.getName();
+		if (!useDotSlash) {
+			return name;
+		}
+		return "./" + name;
 	}
 
-	protected String getFieldNameForField(DialogField dialogFieldAnnotation, Field dialogField) {
+	protected String getFieldNameForField(DialogField dialogFieldAnnotation, AccessibleObject dialogField) {
 		String overrideFieldName = dialogFieldAnnotation.fieldName();
 
 		if (StringUtils.isNotEmpty(overrideFieldName)) {
 			return overrideFieldName;
 		}
 
-		return dialogField.getName();
+		String name=null;
+		if(dialogField instanceof Field){
+			name=((Field)dialogField).getName();
+		}else{
+			name=getFieldNameFromMethodName(((Method)dialogField).getName());
+		}
+		return name;
 	}
 
-	protected String getFieldLabelForField(DialogField dialogFieldAnnotation, Field dialogField) {
+	protected String getFieldLabelForField(DialogField dialogFieldAnnotation, AccessibleObject dialogField) {
 		String overrideLabel = dialogFieldAnnotation.fieldLabel();
 
 		if (StringUtils.isNotEmpty(overrideLabel)) {
@@ -103,5 +117,15 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 		}
 
 		return null;
+	}
+	
+	protected String getFieldNameFromMethodName(String methodName){
+		String toReturn=methodName;
+		if(methodName.startsWith("is")){
+			toReturn=methodName.substring(2);
+		}else if(methodName.startsWith("get")){
+			toReturn=methodName.substring(3);
+		}
+		return StringUtils.uncapitalise(toReturn);
 	}
 }

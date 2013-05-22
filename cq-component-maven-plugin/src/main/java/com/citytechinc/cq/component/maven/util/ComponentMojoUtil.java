@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -22,6 +23,7 @@ import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
+import javassist.CtMethod;
 import javassist.NotFoundException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -605,14 +607,22 @@ public class ComponentMojoUtil {
 			getLog().debug("Annotation : " + annotation);
 
 			if (annotation != null) {
-				boolean hasField = false;
-				for (CtField curField : collectFields(curClass)) {
+				boolean hasDialogField = false;
+				for (CtField curField : ComponentMojoUtil.collectFields(curClass)) {
 					if (curField.hasAnnotation(DialogField.class)) {
-						hasField = true;
+						hasDialogField = true;
 						break;
 					}
 				}
-				if (hasField) {
+				if(!hasDialogField){
+					for (CtMethod curMethod : collectMethods(curClass)) {
+						if (curMethod.hasAnnotation(DialogField.class)) {
+							hasDialogField = true;
+							break;
+						}
+					}
+				}
+				if (hasDialogField) {
 					getLog().debug("Processing Component Class " + curClass);
 					Dialog builtDialog = DialogFactory.make(curClass, xtypeMap, widgetMakerMap, classLoader, classPool);
 					dialogList.add(builtDialog);
@@ -941,6 +951,15 @@ public class ComponentMojoUtil {
 		}
 		return fields;
 	}
+	
+
+	public static List<CtMethod> collectMethods(CtClass ctClass) {
+		List<CtMethod> methods = new ArrayList<CtMethod>();
+		if(ctClass !=null){
+			methods.addAll(Arrays.asList(ctClass.getMethods()));
+		}
+		return methods;
+	}
 
 	/**
 	 * Retrieves a field for a Class. To allow for the retrieval of inherited
@@ -971,6 +990,24 @@ public class ComponentMojoUtil {
 		}
 
 		return retField;
+	}
+	
+	/**
+	 * Retrieves a Method for a Class. 
+	 * 
+	 * @param clazz
+	 * @param fieldName
+	 * @return The Method specified by the provided name or null if no such Method
+	 *         could be found for the Class.
+	 */
+	public static Method getMethod(Class<?> clazz, String methodName) {
+		for(Method method:clazz.getMethods()){
+			if(method.getName().equals(methodName)){
+				return method;
+			}
+		}
+
+		return null;
 	}
 
 	/**

@@ -1,12 +1,12 @@
 package com.citytechinc.cq.component.dialog.maker.impl;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.AccessibleObject;
 import java.util.Map;
 
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
-import javassist.CtField;
+import javassist.CtMember;
 import javassist.NotFoundException;
 
 import com.citytechinc.cq.component.annotations.DialogField;
@@ -21,7 +21,7 @@ import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;
 public class DateFieldWidgetMaker extends AbstractWidgetMaker {
 
 	@Override
-	public DialogElement make(String xtype, Field widgetField, CtField ctWidgetField, Class<?> containingClass,
+	public DialogElement make(String xtype, AccessibleObject widgetField, CtMember ctWidgetField, Class<?> containingClass,
 		CtClass ctContainingClass, Map<Class<?>, WidgetConfigHolder> xtypeMap,
 		Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool,
 		boolean useDotSlashInName) throws ClassNotFoundException, InvalidComponentFieldException,

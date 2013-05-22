@@ -1,6 +1,6 @@
 package com.citytechinc.cq.component.dialog.maker.impl;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.AccessibleObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,6 +12,8 @@ import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
+import javassist.CtMember;
+import javassist.CtMethod;
 import javassist.NotFoundException;
 
 import com.citytechinc.cq.component.annotations.DialogField;
@@ -40,11 +42,12 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 	 * 
 	 * @see
 	 * com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker#make(java
-	 * .lang.String, java.lang.reflect.Field, javassist.CtField,
+	 * .lang.String, java.lang.reflect.Field, javassist.CtMember,
 	 * java.lang.Class, javassist.CtClass, java.util.Map, java.util.Map,
 	 * java.lang.ClassLoader, javassist.ClassPool, boolean)
 	 */
-	public DialogElement make(String xtype, Field widgetField, CtField ctWidgetField, Class<?> containingClass,
+	@Override
+	public DialogElement make(String xtype, AccessibleObject widgetField, CtMember ctWidgetField, Class<?> containingClass,
 		CtClass ctContainingClass, Map<Class<?>, WidgetConfigHolder> xtypeMap,
 		Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool,
 		boolean useDotSlashInName) throws ClassNotFoundException, InvalidComponentFieldException,
@@ -80,28 +83,28 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 
 	}
 
-	private static final String getOptionsUrlForField(CtField widgetField, Selection fieldAnnotation) {
+	private static final String getOptionsUrlForField(CtMember widgetField, Selection fieldAnnotation) {
 		if (fieldAnnotation != null && StringUtils.isNotEmpty(fieldAnnotation.optionsUrl())) {
 			return fieldAnnotation.optionsUrl();
 		}
 		return null;
 	}
 
-	private static final String getOptionsProviderForField(CtField widgetField, Selection fieldAnnotation) {
+	private static final String getOptionsProviderForField(CtMember widgetField, Selection fieldAnnotation) {
 		if (fieldAnnotation != null && StringUtils.isNotEmpty(fieldAnnotation.optionsProvider())) {
 			return fieldAnnotation.optionsProvider();
 		}
 		return null;
 	}
 
-	private static final String getSortDirForField(CtField widgetField, Selection fieldAnnotation) {
+	private static final String getSortDirForField(CtMember widgetField, Selection fieldAnnotation) {
 		if (fieldAnnotation != null && StringUtils.isNotEmpty(fieldAnnotation.sortDir())) {
 			return fieldAnnotation.sortDir();
 		}
 		return null;
 	}
 
-	private static final String getSelectionTypeForField(CtField widgetField, Selection fieldAnnotation) {
+	private static final String getSelectionTypeForField(CtMember widgetField, Selection fieldAnnotation) {
 		if (fieldAnnotation != null
 			&& (fieldAnnotation.type().equals(Selection.CHECKBOX) || fieldAnnotation.type().equals(Selection.COMBOBOX)
 				|| fieldAnnotation.type().equals(Selection.RADIO) || fieldAnnotation.type().equals(Selection.SELECT))) {
@@ -111,12 +114,20 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 		}
 	}
 
-	private static final List<DialogElement> buildSelectionOptionsForField(CtField widgetField,
+	private static final List<DialogElement> buildSelectionOptionsForField(CtMember widgetField,
 		Selection fieldAnnotation, ClassLoader classLoader, ClassPool classPool) throws InvalidComponentFieldException,
 		CannotCompileException, NotFoundException, ClassNotFoundException {
 
 		List<DialogElement> options = new ArrayList<DialogElement>();
-
+		
+		CtClass type=null;
+		
+		if(widgetField instanceof CtField){
+			type=((CtField)widgetField).getType();
+		}else{
+			type=((CtMethod)widgetField).getReturnType();
+		}
+		
 		/*
 		 * Options specified in the annotation take precedence
 		 */
@@ -140,9 +151,9 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 		 * if the field is an Enum and if so, the options are pulled from the
 		 * Enum definition
 		 */
-		else if (widgetField.getType().isEnum()) {
+		else if (type.isEnum()) {
 			int i = 0;
-			for (Object curEnumObject : classLoader.loadClass(widgetField.getType().getName()).getEnumConstants()) {
+			for (Object curEnumObject : classLoader.loadClass(type.getName()).getEnumConstants()) {
 				Enum<?> curEnum = (Enum<?>) curEnumObject;
 				try {
 					options.add(buildSelectionOptionForEnum(curEnum, classPool, OPTION_FIELD_NAME_PREFIX + (i++)));
@@ -166,7 +177,7 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 		String qtip = null;
 
 		CtClass annotatedEnumClass = classPool.getCtClass(optionEnum.getDeclaringClass().getName());
-		CtField annotatedEnumField = annotatedEnumClass.getField(optionEnum.name());
+		CtMember annotatedEnumField = annotatedEnumClass.getField(optionEnum.name());
 		com.citytechinc.cq.component.annotations.Option optionAnnotation = (com.citytechinc.cq.component.annotations.Option) annotatedEnumField
 			.getAnnotation(com.citytechinc.cq.component.annotations.Option.class);
 

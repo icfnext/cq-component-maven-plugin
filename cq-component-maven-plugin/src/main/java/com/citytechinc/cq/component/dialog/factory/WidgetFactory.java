@@ -319,7 +319,7 @@ public class WidgetFactory {
 	}
 
 	private static final boolean isBelowRankingCeiling(int rankingCeiling, WidgetConfigHolder widget) {
-		return rankingCeiling > 0 && widget.getRanking() >= rankingCeiling;
+		return !(rankingCeiling > 0 && widget.getRanking() >= rankingCeiling);
 	}
 
 	private static final WidgetConfigHolder getMatchFromPossibleSet(Set<WidgetConfigHolder> possibleMatches) {

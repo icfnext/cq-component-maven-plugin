@@ -2,7 +2,6 @@ package com.citytechinc.cq.component.maven.util;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -29,8 +28,6 @@ import javassist.NotFoundException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
-import org.apache.commons.compress.archivers.jar.JarArchiveEntry;
-import org.apache.commons.compress.archivers.jar.JarArchiveInputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
@@ -45,24 +42,19 @@ import org.reflections.util.ConfigurationBuilder;
 
 import com.citytechinc.cq.classpool.ClassLoaderClassPool;
 import com.citytechinc.cq.component.annotations.Component;
-import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.config.Widget;
 import com.citytechinc.cq.component.annotations.transformer.Transformer;
 import com.citytechinc.cq.component.content.Content;
 import com.citytechinc.cq.component.content.factory.ContentFactory;
-import com.citytechinc.cq.component.content.xml.ContentXmlWriter;
+import com.citytechinc.cq.component.content.util.ContentUtil;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
-import com.citytechinc.cq.component.dialog.impl.Dialog;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.exception.OutputFailureException;
-import com.citytechinc.cq.component.dialog.factory.DialogFactory;
-import com.citytechinc.cq.component.dialog.xml.DialogXmlWriter;
-import com.citytechinc.cq.component.editconfig.EditConfig;
-import com.citytechinc.cq.component.editconfig.factory.EditConfigFactory;
-import com.citytechinc.cq.component.editconfig.xml.EditConfigXmlWriter;
+import com.citytechinc.cq.component.dialog.util.DialogUtil;
+import com.citytechinc.cq.component.editconfig.util.EditConfigUtil;
 
 public class ComponentMojoUtil {
 	private static final String OUTPUT_PATH = "tempComponentConfig";
@@ -71,7 +63,7 @@ public class ComponentMojoUtil {
 	private ComponentMojoUtil() {
 	};
 
-	private static final LogSingleton getLog() {
+	public static final LogSingleton getLog() {
 		return LogSingleton.getInstance();
 	}
 
@@ -157,39 +149,6 @@ public class ComponentMojoUtil {
 		}
 
 		return xTypeToWidgetMakerMap;
-	}
-
-	/**
-	 * Constructs the list of classes present in a given JAR file
-	 * 
-	 * @param jarFile
-	 * @param classPool
-	 * @return The list of classes present in the provided JAR file
-	 * @throws IOException
-	 * @throws ClassNotFoundException
-	 * @throws NotFoundException
-	 */
-	protected static List<CtClass> getClassListForJarFile(File jarFile, ClassPool classPool) throws IOException,
-		ClassNotFoundException, NotFoundException {
-		List<CtClass> classList = new ArrayList<CtClass>();
-
-		getLog().debug("Searching JAR " + jarFile.getName() + " for classes");
-
-		JarArchiveInputStream jarInputStream = new JarArchiveInputStream(new FileInputStream(jarFile));
-
-		JarArchiveEntry curJarEntry;
-
-		while ((curJarEntry = jarInputStream.getNextJarEntry()) != null) {
-			if (curJarEntry.getName().endsWith(".class")) {
-				getLog().debug("Found class " + curJarEntry.getName());
-
-				String qualifiedClassname = classNameFromFilePath(curJarEntry.getName(), null);
-
-				classList.add(classPool.getCtClass(qualifiedClassname));
-			}
-		}
-
-		return classList;
 	}
 
 	/**
@@ -306,13 +265,13 @@ public class ComponentMojoUtil {
 		/*
 		 * Create Dialogs within temp archive
 		 */
-		buildDialogsFromClassList(transformer, classList, tempOutputStream, existingArchiveEntryNames, xtypeMap, widgetMakerMap,
+		DialogUtil.buildDialogsFromClassList(transformer, classList, tempOutputStream, existingArchiveEntryNames, xtypeMap, widgetMakerMap,
 			classLoader, classPool, buildDirectory, componentPathBase, defaultComponentPathSuffix);
 
 		/*
 		 * Create edit config within temp archive
 		 */
-		buildEditConfigFromClassList(classList, tempOutputStream, existingArchiveEntryNames, buildDirectory,
+		EditConfigUtil.buildEditConfigFromClassList(classList, tempOutputStream, existingArchiveEntryNames, buildDirectory,
 			componentPathBase, defaultComponentPathSuffix, transformer);
 
 		/*
@@ -325,118 +284,6 @@ public class ComponentMojoUtil {
 		existingArchiveFile.delete();
 		tempArchiveFile.renameTo(existingArchiveFile);
 
-	}
-
-	/**
-	 * For each class in the provided classList which is annotated with a
-	 * Component annotation, an EditConfig object is built and added to the
-	 * returned list. Classes which are not thusly annotated are ignored.
-	 * 
-	 * @param classList
-	 * @param zipOutputStream
-	 * @param reservedNames
-	 * @return The constructed list of EditConfig objects
-	 * @throws InvalidComponentClassException
-	 * @throws TransformerException
-	 * @throws ParserConfigurationException
-	 * @throws IOException
-	 * @throws OutputFailureException
-	 * @throws ClassNotFoundException
-	 */
-	protected static List<EditConfig> buildEditConfigFromClassList(List<CtClass> classList,
-		ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames, File buildDirectory,
-		String componentPathBase, String defaultComponentPathSuffix,ComponentNameTransformer transformer) throws InvalidComponentClassException,
-		TransformerException, ParserConfigurationException, IOException, OutputFailureException, ClassNotFoundException {
-
-		List<EditConfig> builtEditConfigs = new ArrayList<EditConfig>();
-
-		for (CtClass curClass : classList) {
-			Component annotation = (Component) curClass.getAnnotation(Component.class);
-
-			if (annotation != null && annotation.editConfig()) {
-				EditConfig builtEditConfig = EditConfigFactory.make(curClass);
-
-				builtEditConfigs.add(builtEditConfig);
-
-				File editConfigFile = writeEditConfigToFile(transformer, builtEditConfig, curClass, buildDirectory,
-					componentPathBase, defaultComponentPathSuffix);
-				writeEditConfigToArchiveFile(transformer, editConfigFile, curClass, zipOutputStream, reservedNames,
-					componentPathBase, defaultComponentPathSuffix);
-			}
-		}
-
-		return builtEditConfigs;
-	}
-
-	/**
-	 * Determines the name of the edit config file to be written and writes the
-	 * the edit config xml which the provided EditConfig object represents to
-	 * that determined file.
-	 * 
-	 * @param editConfig
-	 * @param componentClass
-	 * @return The file written
-	 * @throws TransformerException
-	 * @throws ParserConfigurationException
-	 * @throws IOException
-	 * @throws OutputFailureException
-	 * @throws ClassNotFoundException
-	 */
-	protected static File writeEditConfigToFile(ComponentNameTransformer transformer, EditConfig editConfig, CtClass componentClass, File buildDirectory,
-		String componentPathBase, String defaultComponentPathSuffix) throws TransformerException,
-		ParserConfigurationException, IOException, OutputFailureException, ClassNotFoundException {
-		File componentOutputDirectory = getOutputDirectoryForComponentClass(transformer, componentClass, buildDirectory,
-			componentPathBase, defaultComponentPathSuffix);
-
-		File editConfigFile = new File(componentOutputDirectory, "_cq_editConfig.xml");
-
-		if (editConfigFile.exists()) {
-			editConfigFile.delete();
-		}
-
-		editConfigFile.createNewFile();
-
-		EditConfigXmlWriter.writeEditConfig(editConfig, new FileOutputStream(editConfigFile));
-
-		return editConfigFile;
-	}
-
-	/**
-	 * Writes a provided file to a provided archive output stream at a path
-	 * determined by the class of the component.
-	 * 
-	 * @param editConfigFile
-	 * @param componentClass
-	 * @param archiveStream
-	 * @param reservedNames A list of files which already exist within the Zip
-	 *            Archive. If an edit config file already exists for a
-	 *            particular component, it is left untouched.
-	 * @param componentPathBase
-	 * @throws IOException
-	 * @throws ClassNotFoundException
-	 */
-	protected static void writeEditConfigToArchiveFile(ComponentNameTransformer transformer, File editConfigFile, CtClass componentClass,
-		ZipArchiveOutputStream archiveStream, Set<String> reservedNames, String componentPathBase,
-		String defaultComponentPathSuffix) throws IOException, ClassNotFoundException {
-		String editConfigFilePath = componentPathBase + "/"
-			+ getComponentPathSuffixForComponentClass(componentClass, defaultComponentPathSuffix) + "/"
-			+ getComponentNameForComponentClass(transformer, componentClass) + "/_cq_editConfig.xml";
-
-		getLog().debug("Archiving edit config file " + editConfigFilePath);
-
-		if (!reservedNames.contains(editConfigFilePath.toLowerCase())) {
-
-			ZipArchiveEntry entry = new ZipArchiveEntry(editConfigFile, editConfigFilePath);
-
-			archiveStream.putArchiveEntry(entry);
-
-			IOUtils.copy(new FileInputStream(editConfigFile), archiveStream);
-
-			archiveStream.closeArchiveEntry();
-
-		} else {
-			getLog().debug("Existing file found at " + editConfigFilePath);
-		}
 	}
 
 	/**
@@ -477,243 +324,15 @@ public class ComponentMojoUtil {
 
 				builtContents.add(builtContent);
 
-				File contentFile = writeContentToFile(transformer, builtContent, curClass, buildDirectory, componentPathBase,
+				File contentFile = ContentUtil.writeContentToFile(transformer, builtContent, curClass, buildDirectory, componentPathBase,
 					defaultComponentPathSuffix);
-				writeContentToArchiveFile(transformer, contentFile, curClass, zipOutputStream, reservedNames, componentPathBase,
+				ContentUtil.writeContentToArchiveFile(transformer, contentFile, curClass, zipOutputStream, reservedNames, componentPathBase,
 					defaultComponentPathSuffix);
 			}
 		}
 
 		return builtContents;
 
-	}
-
-	/**
-	 * Write the content.xml to an output file, the path of which is determined
-	 * by the component class
-	 * 
-	 * @param content
-	 * @param componentClass
-	 * @return The written file
-	 * @throws TransformerException
-	 * @throws ParserConfigurationException
-	 * @throws IOException
-	 * @throws OutputFailureException
-	 * @throws ClassNotFoundException
-	 */
-	protected static File writeContentToFile(ComponentNameTransformer transformer, Content content, CtClass componentClass, File buildDirectory,
-		String componentPathBase, String defaultComponentPathSuffix) throws TransformerException,
-		ParserConfigurationException, IOException, OutputFailureException, ClassNotFoundException {
-		File componentOutputDirectory = getOutputDirectoryForComponentClass(transformer, componentClass, buildDirectory,
-			componentPathBase, defaultComponentPathSuffix);
-
-		File contentFile = new File(componentOutputDirectory, ".content.xml");
-
-		if (contentFile.exists()) {
-			contentFile.delete();
-		}
-
-		contentFile.createNewFile();
-
-		ContentXmlWriter.writeContent(content, new FileOutputStream(contentFile));
-
-		return contentFile;
-	}
-
-	/**
-	 * Writes a provided content file to a provided archive output stream at a
-	 * path determined by the class of the component.
-	 * 
-	 * @param contentFile
-	 * @param componentClass
-	 * @param archiveStream
-	 * @param reservedNames A list of files which already exist within the Zip
-	 *            Archive. If a .content.xml file already exists for a
-	 *            particular component, it is left untouched.
-	 * @param componentPathBase
-	 * @throws IOException
-	 * @throws ClassNotFoundException
-	 */
-	protected static void writeContentToArchiveFile(ComponentNameTransformer transformer, File contentFile, CtClass componentClass,
-		ZipArchiveOutputStream archiveStream, Set<String> reservedNames, String componentPathBase,
-		String defaultComponentPathSuffix) throws IOException, ClassNotFoundException {
-		String contentFilePath = componentPathBase + "/"
-			+ getComponentPathSuffixForComponentClass(componentClass, defaultComponentPathSuffix) + "/"
-			+ getComponentNameForComponentClass(transformer, componentClass) + "/.content.xml";
-
-		getLog().debug("Archiving content file " + contentFilePath);
-
-		if (!reservedNames.contains(contentFilePath.toLowerCase())) {
-
-			ZipArchiveEntry entry = new ZipArchiveEntry(contentFile, contentFilePath);
-
-			archiveStream.putArchiveEntry(entry);
-
-			IOUtils.copy(new FileInputStream(contentFile), archiveStream);
-
-			archiveStream.closeArchiveEntry();
-
-		} else {
-			getLog().debug("Existing file found at " + contentFilePath);
-		}
-	}
-
-	/**
-	 * Constructs a list of Dialog objects based on Classes annotated by
-	 * Component annotations. Scans the provided list of classes constructing a
-	 * Dialog object for each one annotated with the Component annotation. Any
-	 * classes provided in the class list which are not thusly annotated are
-	 * ignored.
-	 * 
-	 * @param classList
-	 * @param zipOutputStream
-	 * @param reservedNames
-	 * @param xtypeMap
-	 * @param classLoader
-	 * @param classPool
-	 * @return A list of constructed Dialog objects
-	 * @throws InvalidComponentClassException
-	 * @throws InvalidComponentFieldException
-	 * @throws OutputFailureException
-	 * @throws IOException
-	 * @throws ParserConfigurationException
-	 * @throws TransformerException
-	 * @throws ClassNotFoundException
-	 * @throws CannotCompileException
-	 * @throws NotFoundException
-	 * @throws SecurityException
-	 * @throws NoSuchFieldException
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
-	 * @throws InvocationTargetException
-	 * @throws NoSuchMethodException
-	 */
-	protected static List<Dialog> buildDialogsFromClassList(ComponentNameTransformer transformer, List<CtClass> classList,
-		ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames, Map<Class<?>, WidgetConfigHolder> xtypeMap,
-		Map<String, WidgetMaker> widgetMakerMap, ClassLoader classLoader, ClassPool classPool, File buildDirectory,
-		String componentPathBase, String defaultComponentPathSuffix) throws InvalidComponentClassException,
-		InvalidComponentFieldException, OutputFailureException, IOException, ParserConfigurationException,
-		TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException,
-		NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException,
-		NoSuchMethodException {
-
-		final List<Dialog> dialogList = new ArrayList<Dialog>();
-
-		for (CtClass curClass : classList) {
-			getLog().debug("Checking class for Component annotation " + curClass);
-
-			Component annotation = (Component) curClass.getAnnotation(Component.class);
-
-			getLog().debug("Annotation : " + annotation);
-
-			if (annotation != null) {
-				boolean hasDialogField = false;
-				for (CtField curField : ComponentMojoUtil.collectFields(curClass)) {
-					if (curField.hasAnnotation(DialogField.class)) {
-						hasDialogField = true;
-						break;
-					}
-				}
-				if(!hasDialogField){
-					for (CtMethod curMethod : collectMethods(curClass)) {
-						if (curMethod.hasAnnotation(DialogField.class)) {
-							hasDialogField = true;
-							break;
-						}
-					}
-				}
-				if (hasDialogField) {
-					getLog().debug("Processing Component Class " + curClass);
-					Dialog builtDialog = DialogFactory.make(curClass, xtypeMap, widgetMakerMap, classLoader, classPool);
-					dialogList.add(builtDialog);
-					File dialogFile = writeDialogToFile(transformer, builtDialog, curClass, buildDirectory, componentPathBase,
-						defaultComponentPathSuffix);
-					writeDialogToArchiveFile(transformer, dialogFile, curClass, zipOutputStream, reservedNames, componentPathBase,
-						defaultComponentPathSuffix);
-				}
-			}
-		}
-
-		return dialogList;
-
-	}
-
-	/**
-	 * Writes a dialog.xml file, the path of which being based on the component
-	 * Class.
-	 * 
-	 * @param dialog
-	 * @param componentClass
-	 * @return The written file
-	 * @throws OutputFailureException
-	 * @throws IOException
-	 * @throws ParserConfigurationException
-	 * @throws TransformerException
-	 * @throws ClassNotFoundException
-	 * @throws IllegalArgumentException
-	 * @throws SecurityException
-	 * @throws IllegalAccessException
-	 * @throws InvocationTargetException
-	 * @throws NoSuchMethodException
-	 */
-	protected static File writeDialogToFile(ComponentNameTransformer transformer, Dialog dialog, CtClass componentClass, File buildDirectory,
-		String componentPathBase, String defaultComponentPathSuffix) throws OutputFailureException, IOException,
-		ParserConfigurationException, TransformerException, ClassNotFoundException, IllegalArgumentException,
-		SecurityException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		File componentOutputDirectory = getOutputDirectoryForComponentClass(transformer, componentClass, buildDirectory,
-			componentPathBase, defaultComponentPathSuffix);
-
-		File dialogFile = new File(componentOutputDirectory, dialog.getFileName());
-
-		if (dialogFile.exists()) {
-			dialogFile.delete();
-		}
-
-		dialogFile.createNewFile();
-
-		DialogXmlWriter.writeDialog(dialog, new FileOutputStream(dialogFile));
-
-		return dialogFile;
-	}
-
-	/**
-	 * Writes a provided dialog file to a provided archive output stream at a
-	 * path determined by the class of the component.
-	 * 
-	 * @param dialogFile
-	 * @param componentClass
-	 * @param archiveStream
-	 * @param reservedNames A list of files which already exist within the Zip
-	 *            Archive. If a dialog.xml file already exists for a particular
-	 *            component, it is left untouched.
-	 * @param componentPathBase
-	 * @throws IOException
-	 * @throws ClassNotFoundException
-	 */
-	protected static void writeDialogToArchiveFile(ComponentNameTransformer transformer, File dialogFile, CtClass componentClass,
-		ZipArchiveOutputStream archiveStream, Set<String> reservedNames, String componentPathBase,
-		String defaultComponentPathSuffix) throws IOException, ClassNotFoundException {
-		String dialogFilePath = componentPathBase + "/"
-			+ getComponentPathSuffixForComponentClass(componentClass, defaultComponentPathSuffix) + "/"
-			+ getComponentNameForComponentClass(transformer, componentClass) + "/" + dialogFile.getName();
-
-		getLog().debug("Archiving dialog file " + dialogFilePath);
-
-		// TODO: I'd like to move this check somewhere before we go through the
-		// trouble of creating the dialog object itself
-		if (!reservedNames.contains(dialogFilePath.toLowerCase())) {
-
-			ZipArchiveEntry entry = new ZipArchiveEntry(dialogFile, dialogFilePath);
-
-			archiveStream.putArchiveEntry(entry);
-
-			IOUtils.copy(new FileInputStream(dialogFile), archiveStream);
-
-			archiveStream.closeArchiveEntry();
-
-		} else {
-			getLog().debug("Existing file found at " + dialogFilePath);
-		}
 	}
 
 	/**
@@ -761,7 +380,7 @@ public class ComponentMojoUtil {
 	 * @throws OutputFailureException
 	 * @throws ClassNotFoundException
 	 */
-	protected static File getOutputDirectoryForComponentClass(ComponentNameTransformer transformer, CtClass componentClass, File buildDirectory,
+	public static File getOutputDirectoryForComponentClass(ComponentNameTransformer transformer, CtClass componentClass, File buildDirectory,
 		String componentPathBase, String defaultComponentPathSuffix) throws OutputFailureException,
 		ClassNotFoundException {
 		// File buildDirectory = new File(project.getBuild().getDirectory());
@@ -805,7 +424,7 @@ public class ComponentMojoUtil {
 	 * @return The determined suffix
 	 * @throws ClassNotFoundException
 	 */
-	protected static String getComponentPathSuffixForComponentClass(CtClass componentClass,
+	public static String getComponentPathSuffixForComponentClass(CtClass componentClass,
 		String defaultComponentPathSuffix) throws ClassNotFoundException {
 		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
@@ -828,7 +447,7 @@ public class ComponentMojoUtil {
 	 * @return The determined name
 	 * @throws ClassNotFoundException
 	 */
-	protected static String getComponentNameForComponentClass(ComponentNameTransformer transformer, CtClass componentClass) throws ClassNotFoundException {
+	public static String getComponentNameForComponentClass(ComponentNameTransformer transformer, CtClass componentClass) throws ClassNotFoundException {
 		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
 		if (componentAnnotation != null) {

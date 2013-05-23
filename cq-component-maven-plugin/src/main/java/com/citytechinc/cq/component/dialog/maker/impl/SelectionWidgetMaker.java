@@ -47,8 +47,8 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 	 * java.lang.ClassLoader, javassist.ClassPool, boolean)
 	 */
 	@Override
-	public DialogElement make(String xtype, AccessibleObject widgetField, CtMember ctWidgetField, Class<?> containingClass,
-		CtClass ctContainingClass, Map<Class<?>, WidgetConfigHolder> xtypeMap,
+	public DialogElement make(String xtype, AccessibleObject widgetField, CtMember ctWidgetField,
+		Class<?> containingClass, CtClass ctContainingClass, Map<Class<?>, WidgetConfigHolder> xtypeMap,
 		Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool,
 		boolean useDotSlashInName) throws ClassNotFoundException, InvalidComponentFieldException,
 		CannotCompileException, NotFoundException {
@@ -119,15 +119,15 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 		CannotCompileException, NotFoundException, ClassNotFoundException {
 
 		List<DialogElement> options = new ArrayList<DialogElement>();
-		
-		CtClass type=null;
-		
-		if(widgetField instanceof CtField){
-			type=((CtField)widgetField).getType();
-		}else{
-			type=((CtMethod)widgetField).getReturnType();
+
+		CtClass type = null;
+
+		if (widgetField instanceof CtField) {
+			type = ((CtField) widgetField).getType();
+		} else {
+			type = ((CtMethod) widgetField).getReturnType();
 		}
-		
+
 		/*
 		 * Options specified in the annotation take precedence
 		 */

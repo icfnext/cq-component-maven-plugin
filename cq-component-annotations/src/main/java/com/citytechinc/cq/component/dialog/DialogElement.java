@@ -15,8 +15,8 @@ public interface DialogElement {
 	public List<? extends DialogElement> getContainedElements();
 
 	public void setFieldName(String fieldName);
-	
+
 	public void setRanking(double ranking);
-	
+
 	public double getRanking();
 }

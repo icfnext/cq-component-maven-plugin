@@ -39,7 +39,7 @@ public class ComponentMojo extends AbstractMojo {
 
 	@Parameter(defaultValue = "Components")
 	private String defaultComponentGroup;
-	
+
 	@Parameter(defaultValue = "camel-case")
 	private String transformerName;
 
@@ -65,18 +65,20 @@ public class ComponentMojo extends AbstractMojo {
 				.getXTypeMapForCustomXTypeMapping(widgetConfigs);
 
 			Map<String, WidgetMaker> xTypeToWidgetMakerMap = ComponentMojoUtil.getXTypeToWidgetMakerMap(widgetConfigs);
-			
-			Map<String,ComponentNameTransformer> transformers=ComponentMojoUtil.getAllTransformers(classPool, reflections);
-			
-			ComponentNameTransformer transformer=transformers.get(transformerName);
-			
-			if(transformer==null){
+
+			Map<String, ComponentNameTransformer> transformers = ComponentMojoUtil.getAllTransformers(classPool,
+				reflections);
+
+			ComponentNameTransformer transformer = transformers.get(transformerName);
+
+			if (transformer == null) {
 				throw new ConfigurationException("The configured transformer wasn't found");
 			}
-			
+
 			ComponentMojoUtil.buildArchiveFileForProjectAndClassList(classList, classToXTypeMap, xTypeToWidgetMakerMap,
 				classLoader, classPool, new File(project.getBuild().getDirectory()), componentPathBase,
-				componentPathSuffix, defaultComponentGroup, getArchiveFileForProject(), getTempArchiveFileForProject(),transformer);
+				componentPathSuffix, defaultComponentGroup, getArchiveFileForProject(), getTempArchiveFileForProject(),
+				transformer);
 
 		} catch (Exception e) {
 			getLog().error(e.getMessage(), e);

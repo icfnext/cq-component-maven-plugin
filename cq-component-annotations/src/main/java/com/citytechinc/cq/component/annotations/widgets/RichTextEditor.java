@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 import com.citytechinc.cq.component.annotations.widgets.rte.*;
 
 @Retention(RetentionPolicy.CLASS)
-@Target({ElementType.FIELD,ElementType.METHOD})
+@Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface RichTextEditor {
 
 	public Edit[] edit() default {};

@@ -27,9 +27,9 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 	 * 
 	 * @see
 	 * com.citytechinc.cq.component.dialog.maker.WidgetMaker#make(java.lang.
-	 * String, java.lang.reflect.AccessibleObject, javassist.CtField, java.lang.Class,
-	 * javassist.CtClass, java.util.Map, java.util.Map, java.lang.ClassLoader,
-	 * javassist.ClassPool, boolean)
+	 * String, java.lang.reflect.AccessibleObject, javassist.CtField,
+	 * java.lang.Class, javassist.CtClass, java.util.Map, java.util.Map,
+	 * java.lang.ClassLoader, javassist.ClassPool, boolean)
 	 */
 	public abstract DialogElement make(String xtype, AccessibleObject widgetField, CtMember ctWidgetField,
 		Class<?> containingClass, CtClass ctContainingClass, Map<Class<?>, WidgetConfigHolder> xtypeMap,
@@ -37,17 +37,18 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 		boolean useDotSlashInName) throws ClassNotFoundException, InvalidComponentFieldException,
 		CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException;
 
-	protected String getNameForField(DialogField dialogFieldAnnotation, AccessibleObject dialogField, boolean useDotSlash) {
+	protected String getNameForField(DialogField dialogFieldAnnotation, AccessibleObject dialogField,
+		boolean useDotSlash) {
 		String overrideName = dialogFieldAnnotation.name();
 
 		if (StringUtils.isNotEmpty(overrideName)) {
 			return overrideName;
 		}
-		String name=null;
-		if(dialogField instanceof Field){
-			name=((Field)dialogField).getName();
-		}else{
-			name=getFieldNameFromMethodName(((Method)dialogField).getName());
+		String name = null;
+		if (dialogField instanceof Field) {
+			name = ((Field) dialogField).getName();
+		} else {
+			name = getFieldNameFromMethodName(((Method) dialogField).getName());
 		}
 		if (!useDotSlash) {
 			return name;
@@ -62,11 +63,11 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 			return overrideFieldName;
 		}
 
-		String name=null;
-		if(dialogField instanceof Field){
-			name=((Field)dialogField).getName();
-		}else{
-			name=getFieldNameFromMethodName(((Method)dialogField).getName());
+		String name = null;
+		if (dialogField instanceof Field) {
+			name = ((Field) dialogField).getName();
+		} else {
+			name = getFieldNameFromMethodName(((Method) dialogField).getName());
 		}
 		return name;
 	}
@@ -118,13 +119,13 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 
 		return null;
 	}
-	
-	protected String getFieldNameFromMethodName(String methodName){
-		String toReturn=methodName;
-		if(methodName.startsWith("is")){
-			toReturn=methodName.substring(2);
-		}else if(methodName.startsWith("get")){
-			toReturn=methodName.substring(3);
+
+	protected String getFieldNameFromMethodName(String methodName) {
+		String toReturn = methodName;
+		if (methodName.startsWith("is")) {
+			toReturn = methodName.substring(2);
+		} else if (methodName.startsWith("get")) {
+			toReturn = methodName.substring(3);
 		}
 		return StringUtils.uncapitalise(toReturn);
 	}

@@ -60,11 +60,11 @@ public class DialogFactory {
 		for (String curTab : tabsList) {
 			tabMap.put(curTab, new ArrayList<DialogElement>());
 		}
-		
+
 		List<CtMember> fieldsAndMethods = new ArrayList<CtMember>();
 		fieldsAndMethods.addAll(ComponentMojoUtil.collectFields(componentClass));
 		fieldsAndMethods.addAll(ComponentMojoUtil.collectMethods(componentClass));
-		
+
 		// Load the true class
 		Class<?> trueComponentClass = classLoader.loadClass(componentClass.getName());
 
@@ -79,17 +79,17 @@ public class DialogFactory {
 			if (dialogProperty != null) {
 
 				AccessibleObject trueObject = null;
-				if(member instanceof CtField){
-					trueObject=ComponentMojoUtil.getField(trueComponentClass, member.getName());					
-				}else{
-					trueObject=ComponentMojoUtil.getMethod(trueComponentClass,member.getName());
+				if (member instanceof CtField) {
+					trueObject = ComponentMojoUtil.getField(trueComponentClass, member.getName());
+				} else {
+					trueObject = ComponentMojoUtil.getMethod(trueComponentClass, member.getName());
 				}
 
 				DialogElement builtFieldWidget = WidgetFactory.make(componentClass, member, trueObject,
 					classToXTypeMap, xTypeToWidgetMakerMap, classLoader, classPool, true, -1);
-				
+
 				builtFieldWidget.setRanking(dialogProperty.ranking());
-				
+
 				if (builtFieldWidget instanceof Html5SmartImageWidget
 					&& ((Html5SmartImageWidget) builtFieldWidget).isTab()) {
 					imageTabList.add(builtFieldWidget);

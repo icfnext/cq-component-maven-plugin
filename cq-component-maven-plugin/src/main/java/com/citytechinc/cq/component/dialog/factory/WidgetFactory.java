@@ -39,11 +39,11 @@ public class WidgetFactory {
 	private WidgetFactory() {
 	}
 
-	public static DialogElement make(CtClass componentClass, CtMember annotatedWidgetField, AccessibleObject widgetField,
-		Map<Class<?>, WidgetConfigHolder> classToXTypeMap, Map<String, WidgetMaker> xTypeToWidgetMakerMap,
-		ClassLoader classLoader, ClassPool classPool, boolean useDotSlashInName, int rankingCeiling)
-		throws InvalidComponentFieldException, ClassNotFoundException, CannotCompileException, NotFoundException,
-		SecurityException, NoSuchFieldException {
+	public static DialogElement make(CtClass componentClass, CtMember annotatedWidgetField,
+		AccessibleObject widgetField, Map<Class<?>, WidgetConfigHolder> classToXTypeMap,
+		Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool,
+		boolean useDotSlashInName, int rankingCeiling) throws InvalidComponentFieldException, ClassNotFoundException,
+		CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
 
 		DialogField propertyAnnotation = (DialogField) annotatedWidgetField.getAnnotation(DialogField.class);
 
@@ -128,14 +128,14 @@ public class WidgetFactory {
 			return overrideXType;
 		}
 
-		Class<?> fieldClass=null;
-		if(widgetField instanceof Field){
-			Field field=(Field)widgetField;
-			fieldClass= field.getType();
-		}else if (widgetField instanceof Method){
-			Method method=(Method)widgetField;
-			fieldClass=method.getReturnType();
-		}else{
+		Class<?> fieldClass = null;
+		if (widgetField instanceof Field) {
+			Field field = (Field) widgetField;
+			fieldClass = field.getType();
+		} else if (widgetField instanceof Method) {
+			Method method = (Method) widgetField;
+			fieldClass = method.getReturnType();
+		} else {
 			throw new InvalidComponentFieldException("Only methods and fields can be annotated");
 		}
 
@@ -218,11 +218,13 @@ public class WidgetFactory {
 		/*
 		 * If we could not determine an xtype, throw an exception
 		 */
-		throw new InvalidComponentFieldException("An xtype could not be determined for the field {}" + ctWidgetField.getName());
+		throw new InvalidComponentFieldException("An xtype could not be determined for the field {}"
+			+ ctWidgetField.getName());
 	}
 
-	private static final String getInnerXTypeForField(AccessibleObject widgetField, Map<Class<?>, WidgetConfigHolder> xtypeMap,
-		int rankingCeiling, Class<?> fieldClass) throws InvalidComponentFieldException {
+	private static final String getInnerXTypeForField(AccessibleObject widgetField,
+		Map<Class<?>, WidgetConfigHolder> xtypeMap, int rankingCeiling, Class<?> fieldClass)
+		throws InvalidComponentFieldException {
 
 		if (List.class.isAssignableFrom(fieldClass)) {
 			return getInnerXTypeForListField(widgetField, xtypeMap, rankingCeiling);
@@ -239,12 +241,12 @@ public class WidgetFactory {
 	private static final String getInnerXTypeForListField(AccessibleObject widgetField,
 		Map<Class<?>, WidgetConfigHolder> xtypeMap, int rankingCeiling) throws InvalidComponentFieldException {
 		ParameterizedType parameterizedType = null;
-		if(widgetField instanceof Field){
-			Field field=(Field) widgetField;
-			parameterizedType=(ParameterizedType) field.getGenericType();
-		}else{
-			Method method=(Method) widgetField;
-			parameterizedType=(ParameterizedType) method.getGenericReturnType();
+		if (widgetField instanceof Field) {
+			Field field = (Field) widgetField;
+			parameterizedType = (ParameterizedType) field.getGenericType();
+		} else {
+			Method method = (Method) widgetField;
+			parameterizedType = (ParameterizedType) method.getGenericReturnType();
 		}
 
 		if (parameterizedType.getActualTypeArguments().length == 0
@@ -262,12 +264,12 @@ public class WidgetFactory {
 	private static final String getInnerXTypeForArrayField(AccessibleObject widgetField,
 		Map<Class<?>, WidgetConfigHolder> xtypeMap, int rankingCeiling) {
 		Class<?> fieldClass = null;
-		if(widgetField instanceof Field){
-			Field field=(Field) widgetField;
-			fieldClass=field.getType();
-		}else{
-			Method method=(Method) widgetField;
-			fieldClass=method.getReturnType();
+		if (widgetField instanceof Field) {
+			Field field = (Field) widgetField;
+			fieldClass = field.getType();
+		} else {
+			Method method = (Method) widgetField;
+			fieldClass = method.getReturnType();
 		}
 
 		return getSimpleXTypeForClass(fieldClass.getComponentType(), xtypeMap, rankingCeiling);
@@ -317,11 +319,7 @@ public class WidgetFactory {
 	}
 
 	private static final boolean isBelowRankingCeiling(int rankingCeiling, WidgetConfigHolder widget) {
-		if (rankingCeiling > 0 && widget.getRanking() >= rankingCeiling) {
-			return false;
-		} else {
-			return true;
-		}
+		return rankingCeiling > 0 && widget.getRanking() >= rankingCeiling;
 	}
 
 	private static final WidgetConfigHolder getMatchFromPossibleSet(Set<WidgetConfigHolder> possibleMatches) {

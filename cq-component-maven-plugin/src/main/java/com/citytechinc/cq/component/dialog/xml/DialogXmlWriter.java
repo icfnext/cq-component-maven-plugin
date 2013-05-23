@@ -31,7 +31,7 @@ public class DialogXmlWriter {
 	private static final DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 	private static final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 	private static final List<String> DO_NOT_CALL = Arrays.asList(new String[] { "getPrimaryType", "getNameSpace",
-		"getContainedElements", "getFieldName", "getClass", "getAdditionalProperties" , "getRanking"});
+		"getContainedElements", "getFieldName", "getClass", "getAdditionalProperties", "getRanking" });
 
 	private DialogXmlWriter() {
 	}

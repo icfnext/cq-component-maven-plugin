@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  * 
  */
 @Retention(RetentionPolicy.CLASS)
-@Target({ElementType.FIELD,ElementType.METHOD})
+@Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface DialogField {
 
 	/**
@@ -97,6 +97,6 @@ public @interface DialogField {
 	 * @return FieldProperty[]
 	 */
 	public FieldProperty[] additionalProperties() default {};
-	
+
 	public double ranking() default 0;
 }

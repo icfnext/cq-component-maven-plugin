@@ -22,7 +22,8 @@ import com.citytechinc.cq.component.dialog.exception.OutputFailureException;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 
 public class ContentUtil {
-	private ContentUtil(){};
+	private ContentUtil() {
+	};
 
 	/**
 	 * Write the content.xml to an output file, the path of which is determined
@@ -37,22 +38,23 @@ public class ContentUtil {
 	 * @throws OutputFailureException
 	 * @throws ClassNotFoundException
 	 */
-	public static File writeContentToFile(ComponentNameTransformer transformer, Content content, CtClass componentClass, File buildDirectory,
-		String componentPathBase, String defaultComponentPathSuffix) throws TransformerException,
-		ParserConfigurationException, IOException, OutputFailureException, ClassNotFoundException {
-		File componentOutputDirectory = ComponentMojoUtil.getOutputDirectoryForComponentClass(transformer, componentClass, buildDirectory,
-			componentPathBase, defaultComponentPathSuffix);
-	
+	public static File writeContentToFile(ComponentNameTransformer transformer, Content content,
+		CtClass componentClass, File buildDirectory, String componentPathBase, String defaultComponentPathSuffix)
+		throws TransformerException, ParserConfigurationException, IOException, OutputFailureException,
+		ClassNotFoundException {
+		File componentOutputDirectory = ComponentMojoUtil.getOutputDirectoryForComponentClass(transformer,
+			componentClass, buildDirectory, componentPathBase, defaultComponentPathSuffix);
+
 		File contentFile = new File(componentOutputDirectory, ".content.xml");
-	
+
 		if (contentFile.exists()) {
 			contentFile.delete();
 		}
-	
+
 		contentFile.createNewFile();
-	
+
 		ContentXmlWriter.writeContent(content, new FileOutputStream(contentFile));
-	
+
 		return contentFile;
 	}
 
@@ -70,25 +72,25 @@ public class ContentUtil {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	public static void writeContentToArchiveFile(ComponentNameTransformer transformer, File contentFile, CtClass componentClass,
-		ZipArchiveOutputStream archiveStream, Set<String> reservedNames, String componentPathBase,
-		String defaultComponentPathSuffix) throws IOException, ClassNotFoundException {
+	public static void writeContentToArchiveFile(ComponentNameTransformer transformer, File contentFile,
+		CtClass componentClass, ZipArchiveOutputStream archiveStream, Set<String> reservedNames,
+		String componentPathBase, String defaultComponentPathSuffix) throws IOException, ClassNotFoundException {
 		String contentFilePath = componentPathBase + "/"
-			+ ComponentMojoUtil.getComponentPathSuffixForComponentClass(componentClass, defaultComponentPathSuffix) + "/"
-			+ ComponentMojoUtil.getComponentNameForComponentClass(transformer, componentClass) + "/.content.xml";
-	
+			+ ComponentMojoUtil.getComponentPathSuffixForComponentClass(componentClass, defaultComponentPathSuffix)
+			+ "/" + ComponentMojoUtil.getComponentNameForComponentClass(transformer, componentClass) + "/.content.xml";
+
 		ComponentMojoUtil.getLog().debug("Archiving content file " + contentFilePath);
-	
+
 		if (!reservedNames.contains(contentFilePath.toLowerCase())) {
-	
+
 			ZipArchiveEntry entry = new ZipArchiveEntry(contentFile, contentFilePath);
-	
+
 			archiveStream.putArchiveEntry(entry);
-	
+
 			IOUtils.copy(new FileInputStream(contentFile), archiveStream);
-	
+
 			archiveStream.closeArchiveEntry();
-	
+
 		} else {
 			ComponentMojoUtil.getLog().debug("Existing file found at " + contentFilePath);
 		}

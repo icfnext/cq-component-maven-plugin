@@ -39,8 +39,8 @@ public interface WidgetMaker {
 	 * @throws SecurityException
 	 * @throws NoSuchFieldException
 	 */
-	public DialogElement make(String xtype, AccessibleObject widgetField, CtMember ctWidgetField, Class<?> containingClass,
-		CtClass ctContainingClass, Map<Class<?>, WidgetConfigHolder> xtypeMap,
+	public DialogElement make(String xtype, AccessibleObject widgetField, CtMember ctWidgetField,
+		Class<?> containingClass, CtClass ctContainingClass, Map<Class<?>, WidgetConfigHolder> xtypeMap,
 		Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool,
 		boolean useDotSlashInName) throws ClassNotFoundException, InvalidComponentFieldException,
 		CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException;

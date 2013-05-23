@@ -32,8 +32,8 @@ public class PanelWidgetMaker extends AbstractWidgetMaker {
 	private static final String ITEMS = "items";
 
 	@Override
-	public DialogElement make(String xtype, AccessibleObject widgetField, CtMember ctWidgetField, Class<?> containingClass,
-		CtClass ctContainingClass, Map<Class<?>, WidgetConfigHolder> xtypeMap,
+	public DialogElement make(String xtype, AccessibleObject widgetField, CtMember ctWidgetField,
+		Class<?> containingClass, CtClass ctContainingClass, Map<Class<?>, WidgetConfigHolder> xtypeMap,
 		Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool,
 		boolean useDotSlashInName) throws ClassNotFoundException, InvalidComponentFieldException,
 		CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
@@ -63,29 +63,30 @@ public class PanelWidgetMaker extends AbstractWidgetMaker {
 			hideLabel, fieldName, additionalProperties, widgetCollection);
 	}
 
-	private List<DialogElement> buildWidgetCollection(CtClass componentClass, CtMember curField, AccessibleObject trueField,
-		Map<Class<?>, WidgetConfigHolder> classToXTypeMap, Map<String, WidgetMaker> xTypeToWidgetMakerMap,
-		ClassLoader classLoader, ClassPool classPool) throws InvalidComponentFieldException, ClassNotFoundException,
-		CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
+	private List<DialogElement> buildWidgetCollection(CtClass componentClass, CtMember curField,
+		AccessibleObject trueField, Map<Class<?>, WidgetConfigHolder> classToXTypeMap,
+		Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool)
+		throws InvalidComponentFieldException, ClassNotFoundException, CannotCompileException, NotFoundException,
+		SecurityException, NoSuchFieldException {
 		CtClass clazz = null;
-		if(curField instanceof CtField){
-			CtField field=(CtField) curField;
-			clazz=field.getType();
-		}else{
-			CtMethod method=(CtMethod) curField;
-			clazz=method.getReturnType();
+		if (curField instanceof CtField) {
+			CtField field = (CtField) curField;
+			clazz = field.getType();
+		} else {
+			CtMethod method = (CtMethod) curField;
+			clazz = method.getReturnType();
 		}
-		List<CtMember> fieldsAndMethods=new ArrayList<CtMember>();
+		List<CtMember> fieldsAndMethods = new ArrayList<CtMember>();
 		fieldsAndMethods.addAll(ComponentMojoUtil.collectFields(clazz));
 		fieldsAndMethods.addAll(ComponentMojoUtil.collectMethods(clazz));
 		List<DialogElement> elements = new ArrayList<DialogElement>();
 		for (CtMember field : fieldsAndMethods) {
 			if (field.hasAnnotation(DialogField.class)) {
-				AccessibleObject mcTrueField=null;
-				Class<?> fieldClass=classLoader.loadClass(field.getDeclaringClass().getName());
-				if(field instanceof CtField){
+				AccessibleObject mcTrueField = null;
+				Class<?> fieldClass = classLoader.loadClass(field.getDeclaringClass().getName());
+				if (field instanceof CtField) {
 					mcTrueField = ComponentMojoUtil.getField(fieldClass, field.getName());
-				}else{
+				} else {
 					mcTrueField = ComponentMojoUtil.getMethod(fieldClass, field.getName());
 				}
 				DialogElement builtFieldWidget = WidgetFactory.make(componentClass, field, mcTrueField,

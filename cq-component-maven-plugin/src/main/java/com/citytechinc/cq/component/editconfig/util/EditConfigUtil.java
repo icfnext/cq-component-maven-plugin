@@ -27,7 +27,8 @@ import com.citytechinc.cq.component.editconfig.xml.EditConfigXmlWriter;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 
 public class EditConfigUtil {
-	private EditConfigUtil(){}
+	private EditConfigUtil() {
+	}
 
 	/**
 	 * Writes a provided file to a provided archive output stream at a path
@@ -43,25 +44,26 @@ public class EditConfigUtil {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	public static void writeEditConfigToArchiveFile(ComponentNameTransformer transformer, File editConfigFile, CtClass componentClass,
-		ZipArchiveOutputStream archiveStream, Set<String> reservedNames, String componentPathBase,
-		String defaultComponentPathSuffix) throws IOException, ClassNotFoundException {
+	public static void writeEditConfigToArchiveFile(ComponentNameTransformer transformer, File editConfigFile,
+		CtClass componentClass, ZipArchiveOutputStream archiveStream, Set<String> reservedNames,
+		String componentPathBase, String defaultComponentPathSuffix) throws IOException, ClassNotFoundException {
 		String editConfigFilePath = componentPathBase + "/"
-			+ ComponentMojoUtil.getComponentPathSuffixForComponentClass(componentClass, defaultComponentPathSuffix) + "/"
-			+ ComponentMojoUtil.getComponentNameForComponentClass(transformer, componentClass) + "/_cq_editConfig.xml";
-	
+			+ ComponentMojoUtil.getComponentPathSuffixForComponentClass(componentClass, defaultComponentPathSuffix)
+			+ "/" + ComponentMojoUtil.getComponentNameForComponentClass(transformer, componentClass)
+			+ "/_cq_editConfig.xml";
+
 		ComponentMojoUtil.getLog().debug("Archiving edit config file " + editConfigFilePath);
-	
+
 		if (!reservedNames.contains(editConfigFilePath.toLowerCase())) {
-	
+
 			ZipArchiveEntry entry = new ZipArchiveEntry(editConfigFile, editConfigFilePath);
-	
+
 			archiveStream.putArchiveEntry(entry);
-	
+
 			IOUtils.copy(new FileInputStream(editConfigFile), archiveStream);
-	
+
 			archiveStream.closeArchiveEntry();
-	
+
 		} else {
 			ComponentMojoUtil.getLog().debug("Existing file found at " + editConfigFilePath);
 		}
@@ -81,22 +83,23 @@ public class EditConfigUtil {
 	 * @throws OutputFailureException
 	 * @throws ClassNotFoundException
 	 */
-	public static File writeEditConfigToFile(ComponentNameTransformer transformer, EditConfig editConfig, CtClass componentClass, File buildDirectory,
-		String componentPathBase, String defaultComponentPathSuffix) throws TransformerException,
-		ParserConfigurationException, IOException, OutputFailureException, ClassNotFoundException {
-		File componentOutputDirectory = ComponentMojoUtil.getOutputDirectoryForComponentClass(transformer, componentClass, buildDirectory,
-			componentPathBase, defaultComponentPathSuffix);
-	
+	public static File writeEditConfigToFile(ComponentNameTransformer transformer, EditConfig editConfig,
+		CtClass componentClass, File buildDirectory, String componentPathBase, String defaultComponentPathSuffix)
+		throws TransformerException, ParserConfigurationException, IOException, OutputFailureException,
+		ClassNotFoundException {
+		File componentOutputDirectory = ComponentMojoUtil.getOutputDirectoryForComponentClass(transformer,
+			componentClass, buildDirectory, componentPathBase, defaultComponentPathSuffix);
+
 		File editConfigFile = new File(componentOutputDirectory, "_cq_editConfig.xml");
-	
+
 		if (editConfigFile.exists()) {
 			editConfigFile.delete();
 		}
-	
+
 		editConfigFile.createNewFile();
-	
+
 		EditConfigXmlWriter.writeEditConfig(editConfig, new FileOutputStream(editConfigFile));
-	
+
 		return editConfigFile;
 	}
 
@@ -118,28 +121,28 @@ public class EditConfigUtil {
 	 */
 	public static List<EditConfig> buildEditConfigFromClassList(List<CtClass> classList,
 		ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames, File buildDirectory,
-		String componentPathBase, String defaultComponentPathSuffix,ComponentNameTransformer transformer) throws InvalidComponentClassException,
-		TransformerException, ParserConfigurationException, IOException, OutputFailureException, ClassNotFoundException {
-	
+		String componentPathBase, String defaultComponentPathSuffix, ComponentNameTransformer transformer)
+		throws InvalidComponentClassException, TransformerException, ParserConfigurationException, IOException,
+		OutputFailureException, ClassNotFoundException {
+
 		List<EditConfig> builtEditConfigs = new ArrayList<EditConfig>();
-	
+
 		for (CtClass curClass : classList) {
 			Component annotation = (Component) curClass.getAnnotation(Component.class);
-	
+
 			if (annotation != null && annotation.editConfig()) {
 				EditConfig builtEditConfig = EditConfigFactory.make(curClass);
-	
+
 				builtEditConfigs.add(builtEditConfig);
-	
+
 				File editConfigFile = writeEditConfigToFile(transformer, builtEditConfig, curClass, buildDirectory,
 					componentPathBase, defaultComponentPathSuffix);
 				writeEditConfigToArchiveFile(transformer, editConfigFile, curClass, zipOutputStream, reservedNames,
 					componentPathBase, defaultComponentPathSuffix);
 			}
 		}
-	
+
 		return builtEditConfigs;
 	};
-	
-	
+
 }

@@ -4,8 +4,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import com.citytechinc.cq.component.dialog.DialogElementComparator;
-
 public abstract class AbstractDialogElement implements DialogElement {
 	private String primaryType;
 	private String nameSpace;
@@ -21,7 +19,7 @@ public abstract class AbstractDialogElement implements DialogElement {
 		this.fieldName = fieldName;
 		this.additionalProperties = additionalProperties;
 		this.containedElements = containedElements;
-		if(containedElements!=null){
+		if (containedElements != null) {
 			Collections.sort(containedElements, new DialogElementComparator());
 		}
 	}

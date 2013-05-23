@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  * 
  */
 @Retention(RetentionPolicy.CLASS)
-@Target({ElementType.FIELD,ElementType.METHOD})
+@Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface Option {
 
 	String text() default "";

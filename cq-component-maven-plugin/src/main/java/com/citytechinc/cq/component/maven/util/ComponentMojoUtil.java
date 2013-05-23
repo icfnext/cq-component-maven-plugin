@@ -213,8 +213,9 @@ public class ComponentMojoUtil {
 	public static void buildArchiveFileForProjectAndClassList(List<CtClass> classList,
 		Map<Class<?>, WidgetConfigHolder> xtypeMap, Map<String, WidgetMaker> widgetMakerMap, ClassLoader classLoader,
 		ClassPool classPool, File buildDirectory, String componentPathBase, String defaultComponentPathSuffix,
-		String defaultComponentGroup, File existingArchiveFile, File tempArchiveFile, ComponentNameTransformer transformer) throws OutputFailureException,
-		IOException, InvalidComponentClassException, InvalidComponentFieldException, ParserConfigurationException,
+		String defaultComponentGroup, File existingArchiveFile, File tempArchiveFile,
+		ComponentNameTransformer transformer) throws OutputFailureException, IOException,
+		InvalidComponentClassException, InvalidComponentFieldException, ParserConfigurationException,
 		TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException,
 		NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException,
 		NoSuchMethodException {
@@ -265,14 +266,15 @@ public class ComponentMojoUtil {
 		/*
 		 * Create Dialogs within temp archive
 		 */
-		DialogUtil.buildDialogsFromClassList(transformer, classList, tempOutputStream, existingArchiveEntryNames, xtypeMap, widgetMakerMap,
-			classLoader, classPool, buildDirectory, componentPathBase, defaultComponentPathSuffix);
+		DialogUtil.buildDialogsFromClassList(transformer, classList, tempOutputStream, existingArchiveEntryNames,
+			xtypeMap, widgetMakerMap, classLoader, classPool, buildDirectory, componentPathBase,
+			defaultComponentPathSuffix);
 
 		/*
 		 * Create edit config within temp archive
 		 */
-		EditConfigUtil.buildEditConfigFromClassList(classList, tempOutputStream, existingArchiveEntryNames, buildDirectory,
-			componentPathBase, defaultComponentPathSuffix, transformer);
+		EditConfigUtil.buildEditConfigFromClassList(classList, tempOutputStream, existingArchiveEntryNames,
+			buildDirectory, componentPathBase, defaultComponentPathSuffix, transformer);
 
 		/*
 		 * Copy temp archive to the original archive position
@@ -304,9 +306,9 @@ public class ComponentMojoUtil {
 	 */
 	protected static List<Content> buildContentFromClassList(List<CtClass> classList,
 		ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames, File buildDirectory,
-		String componentPathBase, String defaultComponentPathSuffix, String defaultComponentGroup, ComponentNameTransformer transformer)
-		throws InvalidComponentClassException, TransformerException, ParserConfigurationException, IOException,
-		OutputFailureException, ClassNotFoundException {
+		String componentPathBase, String defaultComponentPathSuffix, String defaultComponentGroup,
+		ComponentNameTransformer transformer) throws InvalidComponentClassException, TransformerException,
+		ParserConfigurationException, IOException, OutputFailureException, ClassNotFoundException {
 
 		List<Content> builtContents = new ArrayList<Content>();
 
@@ -324,10 +326,10 @@ public class ComponentMojoUtil {
 
 				builtContents.add(builtContent);
 
-				File contentFile = ContentUtil.writeContentToFile(transformer, builtContent, curClass, buildDirectory, componentPathBase,
-					defaultComponentPathSuffix);
-				ContentUtil.writeContentToArchiveFile(transformer, contentFile, curClass, zipOutputStream, reservedNames, componentPathBase,
-					defaultComponentPathSuffix);
+				File contentFile = ContentUtil.writeContentToFile(transformer, builtContent, curClass, buildDirectory,
+					componentPathBase, defaultComponentPathSuffix);
+				ContentUtil.writeContentToArchiveFile(transformer, contentFile, curClass, zipOutputStream,
+					reservedNames, componentPathBase, defaultComponentPathSuffix);
 			}
 		}
 
@@ -380,9 +382,9 @@ public class ComponentMojoUtil {
 	 * @throws OutputFailureException
 	 * @throws ClassNotFoundException
 	 */
-	public static File getOutputDirectoryForComponentClass(ComponentNameTransformer transformer, CtClass componentClass, File buildDirectory,
-		String componentPathBase, String defaultComponentPathSuffix) throws OutputFailureException,
-		ClassNotFoundException {
+	public static File getOutputDirectoryForComponentClass(ComponentNameTransformer transformer,
+		CtClass componentClass, File buildDirectory, String componentPathBase, String defaultComponentPathSuffix)
+		throws OutputFailureException, ClassNotFoundException {
 		// File buildDirectory = new File(project.getBuild().getDirectory());
 
 		String dialogFilePath = OUTPUT_PATH + "/" + componentPathBase + "/"
@@ -447,7 +449,8 @@ public class ComponentMojoUtil {
 	 * @return The determined name
 	 * @throws ClassNotFoundException
 	 */
-	public static String getComponentNameForComponentClass(ComponentNameTransformer transformer, CtClass componentClass) throws ClassNotFoundException {
+	public static String getComponentNameForComponentClass(ComponentNameTransformer transformer, CtClass componentClass)
+		throws ClassNotFoundException {
 		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
 		if (componentAnnotation != null) {
@@ -525,10 +528,10 @@ public class ComponentMojoUtil {
 		}
 		return classes;
 	}
-	
+
 	/**
-	 * Retrieves a List of all classes which are annotated as Transformers and are
-	 * within the scope of the provided Reflections purview.
+	 * Retrieves a List of all classes which are annotated as Transformers and
+	 * are within the scope of the provided Reflections purview.
 	 * 
 	 * @param classPool
 	 * @param reflections
@@ -536,21 +539,22 @@ public class ComponentMojoUtil {
 	 * @throws ClassNotFoundException
 	 * @throws NotFoundException
 	 * @throws MalformedURLException
-	 * @throws IllegalAccessException 
-	 * @throws InstantiationException 
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
 	 */
-	public static Map<String,ComponentNameTransformer> getAllTransformers(ClassPool classPool, Reflections reflections)
-		throws ClassNotFoundException, NotFoundException, MalformedURLException, InstantiationException, IllegalAccessException {
-		Map<String,ComponentNameTransformer> transformers = new HashMap<String, ComponentNameTransformer>();
+	public static Map<String, ComponentNameTransformer> getAllTransformers(ClassPool classPool, Reflections reflections)
+		throws ClassNotFoundException, NotFoundException, MalformedURLException, InstantiationException,
+		IllegalAccessException {
+		Map<String, ComponentNameTransformer> transformers = new HashMap<String, ComponentNameTransformer>();
 
 		for (Class<?> c : reflections.getTypesAnnotatedWith(Transformer.class)) {
-			if(Arrays.asList(c.getInterfaces()).contains(ComponentNameTransformer.class)){
-				CtClass ctclass=classPool.getCtClass(c.getName());
-				Transformer transformer=(Transformer)ctclass.getAnnotation(Transformer.class);
-				transformers.put(transformer.value(),(ComponentNameTransformer)c.newInstance());
+			if (Arrays.asList(c.getInterfaces()).contains(ComponentNameTransformer.class)) {
+				CtClass ctclass = classPool.getCtClass(c.getName());
+				Transformer transformer = (Transformer) ctclass.getAnnotation(Transformer.class);
+				transformers.put(transformer.value(), (ComponentNameTransformer) c.newInstance());
 			}
 		}
-		
+
 		return transformers;
 	}
 
@@ -570,11 +574,10 @@ public class ComponentMojoUtil {
 		}
 		return fields;
 	}
-	
 
 	public static List<CtMethod> collectMethods(CtClass ctClass) {
 		List<CtMethod> methods = new ArrayList<CtMethod>();
-		if(ctClass !=null){
+		if (ctClass != null) {
 			methods.addAll(Arrays.asList(ctClass.getMethods()));
 		}
 		return methods;
@@ -600,9 +603,9 @@ public class ComponentMojoUtil {
 				retField = curClass.getDeclaredField(fieldName);
 				curClass = curClass.getSuperclass();
 			} catch (SecurityException e) {
-
+				getLog().debug(e.getMessage(), e);
 			} catch (NoSuchFieldException e) {
-
+				getLog().debug(e.getMessage(), e);
 			} finally {
 				curClass = curClass.getSuperclass();
 			}
@@ -610,18 +613,18 @@ public class ComponentMojoUtil {
 
 		return retField;
 	}
-	
+
 	/**
-	 * Retrieves a Method for a Class. 
+	 * Retrieves a Method for a Class.
 	 * 
 	 * @param clazz
 	 * @param fieldName
-	 * @return The Method specified by the provided name or null if no such Method
-	 *         could be found for the Class.
+	 * @return The Method specified by the provided name or null if no such
+	 *         Method could be found for the Class.
 	 */
 	public static Method getMethod(Class<?> clazz, String methodName) {
-		for(Method method:clazz.getMethods()){
-			if(method.getName().equals(methodName)){
+		for (Method method : clazz.getMethods()) {
+			if (method.getName().equals(methodName)) {
 				return method;
 			}
 		}

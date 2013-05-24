@@ -646,4 +646,16 @@ public class ComponentMojoUtil {
 			.setScanners(new TypeAnnotationsScanner()));
 		return reflections;
 	}
+
+	/**
+	 * Changes a class name into a human readable string by adding spaces
+	 * 
+	 * @param className The class name to transform upon
+	 * @return The transformed string
+	 */
+	public static String transformClassNameToReadable(String className) {
+		return className
+			.replaceAll(String.format("%s|%s|%s", "(?<=[A-Z])(?=[A-Z][a-z])", "(?<=[^A-Z])(?=[A-Z])",
+				"(?<=[A-Za-z])(?=[^A-Za-z])"), " ");
+	}
 }

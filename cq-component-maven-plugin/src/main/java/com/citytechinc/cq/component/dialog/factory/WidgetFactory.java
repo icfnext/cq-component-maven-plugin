@@ -119,14 +119,7 @@ public class WidgetFactory {
 		/*
 		 * Handle annotated xtypes
 		 * 
-		 * The xtype property on the DialogField annotation takes precedence
-		 * over all other mechanisms of determining xtype.
 		 */
-		String overrideXType = propertyAnnotation.xtype();
-
-		if (StringUtils.isNotEmpty(overrideXType)) {
-			return overrideXType;
-		}
 
 		Class<?> fieldClass = null;
 		if (widgetField instanceof Field) {
@@ -165,7 +158,17 @@ public class WidgetFactory {
 		if (possibleMatches.size() > 0) {
 			return getMatchFromPossibleSet(possibleMatches).getXtype();
 		}
-
+		
+		/*
+		* The xtype property on the DialogField annotation takes precedence
+		* over all other mechanisms of determining xtype.
+		*/
+		String overrideXType = propertyAnnotation.xtype();
+		
+		if (StringUtils.isNotEmpty(overrideXType)) {
+			return overrideXType;
+		}
+		
 		/*
 		 * Handle standard types
 		 */

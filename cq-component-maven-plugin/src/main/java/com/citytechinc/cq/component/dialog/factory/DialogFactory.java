@@ -50,7 +50,7 @@ public class DialogFactory {
 		/*
 		 * Get dialog title
 		 */
-		String dialogTitle = getDialogTitleForComponent(componentAnnotation,componentClass);
+		String dialogTitle = getDialogTitleForComponent(componentAnnotation);
 
 		/*
 		 * Setup Tabs from Component tab list if one exists
@@ -94,7 +94,7 @@ public class DialogFactory {
 					&& ((Html5SmartImageWidget) builtFieldWidget).isTab()) {
 					imageTabList.add(builtFieldWidget);
 				} else {
-					String tabString = getTabStringForField(dialogProperty,componentClass);
+					String tabString = getTabStringForField(dialogProperty,componentAnnotation);
 
 					if (!tabMap.containsKey(tabString)) {
 						tabMap.put(tabString, new ArrayList<DialogElement>());
@@ -120,19 +120,11 @@ public class DialogFactory {
 		return new Dialog(tabList, dialogTitle, componentAnnotation.fileName(), width, height);
 	}
 
-	private static final String getDialogTitleForComponent(Component component,CtClass clazz) {
-
-		String title = component.value();
-
-		if (StringUtils.isNotEmpty(title)) {
-			return title;
-		}
-
-		return ComponentMojoUtil.transformClassNameToReadable(clazz.getSimpleName());
-
+	private static final String getDialogTitleForComponent(Component component) {
+		return component.value();
 	}
 
-	private static final String getTabStringForField(DialogField dialogProperty,CtClass clazz) {
+	private static final String getTabStringForField(DialogField dialogProperty,Component component) {
 
 		String tabString = dialogProperty.tab();
 
@@ -140,7 +132,7 @@ public class DialogFactory {
 			return tabString;
 		}
 
-		return ComponentMojoUtil.transformClassNameToReadable(clazz.getSimpleName());
+		return ComponentMojoUtil.transformClassNameToReadable(component.value());
 	}
 
 }

@@ -16,7 +16,10 @@ import javassist.NotFoundException;
 
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.FieldProperty;
+import com.citytechinc.cq.component.annotations.Listener;
+import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.DialogElement;
+import com.citytechinc.cq.component.dialog.Listeners;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;
 
@@ -128,5 +131,11 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 			toReturn = methodName.substring(3);
 		}
 		return StringUtils.uncapitalise(toReturn);
+	}
+	
+	protected void setListeners(AbstractWidget widget,Listener[] listeners){
+		if(listeners.length>0){
+			widget.setListeners(new Listeners(listeners));
+		}
 	}
 }

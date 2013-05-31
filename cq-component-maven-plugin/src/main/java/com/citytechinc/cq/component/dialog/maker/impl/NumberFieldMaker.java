@@ -49,8 +49,12 @@ public class NumberFieldMaker extends AbstractWidgetMaker {
 		String defaultValue = getDefaultValueForField(dialogFieldAnnotation);
 		boolean hideLabel = dialogFieldAnnotation.hideLabel();
 
-		return new NumberFieldWidget(allowDecimals, allowNegative, decimalPrecision, decimalSeparator, fieldLabel,
+		NumberFieldWidget widget = new NumberFieldWidget(allowDecimals, allowNegative, decimalPrecision, decimalSeparator, fieldLabel,
 			fieldDescription, !isRequired, hideLabel, defaultValue, name, fieldName, additionalProperties);
+		
+		setListeners(widget,dialogFieldAnnotation.listeners());
+		
+		return widget;
 	}
 
 }

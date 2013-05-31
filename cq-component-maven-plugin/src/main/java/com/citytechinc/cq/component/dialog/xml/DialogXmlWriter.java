@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -82,15 +83,22 @@ public class DialogXmlWriter {
 			if (!DO_NOT_CALL.contains(methodName) && (methodName.startsWith("get") || methodName.startsWith("is"))) {
 				Object methodReturn = method.invoke(dialogElement, null);
 				if (methodReturn != null) {
-					String value = methodReturn.toString();
-					String propertyName = null;
-					if (methodName.startsWith("get")) {
-						propertyName = StringUtils.lowercaseFirstLetter(methodName.substring(3));
-					} else if (methodName.startsWith("is")) {
-						propertyName = StringUtils.lowercaseFirstLetter(methodName.substring(2));
-						value = "{Boolean}" + value;
+					if (methodReturn instanceof Map<?, ?>) {
+						Map<?, ?> returnMap = (Map<?, ?>) methodReturn;
+						for (Entry<?, ?> entry : returnMap.entrySet()) {
+							createdElement.setAttribute(entry.getKey().toString(), entry.getValue().toString());
+						}
+					} else {
+						String value = methodReturn.toString();
+						String propertyName = null;
+						if (methodName.startsWith("get")) {
+							propertyName = StringUtils.lowercaseFirstLetter(methodName.substring(3));
+						} else if (methodName.startsWith("is")) {
+							propertyName = StringUtils.lowercaseFirstLetter(methodName.substring(2));
+							value = "{Boolean}" + value;
+						}
+						createdElement.setAttribute(propertyName, value);
 					}
-					createdElement.setAttribute(propertyName, value);
 				}
 			}
 		}

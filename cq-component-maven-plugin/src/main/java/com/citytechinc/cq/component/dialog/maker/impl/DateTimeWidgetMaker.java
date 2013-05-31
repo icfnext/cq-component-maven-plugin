@@ -37,8 +37,12 @@ public class DateTimeWidgetMaker extends AbstractWidgetMaker {
 		String defaultValue = getDefaultValueForField(dialogFieldAnnotation);
 		boolean hideLabel = dialogFieldAnnotation.hideLabel();
 
-		return new DateTimeWidget(fieldLabel, fieldDescription, !isRequired, hideLabel, defaultValue, name, fieldName,
+		DateTimeWidget widget= new DateTimeWidget(fieldLabel, fieldDescription, !isRequired, hideLabel, defaultValue, name, fieldName,
 			additionalProperties);
+		
+		setListeners(widget,dialogFieldAnnotation.listeners());
+		
+		return widget;
 	}
 
 }

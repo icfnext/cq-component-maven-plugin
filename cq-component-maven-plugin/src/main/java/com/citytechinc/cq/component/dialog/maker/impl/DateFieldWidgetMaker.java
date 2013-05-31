@@ -43,8 +43,12 @@ public class DateFieldWidgetMaker extends AbstractWidgetMaker {
 		String defaultValue = getDefaultValueForField(dialogFieldAnnotation);
 		boolean hideLabel = dialogFieldAnnotation.hideLabel();
 
-		return new DateFieldWidget(startDay, showToday, format, fieldLabel, fieldDescription, !isRequired, hideLabel,
+		DateFieldWidget widget = new DateFieldWidget(startDay, showToday, format, fieldLabel, fieldDescription, !isRequired, hideLabel,
 			defaultValue, name, fieldName, additionalProperties);
+		
+		setListeners(widget,dialogFieldAnnotation.listeners());
+		
+		return widget;
 	}
 
 }

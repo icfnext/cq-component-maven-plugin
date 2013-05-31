@@ -49,9 +49,13 @@ public class SizeFieldMaker extends AbstractWidgetMaker {
 		String widthSuffix = getWidthSuffixForField(sizeFieldAnnotation);
 		int fieldWidth = getFieldWidthForField(sizeFieldAnnotation);
 
-		return new SizeFieldWidget(xtype, fieldLabel, fieldDescription, !isRequired, hideLabel, defaultValue, name,
+		SizeFieldWidget widget =  new SizeFieldWidget(xtype, fieldLabel, fieldDescription, !isRequired, hideLabel, defaultValue, name,
 			fieldName, additionalProperties, heightParameter, heightPrefix, heightSuffix, widthParameter, widthPrefix,
 			widthSuffix, fieldWidth);
+		
+		setListeners(widget,dialogFieldAnnotation.listeners());
+		
+		return widget;
 
 	}
 

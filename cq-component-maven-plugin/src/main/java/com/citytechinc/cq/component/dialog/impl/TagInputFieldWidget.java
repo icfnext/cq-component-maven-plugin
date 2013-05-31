@@ -14,11 +14,11 @@ public class TagInputFieldWidget extends AbstractWidget {
 	public static final String XTYPE = "tags";
 	private static final String PRIMARY_TYPE = "cq:Widget";
 
-	private boolean displayTitles;
+	private final boolean displayTitles;
 
 	public TagInputFieldWidget(boolean displayTitles, String fieldLabel, String fieldDescription, boolean allowBlank,
 		boolean hideLabel, String defaultValue, String name, String fieldName,
-		Map<String, String> additionalProperties, List<? extends DialogElement> containedElements) {
+		Map<String, String> additionalProperties, List<DialogElement> containedElements) {
 		super(XTYPE, fieldLabel, fieldDescription, allowBlank, hideLabel, defaultValue, name, PRIMARY_TYPE, null,
 			fieldName, additionalProperties, containedElements);
 		this.displayTitles = displayTitles;

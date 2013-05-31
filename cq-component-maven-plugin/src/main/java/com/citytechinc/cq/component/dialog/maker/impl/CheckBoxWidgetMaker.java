@@ -41,8 +41,12 @@ public class CheckBoxWidgetMaker extends AbstractWidgetMaker {
 		String defaultValue = getDefaultValueForField(dialogFieldAnnotation);
 		boolean hideLabel = dialogFieldAnnotation.hideLabel();
 
-		return new CheckBoxWidget(inputValue, checked, fieldLabel, fieldDescription, !isRequired, hideLabel,
+		CheckBoxWidget widget= new CheckBoxWidget(inputValue, checked, fieldLabel, fieldDescription, !isRequired, hideLabel,
 			defaultValue, name, fieldName, additionalProperties);
+		
+		setListeners(widget,dialogFieldAnnotation.listeners());
+		
+		return widget;
 	}
 
 }

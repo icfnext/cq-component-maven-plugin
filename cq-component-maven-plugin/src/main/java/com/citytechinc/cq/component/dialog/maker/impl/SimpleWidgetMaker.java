@@ -33,8 +33,12 @@ public class SimpleWidgetMaker extends AbstractWidgetMaker {
 		String defaultValue = getDefaultValueForField(dialogFieldAnnotation);
 		boolean hideLabel = dialogFieldAnnotation.hideLabel();
 
-		return new SimpleWidget(xtype, name, fieldName, fieldLabel, fieldDescription, isRequired, hideLabel,
+		SimpleWidget widget = new SimpleWidget(xtype, name, fieldName, fieldLabel, fieldDescription, isRequired, hideLabel,
 			additionalProperties, defaultValue);
+		
+		setListeners(widget,dialogFieldAnnotation.listeners());
+		
+		return widget;
 	}
 
 }

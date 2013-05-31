@@ -1,14 +1,15 @@
 package com.citytechinc.cq.component.dialog;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractDialogElement implements DialogElement {
-	private String primaryType;
-	private String nameSpace;
+	private final String primaryType;
+	private final String nameSpace;
 	private String fieldName;
-	private Map<String, String> additionalProperties;
+	private final Map<String, String> additionalProperties;
 	private List<? extends DialogElement> containedElements;
 	private double ranking;
 
@@ -54,5 +55,14 @@ public abstract class AbstractDialogElement implements DialogElement {
 
 	public double getRanking() {
 		return ranking;
+	}
+
+	public void setListeners(Listeners listeners) {
+		List<DialogElement> newElements = new ArrayList<DialogElement>();
+		if (containedElements != null) {
+			newElements.addAll(containedElements);
+		}
+		newElements.add(listeners);
+		containedElements = newElements;
 	}
 }

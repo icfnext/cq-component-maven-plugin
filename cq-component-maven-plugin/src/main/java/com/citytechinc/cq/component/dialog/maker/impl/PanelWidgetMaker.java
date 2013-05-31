@@ -6,8 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.plexus.util.StringUtils;
-
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -15,6 +13,8 @@ import javassist.CtField;
 import javassist.CtMember;
 import javassist.CtMethod;
 import javassist.NotFoundException;
+
+import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.widgets.Panel;
@@ -59,8 +59,12 @@ public class PanelWidgetMaker extends AbstractWidgetMaker {
 		List<DialogElement> widgetCollection = buildWidgetCollection(ctContainingClass, ctWidgetField, widgetField,
 			xtypeMap, xTypeToWidgetMakerMap, classLoader, classPool);
 
-		return new PanelWidget(collapseFirst, collapsible, collapsed, border, title, fieldLabel, fieldDescription,
+		PanelWidget widget = new PanelWidget(collapseFirst, collapsible, collapsed, border, title, fieldLabel, fieldDescription,
 			hideLabel, fieldName, additionalProperties, widgetCollection);
+		
+		setListeners(widget,dialogFieldAnnotation.listeners());
+		
+		return widget;
 	}
 
 	private List<DialogElement> buildWidgetCollection(CtClass componentClass, CtMember curField,

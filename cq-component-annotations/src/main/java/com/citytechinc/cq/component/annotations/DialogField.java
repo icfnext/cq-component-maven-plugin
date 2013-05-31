@@ -97,6 +97,8 @@ public @interface DialogField {
 	 * @return FieldProperty[]
 	 */
 	public FieldProperty[] additionalProperties() default {};
+	
+	public Listener[] listeners() default {};
 
 	public double ranking() default 0;
 }

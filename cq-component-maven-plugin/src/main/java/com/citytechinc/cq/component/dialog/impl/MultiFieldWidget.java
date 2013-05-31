@@ -20,7 +20,7 @@ public class MultiFieldWidget extends AbstractWidget {
 
 	public MultiFieldWidget(boolean orderable, String addItemLabel, String fieldLabel, String fieldDescription,
 		boolean allowBlank, boolean hideLabel, String defaultValue, String name, String fieldName,
-		Map<String, String> additionalProperties, List<? extends DialogElement> containedElements) {
+		Map<String, String> additionalProperties, List<DialogElement> containedElements) {
 		super(XTYPE, fieldLabel, fieldDescription, allowBlank, hideLabel, defaultValue, name, PRIMARY_TYPE, null,
 			fieldName, additionalProperties, containedElements);
 		this.orderable = orderable;

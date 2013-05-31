@@ -17,7 +17,6 @@ import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.factory.WidgetFactory;
 import com.citytechinc.cq.component.dialog.impl.MultiFieldWidget;
-
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;

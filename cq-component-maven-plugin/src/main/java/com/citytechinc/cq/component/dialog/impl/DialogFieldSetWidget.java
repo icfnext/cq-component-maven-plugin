@@ -22,7 +22,7 @@ public class DialogFieldSetWidget extends AbstractWidget {
 
 	public DialogFieldSetWidget(boolean collapseFirst, boolean collapsible, boolean collapsed, boolean border,
 		String title, String fieldLabel, String fieldDescription, boolean hideLabel, String fieldName,
-		Map<String, String> additionalProperties, List<? extends DialogElement> containedElements) {
+		Map<String, String> additionalProperties, List<DialogElement> containedElements) {
 		super(XTYPE, fieldLabel, fieldDescription, true, hideLabel, null, null, PRIMARY_TYPE, null, fieldName,
 			additionalProperties, containedElements);
 		this.collapseFirst = collapseFirst;

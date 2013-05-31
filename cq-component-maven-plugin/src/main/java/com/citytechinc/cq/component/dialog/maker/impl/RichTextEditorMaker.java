@@ -6,13 +6,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.plexus.util.StringUtils;
-
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMember;
 import javassist.NotFoundException;
+
+import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.widgets.RichTextEditor;
@@ -75,8 +75,12 @@ public class RichTextEditorMaker extends AbstractWidgetMaker {
 
 		final List<DialogElement> rtePlugins = buildRtePlugins(rteAnnotation);
 
-		return new RichTextEditorWidget(fieldLabel, fieldDescription, !isRequired, hideLabel, defaultValue, name,
+		RichTextEditorWidget widget = new RichTextEditorWidget(fieldLabel, fieldDescription, !isRequired, hideLabel, defaultValue, name,
 			fieldName, additionalProperties, rtePlugins);
+		
+		setListeners(widget,dialogFieldAnnotation.listeners());
+		
+		return widget;
 	}
 
 	private List<DialogElement> buildRtePlugins(RichTextEditor rteAnnotation) {

@@ -6,8 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.plexus.util.StringUtils;
-
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -15,6 +13,8 @@ import javassist.CtField;
 import javassist.CtMember;
 import javassist.CtMethod;
 import javassist.NotFoundException;
+
+import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.widgets.Selection;
@@ -78,8 +78,12 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 			optionsList = Arrays.asList(new DialogElement[] { new WidgetCollection(options, "options") });
 		}
 
-		return new SelectionWidget(selectionType, name, fieldLabel, fieldName, fieldDescription, isRequired, hideLabel,
+		SelectionWidget widget = new SelectionWidget(selectionType, name, fieldLabel, fieldName, fieldDescription, isRequired, hideLabel,
 			defaultValue, additionalProperties, optionsList, optionsUrl, optionsProvider, sortDir);
+		
+		setListeners(widget,dialogFieldAnnotation.listeners());
+		
+		return widget;
 
 	}
 

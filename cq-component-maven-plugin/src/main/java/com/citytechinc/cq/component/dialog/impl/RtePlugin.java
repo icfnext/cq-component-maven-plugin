@@ -25,7 +25,7 @@ public class RtePlugin extends AbstractDialogElement {
 
 	}
 
-	public RtePlugin(String fieldName, String features, List<? extends DialogElement> containedElements) {
+	public RtePlugin(String fieldName, String features, List<DialogElement> containedElements) {
 
 		super(PRIMARY_TYPE, null, fieldName, null, containedElements);
 

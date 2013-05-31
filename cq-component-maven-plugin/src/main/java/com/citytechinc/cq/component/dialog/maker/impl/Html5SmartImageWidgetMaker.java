@@ -3,11 +3,11 @@ package com.citytechinc.cq.component.dialog.maker.impl;
 import java.lang.reflect.AccessibleObject;
 import java.util.Map;
 
-import org.codehaus.plexus.util.StringUtils;
-
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMember;
+
+import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.widgets.Html5SmartImage;
@@ -84,10 +84,13 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
 		boolean disableZoom = smartImageAnnotation.disableZoom();
 		boolean allowUpload = smartImageAnnotation.allowUpload();
 
-		return new Html5SmartImageWidget(name, disableFlush, disableInfo, disableZoom, cropParameter,
+		Html5SmartImageWidget widget = new Html5SmartImageWidget(name, disableFlush, disableInfo, disableZoom, cropParameter,
 			fileNameParameter, fileReferenceParameter, mapParameter, rotateParameter, uploadUrl, ddGroups, allowUpload,
 			isRequired, hideLabel, fieldLabel, fieldName, fieldDescription, height, smartImageAnnotation.tab());
 
+		setListeners(widget,dialogFieldAnnotation.listeners());
+		
+		return widget;
 	}
 
 }

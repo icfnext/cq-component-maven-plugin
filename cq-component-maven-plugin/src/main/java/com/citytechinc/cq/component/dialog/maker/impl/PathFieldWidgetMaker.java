@@ -53,8 +53,12 @@ public class PathFieldWidgetMaker extends AbstractWidgetMaker {
 		String defaultValue = getDefaultValueForField(dialogFieldAnnotation);
 		boolean hideLabel = dialogFieldAnnotation.hideLabel();
 
-		return new PathFieldWidget(escapeAmp, hideTrigger, parBrowse, rootPath, rootTitle, showTitleInTree, fieldLabel,
+		PathFieldWidget widget = new PathFieldWidget(escapeAmp, hideTrigger, parBrowse, rootPath, rootTitle, showTitleInTree, fieldLabel,
 			fieldDescription, !isRequired, hideLabel, defaultValue, name, fieldName, additionalProperties);
+		
+		setListeners(widget,dialogFieldAnnotation.listeners());
+		
+		return widget;
 	}
 
 }

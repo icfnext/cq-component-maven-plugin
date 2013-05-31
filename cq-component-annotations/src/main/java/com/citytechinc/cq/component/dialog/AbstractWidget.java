@@ -4,13 +4,13 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractWidget extends AbstractDialogElement {
-	private String xtype;
-	private String fieldLabel;
-	private String fieldDescription;
-	private boolean allowBlank;
-	private String defaultValue;
-	private String name;
-	private boolean hideLabel;
+	private final String xtype;
+	private final String fieldLabel;
+	private final String fieldDescription;
+	private final boolean allowBlank;
+	private final String defaultValue;
+	private final String name;
+	private final boolean hideLabel;
 
 	public AbstractWidget(String xtype, String fieldLabel, String fieldDescription, boolean allowBlank,
 		boolean hideLabel, String defaultValue, String name, String primaryType, String nameSpace, String fieldName,

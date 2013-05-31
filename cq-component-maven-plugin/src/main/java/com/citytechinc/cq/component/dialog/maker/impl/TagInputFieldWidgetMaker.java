@@ -61,8 +61,12 @@ public class TagInputFieldWidgetMaker extends AbstractWidgetMaker {
 		String defaultValue = getDefaultValueForField(dialogFieldAnnotation);
 		boolean hideLabel = dialogFieldAnnotation.hideLabel();
 
-		return new TagInputFieldWidget(displayTitles, fieldLabel, fieldDescription, !isRequired, hideLabel,
+		TagInputFieldWidget widget = new TagInputFieldWidget(displayTitles, fieldLabel, fieldDescription, !isRequired, hideLabel,
 			defaultValue, name, fieldName, additionalProperties, widgetCollectionHolder);
+		
+		setListeners(widget,dialogFieldAnnotation.listeners());
+		
+		return widget;
 	}
 
 }

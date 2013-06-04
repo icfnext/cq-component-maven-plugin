@@ -59,11 +59,11 @@ public class DialogFieldSetWidgetMaker extends AbstractWidgetMaker {
 		List<DialogElement> widgetCollection = buildWidgetCollection(ctContainingClass, ctWidgetField, widgetField,
 			xtypeMap, xTypeToWidgetMakerMap, classLoader, classPool);
 
-		DialogFieldSetWidget widget = new DialogFieldSetWidget(collapseFirst, collapsible, collapsed, border, title, fieldLabel,
-			fieldDescription, hideLabel, fieldName, additionalProperties, widgetCollection);
-		
-		setListeners(widget,dialogFieldAnnotation.listeners());
-		
+		DialogFieldSetWidget widget = new DialogFieldSetWidget(collapseFirst, collapsible, collapsed, border, title,
+			fieldLabel, fieldDescription, hideLabel, fieldName, additionalProperties, widgetCollection);
+
+		setListeners(widget, dialogFieldAnnotation.listeners());
+
 		return widget;
 	}
 
@@ -94,7 +94,7 @@ public class DialogFieldSetWidgetMaker extends AbstractWidgetMaker {
 					mcTrueField = ComponentMojoUtil.getMethod(fieldClass, field.getName());
 				}
 				DialogElement builtFieldWidget = WidgetFactory.make(componentClass, field, mcTrueField,
-					classToXTypeMap, xTypeToWidgetMakerMap, classLoader, classPool, false, -1);
+					classToXTypeMap, xTypeToWidgetMakerMap, classLoader, classPool, true, -1);
 				elements.add(builtFieldWidget);
 			}
 		}

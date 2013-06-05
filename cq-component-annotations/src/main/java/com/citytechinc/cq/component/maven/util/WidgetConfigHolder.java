@@ -5,7 +5,7 @@ import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 
 /**
  * A container for the elements of configuration which define a Widget.
- * 
+ *
  * @see com.citytechinc.cq.component.annotations.config.Widget
  * @see com.citytechinc.cq.component.dialog.AbstractWidget
  * @see com.citytechinc.cq.component.dialog.maker.WidgetMaker
@@ -44,5 +44,13 @@ public class WidgetConfigHolder {
 
 	public int getRanking() {
 		return ranking;
+	}
+
+	public boolean hasMakerClass() {
+		return makerClass != null;
+	}
+
+	public boolean hasXtype() {
+		return xtype != null;
 	}
 }

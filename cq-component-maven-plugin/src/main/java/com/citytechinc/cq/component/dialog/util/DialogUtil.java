@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javassist.CannotCompileException;
@@ -32,10 +31,9 @@ import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldExcept
 import com.citytechinc.cq.component.dialog.exception.OutputFailureException;
 import com.citytechinc.cq.component.dialog.factory.DialogFactory;
 import com.citytechinc.cq.component.dialog.impl.Dialog;
-import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
+import com.citytechinc.cq.component.dialog.widget.impl.WidgetRegistryImpl;
 import com.citytechinc.cq.component.dialog.xml.DialogXmlWriter;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
-import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;
 
 public class DialogUtil {
 	private DialogUtil() {
@@ -44,7 +42,7 @@ public class DialogUtil {
 	/**
 	 * Writes a dialog.xml file, the path of which being based on the component
 	 * Class.
-	 * 
+	 *
 	 * @param dialog
 	 * @param componentClass
 	 * @return The written file
@@ -83,7 +81,7 @@ public class DialogUtil {
 	/**
 	 * Writes a provided dialog file to a provided archive output stream at a
 	 * path determined by the class of the component.
-	 * 
+	 *
 	 * @param dialogFile
 	 * @param componentClass
 	 * @param archiveStream
@@ -127,7 +125,7 @@ public class DialogUtil {
 	 * Dialog object for each one annotated with the Component annotation. Any
 	 * classes provided in the class list which are not thusly annotated are
 	 * ignored.
-	 * 
+	 *
 	 * @param classList
 	 * @param zipOutputStream
 	 * @param reservedNames
@@ -150,15 +148,16 @@ public class DialogUtil {
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 * @throws NoSuchMethodException
+	 * @throws InstantiationException
 	 */
 	public static List<Dialog> buildDialogsFromClassList(ComponentNameTransformer transformer, List<CtClass> classList,
-		ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames, Map<Class<?>, WidgetConfigHolder> xtypeMap,
-		Map<String, WidgetMaker> widgetMakerMap, ClassLoader classLoader, ClassPool classPool, File buildDirectory,
+		ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames, WidgetRegistryImpl widgetRegistry,
+		ClassLoader classLoader, ClassPool classPool, File buildDirectory,
 		String componentPathBase, String defaultComponentPathSuffix) throws InvalidComponentClassException,
 		InvalidComponentFieldException, OutputFailureException, IOException, ParserConfigurationException,
 		TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException,
 		NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException,
-		NoSuchMethodException {
+		NoSuchMethodException, InstantiationException {
 
 		final List<Dialog> dialogList = new ArrayList<Dialog>();
 
@@ -187,7 +186,7 @@ public class DialogUtil {
 				}
 				if (hasDialogField) {
 					ComponentMojoUtil.getLog().debug("Processing Component Class " + curClass);
-					Dialog builtDialog = DialogFactory.make(curClass, xtypeMap, widgetMakerMap, classLoader, classPool);
+					Dialog builtDialog = DialogFactory.make(curClass, widgetRegistry, classLoader, classPool);
 					dialogList.add(builtDialog);
 					File dialogFile = writeDialogToFile(transformer, builtDialog, curClass, buildDirectory,
 						componentPathBase, defaultComponentPathSuffix);

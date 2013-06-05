@@ -1,30 +1,21 @@
 package com.citytechinc.cq.component.dialog.factory;
 
-import java.lang.reflect.AccessibleObject;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.net.URI;
 import java.net.URL;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import javassist.CannotCompileException;
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtMember;
 import javassist.NotFoundException;
 
 import org.codehaus.plexus.util.StringUtils;
 
-import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
+import com.citytechinc.cq.component.dialog.field.DialogFieldMember;
 import com.citytechinc.cq.component.dialog.impl.MultiFieldWidget;
-import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 import com.citytechinc.cq.component.dialog.maker.impl.SimpleWidgetMaker;
+import com.citytechinc.cq.component.dialog.widget.WidgetRegistry;
 import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;
 
 public class WidgetFactory {
@@ -39,160 +30,54 @@ public class WidgetFactory {
 	private WidgetFactory() {
 	}
 
-	public static DialogElement make(CtClass componentClass, CtMember annotatedWidgetField,
-		AccessibleObject widgetField, Map<Class<?>, WidgetConfigHolder> classToXTypeMap,
-		Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool,
+	public static DialogElement make(DialogFieldMember dialogFieldMember,
 		boolean useDotSlashInName, int rankingCeiling) throws InvalidComponentFieldException, ClassNotFoundException,
-		CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
+		CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException, InstantiationException, IllegalAccessException {
 
-		DialogField propertyAnnotation = (DialogField) annotatedWidgetField.getAnnotation(DialogField.class);
+		WidgetMakerContext widgetMakerContext = getWidgetMakerForField(dialogFieldMember.getWidgetRegistry(), dialogFieldMember, rankingCeiling);
 
-		if (propertyAnnotation == null) {
-			throw new InvalidComponentFieldException();
-		}
-
-		String xtype = getXTypeForField(widgetField, annotatedWidgetField, propertyAnnotation, classToXTypeMap,
-			classLoader, classPool, rankingCeiling);
-
-		Class<?> containingClass = classLoader.loadClass(componentClass.getName());
-
-		if (!xTypeToWidgetMakerMap.containsKey(xtype)) {
-			return new SimpleWidgetMaker().make(xtype, widgetField, annotatedWidgetField, containingClass,
-				componentClass, classToXTypeMap, xTypeToWidgetMakerMap, classLoader, classPool, useDotSlashInName);
-		}
-
-		return xTypeToWidgetMakerMap.get(xtype).make(xtype, widgetField, annotatedWidgetField, containingClass,
-			componentClass, classToXTypeMap, xTypeToWidgetMakerMap, classLoader, classPool, useDotSlashInName);
+		return widgetMakerContext.getWidgetMaker().make(dialogFieldMember, widgetMakerContext.getXtype(), useDotSlashInName);
 
 	}
 
-	/**
-	 * <p>
-	 * Three mechanisms are employed in attempting to determine the xtype of a
-	 * particular field.
-	 * </p>
-	 * 
-	 * <ol>
-	 * <li>Declared xtype: If the xtype property of the DialogField annotation
-	 * is set, this xtype is used</li>
-	 * <li>Mapped Classes: If an xtype is defined explicitly for the class of
-	 * the field or if a stacked annotation is present to which an xtype is
-	 * mapped, this xtype is used</li>
-	 * <li>Guessed xtype: If mechanism 1 and 2 do not produce an xtype, a
-	 * guessed xtype may be provided for a number of simple xtypes.</li>
-	 * </ol>
-	 * 
-	 * <p>
-	 * If none of these mechanisms produce an xtype, an
-	 * InvalidComponentFieldException is thrown.
-	 * </p>
-	 * 
-	 * <p>
-	 * The following mapping is the basis for xtype guessing:
-	 * </p>
-	 * 
-	 * <ul>
-	 * <li>Numbers and primative numeric types -&gt; numberfield</li>
-	 * <li>String -&gt; textfield</li>
-	 * <li>URI and URL -&gt; pathfield</li>
-	 * <li>Enum -&gt; selection</li>
-	 * <li>List and Array -&gt; multifield</li>
-	 * </ul>
-	 * 
-	 * @param widgetField
-	 * @param ctWidgetField
-	 * @param propertyAnnotation
-	 * @param classToXTypeMap
-	 * @param classLoader
-	 * @param classPool
-	 * @return
-	 * @throws InvalidComponentFieldException
-	 * @throws CannotCompileException
-	 * @throws NotFoundException
-	 * @throws ClassNotFoundException
-	 */
-	private static final String getXTypeForField(AccessibleObject widgetField, CtMember ctWidgetField,
-		DialogField propertyAnnotation, Map<Class<?>, WidgetConfigHolder> classToXTypeMap, ClassLoader classLoader,
-		ClassPool classPool, int rankingCeiling) throws InvalidComponentFieldException, CannotCompileException,
-		NotFoundException, ClassNotFoundException {
+	private static final WidgetMakerContext getWidgetMakerForField(WidgetRegistry widgetRegistry, DialogFieldMember dialogFieldMember, int rankingCeiling) throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvalidComponentFieldException {
 
-		/*
-		 * Handle annotated xtypes
-		 * 
-		 */
+		WidgetConfigHolder widget = dialogFieldMember.getWidgetConfig(rankingCeiling);
 
-		Class<?> fieldClass = null;
-		if (widgetField instanceof Field) {
-			Field field = (Field) widgetField;
-			fieldClass = field.getType();
-		} else if (widgetField instanceof Method) {
-			Method method = (Method) widgetField;
-			fieldClass = method.getReturnType();
-		} else {
-			throw new InvalidComponentFieldException("Only methods and fields can be annotated");
+		if (widget != null && widget.hasMakerClass()) {
+			return new WidgetMakerContext(widget.getMakerClass().newInstance(), widget.getXtype());
 		}
 
-		/*
-		 * Handle custom types.
-		 * 
-		 * Custom types may be either Classes or Annotations.
-		 */
-		Set<WidgetConfigHolder> possibleMatches = new HashSet<WidgetConfigHolder>();
-		for (Class<?> curCustomClass : classToXTypeMap.keySet()) {
-			if (curCustomClass.isAnnotation()) {
+		if (widget != null && widget.hasXtype()) {
+			return new WidgetMakerContext(new SimpleWidgetMaker(), widget.getXtype());
+		}
 
-				if (ctWidgetField.hasAnnotation(curCustomClass)) {
-					WidgetConfigHolder widget = classToXTypeMap.get(curCustomClass);
-					if (isBelowRankingCeiling(rankingCeiling, widget)) {
-						possibleMatches.add(widget);
-					}
-				}
+		String xtype = getXTypeForField(dialogFieldMember, rankingCeiling);
 
-			} else if (curCustomClass.isAssignableFrom(fieldClass)) {
-				WidgetConfigHolder widget = classToXTypeMap.get(curCustomClass);
-				if (isBelowRankingCeiling(rankingCeiling, widget)) {
-					possibleMatches.add(widget);
-				}
-			}
+		if (StringUtils.isEmpty(xtype)) {
+			throw new InvalidComponentFieldException("An xtype could not be determined for the field {}"
+				+ dialogFieldMember.getName());
 		}
-		if (possibleMatches.size() > 0) {
-			return getMatchFromPossibleSet(possibleMatches).getXtype();
+
+		return new WidgetMakerContext(new SimpleWidgetMaker(), xtype);
+	}
+
+	private static final String getXTypeForField(DialogFieldMember field, Integer rankingCeiling) throws InvalidComponentFieldException {
+
+		if (StringUtils.isNotEmpty(field.getAnnotation().xtype())) {
+			return field.getAnnotation().xtype();
 		}
-		
-		/*
-		* The xtype property on the DialogField annotation takes precedence
-		* over all other mechanisms of determining xtype.
-		*/
-		String overrideXType = propertyAnnotation.xtype();
-		
-		if (StringUtils.isNotEmpty(overrideXType)) {
-			return overrideXType;
-		}
-		
+
 		/*
 		 * Handle standard types
 		 */
 
-		/*
-		 * numberfield
-		 */
-		if (Number.class.isAssignableFrom(fieldClass) || fieldClass.equals(int.class)
-			|| fieldClass.equals(double.class) || fieldClass.equals(float.class)) {
-			return NUMBERFIELD_XTYPE;
-		}
+		Class<?> fieldClass = field.getType();
 
-		/*
-		 * textfield
-		 */
-		if (fieldClass.equals(String.class)) {
-			return TEXTFIELD_XTYPE;
-		}
+		String simpleXType = getSimpleXTypeForClass(fieldClass);
 
-		/*
-		 * pathfield
-		 */
-		if (URI.class.isAssignableFrom(fieldClass) || URL.class.isAssignableFrom(fieldClass)) {
-			return PATHFIELD_XTYPE;
+		if (StringUtils.isNotEmpty(simpleXType)) {
+			return simpleXType;
 		}
 
 		/*
@@ -204,53 +89,40 @@ public class WidgetFactory {
 
 		if (List.class.isAssignableFrom(fieldClass) || fieldClass.isArray()) {
 
-			String simpleXtype = getInnerXTypeForField(widgetField, classToXTypeMap, rankingCeiling, fieldClass);
+			String simpleInnerXtype = getInnerXTypeForField(field, rankingCeiling);
 
-			if (simpleXtype == null) {
+			if (simpleInnerXtype == null) {
 				throw new InvalidComponentFieldException(
-					"Parameterized class for List is not of a supported type.  Currently supported types are numbers, strings, and links");
+					"Parameterized class for List is not of a supported type.  Currently supported types are numbers, strings, and uri/url");
 			}
 			if (rankingCeiling < MultiFieldWidget.RANKING) {
 				return MULTIFIELD_XTYPE;
 			} else {
-				return simpleXtype;
+				return simpleInnerXtype;
 			}
 
 		}
 
-		/*
-		 * If we could not determine an xtype, throw an exception
-		 */
-		throw new InvalidComponentFieldException("An xtype could not be determined for the field {}"
-			+ ctWidgetField.getName());
+		return null;
 	}
 
-	private static final String getInnerXTypeForField(AccessibleObject widgetField,
-		Map<Class<?>, WidgetConfigHolder> xtypeMap, int rankingCeiling, Class<?> fieldClass)
-		throws InvalidComponentFieldException {
+	private static final String getInnerXTypeForField(DialogFieldMember field, Integer rankingCeiling) throws InvalidComponentFieldException {
 
-		if (List.class.isAssignableFrom(fieldClass)) {
-			return getInnerXTypeForListField(widgetField, xtypeMap, rankingCeiling);
+		if (List.class.isAssignableFrom(field.getType())) {
+			return getInnerXTypeForListField(field);
 		}
-		if (fieldClass.isArray()) {
-			return getInnerXTypeForArrayField(widgetField, xtypeMap, rankingCeiling);
+		if (field.getType().isArray()) {
+			return getInnerXTypeForArrayField(field);
 		}
 
-		throw new InvalidComponentFieldException(
-			"List dialog property found with a paramaterized type count not equal to 1");
+		return null;
 
 	}
 
-	private static final String getInnerXTypeForListField(AccessibleObject widgetField,
-		Map<Class<?>, WidgetConfigHolder> xtypeMap, int rankingCeiling) throws InvalidComponentFieldException {
-		ParameterizedType parameterizedType = null;
-		if (widgetField instanceof Field) {
-			Field field = (Field) widgetField;
-			parameterizedType = (ParameterizedType) field.getGenericType();
-		} else {
-			Method method = (Method) widgetField;
-			parameterizedType = (ParameterizedType) method.getGenericReturnType();
-		}
+
+	private static final String getInnerXTypeForListField(DialogFieldMember field) throws InvalidComponentFieldException {
+
+		ParameterizedType parameterizedType = field.getParameterizedType();
 
 		if (parameterizedType.getActualTypeArguments().length == 0
 			|| parameterizedType.getActualTypeArguments().length > 1) {
@@ -258,62 +130,35 @@ public class WidgetFactory {
 				"List dialog property found with a paramaterized type count not equal to 1");
 		}
 
-		String simpleXtype = getSimpleXTypeForClass((Class<?>) parameterizedType.getActualTypeArguments()[0], xtypeMap,
-			rankingCeiling);
+		return getSimpleXTypeForClass((Class<?>) parameterizedType.getActualTypeArguments()[0]);
 
-		return simpleXtype;
 	}
 
-	private static final String getInnerXTypeForArrayField(AccessibleObject widgetField,
-		Map<Class<?>, WidgetConfigHolder> xtypeMap, int rankingCeiling) {
-		Class<?> fieldClass = null;
-		if (widgetField instanceof Field) {
-			Field field = (Field) widgetField;
-			fieldClass = field.getType();
-		} else {
-			Method method = (Method) widgetField;
-			fieldClass = method.getReturnType();
-		}
-
-		return getSimpleXTypeForClass(fieldClass.getComponentType(), xtypeMap, rankingCeiling);
+	private static final String getInnerXTypeForArrayField(DialogFieldMember field) {
+		return getSimpleXTypeForClass(field.getType());
 	}
 
-	private static final String getSimpleXTypeForClass(Class<?> fieldClass, Map<Class<?>, WidgetConfigHolder> xtypeMap,
-		int rankingCeiling) {
-
-		/*
-		 * Handle custom types
-		 */
-		Set<WidgetConfigHolder> possibleMatches = new HashSet<WidgetConfigHolder>();
-		for (Class<?> curCustomClass : xtypeMap.keySet()) {
-			WidgetConfigHolder widget = xtypeMap.get(curCustomClass);
-			if (curCustomClass.isAssignableFrom(fieldClass) && isBelowRankingCeiling(rankingCeiling, widget)) {
-				possibleMatches.add(widget);
-			}
-		}
-		if (possibleMatches.size() > 0) {
-			return getMatchFromPossibleSet(possibleMatches).getXtype();
-		}
+	private static final String getSimpleXTypeForClass(Class<?> clazz) {
 
 		/*
 		 * numberfield
 		 */
-		if (Number.class.isAssignableFrom(fieldClass) || fieldClass.equals(int.class)
-			|| fieldClass.equals(double.class) || fieldClass.equals(float.class)) {
+		if (Number.class.isAssignableFrom(clazz) || clazz.equals(int.class)
+			|| clazz.equals(double.class) || clazz.equals(float.class)) {
 			return NUMBERFIELD_XTYPE;
 		}
 
 		/*
 		 * textfield
 		 */
-		if (fieldClass.equals(String.class)) {
+		if (clazz.equals(String.class)) {
 			return TEXTFIELD_XTYPE;
 		}
 
 		/*
 		 * pathfield
 		 */
-		if (URI.class.isAssignableFrom(fieldClass) || URL.class.isAssignableFrom(fieldClass)) {
+		if (URI.class.isAssignableFrom(clazz) || URL.class.isAssignableFrom(clazz)) {
 			return PATHFIELD_XTYPE;
 		}
 
@@ -321,17 +166,5 @@ public class WidgetFactory {
 
 	}
 
-	private static final boolean isBelowRankingCeiling(int rankingCeiling, WidgetConfigHolder widget) {
-		return !(rankingCeiling > 0 && widget.getRanking() >= rankingCeiling);
-	}
 
-	private static final WidgetConfigHolder getMatchFromPossibleSet(Set<WidgetConfigHolder> possibleMatches) {
-		WidgetConfigHolder match = null;
-		for (WidgetConfigHolder possibleMatch : possibleMatches) {
-			if (match == null || match.getRanking() < possibleMatch.getRanking()) {
-				match = possibleMatch;
-			}
-		}
-		return match;
-	}
 }

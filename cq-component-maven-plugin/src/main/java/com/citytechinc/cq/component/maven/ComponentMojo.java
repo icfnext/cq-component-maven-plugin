@@ -4,10 +4,10 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
-import javax.naming.ConfigurationException;
-
 import javassist.ClassPool;
 import javassist.CtClass;
+
+import javax.naming.ConfigurationException;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -20,10 +20,9 @@ import org.apache.maven.project.MavenProject;
 import org.reflections.Reflections;
 
 import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
-import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
+import com.citytechinc.cq.component.dialog.widget.impl.WidgetRegistryImpl;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 import com.citytechinc.cq.component.maven.util.LogSingleton;
-import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;
 
 @Mojo(name = "component", defaultPhase = LifecyclePhase.PACKAGE, requiresDependencyResolution = ResolutionScope.COMPILE)
 public class ComponentMojo extends AbstractMojo {
@@ -58,13 +57,7 @@ public class ComponentMojo extends AbstractMojo {
 
 			List<CtClass> classList = ComponentMojoUtil.getAllComponentAnnotations(classPool, reflections);
 
-			List<WidgetConfigHolder> widgetConfigs = ComponentMojoUtil.getAllWidgetAnnotations(classPool, classLoader,
-				reflections);
-
-			Map<Class<?>, WidgetConfigHolder> classToXTypeMap = ComponentMojoUtil
-				.getXTypeMapForCustomXTypeMapping(widgetConfigs);
-
-			Map<String, WidgetMaker> xTypeToWidgetMakerMap = ComponentMojoUtil.getXTypeToWidgetMakerMap(widgetConfigs);
+			WidgetRegistryImpl widgetRegistry = new WidgetRegistryImpl(classPool, classLoader, reflections);
 
 			Map<String, ComponentNameTransformer> transformers = ComponentMojoUtil.getAllTransformers(classPool,
 				reflections);
@@ -75,7 +68,7 @@ public class ComponentMojo extends AbstractMojo {
 				throw new ConfigurationException("The configured transformer wasn't found");
 			}
 
-			ComponentMojoUtil.buildArchiveFileForProjectAndClassList(classList, classToXTypeMap, xTypeToWidgetMakerMap,
+			ComponentMojoUtil.buildArchiveFileForProjectAndClassList(classList, widgetRegistry,
 				classLoader, classPool, new File(project.getBuild().getDirectory()), componentPathBase,
 				componentPathSuffix, defaultComponentGroup, getArchiveFileForProject(), getTempArchiveFileForProject(),
 				transformer);

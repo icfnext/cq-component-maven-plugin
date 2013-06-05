@@ -8,8 +8,12 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.CLASS)
 @Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface MultiField {
-	String addItemLabel() default "Add Item";
 
-	boolean orderable() default true;
+	public static final String ADD_ITEM_LABEL_DEFAULT = "Add Item";
+	public static final boolean ORDERABLE_DEFAULT = true;
+
+	String addItemLabel() default ADD_ITEM_LABEL_DEFAULT;
+
+	boolean orderable() default ORDERABLE_DEFAULT;
 
 }

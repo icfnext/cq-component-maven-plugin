@@ -1,60 +1,72 @@
 package com.citytechinc.cq.component.dialog.maker.impl;
 
-import java.lang.reflect.AccessibleObject;
 import java.util.Map;
 
-import javassist.CannotCompileException;
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtMember;
-import javassist.NotFoundException;
-
-import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.widgets.NumberField;
 import com.citytechinc.cq.component.dialog.DialogElement;
-import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
+import com.citytechinc.cq.component.dialog.field.DialogFieldMember;
 import com.citytechinc.cq.component.dialog.impl.NumberFieldWidget;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
-import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
-import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;
 
 public class NumberFieldMaker extends AbstractWidgetMaker {
 
-	@Override
-	public DialogElement make(String xtype, AccessibleObject widgetField, CtMember ctWidgetField,
-		Class<?> containingClass, CtClass ctContainingClass, Map<Class<?>, WidgetConfigHolder> xtypeMap,
-		Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool,
-		boolean useDotSlashInName) throws ClassNotFoundException, InvalidComponentFieldException,
-		CannotCompileException, NotFoundException {
-		NumberField numberFieldAnnotation = (NumberField) ctWidgetField.getAnnotation(NumberField.class);
-		DialogField dialogFieldAnnotation = (DialogField) ctWidgetField.getAnnotation(DialogField.class);
+	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName) throws ClassNotFoundException {
 
-		boolean allowDecimals = true;
-		boolean allowNegative = true;
-		int decimalPrecision = 2;
-		String decimalSeparator = ".";
-		if (numberFieldAnnotation != null) {
-			allowDecimals = numberFieldAnnotation.allowDecimals();
-			allowNegative = numberFieldAnnotation.allowNegative();
-			decimalPrecision = numberFieldAnnotation.decimalPrecision();
-			decimalSeparator = numberFieldAnnotation.decimalSeparator();
-		}
+		NumberField numberFieldAnnotation = field.getAnnotation(NumberField.class);
 
-		String name = getNameForField(dialogFieldAnnotation, widgetField, useDotSlashInName);
-		String fieldName = getFieldNameForField(dialogFieldAnnotation, widgetField);
-		String fieldLabel = getFieldLabelForField(dialogFieldAnnotation, widgetField);
-		String fieldDescription = getFieldDescriptionForField(dialogFieldAnnotation);
-		Boolean isRequired = getIsRequiredForField(dialogFieldAnnotation);
-		Map<String, String> additionalProperties = getAdditionalPropertiesForField(dialogFieldAnnotation);
-		String defaultValue = getDefaultValueForField(dialogFieldAnnotation);
-		boolean hideLabel = dialogFieldAnnotation.hideLabel();
+		String name = getNameForField(field, useDotSlashInName);
+		String fieldName = getFieldNameForField(field);
+		String fieldLabel = getFieldLabelForField(field);
+		String fieldDescription = getFieldDescriptionForField(field);
+		Boolean isRequired = getIsRequiredForField(field);
+		Map<String, String> additionalProperties = getAdditionalPropertiesForField(field);
+		String defaultValue = getDefaultValueForField(field);
+		boolean hideLabel = getHideLabelForField(field);
+
+		boolean allowDecimals = getAllowDecimalsForField(numberFieldAnnotation);
+		boolean allowNegative = getAllowNegativeForField(numberFieldAnnotation);
+		int decimalPrecision = getDecimalPrecisionForField(numberFieldAnnotation);
+		String decimalSeparator = getDecimalSeparatorForField(numberFieldAnnotation);
 
 		NumberFieldWidget widget = new NumberFieldWidget(allowDecimals, allowNegative, decimalPrecision, decimalSeparator, fieldLabel,
 			fieldDescription, !isRequired, hideLabel, defaultValue, name, fieldName, additionalProperties);
-		
-		setListeners(widget,dialogFieldAnnotation.listeners());
-		
+
+		setListeners(widget, field.getAnnotation().listeners());
+
 		return widget;
+
+	}
+
+	protected boolean getAllowDecimalsForField(NumberField annotation) {
+		if (annotation != null) {
+			return annotation.allowDecimals();
+		}
+
+		return NumberField.ALLOW_DECIMALS_DEFAULT;
+	}
+
+	protected boolean getAllowNegativeForField(NumberField annotation) {
+		if (annotation != null) {
+			return annotation.allowNegative();
+		}
+
+		return NumberField.ALLOW_NEGATIVE_DEFAULT;
+	}
+
+	protected int getDecimalPrecisionForField(NumberField annotation) {
+		if (annotation != null) {
+			return annotation.decimalPrecision();
+		}
+
+		return NumberField.DECIMAL_PRECISION_DEFAULT;
+	}
+
+	protected String getDecimalSeparatorForField(NumberField annotation) {
+		if (annotation != null) {
+			return annotation.decimalSeparator();
+		}
+
+		return NumberField.DECIMAL_SEPARATOR_DEFAULT;
 	}
 
 }

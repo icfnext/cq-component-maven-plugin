@@ -1,44 +1,28 @@
 package com.citytechinc.cq.component.dialog.maker.impl;
 
-import java.lang.reflect.AccessibleObject;
 import java.util.Map;
-
-import javassist.CannotCompileException;
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtMember;
-import javassist.NotFoundException;
 
 import org.codehaus.plexus.util.StringUtils;
 
-import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.widgets.Html5SmartFile;
 import com.citytechinc.cq.component.dialog.DialogElement;
-import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
+import com.citytechinc.cq.component.dialog.field.DialogFieldMember;
 import com.citytechinc.cq.component.dialog.impl.Html5SmartFileWidget;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
-import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
-import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;
 
 public class Html5SmartFileWidgetMaker extends AbstractWidgetMaker {
 
-	@Override
-	public DialogElement make(String xtype, AccessibleObject widgetField, CtMember ctWidgetField,
-		Class<?> containingClass, CtClass ctContainingClass, Map<Class<?>, WidgetConfigHolder> xtypeMap,
-		Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool,
-		boolean useDotSlashInName) throws ClassNotFoundException, InvalidComponentFieldException,
-		CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
+	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName) throws ClassNotFoundException {
 
-		Html5SmartFile smartFileAnnotation = (Html5SmartFile) ctWidgetField.getAnnotation(Html5SmartFile.class);
-		DialogField dialogFieldAnnotation = (DialogField) ctWidgetField.getAnnotation(DialogField.class);
+		Html5SmartFile smartFileAnnotation = field.getAnnotation(Html5SmartFile.class);
 
-		String name = getNameForField(smartFileAnnotation, dialogFieldAnnotation, widgetField, useDotSlashInName);
-		String fieldName = getFieldNameForField(dialogFieldAnnotation, widgetField);
-		String fieldLabel = getFieldLabelForField(dialogFieldAnnotation, widgetField);
-		String fieldDescription = getFieldDescriptionForField(dialogFieldAnnotation);
-		Boolean isRequired = getIsRequiredForField(dialogFieldAnnotation);
-		Map<String, String> additionalProperties = getAdditionalPropertiesForField(dialogFieldAnnotation);
-		boolean hideLabel = dialogFieldAnnotation.hideLabel();
+		String name = getNameForField(smartFileAnnotation, field, useDotSlashInName);
+		String fieldName = getFieldNameForField(field);
+		String fieldLabel = getFieldLabelForField(field);
+		String fieldDescription = getFieldDescriptionForField(field);
+		Boolean isRequired = getIsRequiredForField(field);
+		Map<String, String> additionalProperties = getAdditionalPropertiesForField(field);
+		boolean hideLabel = getHideLabelForField(field);
 
 		boolean allowFileNameEditing = getAllowFileNameEditingForField(smartFileAnnotation);
 		boolean allowFileReference = getAllowFileReferenceForField(smartFileAnnotation);
@@ -54,10 +38,11 @@ public class Html5SmartFileWidgetMaker extends AbstractWidgetMaker {
 		Html5SmartFileWidget widget= new Html5SmartFileWidget(fieldLabel, fieldDescription, !isRequired, hideLabel, name, fieldName,
 			additionalProperties, allowFileNameEditing, allowFileReference, allowUpload, ddAccept, ddGroups,
 			fileNameParameter, fileReferenceParameter, mimeTypes, mimeTypesDescription, sizeLimit);
-		
-		setListeners(widget,dialogFieldAnnotation.listeners());
-		
+
+		setListeners(widget, field.getAnnotation().listeners());
+
 		return widget;
+
 	}
 
 	private int getSizeLimitForField(Html5SmartFile smartFileAnnotation) {
@@ -112,12 +97,11 @@ public class Html5SmartFileWidgetMaker extends AbstractWidgetMaker {
 		return smartFileAnnotation.allowFileNameEditing();
 	}
 
-	private String getNameForField(Html5SmartFile smartFileAnnotation, DialogField dialogFieldAnnotation,
-		AccessibleObject widgetField, boolean useDotSlashInName) {
+	private String getNameForField(Html5SmartFile smartFileAnnotation, DialogFieldMember field, boolean useDotSlashInName) {
 		if (StringUtils.isNotEmpty(smartFileAnnotation.name())) {
 			return smartFileAnnotation.name();
 		}
-		return getNameForField(dialogFieldAnnotation, widgetField, useDotSlashInName);
+		return getNameForField(field, useDotSlashInName);
 	}
 
 }

@@ -1,64 +1,90 @@
 package com.citytechinc.cq.component.dialog.maker.impl;
 
-import java.lang.reflect.AccessibleObject;
 import java.util.Map;
 
-import javassist.CannotCompileException;
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtMember;
-import javassist.NotFoundException;
-
-import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.widgets.PathField;
 import com.citytechinc.cq.component.dialog.DialogElement;
-import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
+import com.citytechinc.cq.component.dialog.field.DialogFieldMember;
 import com.citytechinc.cq.component.dialog.impl.PathFieldWidget;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
-import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
-import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;
 
 public class PathFieldWidgetMaker extends AbstractWidgetMaker {
 
-	@Override
-	public DialogElement make(String xtype, AccessibleObject widgetField, CtMember ctWidgetField,
-		Class<?> containingClass, CtClass ctContainingClass, Map<Class<?>, WidgetConfigHolder> xtypeMap,
-		Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool,
-		boolean useDotSlashInName) throws ClassNotFoundException, InvalidComponentFieldException,
-		CannotCompileException, NotFoundException {
-		PathField pathFieldAnnotation = (PathField) ctWidgetField.getAnnotation(PathField.class);
-		DialogField dialogFieldAnnotation = (DialogField) ctWidgetField.getAnnotation(DialogField.class);
+	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName) throws ClassNotFoundException {
 
-		boolean escapeAmp = false;
-		boolean hideTrigger = false;
-		boolean parBrowse = false;
-		String rootPath = "/";
-		String rootTitle = "Websites";
-		boolean showTitleInTree = true;
-		if (pathFieldAnnotation != null) {
-			escapeAmp = pathFieldAnnotation.escapeAmp();
-			hideTrigger = pathFieldAnnotation.hideTrigger();
-			parBrowse = pathFieldAnnotation.parBrowse();
-			rootPath = pathFieldAnnotation.rootPath();
-			rootTitle = pathFieldAnnotation.rootTitle();
-			showTitleInTree = pathFieldAnnotation.showTitleInTree();
-		}
+		PathField pathFieldAnnotation = field.getAnnotation(PathField.class);
 
-		String name = getNameForField(dialogFieldAnnotation, widgetField, useDotSlashInName);
-		String fieldName = getFieldNameForField(dialogFieldAnnotation, widgetField);
-		String fieldLabel = getFieldLabelForField(dialogFieldAnnotation, widgetField);
-		String fieldDescription = getFieldDescriptionForField(dialogFieldAnnotation);
-		Boolean isRequired = getIsRequiredForField(dialogFieldAnnotation);
-		Map<String, String> additionalProperties = getAdditionalPropertiesForField(dialogFieldAnnotation);
-		String defaultValue = getDefaultValueForField(dialogFieldAnnotation);
-		boolean hideLabel = dialogFieldAnnotation.hideLabel();
+		String name = getNameForField(field, useDotSlashInName);
+		String fieldName = getFieldNameForField(field);
+		String fieldLabel = getFieldLabelForField(field);
+		String fieldDescription = getFieldDescriptionForField(field);
+		Boolean isRequired = getIsRequiredForField(field);
+		Map<String, String> additionalProperties = getAdditionalPropertiesForField(field);
+		String defaultValue = getDefaultValueForField(field);
+		boolean hideLabel = getHideLabelForField(field);
+
+		boolean escapeAmp = getEscapeAmpForField(pathFieldAnnotation);
+		boolean hideTrigger = getHideTriggerForField(pathFieldAnnotation);
+		boolean parBrowse = getParBrowseForField(pathFieldAnnotation);
+		String rootPath = getRootPathForField(pathFieldAnnotation);
+		String rootTitle = getRootTitleForField(pathFieldAnnotation);
+		boolean showTitleInTree = getShowTitleInTreeForField(pathFieldAnnotation);
 
 		PathFieldWidget widget = new PathFieldWidget(escapeAmp, hideTrigger, parBrowse, rootPath, rootTitle, showTitleInTree, fieldLabel,
 			fieldDescription, !isRequired, hideLabel, defaultValue, name, fieldName, additionalProperties);
-		
-		setListeners(widget,dialogFieldAnnotation.listeners());
-		
+
+		setListeners(widget, field.getAnnotation().listeners());
+
 		return widget;
+
+	}
+
+	protected boolean getEscapeAmpForField(PathField annotation) {
+		if (annotation != null) {
+			return annotation.escapeAmp();
+		}
+
+		return PathField.ESCAPE_AMP_DEFAULT;
+	}
+
+	protected boolean getHideTriggerForField(PathField annotation) {
+		if (annotation != null) {
+			return annotation.hideTrigger();
+		}
+
+		return PathField.HIDE_TRIGGER_DEFAULT;
+	}
+
+	protected boolean getParBrowseForField(PathField annotation) {
+		if (annotation != null) {
+			return annotation.parBrowse();
+		}
+
+		return PathField.PAR_BROWSE_DEFAULT;
+	}
+
+	protected String getRootPathForField(PathField annotation) {
+		if (annotation != null) {
+			return annotation.rootPath();
+		}
+
+		return PathField.ROOT_PATH_DEFAULT;
+	}
+
+	protected String getRootTitleForField(PathField annotation) {
+		if (annotation != null) {
+			return annotation.rootTitle();
+		}
+
+		return PathField.ROOT_TITLE_DEFAULT;
+	}
+
+	protected boolean getShowTitleInTreeForField(PathField annotation) {
+		if (annotation != null) {
+			return annotation.showTitleInTree();
+		}
+
+		return PathField.SHOW_TITLE_IN_TREE_DEFAULT;
 	}
 
 }

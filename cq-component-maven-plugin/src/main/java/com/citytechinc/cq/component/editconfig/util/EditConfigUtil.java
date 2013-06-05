@@ -33,7 +33,7 @@ public class EditConfigUtil {
 	/**
 	 * Writes a provided file to a provided archive output stream at a path
 	 * determined by the class of the component.
-	 * 
+	 *
 	 * @param editConfigFile
 	 * @param componentClass
 	 * @param archiveStream
@@ -73,7 +73,7 @@ public class EditConfigUtil {
 	 * Determines the name of the edit config file to be written and writes the
 	 * the edit config xml which the provided EditConfig object represents to
 	 * that determined file.
-	 * 
+	 *
 	 * @param editConfig
 	 * @param componentClass
 	 * @return The file written
@@ -107,7 +107,7 @@ public class EditConfigUtil {
 	 * For each class in the provided classList which is annotated with a
 	 * Component annotation, an EditConfig object is built and added to the
 	 * returned list. Classes which are not thusly annotated are ignored.
-	 * 
+	 *
 	 * @param classList
 	 * @param zipOutputStream
 	 * @param reservedNames

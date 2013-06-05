@@ -54,6 +54,7 @@ import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassExcept
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.exception.OutputFailureException;
 import com.citytechinc.cq.component.dialog.util.DialogUtil;
+import com.citytechinc.cq.component.dialog.widget.impl.WidgetRegistryImpl;
 import com.citytechinc.cq.component.editconfig.util.EditConfigUtil;
 
 public class ComponentMojoUtil {
@@ -70,7 +71,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Constructs a Class Loader based on a list of paths to classes and a
 	 * parent Class Loader
-	 * 
+	 *
 	 * @param paths
 	 * @param mojoClassLoader
 	 * @return The constructed ClassLoader
@@ -96,7 +97,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Constructs as Javassist ClassPool which pulls resources based on the
 	 * paths provided by the passed in ClassLoader
-	 * 
+	 *
 	 * @param classLoader
 	 * @return The constructed ClassPool
 	 * @throws NotFoundException
@@ -107,54 +108,9 @@ public class ComponentMojoUtil {
 	}
 
 	/**
-	 * Given a set of configured xtype mappings, construct a mapping from Class
-	 * objects to xtype Strings
-	 * 
-	 * @param classLoader
-	 * @param xtypeMappings
-	 * @return The constructed mapping
-	 * 
-	 * @throws ClassNotFoundException
-	 */
-	public static Map<Class<?>, WidgetConfigHolder> getXTypeMapForCustomXTypeMapping(
-		List<WidgetConfigHolder> widgetConfigs) throws ClassNotFoundException {
-		Map<Class<?>, WidgetConfigHolder> retMap = new HashMap<Class<?>, WidgetConfigHolder>();
-
-		for (WidgetConfigHolder widgetConfig : widgetConfigs) {
-			if (widgetConfig.getAnnotationClass() != null) {
-				retMap.put(widgetConfig.getAnnotationClass(), widgetConfig);
-
-			}
-		}
-
-		return retMap;
-	}
-
-	/**
-	 * Transforms a List of WidgetConfigHolders into a mapping between xtypes
-	 * and WidgetMakers
-	 * 
-	 * @param widgetConfigs
-	 * @return Mapping from xtype to WidgetMaker
-	 * @throws InstantiationException
-	 * @throws IllegalAccessException
-	 * @throws ClassNotFoundException
-	 */
-	public static Map<String, WidgetMaker> getXTypeToWidgetMakerMap(List<WidgetConfigHolder> widgetConfigs)
-		throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-		Map<String, WidgetMaker> xTypeToWidgetMakerMap = new HashMap<String, WidgetMaker>();
-
-		for (WidgetConfigHolder widgetConfig : widgetConfigs) {
-			xTypeToWidgetMakerMap.put(widgetConfig.getXtype(), widgetConfig.getMakerClass().newInstance());
-		}
-
-		return xTypeToWidgetMakerMap;
-	}
-
-	/**
 	 * Constructs a fully qualified class name based on the path to the class
 	 * file
-	 * 
+	 *
 	 * @param filePath
 	 * @param rootPath
 	 * @return The constructed class name
@@ -183,7 +139,7 @@ public class ComponentMojoUtil {
 	 * Add files to the already constructed Archive file by creating a new
 	 * Archive file, appending the contents of the existing Archive file to it,
 	 * and then adding additional entries for the newly constructed artifacts.
-	 * 
+	 *
 	 * @param classList
 	 * @param xtypeMap
 	 * @param classLoader
@@ -209,16 +165,17 @@ public class ComponentMojoUtil {
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 * @throws NoSuchMethodException
+	 * @throws InstantiationException
 	 */
 	public static void buildArchiveFileForProjectAndClassList(List<CtClass> classList,
-		Map<Class<?>, WidgetConfigHolder> xtypeMap, Map<String, WidgetMaker> widgetMakerMap, ClassLoader classLoader,
+		WidgetRegistryImpl widgetRegistry, ClassLoader classLoader,
 		ClassPool classPool, File buildDirectory, String componentPathBase, String defaultComponentPathSuffix,
 		String defaultComponentGroup, File existingArchiveFile, File tempArchiveFile,
 		ComponentNameTransformer transformer) throws OutputFailureException, IOException,
 		InvalidComponentClassException, InvalidComponentFieldException, ParserConfigurationException,
 		TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException,
 		NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException,
-		NoSuchMethodException {
+		NoSuchMethodException, InstantiationException {
 
 		if (!existingArchiveFile.exists()) {
 			throw new OutputFailureException("Archive file does not exist");
@@ -267,7 +224,7 @@ public class ComponentMojoUtil {
 		 * Create Dialogs within temp archive
 		 */
 		DialogUtil.buildDialogsFromClassList(transformer, classList, tempOutputStream, existingArchiveEntryNames,
-			xtypeMap, widgetMakerMap, classLoader, classPool, buildDirectory, componentPathBase,
+			widgetRegistry, classLoader, classPool, buildDirectory, componentPathBase,
 			defaultComponentPathSuffix);
 
 		/*
@@ -292,7 +249,7 @@ public class ComponentMojoUtil {
 	 * Constructs a list of Content objects representing .content.xml files from
 	 * a list of Classes. For each Class annotated with a Component annotation a
 	 * Content object is constructed.
-	 * 
+	 *
 	 * @param classList
 	 * @param zipOutputStream
 	 * @param reservedNames
@@ -340,7 +297,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Finds and retrieves the constructed CQ Package archive file for the
 	 * project
-	 * 
+	 *
 	 * @param project
 	 * @return The archive file found for the project
 	 */
@@ -357,7 +314,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Create a temporary archive file which will live alongside the constructed
 	 * project CQ5 Package archive.
-	 * 
+	 *
 	 * @param project
 	 * @return The temporary archive file
 	 */
@@ -374,7 +331,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Determine the appropriate output directory for a component's artifacts
 	 * based on the component class as well as POM configuration.
-	 * 
+	 *
 	 * @param componentClass
 	 * @param project
 	 * @param componentPathBase
@@ -405,7 +362,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Deletes the temporary output directory which is created as part of the
 	 * build process to temporarily hold the generated files for components.
-	 * 
+	 *
 	 * @param buildDirectory
 	 * @throws IOException
 	 */
@@ -420,7 +377,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Determines the suffix portion of the path leading to the artifacts of a
 	 * particular component
-	 * 
+	 *
 	 * @param componentClass
 	 * @param defaultComponentPathSuffix
 	 * @return The determined suffix
@@ -444,7 +401,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Determines the name of the component class for use in constructing file
 	 * paths
-	 * 
+	 *
 	 * @param componentClass
 	 * @return The determined name
 	 * @throws ClassNotFoundException
@@ -467,7 +424,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Constructs a list of widget configurations based on the information
 	 * provided by classes annotated as Widgets.
-	 * 
+	 *
 	 * @param classPool
 	 * @param classLoader
 	 * @param reflections
@@ -511,7 +468,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Retrieves a List of all classes which are annotated as Components and are
 	 * within the scope of the provided Reflections purview.
-	 * 
+	 *
 	 * @param classPool
 	 * @param reflections
 	 * @return A List of classes annotated as Components
@@ -532,7 +489,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Retrieves a List of all classes which are annotated as Transformers and
 	 * are within the scope of the provided Reflections purview.
-	 * 
+	 *
 	 * @param classPool
 	 * @param reflections
 	 * @return A Map of transformer names to transformers
@@ -561,7 +518,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Constructs a list of all fields contained in the provided CtClass and any
 	 * of its parent classes.
-	 * 
+	 *
 	 * @param ctClass
 	 * @return The constructed list of fields
 	 * @throws NotFoundException
@@ -588,7 +545,7 @@ public class ComponentMojoUtil {
 	 * fields, the class hierarchy is traversed upwards starting at the provided
 	 * class. If the top of the hierarchy is reached without finding a field of
 	 * the specified name, null is returned.
-	 * 
+	 *
 	 * @param clazz
 	 * @param fieldName
 	 * @return The Field specified by the provided name or null if no such field
@@ -616,7 +573,7 @@ public class ComponentMojoUtil {
 
 	/**
 	 * Retrieves a Method for a Class.
-	 * 
+	 *
 	 * @param clazz
 	 * @param fieldName
 	 * @return The Method specified by the provided name or null if no such
@@ -635,7 +592,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Constructs a Reflections object suitable for reflecting on classes
 	 * accessible via the provided ClassLoader
-	 * 
+	 *
 	 * @param classLoader The ClassLoader containing classes to be reflected
 	 *            upon
 	 * @return The constructed Reflections object
@@ -649,7 +606,7 @@ public class ComponentMojoUtil {
 
 	/**
 	 * Changes a class name into a human readable string by adding spaces
-	 * 
+	 *
 	 * @param className The class name to transform upon
 	 * @return The transformed string
 	 */

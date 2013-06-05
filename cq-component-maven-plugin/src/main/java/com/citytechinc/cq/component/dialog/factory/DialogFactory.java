@@ -1,6 +1,5 @@
 package com.citytechinc.cq.component.dialog.factory;
 
-import java.lang.reflect.AccessibleObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -10,7 +9,6 @@ import java.util.Map;
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
-import javassist.CtField;
 import javassist.CtMember;
 import javassist.NotFoundException;
 
@@ -21,23 +19,22 @@ import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
+import com.citytechinc.cq.component.dialog.field.impl.DialogFieldMemberImpl;
 import com.citytechinc.cq.component.dialog.impl.Dialog;
 import com.citytechinc.cq.component.dialog.impl.Html5SmartImageWidget;
 import com.citytechinc.cq.component.dialog.impl.Tab;
 import com.citytechinc.cq.component.dialog.impl.WidgetCollection;
-import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
+import com.citytechinc.cq.component.dialog.widget.impl.WidgetRegistryImpl;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
-import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;
 
 public class DialogFactory {
 
 	private DialogFactory() {
 	}
 
-	public static Dialog make(CtClass componentClass, Map<Class<?>, WidgetConfigHolder> classToXTypeMap,
-		Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool)
+	public static Dialog make(CtClass componentClass, WidgetRegistryImpl widgetRegistry, ClassLoader classLoader, ClassPool classPool)
 		throws InvalidComponentClassException, InvalidComponentFieldException, ClassNotFoundException,
-		CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
+		CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException, InstantiationException, IllegalAccessException {
 
 		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
@@ -74,19 +71,14 @@ public class DialogFactory {
 		 * Iterate through all fields establishing proper widgets for each
 		 */
 		for (CtMember member : fieldsAndMethods) {
+
 			DialogField dialogProperty = (DialogField) member.getAnnotation(DialogField.class);
 
 			if (dialogProperty != null) {
 
-				AccessibleObject trueObject = null;
-				if (member instanceof CtField) {
-					trueObject = ComponentMojoUtil.getField(trueComponentClass, member.getName());
-				} else {
-					trueObject = ComponentMojoUtil.getMethod(trueComponentClass, member.getName());
-				}
+				DialogFieldMemberImpl dialogFieldMember = new DialogFieldMemberImpl(dialogProperty, member, trueComponentClass, classLoader, classPool, widgetRegistry);
 
-				DialogElement builtFieldWidget = WidgetFactory.make(componentClass, member, trueObject,
-					classToXTypeMap, xTypeToWidgetMakerMap, classLoader, classPool, true, -1);
+				DialogElement builtFieldWidget = WidgetFactory.make(dialogFieldMember, true, -1);
 
 				builtFieldWidget.setRanking(dialogProperty.ranking());
 

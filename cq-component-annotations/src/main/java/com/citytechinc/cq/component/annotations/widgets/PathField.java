@@ -8,15 +8,23 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.CLASS)
 @Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface PathField {
-	boolean escapeAmp() default false;
 
-	boolean hideTrigger() default false;
+	public static final boolean ESCAPE_AMP_DEFAULT = false;
+	public static final boolean HIDE_TRIGGER_DEFAULT = false;
+	public static final boolean PAR_BROWSE_DEFAULT = false;
+	public static final String ROOT_PATH_DEFAULT = "/";
+	public static final String ROOT_TITLE_DEFAULT = "Websites";
+	public static final boolean SHOW_TITLE_IN_TREE_DEFAULT = true;
 
-	boolean parBrowse() default false;
+	boolean escapeAmp() default ESCAPE_AMP_DEFAULT;
 
-	String rootPath() default "/";
+	boolean hideTrigger() default HIDE_TRIGGER_DEFAULT;
 
-	String rootTitle() default "Websites";
+	boolean parBrowse() default PAR_BROWSE_DEFAULT;
 
-	boolean showTitleInTree() default true;
+	String rootPath() default ROOT_PATH_DEFAULT;
+
+	String rootTitle() default ROOT_TITLE_DEFAULT;
+
+	boolean showTitleInTree() default SHOW_TITLE_IN_TREE_DEFAULT;
 }

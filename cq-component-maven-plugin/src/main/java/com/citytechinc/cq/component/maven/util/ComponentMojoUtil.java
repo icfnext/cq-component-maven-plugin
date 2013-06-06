@@ -49,10 +49,10 @@ import com.citytechinc.cq.component.content.factory.ContentFactory;
 import com.citytechinc.cq.component.content.util.ContentUtil;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
-import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.exception.OutputFailureException;
+import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 import com.citytechinc.cq.component.dialog.util.DialogUtil;
 import com.citytechinc.cq.component.editconfig.util.EditConfigUtil;
 
@@ -387,7 +387,8 @@ public class ComponentMojoUtil {
 		throws OutputFailureException, ClassNotFoundException {
 		// File buildDirectory = new File(project.getBuild().getDirectory());
 
-		String dialogFilePath = OUTPUT_PATH + "/" + componentPathBase + "/"
+		String dialogFilePath = OUTPUT_PATH + "/"
+			+ getComponentBasePathForComponentClass(componentClass, componentPathBase) + "/"
 			+ getComponentPathSuffixForComponentClass(componentClass, defaultComponentPathSuffix) + "/"
 			+ getComponentNameForComponentClass(transformer, componentClass);
 
@@ -400,6 +401,21 @@ public class ComponentMojoUtil {
 		}
 
 		return componentOutputDirectory;
+	}
+
+	public static String getComponentBasePathForComponentClass(CtClass componentClass, String componentPathBase)
+		throws ClassNotFoundException {
+		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
+
+		if (componentAnnotation != null) {
+			String basePath = componentAnnotation.basePath();
+
+			if (StringUtils.isNotEmpty(basePath)) {
+				return basePath;
+			}
+		}
+
+		return componentPathBase;
 	}
 
 	/**

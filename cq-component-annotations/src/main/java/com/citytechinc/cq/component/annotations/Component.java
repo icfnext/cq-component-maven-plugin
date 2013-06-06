@@ -17,6 +17,14 @@ import java.lang.annotation.Target;
 public @interface Component {
 
 	/**
+	 * Overrides the baseComponentPath
+	 * 
+	 * 
+	 * @return String
+	 */
+	String basePath() default "";
+
+	/**
 	 * The path to the component definition within the context of a CQ content
 	 * tree. This is meant to override any default path specified for the
 	 * project as a whole.

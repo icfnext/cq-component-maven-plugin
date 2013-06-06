@@ -75,7 +75,7 @@ public class ContentUtil {
 	public static void writeContentToArchiveFile(ComponentNameTransformer transformer, File contentFile,
 		CtClass componentClass, ZipArchiveOutputStream archiveStream, Set<String> reservedNames,
 		String componentPathBase, String defaultComponentPathSuffix) throws IOException, ClassNotFoundException {
-		String contentFilePath = ComponentMojoUtil.getComponentPathSuffixForComponentClass(componentClass,
+		String contentFilePath = ComponentMojoUtil.getComponentBasePathForComponentClass(componentClass,
 			componentPathBase)
 			+ "/"
 			+ ComponentMojoUtil.getComponentPathSuffixForComponentClass(componentClass, defaultComponentPathSuffix)

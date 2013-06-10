@@ -20,7 +20,8 @@ import org.apache.maven.project.MavenProject;
 import org.reflections.Reflections;
 
 import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
-import com.citytechinc.cq.component.dialog.widget.impl.WidgetRegistryImpl;
+import com.citytechinc.cq.component.dialog.widget.WidgetRegistry;
+import com.citytechinc.cq.component.dialog.widget.impl.DefaultWidgetRegistry;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 import com.citytechinc.cq.component.maven.util.LogSingleton;
 
@@ -57,7 +58,7 @@ public class ComponentMojo extends AbstractMojo {
 
 			List<CtClass> classList = ComponentMojoUtil.getAllComponentAnnotations(classPool, reflections);
 
-			WidgetRegistryImpl widgetRegistry = new WidgetRegistryImpl(classPool, classLoader, reflections);
+			WidgetRegistry widgetRegistry = new DefaultWidgetRegistry(classPool, classLoader, reflections);
 
 			Map<String, ComponentNameTransformer> transformers = ComponentMojoUtil.getAllTransformers(classPool,
 				reflections);
@@ -68,10 +69,9 @@ public class ComponentMojo extends AbstractMojo {
 				throw new ConfigurationException("The configured transformer wasn't found");
 			}
 
-			ComponentMojoUtil.buildArchiveFileForProjectAndClassList(classList, widgetRegistry,
-				classLoader, classPool, new File(project.getBuild().getDirectory()), componentPathBase,
-				componentPathSuffix, defaultComponentGroup, getArchiveFileForProject(), getTempArchiveFileForProject(),
-				transformer);
+			ComponentMojoUtil.buildArchiveFileForProjectAndClassList(classList, widgetRegistry, classLoader, classPool,
+				new File(project.getBuild().getDirectory()), componentPathBase, componentPathSuffix,
+				defaultComponentGroup, getArchiveFileForProject(), getTempArchiveFileForProject(), transformer);
 
 		} catch (Exception e) {
 			getLog().error(e.getMessage(), e);

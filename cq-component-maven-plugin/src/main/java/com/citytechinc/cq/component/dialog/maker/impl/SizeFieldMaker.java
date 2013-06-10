@@ -12,7 +12,8 @@ import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 
 public class SizeFieldMaker extends AbstractWidgetMaker {
 
-	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName) throws ClassNotFoundException {
+	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName)
+		throws ClassNotFoundException {
 
 		SizeField sizeFieldAnnotation = field.getAnnotation(SizeField.class);
 
@@ -33,11 +34,11 @@ public class SizeFieldMaker extends AbstractWidgetMaker {
 		String widthSuffix = getWidthSuffixForField(sizeFieldAnnotation);
 		int fieldWidth = getFieldWidthForField(sizeFieldAnnotation);
 
-		SizeFieldWidget widget =  new SizeFieldWidget(xtype, fieldLabel, fieldDescription, !isRequired, hideLabel, defaultValue, name,
-			fieldName, additionalProperties, heightParameter, heightPrefix, heightSuffix, widthParameter, widthPrefix,
-			widthSuffix, fieldWidth);
+		SizeFieldWidget widget = new SizeFieldWidget(xtype, fieldLabel, fieldDescription, !isRequired, hideLabel,
+			defaultValue, name, fieldName, additionalProperties, heightParameter, heightPrefix, heightSuffix,
+			widthParameter, widthPrefix, widthSuffix, fieldWidth);
 
-		setListeners(widget,field.getAnnotation().listeners());
+		setListeners(widget, field.getAnnotation().listeners());
 
 		return widget;
 

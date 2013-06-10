@@ -10,7 +10,8 @@ import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 
 public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
 
-	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName) throws ClassNotFoundException {
+	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName)
+		throws ClassNotFoundException {
 
 		Html5SmartImage smartImageAnnotation = field.getAnnotation(Html5SmartImage.class);
 
@@ -34,16 +35,16 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
 		boolean allowUpload = getAllowUploadForField(smartImageAnnotation);
 		Integer height = getHeightForField(smartImageAnnotation);
 
-		Html5SmartImageWidget widget = new Html5SmartImageWidget(name, disableFlush, disableInfo, disableZoom, cropParameter,
-			fileNameParameter, fileReferenceParameter, mapParameter, rotateParameter, uploadUrl, ddGroups, allowUpload,
-			isRequired, hideLabel, fieldLabel, fieldName, fieldDescription, height, smartImageAnnotation.tab());
+		Html5SmartImageWidget widget = new Html5SmartImageWidget(name, disableFlush, disableInfo, disableZoom,
+			cropParameter, fileNameParameter, fileReferenceParameter, mapParameter, rotateParameter, uploadUrl,
+			ddGroups, allowUpload, isRequired, hideLabel, fieldLabel, fieldName, fieldDescription, height,
+			smartImageAnnotation.tab());
 
 		setListeners(widget, field.getAnnotation().listeners());
 
 		return widget;
 
 	}
-
 
 	protected String getNameForField(Html5SmartImage smartImageAnnotation) {
 		String name = smartImageAnnotation.name();

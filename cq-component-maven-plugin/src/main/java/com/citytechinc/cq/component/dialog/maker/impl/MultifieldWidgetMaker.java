@@ -17,7 +17,9 @@ import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 
 public class MultifieldWidgetMaker extends AbstractWidgetMaker {
 
-	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName) throws ClassNotFoundException, SecurityException, InvalidComponentFieldException, CannotCompileException, NotFoundException, NoSuchFieldException, InstantiationException, IllegalAccessException {
+	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName)
+		throws ClassNotFoundException, SecurityException, InvalidComponentFieldException, CannotCompileException,
+		NotFoundException, NoSuchFieldException, InstantiationException, IllegalAccessException {
 
 		MultiField multiFieldAnnotation = field.getAnnotation(MultiField.class);
 
@@ -34,7 +36,7 @@ public class MultifieldWidgetMaker extends AbstractWidgetMaker {
 
 		DialogElement element = WidgetFactory.make(field, false, MultiFieldWidget.RANKING);
 
-		//TODO: Why is this needed?
+		// TODO: Why is this needed?
 		element.setFieldName("fieldConfig");
 
 		List<DialogElement> elements = new ArrayList<DialogElement>();
@@ -60,6 +62,5 @@ public class MultifieldWidgetMaker extends AbstractWidgetMaker {
 
 		return MultiField.ADD_ITEM_LABEL_DEFAULT;
 	}
-
 
 }

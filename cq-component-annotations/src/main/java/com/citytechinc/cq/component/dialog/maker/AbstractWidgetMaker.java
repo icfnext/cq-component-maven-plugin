@@ -19,13 +19,18 @@ import com.citytechinc.cq.component.dialog.field.DialogFieldMember;
 public abstract class AbstractWidgetMaker implements WidgetMaker {
 
 	/*
-	 * This default implementation simply defaults the useDotSlashInName parameter of the
-	 * like method.
-	 *
+	 * This default implementation simply defaults the useDotSlashInName
+	 * parameter of the like method.
+	 * 
 	 * (non-Javadoc)
-	 * @see com.citytechinc.cq.component.dialog.maker.WidgetMaker#make(com.citytechinc.cq.component.dialog.field.DialogFieldMember, java.lang.String)
+	 * 
+	 * @see
+	 * com.citytechinc.cq.component.dialog.maker.WidgetMaker#make(com.citytechinc
+	 * .cq.component.dialog.field.DialogFieldMember, java.lang.String)
 	 */
-	public DialogElement make(DialogFieldMember field, String xtype) throws ClassNotFoundException, InvalidComponentFieldException, NotFoundException, SecurityException, CannotCompileException, NoSuchFieldException, InstantiationException, IllegalAccessException {
+	public DialogElement make(DialogFieldMember field, String xtype) throws ClassNotFoundException,
+		InvalidComponentFieldException, NotFoundException, SecurityException, CannotCompileException,
+		NoSuchFieldException, InstantiationException, IllegalAccessException {
 		return this.make(field, xtype, true);
 	}
 
@@ -103,9 +108,9 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 		return field.getAnnotation().hideLabel();
 	}
 
-	//TODO: figure out how this is being used
-	protected void setListeners(AbstractWidget widget,Listener[] listeners){
-		if(listeners.length>0){
+	// TODO: figure out how this is being used
+	protected void setListeners(AbstractWidget widget, Listener[] listeners) {
+		if (listeners.length > 0) {
 			widget.setListeners(new Listeners(listeners));
 		}
 	}

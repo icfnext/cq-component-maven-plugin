@@ -10,7 +10,8 @@ import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 
 public class HiddenWidgetMaker extends AbstractWidgetMaker {
 
-	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName) throws ClassNotFoundException {
+	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName)
+		throws ClassNotFoundException {
 
 		Hidden hiddenFieldAnnotation = field.getAnnotation(Hidden.class);
 
@@ -23,8 +24,8 @@ public class HiddenWidgetMaker extends AbstractWidgetMaker {
 		String defaultValue = getDefaultValueForField(field);
 		boolean hideLabel = getHideLabelForField(field);
 
-		HiddenWidget widget = new HiddenWidget(hiddenFieldAnnotation.value(), fieldLabel, fieldDescription, !isRequired, hideLabel,
-			defaultValue, name, fieldName, additionalProperties);
+		HiddenWidget widget = new HiddenWidget(hiddenFieldAnnotation.value(), fieldLabel, fieldDescription,
+			!isRequired, hideLabel, defaultValue, name, fieldName, additionalProperties);
 
 		setListeners(widget, field.getAnnotation().listeners());
 

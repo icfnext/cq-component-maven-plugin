@@ -10,7 +10,8 @@ import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 
 public class DateFieldWidgetMaker extends AbstractWidgetMaker {
 
-	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName) throws ClassNotFoundException {
+	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName)
+		throws ClassNotFoundException {
 
 		DateField dateFieldAnnotation = field.getAnnotation(DateField.class);
 
@@ -27,8 +28,8 @@ public class DateFieldWidgetMaker extends AbstractWidgetMaker {
 		boolean showToday = getShowTodayForField(dateFieldAnnotation);
 		String format = getFormatForField(dateFieldAnnotation);
 
-		DateFieldWidget widget = new DateFieldWidget(startDay, showToday, format, fieldLabel, fieldDescription, !isRequired, hideLabel,
-			defaultValue, name, fieldName, additionalProperties);
+		DateFieldWidget widget = new DateFieldWidget(startDay, showToday, format, fieldLabel, fieldDescription,
+			!isRequired, hideLabel, defaultValue, name, fieldName, additionalProperties);
 
 		setListeners(widget, field.getAnnotation().listeners());
 

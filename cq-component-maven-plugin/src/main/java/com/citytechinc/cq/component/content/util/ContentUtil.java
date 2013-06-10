@@ -28,7 +28,7 @@ public class ContentUtil {
 	/**
 	 * Write the content.xml to an output file, the path of which is determined
 	 * by the component class
-	 *
+	 * 
 	 * @param content
 	 * @param componentClass
 	 * @return The written file
@@ -61,7 +61,7 @@ public class ContentUtil {
 	/**
 	 * Writes a provided content file to a provided archive output stream at a
 	 * path determined by the class of the component.
-	 *
+	 * 
 	 * @param contentFile
 	 * @param componentClass
 	 * @param archiveStream

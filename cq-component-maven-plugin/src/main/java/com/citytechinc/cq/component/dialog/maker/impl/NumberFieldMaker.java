@@ -10,7 +10,8 @@ import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 
 public class NumberFieldMaker extends AbstractWidgetMaker {
 
-	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName) throws ClassNotFoundException {
+	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName)
+		throws ClassNotFoundException {
 
 		NumberField numberFieldAnnotation = field.getAnnotation(NumberField.class);
 
@@ -28,8 +29,9 @@ public class NumberFieldMaker extends AbstractWidgetMaker {
 		int decimalPrecision = getDecimalPrecisionForField(numberFieldAnnotation);
 		String decimalSeparator = getDecimalSeparatorForField(numberFieldAnnotation);
 
-		NumberFieldWidget widget = new NumberFieldWidget(allowDecimals, allowNegative, decimalPrecision, decimalSeparator, fieldLabel,
-			fieldDescription, !isRequired, hideLabel, defaultValue, name, fieldName, additionalProperties);
+		NumberFieldWidget widget = new NumberFieldWidget(allowDecimals, allowNegative, decimalPrecision,
+			decimalSeparator, fieldLabel, fieldDescription, !isRequired, hideLabel, defaultValue, name, fieldName,
+			additionalProperties);
 
 		setListeners(widget, field.getAnnotation().listeners());
 

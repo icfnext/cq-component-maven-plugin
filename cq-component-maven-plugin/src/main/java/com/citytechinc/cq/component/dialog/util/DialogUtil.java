@@ -31,7 +31,7 @@ import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldExcept
 import com.citytechinc.cq.component.dialog.exception.OutputFailureException;
 import com.citytechinc.cq.component.dialog.factory.DialogFactory;
 import com.citytechinc.cq.component.dialog.impl.Dialog;
-import com.citytechinc.cq.component.dialog.widget.impl.WidgetRegistryImpl;
+import com.citytechinc.cq.component.dialog.widget.WidgetRegistry;
 import com.citytechinc.cq.component.dialog.xml.DialogXmlWriter;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 
@@ -42,7 +42,7 @@ public class DialogUtil {
 	/**
 	 * Writes a dialog.xml file, the path of which being based on the component
 	 * Class.
-	 *
+	 * 
 	 * @param dialog
 	 * @param componentClass
 	 * @return The written file
@@ -81,7 +81,7 @@ public class DialogUtil {
 	/**
 	 * Writes a provided dialog file to a provided archive output stream at a
 	 * path determined by the class of the component.
-	 *
+	 * 
 	 * @param dialogFile
 	 * @param componentClass
 	 * @param archiveStream
@@ -125,7 +125,7 @@ public class DialogUtil {
 	 * Dialog object for each one annotated with the Component annotation. Any
 	 * classes provided in the class list which are not thusly annotated are
 	 * ignored.
-	 *
+	 * 
 	 * @param classList
 	 * @param zipOutputStream
 	 * @param reservedNames
@@ -151,13 +151,13 @@ public class DialogUtil {
 	 * @throws InstantiationException
 	 */
 	public static List<Dialog> buildDialogsFromClassList(ComponentNameTransformer transformer, List<CtClass> classList,
-		ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames, WidgetRegistryImpl widgetRegistry,
-		ClassLoader classLoader, ClassPool classPool, File buildDirectory,
-		String componentPathBase, String defaultComponentPathSuffix) throws InvalidComponentClassException,
-		InvalidComponentFieldException, OutputFailureException, IOException, ParserConfigurationException,
-		TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException,
-		NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException,
-		NoSuchMethodException, InstantiationException {
+		ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames, WidgetRegistry widgetRegistry,
+		ClassLoader classLoader, ClassPool classPool, File buildDirectory, String componentPathBase,
+		String defaultComponentPathSuffix) throws InvalidComponentClassException, InvalidComponentFieldException,
+		OutputFailureException, IOException, ParserConfigurationException, TransformerException,
+		ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException,
+		IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException,
+		InstantiationException {
 
 		final List<Dialog> dialogList = new ArrayList<Dialog>();
 

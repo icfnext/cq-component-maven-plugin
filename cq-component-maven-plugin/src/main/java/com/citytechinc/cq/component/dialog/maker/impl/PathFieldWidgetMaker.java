@@ -10,7 +10,8 @@ import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 
 public class PathFieldWidgetMaker extends AbstractWidgetMaker {
 
-	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName) throws ClassNotFoundException {
+	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName)
+		throws ClassNotFoundException {
 
 		PathField pathFieldAnnotation = field.getAnnotation(PathField.class);
 
@@ -30,8 +31,9 @@ public class PathFieldWidgetMaker extends AbstractWidgetMaker {
 		String rootTitle = getRootTitleForField(pathFieldAnnotation);
 		boolean showTitleInTree = getShowTitleInTreeForField(pathFieldAnnotation);
 
-		PathFieldWidget widget = new PathFieldWidget(escapeAmp, hideTrigger, parBrowse, rootPath, rootTitle, showTitleInTree, fieldLabel,
-			fieldDescription, !isRequired, hideLabel, defaultValue, name, fieldName, additionalProperties);
+		PathFieldWidget widget = new PathFieldWidget(escapeAmp, hideTrigger, parBrowse, rootPath, rootTitle,
+			showTitleInTree, fieldLabel, fieldDescription, !isRequired, hideLabel, defaultValue, name, fieldName,
+			additionalProperties);
 
 		setListeners(widget, field.getAnnotation().listeners());
 

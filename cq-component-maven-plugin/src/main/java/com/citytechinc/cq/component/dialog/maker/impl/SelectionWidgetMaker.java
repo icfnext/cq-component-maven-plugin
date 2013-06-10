@@ -24,14 +24,15 @@ import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 /**
  * Builds a SelectionWidget from an annotated field. This maker will operate
  * with or without a stacked Selection annotation.
- *
+ * 
  * @author paulmichelotti
- *
+ * 
  */
 public class SelectionWidgetMaker extends AbstractWidgetMaker {
 	private static final String OPTION_FIELD_NAME_PREFIX = "option";
 
-	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName) throws ClassNotFoundException, InvalidComponentFieldException, NotFoundException {
+	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName)
+		throws ClassNotFoundException, InvalidComponentFieldException, NotFoundException {
 
 		Selection selectionAnnotation = field.getAnnotation(Selection.class);
 
@@ -56,8 +57,9 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 			optionsList = Arrays.asList(new DialogElement[] { new WidgetCollection(options, "options") });
 		}
 
-		SelectionWidget widget = new SelectionWidget(selectionType, name, fieldLabel, fieldName, fieldDescription, isRequired, hideLabel,
-			defaultValue, additionalProperties, optionsList, optionsUrl, optionsProvider, sortDir);
+		SelectionWidget widget = new SelectionWidget(selectionType, name, fieldLabel, fieldName, fieldDescription,
+			isRequired, hideLabel, defaultValue, additionalProperties, optionsList, optionsUrl, optionsProvider,
+			sortDir);
 
 		setListeners(widget, field.getAnnotation().listeners());
 
@@ -88,15 +90,18 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 
 	protected String getSelectionTypeForField(Selection selectionAnnotation) {
 		if (selectionAnnotation != null
-			&& (selectionAnnotation.type().equals(Selection.CHECKBOX) || selectionAnnotation.type().equals(Selection.COMBOBOX)
-				|| selectionAnnotation.type().equals(Selection.RADIO) || selectionAnnotation.type().equals(Selection.SELECT))) {
+			&& (selectionAnnotation.type().equals(Selection.CHECKBOX)
+				|| selectionAnnotation.type().equals(Selection.COMBOBOX)
+				|| selectionAnnotation.type().equals(Selection.RADIO) || selectionAnnotation.type().equals(
+				Selection.SELECT))) {
 			return selectionAnnotation.type();
 		} else {
 			return Selection.RADIO;
 		}
 	}
 
-	protected List<DialogElement> buildSelectionOptionsForField(DialogFieldMember field, Selection selectionAnnotation) throws InvalidComponentFieldException, ClassNotFoundException, NotFoundException {
+	protected List<DialogElement> buildSelectionOptionsForField(DialogFieldMember field, Selection selectionAnnotation)
+		throws InvalidComponentFieldException, ClassNotFoundException, NotFoundException {
 
 		List<DialogElement> options = new ArrayList<DialogElement>();
 
@@ -129,7 +134,8 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 			for (Object curEnumObject : field.getClassLoader().loadClass(field.getType().getName()).getEnumConstants()) {
 				Enum<?> curEnum = (Enum<?>) curEnumObject;
 				try {
-					options.add(buildSelectionOptionForEnum(curEnum, field.getClassPool(), OPTION_FIELD_NAME_PREFIX + (i++)));
+					options.add(buildSelectionOptionForEnum(curEnum, field.getClassPool(), OPTION_FIELD_NAME_PREFIX
+						+ (i++)));
 				} catch (SecurityException e) {
 					throw new InvalidComponentFieldException("Invalid Enum Field", e);
 				} catch (NoSuchFieldException e) {

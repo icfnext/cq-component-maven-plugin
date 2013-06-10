@@ -23,7 +23,7 @@ import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 import com.citytechinc.cq.component.maven.util.LogSingleton;
 import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;
 
-public class DialogFieldMemberImpl implements DialogFieldMember {
+public class DefaultDialogFieldMember implements DialogFieldMember {
 
 	private final DialogField annotation;
 	private final CtMember ctMember;
@@ -38,13 +38,9 @@ public class DialogFieldMemberImpl implements DialogFieldMember {
 	private final CtClass ctType;
 	private final WidgetRegistry widgetRegistry;
 
-	public DialogFieldMemberImpl(
-		DialogField annotation,
-		CtMember ctMember,
-		Class<?> containingClass,
-		ClassLoader classLoader,
-		ClassPool classPool,
-		WidgetRegistry widgetRegistry) throws InvalidComponentFieldException, NotFoundException {
+	public DefaultDialogFieldMember(DialogField annotation, CtMember ctMember, Class<?> containingClass,
+		ClassLoader classLoader, ClassPool classPool, WidgetRegistry widgetRegistry)
+		throws InvalidComponentFieldException, NotFoundException {
 
 		this.annotation = annotation;
 		this.ctMember = ctMember;
@@ -61,8 +57,7 @@ public class DialogFieldMemberImpl implements DialogFieldMember {
 
 			if (tempType instanceof ParameterizedType) {
 				this.parameterizedType = (ParameterizedType) tempType;
-			}
-			else {
+			} else {
 				this.parameterizedType = null;
 			}
 
@@ -75,8 +70,7 @@ public class DialogFieldMemberImpl implements DialogFieldMember {
 
 			if (tempType instanceof ParameterizedType) {
 				this.parameterizedType = (ParameterizedType) tempType;
-			}
-			else {
+			} else {
 				this.parameterizedType = null;
 			}
 
@@ -94,16 +88,13 @@ public class DialogFieldMemberImpl implements DialogFieldMember {
 
 		if (this.isField) {
 			this.name = ctMember.getName();
-		}
-		else {
+		} else {
 			String tempName = ctMember.getName();
 			if (tempName.startsWith("is")) {
 				this.name = StringUtils.uncapitalise(tempName.substring(2));
-			}
-			else if (tempName.startsWith("get")) {
+			} else if (tempName.startsWith("get")) {
 				this.name = StringUtils.uncapitalise(tempName.substring(3));
-			}
-			else {
+			} else {
 				this.name = StringUtils.uncapitalise(tempName);
 			}
 		}
@@ -160,12 +151,13 @@ public class DialogFieldMemberImpl implements DialogFieldMember {
 
 		Set<Class<?>> registeredAnnotations = this.widgetRegistry.getRegisteredAnnotations();
 
-		for(Class<?> curRegisteredAnnotation : registeredAnnotations) {
+		for (Class<?> curRegisteredAnnotation : registeredAnnotations) {
 			LOG.debug("Checking for known annotation " + curRegisteredAnnotation);
 			if (this.getCtMember().hasAnnotation(curRegisteredAnnotation)) {
 				LOG.debug("Found Annotation " + curRegisteredAnnotation + " on " + this.name);
 				WidgetConfigHolder curPotential = this.widgetRegistry.getWidgetForAnnotation(curRegisteredAnnotation);
-				if (curPotential != null && (rankCeiling == null || rankCeiling < 0 || curPotential.getRanking() <= rankCeiling)) {
+				if (curPotential != null
+					&& (rankCeiling == null || rankCeiling < 0 || curPotential.getRanking() <= rankCeiling)) {
 					LOG.debug("Match found in the registry with ranking " + curPotential.getRanking());
 					if (highestRankedWidget == null || curPotential.getRanking() > highestRankedWidget.getRanking()) {
 						highestRankedWidget = curPotential;

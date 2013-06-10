@@ -10,7 +10,8 @@ import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 
 public class CheckBoxWidgetMaker extends AbstractWidgetMaker {
 
-	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName) throws ClassNotFoundException {
+	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName)
+		throws ClassNotFoundException {
 
 		CheckBox checkBoxAnnotation = field.getAnnotation(CheckBox.class);
 
@@ -26,8 +27,8 @@ public class CheckBoxWidgetMaker extends AbstractWidgetMaker {
 		String inputValue = getInputValueForField(checkBoxAnnotation);
 		boolean checked = getCheckedForField(checkBoxAnnotation);
 
-		CheckBoxWidget widget= new CheckBoxWidget(inputValue, checked, fieldLabel, fieldDescription, !isRequired, hideLabel,
-			defaultValue, name, fieldName, additionalProperties);
+		CheckBoxWidget widget = new CheckBoxWidget(inputValue, checked, fieldLabel, fieldDescription, !isRequired,
+			hideLabel, defaultValue, name, fieldName, additionalProperties);
 
 		setListeners(widget, field.getAnnotation().listeners());
 

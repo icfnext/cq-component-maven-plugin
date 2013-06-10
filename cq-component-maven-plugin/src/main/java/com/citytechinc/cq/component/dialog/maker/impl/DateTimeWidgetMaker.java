@@ -20,8 +20,8 @@ public class DateTimeWidgetMaker extends AbstractWidgetMaker {
 		String defaultValue = getDefaultValueForField(field);
 		boolean hideLabel = getHideLabelForField(field);
 
-		DateTimeWidget widget= new DateTimeWidget(fieldLabel, fieldDescription, !isRequired, hideLabel, defaultValue, name, fieldName,
-			additionalProperties);
+		DateTimeWidget widget = new DateTimeWidget(fieldLabel, fieldDescription, !isRequired, hideLabel, defaultValue,
+			name, fieldName, additionalProperties);
 
 		setListeners(widget, field.getAnnotation().listeners());
 

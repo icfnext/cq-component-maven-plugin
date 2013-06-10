@@ -17,7 +17,7 @@ import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.factory.WidgetFactory;
 import com.citytechinc.cq.component.dialog.field.DialogFieldMember;
-import com.citytechinc.cq.component.dialog.field.impl.DialogFieldMemberImpl;
+import com.citytechinc.cq.component.dialog.field.impl.DefaultDialogFieldMember;
 import com.citytechinc.cq.component.dialog.impl.DialogFieldSetWidget;
 import com.citytechinc.cq.component.dialog.impl.WidgetCollection;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
@@ -27,7 +27,9 @@ public class DialogFieldSetWidgetMaker extends AbstractWidgetMaker {
 
 	private static final String ITEMS = "items";
 
-	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName) throws ClassNotFoundException, SecurityException, InvalidComponentFieldException, NotFoundException, CannotCompileException, NoSuchFieldException, InstantiationException, IllegalAccessException {
+	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName)
+		throws ClassNotFoundException, SecurityException, InvalidComponentFieldException, NotFoundException,
+		CannotCompileException, NoSuchFieldException, InstantiationException, IllegalAccessException {
 
 		DialogFieldSet dialogFieldSetAnnotation = field.getAnnotation(DialogFieldSet.class);
 
@@ -48,8 +50,8 @@ public class DialogFieldSetWidgetMaker extends AbstractWidgetMaker {
 
 		List<DialogElement> widgetCollection = buildWidgetCollection(field);
 
-		DialogFieldSetWidget widget = new DialogFieldSetWidget(collapseFirst, collapsible, collapsed, border, title, fieldLabel,
-			fieldDescription, hideLabel, fieldName, additionalProperties, widgetCollection);
+		DialogFieldSetWidget widget = new DialogFieldSetWidget(collapseFirst, collapsible, collapsed, border, title,
+			fieldLabel, fieldDescription, hideLabel, fieldName, additionalProperties, widgetCollection);
 
 		setListeners(widget, field.getAnnotation().listeners());
 
@@ -57,7 +59,9 @@ public class DialogFieldSetWidgetMaker extends AbstractWidgetMaker {
 
 	}
 
-	private List<DialogElement> buildWidgetCollection(DialogFieldMember field) throws InvalidComponentFieldException, NotFoundException, ClassNotFoundException, SecurityException, CannotCompileException, NoSuchFieldException, InstantiationException, IllegalAccessException {
+	private List<DialogElement> buildWidgetCollection(DialogFieldMember field) throws InvalidComponentFieldException,
+		NotFoundException, ClassNotFoundException, SecurityException, CannotCompileException, NoSuchFieldException,
+		InstantiationException, IllegalAccessException {
 
 		List<CtMember> fieldsAndMethods = new ArrayList<CtMember>();
 
@@ -71,14 +75,9 @@ public class DialogFieldSetWidgetMaker extends AbstractWidgetMaker {
 
 				Class<?> fieldClass = field.getClassLoader().loadClass(curField.getDeclaringClass().getName());
 
-				DialogFieldMember curFieldMember = new DialogFieldMemberImpl(
-					(DialogField) curField.getAnnotation(DialogField.class),
-					curField,
-					fieldClass,
-					field.getClassLoader(),
-					field.getClassPool(),
-					field.getWidgetRegistry()
-					);
+				DialogFieldMember curFieldMember = new DefaultDialogFieldMember(
+					(DialogField) curField.getAnnotation(DialogField.class), curField, fieldClass,
+					field.getClassLoader(), field.getClassPool(), field.getWidgetRegistry());
 
 				DialogElement builtFieldWidget = WidgetFactory.make(curFieldMember, false, -1);
 

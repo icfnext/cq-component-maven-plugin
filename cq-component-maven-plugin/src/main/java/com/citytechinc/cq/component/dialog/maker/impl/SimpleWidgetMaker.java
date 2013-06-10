@@ -20,7 +20,8 @@ public class SimpleWidgetMaker extends AbstractWidgetMaker {
 		String defaultValue = getDefaultValueForField(field);
 		boolean hideLabel = getHideLabelForField(field);
 
-		SimpleWidget widget = new SimpleWidget(xtype, name, fieldName, fieldLabel, fieldDescription, isRequired, hideLabel, additionalProperties, defaultValue);
+		SimpleWidget widget = new SimpleWidget(xtype, name, fieldName, fieldLabel, fieldDescription, isRequired,
+			hideLabel, additionalProperties, defaultValue);
 
 		setListeners(widget, field.getAnnotation().listeners());
 

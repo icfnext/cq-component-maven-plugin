@@ -18,18 +18,31 @@ public interface DialogFieldMember {
 	public <T> T getAnnotation(Class<T> annotationClass) throws ClassNotFoundException;
 
 	public CtMember getCtMember();
+
 	public AccessibleObject getMember();
+
 	public Class<?> getContainingClass();
+
 	public ClassLoader getClassLoader();
+
 	public ClassPool getClassPool();
+
 	public boolean isField();
+
 	public boolean isMethod();
+
 	public WidgetConfigHolder getWidgetConfig() throws ClassNotFoundException;
+
 	public WidgetConfigHolder getWidgetConfig(Integer rankCeiling) throws ClassNotFoundException;
+
 	public String getName();
+
 	public Class<?> getType();
+
 	public ParameterizedType getParameterizedType();
+
 	public CtClass getCtType();
+
 	public WidgetRegistry getWidgetRegistry();
 
 }

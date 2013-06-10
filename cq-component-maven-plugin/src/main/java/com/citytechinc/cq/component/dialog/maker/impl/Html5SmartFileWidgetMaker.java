@@ -12,7 +12,8 @@ import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 
 public class Html5SmartFileWidgetMaker extends AbstractWidgetMaker {
 
-	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName) throws ClassNotFoundException {
+	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName)
+		throws ClassNotFoundException {
 
 		Html5SmartFile smartFileAnnotation = field.getAnnotation(Html5SmartFile.class);
 
@@ -35,9 +36,9 @@ public class Html5SmartFileWidgetMaker extends AbstractWidgetMaker {
 		String mimeTypesDescription = getMimeTypesDescriptionForField(smartFileAnnotation);
 		int sizeLimit = getSizeLimitForField(smartFileAnnotation);
 
-		Html5SmartFileWidget widget= new Html5SmartFileWidget(fieldLabel, fieldDescription, !isRequired, hideLabel, name, fieldName,
-			additionalProperties, allowFileNameEditing, allowFileReference, allowUpload, ddAccept, ddGroups,
-			fileNameParameter, fileReferenceParameter, mimeTypes, mimeTypesDescription, sizeLimit);
+		Html5SmartFileWidget widget = new Html5SmartFileWidget(fieldLabel, fieldDescription, !isRequired, hideLabel,
+			name, fieldName, additionalProperties, allowFileNameEditing, allowFileReference, allowUpload, ddAccept,
+			ddGroups, fileNameParameter, fileReferenceParameter, mimeTypes, mimeTypesDescription, sizeLimit);
 
 		setListeners(widget, field.getAnnotation().listeners());
 
@@ -97,7 +98,8 @@ public class Html5SmartFileWidgetMaker extends AbstractWidgetMaker {
 		return smartFileAnnotation.allowFileNameEditing();
 	}
 
-	private String getNameForField(Html5SmartFile smartFileAnnotation, DialogFieldMember field, boolean useDotSlashInName) {
+	private String getNameForField(Html5SmartFile smartFileAnnotation, DialogFieldMember field,
+		boolean useDotSlashInName) {
 		if (StringUtils.isNotEmpty(smartFileAnnotation.name())) {
 			return smartFileAnnotation.name();
 		}

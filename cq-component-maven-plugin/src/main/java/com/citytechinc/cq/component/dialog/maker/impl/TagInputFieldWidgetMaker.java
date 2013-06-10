@@ -16,7 +16,8 @@ import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 
 public class TagInputFieldWidgetMaker extends AbstractWidgetMaker {
 
-	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName) throws ClassNotFoundException {
+	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName)
+		throws ClassNotFoundException {
 
 		TagInputField tagAnnotation = field.getAnnotation(TagInputField.class);
 
@@ -32,10 +33,10 @@ public class TagInputFieldWidgetMaker extends AbstractWidgetMaker {
 		boolean displayTitles = tagAnnotation.displayTitles();
 		List<DialogElement> widgetCollectionHolder = getWidgetCollectionHolderForField(tagAnnotation);
 
-		TagInputFieldWidget widget = new TagInputFieldWidget(displayTitles, fieldLabel, fieldDescription, !isRequired, hideLabel,
-			defaultValue, name, fieldName, additionalProperties, widgetCollectionHolder);
+		TagInputFieldWidget widget = new TagInputFieldWidget(displayTitles, fieldLabel, fieldDescription, !isRequired,
+			hideLabel, defaultValue, name, fieldName, additionalProperties, widgetCollectionHolder);
 
-		setListeners(widget,field.getAnnotation().listeners());
+		setListeners(widget, field.getAnnotation().listeners());
 
 		return widget;
 

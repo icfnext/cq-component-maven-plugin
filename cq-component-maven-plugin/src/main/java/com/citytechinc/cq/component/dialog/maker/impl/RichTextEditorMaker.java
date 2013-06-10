@@ -35,16 +35,17 @@ import com.citytechinc.cq.component.dialog.impl.WidgetCollection;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 
 /**
- *
+ * 
  * Based on http://dev.day.com/docs/en/cq/current/administering/
  * configuring_rich_text_editor.html
- *
+ * 
  * @author paulmichelotti
- *
+ * 
  */
 public class RichTextEditorMaker extends AbstractWidgetMaker {
 
-	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName) throws ClassNotFoundException {
+	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName)
+		throws ClassNotFoundException {
 
 		RichTextEditor rteAnnotation = field.getAnnotation(RichTextEditor.class);
 
@@ -59,8 +60,8 @@ public class RichTextEditorMaker extends AbstractWidgetMaker {
 
 		final List<DialogElement> rtePlugins = buildRtePlugins(rteAnnotation);
 
-		RichTextEditorWidget widget = new RichTextEditorWidget(fieldLabel, fieldDescription, !isRequired, hideLabel, defaultValue, name,
-			fieldName, additionalProperties, rtePlugins);
+		RichTextEditorWidget widget = new RichTextEditorWidget(fieldLabel, fieldDescription, !isRequired, hideLabel,
+			defaultValue, name, fieldName, additionalProperties, rtePlugins);
 
 		setListeners(widget, field.getAnnotation().listeners());
 

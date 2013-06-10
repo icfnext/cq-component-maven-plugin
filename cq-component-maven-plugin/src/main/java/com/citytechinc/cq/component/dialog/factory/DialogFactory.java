@@ -19,12 +19,12 @@ import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
-import com.citytechinc.cq.component.dialog.field.impl.DialogFieldMemberImpl;
+import com.citytechinc.cq.component.dialog.field.impl.DefaultDialogFieldMember;
 import com.citytechinc.cq.component.dialog.impl.Dialog;
 import com.citytechinc.cq.component.dialog.impl.Html5SmartImageWidget;
 import com.citytechinc.cq.component.dialog.impl.Tab;
 import com.citytechinc.cq.component.dialog.impl.WidgetCollection;
-import com.citytechinc.cq.component.dialog.widget.impl.WidgetRegistryImpl;
+import com.citytechinc.cq.component.dialog.widget.WidgetRegistry;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 
 public class DialogFactory {
@@ -32,9 +32,10 @@ public class DialogFactory {
 	private DialogFactory() {
 	}
 
-	public static Dialog make(CtClass componentClass, WidgetRegistryImpl widgetRegistry, ClassLoader classLoader, ClassPool classPool)
-		throws InvalidComponentClassException, InvalidComponentFieldException, ClassNotFoundException,
-		CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException, InstantiationException, IllegalAccessException {
+	public static Dialog make(CtClass componentClass, WidgetRegistry widgetRegistry, ClassLoader classLoader,
+		ClassPool classPool) throws InvalidComponentClassException, InvalidComponentFieldException,
+		ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException,
+		InstantiationException, IllegalAccessException {
 
 		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
@@ -76,7 +77,8 @@ public class DialogFactory {
 
 			if (dialogProperty != null) {
 
-				DialogFieldMemberImpl dialogFieldMember = new DialogFieldMemberImpl(dialogProperty, member, trueComponentClass, classLoader, classPool, widgetRegistry);
+				DefaultDialogFieldMember dialogFieldMember = new DefaultDialogFieldMember(dialogProperty, member,
+					trueComponentClass, classLoader, classPool, widgetRegistry);
 
 				DialogElement builtFieldWidget = WidgetFactory.make(dialogFieldMember, true, -1);
 
@@ -86,7 +88,7 @@ public class DialogFactory {
 					&& ((Html5SmartImageWidget) builtFieldWidget).isTab()) {
 					imageTabList.add(builtFieldWidget);
 				} else {
-					String tabString = getTabStringForField(dialogProperty,componentAnnotation);
+					String tabString = getTabStringForField(dialogProperty, componentAnnotation);
 
 					if (!tabMap.containsKey(tabString)) {
 						tabMap.put(tabString, new ArrayList<DialogElement>());
@@ -116,7 +118,7 @@ public class DialogFactory {
 		return component.value();
 	}
 
-	private static final String getTabStringForField(DialogField dialogProperty,Component component) {
+	private static final String getTabStringForField(DialogField dialogProperty, Component component) {
 
 		String tabString = dialogProperty.tab();
 

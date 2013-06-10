@@ -39,17 +39,13 @@ public class DialogFactory {
 
 		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
-		if (componentAnnotation == null) {
-			throw new InvalidComponentClassException();
-		}
-
 		Map<String, List<DialogElement>> tabMap = new LinkedHashMap<String, List<DialogElement>>();
 
 		/*
 		 * Get dialog title
 		 */
-		String dialogTitle = getDialogTitleForComponent(componentAnnotation);
-
+		String dialogTitle = componentAnnotation.value();
+		// TODO: anything else
 		/*
 		 * Setup Tabs from Component tab list if one exists
 		 */
@@ -114,10 +110,6 @@ public class DialogFactory {
 		return new Dialog(tabList, dialogTitle, componentAnnotation.fileName(), width, height);
 	}
 
-	private static final String getDialogTitleForComponent(Component component) {
-		return component.value();
-	}
-
 	private static final String getTabStringForField(DialogField dialogProperty, Component component) {
 
 		String tabString = dialogProperty.tab();
@@ -126,7 +118,7 @@ public class DialogFactory {
 			return tabString;
 		}
 
-		return ComponentMojoUtil.transformClassNameToReadable(component.value());
+		return component.value();
 	}
 
 }

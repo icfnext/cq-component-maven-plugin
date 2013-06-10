@@ -23,7 +23,6 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.io.IOUtils;
 
-import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
@@ -164,35 +163,29 @@ public class DialogUtil {
 		for (CtClass curClass : classList) {
 			ComponentMojoUtil.getLog().debug("Checking class for Component annotation " + curClass);
 
-			Component annotation = (Component) curClass.getAnnotation(Component.class);
-
-			ComponentMojoUtil.getLog().debug("Annotation : " + annotation);
-
-			if (annotation != null) {
-				boolean hasDialogField = false;
-				for (CtField curField : ComponentMojoUtil.collectFields(curClass)) {
-					if (curField.hasAnnotation(DialogField.class)) {
+			boolean hasDialogField = false;
+			for (CtField curField : ComponentMojoUtil.collectFields(curClass)) {
+				if (curField.hasAnnotation(DialogField.class)) {
+					hasDialogField = true;
+					break;
+				}
+			}
+			if (!hasDialogField) {
+				for (CtMethod curMethod : ComponentMojoUtil.collectMethods(curClass)) {
+					if (curMethod.hasAnnotation(DialogField.class)) {
 						hasDialogField = true;
 						break;
 					}
 				}
-				if (!hasDialogField) {
-					for (CtMethod curMethod : ComponentMojoUtil.collectMethods(curClass)) {
-						if (curMethod.hasAnnotation(DialogField.class)) {
-							hasDialogField = true;
-							break;
-						}
-					}
-				}
-				if (hasDialogField) {
-					ComponentMojoUtil.getLog().debug("Processing Component Class " + curClass);
-					Dialog builtDialog = DialogFactory.make(curClass, widgetRegistry, classLoader, classPool);
-					dialogList.add(builtDialog);
-					File dialogFile = writeDialogToFile(transformer, builtDialog, curClass, buildDirectory,
-						componentPathBase, defaultComponentPathSuffix);
-					writeDialogToArchiveFile(transformer, dialogFile, curClass, zipOutputStream, reservedNames,
-						componentPathBase, defaultComponentPathSuffix);
-				}
+			}
+			if (hasDialogField) {
+				ComponentMojoUtil.getLog().debug("Processing Component Class " + curClass);
+				Dialog builtDialog = DialogFactory.make(curClass, widgetRegistry, classLoader, classPool);
+				dialogList.add(builtDialog);
+				File dialogFile = writeDialogToFile(transformer, builtDialog, curClass, buildDirectory,
+					componentPathBase, defaultComponentPathSuffix);
+				writeDialogToArchiveFile(transformer, dialogFile, curClass, zipOutputStream, reservedNames,
+					componentPathBase, defaultComponentPathSuffix);
 			}
 		}
 

@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javassist.CtClass;
@@ -15,9 +17,12 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.io.IOUtils;
 
+import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.content.Content;
+import com.citytechinc.cq.component.content.factory.ContentFactory;
 import com.citytechinc.cq.component.content.xml.ContentXmlWriter;
 import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
+import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
 import com.citytechinc.cq.component.dialog.exception.OutputFailureException;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 
@@ -94,6 +99,55 @@ public class ContentUtil {
 		} else {
 			ComponentMojoUtil.getLog().debug("Existing file found at " + contentFilePath);
 		}
+	}
+
+	/**
+	 * Constructs a list of Content objects representing .content.xml files from
+	 * a list of Classes. For each Class annotated with a Component annotation a
+	 * Content object is constructed.
+	 * 
+	 * @param classList
+	 * @param zipOutputStream
+	 * @param reservedNames
+	 * @return The constructed Content objects
+	 * @throws InvalidComponentClassException
+	 * @throws TransformerException
+	 * @throws ParserConfigurationException
+	 * @throws IOException
+	 * @throws OutputFailureException
+	 * @throws ClassNotFoundException
+	 */
+	public static List<Content> buildContentFromClassList(List<CtClass> classList,
+		ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames, File buildDirectory,
+		String componentPathBase, String defaultComponentPathSuffix, String defaultComponentGroup,
+		ComponentNameTransformer transformer) throws InvalidComponentClassException, TransformerException,
+		ParserConfigurationException, IOException, OutputFailureException, ClassNotFoundException {
+	
+		List<Content> builtContents = new ArrayList<Content>();
+	
+		for (CtClass curClass : classList) {
+			ComponentMojoUtil.getLog().debug("Checking class for Component annotation " + curClass);
+	
+			Component annotation = (Component) curClass.getAnnotation(Component.class);
+	
+			ComponentMojoUtil.getLog().debug("Annotation : " + annotation);
+	
+			if (annotation != null) {
+				ComponentMojoUtil.getLog().debug("Processing Component Class " + curClass);
+	
+				Content builtContent = ContentFactory.make(curClass, defaultComponentGroup);
+	
+				builtContents.add(builtContent);
+	
+				File contentFile = writeContentToFile(transformer, builtContent, curClass, buildDirectory,
+					componentPathBase, defaultComponentPathSuffix);
+				writeContentToArchiveFile(transformer, contentFile, curClass, zipOutputStream,
+					reservedNames, componentPathBase, defaultComponentPathSuffix);
+			}
+		}
+	
+		return builtContents;
+	
 	}
 
 }

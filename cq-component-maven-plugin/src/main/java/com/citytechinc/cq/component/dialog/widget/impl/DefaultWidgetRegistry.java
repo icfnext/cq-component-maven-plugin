@@ -1,7 +1,6 @@
 package com.citytechinc.cq.component.dialog.widget.impl;
 
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +18,6 @@ import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;
 
 public class DefaultWidgetRegistry implements WidgetRegistry {
 
-	private final List<WidgetConfigHolder> widgetConfigs;
 	private final Map<Class<?>, WidgetConfigHolder> annotationToWidgetConfigMap;
 
 	public DefaultWidgetRegistry(ClassPool classPool, ClassLoader classLoader, Reflections reflections)
@@ -27,13 +25,14 @@ public class DefaultWidgetRegistry implements WidgetRegistry {
 
 		LogSingleton LOG = LogSingleton.getInstance();
 
-		this.widgetConfigs = ComponentMojoUtil.getAllWidgetAnnotations(classPool, classLoader, reflections);
+		List<WidgetConfigHolder> widgetConfigs = ComponentMojoUtil.getAllWidgetAnnotations(classPool, classLoader,
+			reflections);
 
 		LOG.debug(widgetConfigs.size() + " Widget Configurations found");
 
 		this.annotationToWidgetConfigMap = new HashMap<Class<?>, WidgetConfigHolder>();
 
-		for (WidgetConfigHolder curConfig : this.widgetConfigs) {
+		for (WidgetConfigHolder curConfig : widgetConfigs) {
 			LOG.debug("Widget Config -- " + curConfig.getWidgetClass() + " : " + curConfig.getMakerClass() + " : "
 				+ curConfig.getAnnotationClass() + " : " + curConfig.getXtype());
 			if (curConfig.getAnnotationClass() != null) {

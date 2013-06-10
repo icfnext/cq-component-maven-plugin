@@ -156,8 +156,7 @@ public class DefaultDialogFieldMember implements DialogFieldMember {
 			if (this.getCtMember().hasAnnotation(curRegisteredAnnotation)) {
 				LOG.debug("Found Annotation " + curRegisteredAnnotation + " on " + this.name);
 				WidgetConfigHolder curPotential = this.widgetRegistry.getWidgetForAnnotation(curRegisteredAnnotation);
-				if (curPotential != null
-					&& (rankCeiling == null || rankCeiling < 0 || curPotential.getRanking() <= rankCeiling)) {
+				if (rankCeiling == null || rankCeiling < 0 || curPotential.getRanking() <= rankCeiling) {
 					LOG.debug("Match found in the registry with ranking " + curPotential.getRanking());
 					if (highestRankedWidget == null || curPotential.getRanking() > highestRankedWidget.getRanking()) {
 						highestRankedWidget = curPotential;

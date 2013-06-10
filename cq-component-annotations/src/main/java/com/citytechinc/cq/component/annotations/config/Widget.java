@@ -33,7 +33,7 @@ public @interface Widget {
 	 * <em>not</em> contain more than one Annotation class.
 	 * </p>
 	 */
-	Class<? extends Annotation>[] annotationClass() default {};
+	Class<? extends Annotation> annotationClass();
 
 	/**
 	 * The class responsible for making instances of the annotated Widget Class.

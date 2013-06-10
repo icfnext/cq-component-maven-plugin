@@ -44,8 +44,6 @@ import com.citytechinc.cq.classpool.ClassLoaderClassPool;
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.config.Widget;
 import com.citytechinc.cq.component.annotations.transformer.Transformer;
-import com.citytechinc.cq.component.content.Content;
-import com.citytechinc.cq.component.content.factory.ContentFactory;
 import com.citytechinc.cq.component.content.util.ContentUtil;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
@@ -216,7 +214,7 @@ public class ComponentMojoUtil {
 		/*
 		 * Create content.xml within temp archive
 		 */
-		buildContentFromClassList(classList, tempOutputStream, existingArchiveEntryNames, buildDirectory,
+		ContentUtil.buildContentFromClassList(classList, tempOutputStream, existingArchiveEntryNames, buildDirectory,
 			componentPathBase, defaultComponentPathSuffix, defaultComponentGroup, transformer);
 
 		/*
@@ -240,55 +238,6 @@ public class ComponentMojoUtil {
 
 		existingArchiveFile.delete();
 		tempArchiveFile.renameTo(existingArchiveFile);
-
-	}
-
-	/**
-	 * Constructs a list of Content objects representing .content.xml files from
-	 * a list of Classes. For each Class annotated with a Component annotation a
-	 * Content object is constructed.
-	 * 
-	 * @param classList
-	 * @param zipOutputStream
-	 * @param reservedNames
-	 * @return The constructed Content objects
-	 * @throws InvalidComponentClassException
-	 * @throws TransformerException
-	 * @throws ParserConfigurationException
-	 * @throws IOException
-	 * @throws OutputFailureException
-	 * @throws ClassNotFoundException
-	 */
-	protected static List<Content> buildContentFromClassList(List<CtClass> classList,
-		ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames, File buildDirectory,
-		String componentPathBase, String defaultComponentPathSuffix, String defaultComponentGroup,
-		ComponentNameTransformer transformer) throws InvalidComponentClassException, TransformerException,
-		ParserConfigurationException, IOException, OutputFailureException, ClassNotFoundException {
-
-		List<Content> builtContents = new ArrayList<Content>();
-
-		for (CtClass curClass : classList) {
-			getLog().debug("Checking class for Component annotation " + curClass);
-
-			Component annotation = (Component) curClass.getAnnotation(Component.class);
-
-			getLog().debug("Annotation : " + annotation);
-
-			if (annotation != null) {
-				getLog().debug("Processing Component Class " + curClass);
-
-				Content builtContent = ContentFactory.make(curClass, defaultComponentGroup);
-
-				builtContents.add(builtContent);
-
-				File contentFile = ContentUtil.writeContentToFile(transformer, builtContent, curClass, buildDirectory,
-					componentPathBase, defaultComponentPathSuffix);
-				ContentUtil.writeContentToArchiveFile(transformer, contentFile, curClass, zipOutputStream,
-					reservedNames, componentPathBase, defaultComponentPathSuffix);
-			}
-		}
-
-		return builtContents;
 
 	}
 
@@ -441,13 +390,9 @@ public class ComponentMojoUtil {
 			Widget widgetAnnotation = (Widget) clazz.getAnnotation(Widget.class);
 
 			Class<? extends Annotation> annotationClass = null;
-			if (widgetAnnotation.annotationClass() != null) {
-				if (widgetAnnotation.annotationClass().length == 1) {
-					annotationClass = widgetAnnotation.annotationClass()[0];
-				} else if (widgetAnnotation.annotationClass().length > 1) {
-					throw new RuntimeException("A widget must have a single annotation");
-				}
-			}
+
+			annotationClass = widgetAnnotation.annotationClass();
+
 			Class<? extends WidgetMaker> makerClass = widgetAnnotation.makerClass();
 			Class<? extends AbstractWidget> widgetClass = classLoader.loadClass(clazz.getName()).asSubclass(
 				AbstractWidget.class);
@@ -600,17 +545,5 @@ public class ComponentMojoUtil {
 			.setUrls(ClasspathHelper.forClassLoader(new ClassLoader[] { classLoader }))
 			.setScanners(new TypeAnnotationsScanner()));
 		return reflections;
-	}
-
-	/**
-	 * Changes a class name into a human readable string by adding spaces
-	 * 
-	 * @param className The class name to transform upon
-	 * @return The transformed string
-	 */
-	public static String transformClassNameToReadable(String className) {
-		return className
-			.replaceAll(String.format("%s|%s|%s", "(?<=[A-Z])(?=[A-Z][a-z])", "(?<=[^A-Z])(?=[A-Z])",
-				"(?<=[A-Za-z])(?=[^A-Za-z])"), " ");
 	}
 }

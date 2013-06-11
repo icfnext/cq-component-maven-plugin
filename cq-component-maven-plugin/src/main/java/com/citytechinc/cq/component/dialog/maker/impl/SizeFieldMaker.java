@@ -6,25 +6,28 @@ import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.widgets.SizeField;
 import com.citytechinc.cq.component.dialog.DialogElement;
-import com.citytechinc.cq.component.dialog.field.DialogFieldMember;
 import com.citytechinc.cq.component.dialog.impl.SizeFieldWidget;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
+import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 
 public class SizeFieldMaker extends AbstractWidgetMaker {
 
-	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName)
-		throws ClassNotFoundException {
+	public SizeFieldMaker(WidgetMakerParameters parameters) {
+		super(parameters);
+	}
 
-		SizeField sizeFieldAnnotation = field.getAnnotation(SizeField.class);
+	public DialogElement make() throws ClassNotFoundException {
 
-		String name = getNameForField(field, useDotSlashInName);
-		String fieldName = getFieldNameForField(field);
-		String fieldLabel = getFieldLabelForField(field);
-		String fieldDescription = getFieldDescriptionForField(field);
-		Boolean isRequired = getIsRequiredForField(field);
-		Map<String, String> additionalProperties = getAdditionalPropertiesForField(field);
-		String defaultValue = getDefaultValueForField(field);
-		boolean hideLabel = getHideLabelForField(field);
+		SizeField sizeFieldAnnotation = getAnnotation(SizeField.class);
+
+		String name = getNameForField();
+		String fieldName = getFieldNameForField();
+		String fieldLabel = getFieldLabelForField();
+		String fieldDescription = getFieldDescriptionForField();
+		Boolean isRequired = getIsRequiredForField();
+		Map<String, String> additionalProperties = getAdditionalPropertiesForField();
+		String defaultValue = getDefaultValueForField();
+		boolean hideLabel = getHideLabelForField();
 
 		String heightParameter = getHeightParameterForField(sizeFieldAnnotation);
 		String heightPrefix = getHeightPrefixForField(sizeFieldAnnotation);
@@ -34,11 +37,11 @@ public class SizeFieldMaker extends AbstractWidgetMaker {
 		String widthSuffix = getWidthSuffixForField(sizeFieldAnnotation);
 		int fieldWidth = getFieldWidthForField(sizeFieldAnnotation);
 
-		SizeFieldWidget widget = new SizeFieldWidget(xtype, fieldLabel, fieldDescription, !isRequired, hideLabel,
+		SizeFieldWidget widget = new SizeFieldWidget(fieldLabel, fieldDescription, !isRequired, hideLabel,
 			defaultValue, name, fieldName, additionalProperties, heightParameter, heightPrefix, heightSuffix,
 			widthParameter, widthPrefix, widthSuffix, fieldWidth);
 
-		setListeners(widget, field.getAnnotation().listeners());
+		setListeners(widget);
 
 		return widget;
 

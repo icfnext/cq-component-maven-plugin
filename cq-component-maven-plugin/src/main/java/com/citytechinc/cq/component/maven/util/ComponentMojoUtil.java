@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -54,6 +52,7 @@ import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 import com.citytechinc.cq.component.dialog.util.DialogUtil;
 import com.citytechinc.cq.component.dialog.widget.WidgetRegistry;
 import com.citytechinc.cq.component.editconfig.util.EditConfigUtil;
+import com.citytechinc.cq.component.util.WidgetConfigHolder;
 
 public class ComponentMojoUtil {
 	private static final String OUTPUT_PATH = "tempComponentConfig";
@@ -389,9 +388,7 @@ public class ComponentMojoUtil {
 			CtClass clazz = classPool.getCtClass(c.getName());
 			Widget widgetAnnotation = (Widget) clazz.getAnnotation(Widget.class);
 
-			Class<? extends Annotation> annotationClass = null;
-
-			annotationClass = widgetAnnotation.annotationClass();
+			Class<? extends Annotation> annotationClass = widgetAnnotation.annotationClass();
 
 			Class<? extends WidgetMaker> makerClass = widgetAnnotation.makerClass();
 			Class<? extends AbstractWidget> widgetClass = classLoader.loadClass(clazz.getName()).asSubclass(
@@ -481,55 +478,6 @@ public class ComponentMojoUtil {
 			methods.addAll(Arrays.asList(ctClass.getMethods()));
 		}
 		return methods;
-	}
-
-	/**
-	 * Retrieves a field for a Class. To allow for the retrieval of inherited
-	 * fields, the class hierarchy is traversed upwards starting at the provided
-	 * class. If the top of the hierarchy is reached without finding a field of
-	 * the specified name, null is returned.
-	 * 
-	 * @param clazz
-	 * @param fieldName
-	 * @return The Field specified by the provided name or null if no such field
-	 *         could be found for the Class or its parents.
-	 */
-	public static Field getField(Class<?> clazz, String fieldName) {
-		Field retField = null;
-		Class<?> curClass = clazz;
-
-		while (retField == null && curClass != null) {
-			try {
-				retField = curClass.getDeclaredField(fieldName);
-				curClass = curClass.getSuperclass();
-			} catch (SecurityException e) {
-				getLog().debug(e.getMessage(), e);
-			} catch (NoSuchFieldException e) {
-				getLog().debug(e.getMessage(), e);
-			} finally {
-				curClass = curClass.getSuperclass();
-			}
-		}
-
-		return retField;
-	}
-
-	/**
-	 * Retrieves a Method for a Class.
-	 * 
-	 * @param clazz
-	 * @param fieldName
-	 * @return The Method specified by the provided name or null if no such
-	 *         Method could be found for the Class.
-	 */
-	public static Method getMethod(Class<?> clazz, String methodName) {
-		for (Method method : clazz.getMethods()) {
-			if (method.getName().equals(methodName)) {
-				return method;
-			}
-		}
-
-		return null;
 	}
 
 	/**

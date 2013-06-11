@@ -2,7 +2,7 @@ package com.citytechinc.cq.component.dialog.widget;
 
 import java.util.Set;
 
-import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;
+import com.citytechinc.cq.component.util.WidgetConfigHolder;
 
 public interface WidgetRegistry {
 

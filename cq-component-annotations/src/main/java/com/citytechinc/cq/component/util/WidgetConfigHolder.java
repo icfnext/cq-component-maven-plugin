@@ -1,4 +1,4 @@
-package com.citytechinc.cq.component.maven.util;
+package com.citytechinc.cq.component.util;
 
 import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;

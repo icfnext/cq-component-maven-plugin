@@ -14,7 +14,7 @@ import org.reflections.Reflections;
 import com.citytechinc.cq.component.dialog.widget.WidgetRegistry;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 import com.citytechinc.cq.component.maven.util.LogSingleton;
-import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;
+import com.citytechinc.cq.component.util.WidgetConfigHolder;
 
 public class DefaultWidgetRegistry implements WidgetRegistry {
 

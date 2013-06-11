@@ -1,5 +1,6 @@
 package com.citytechinc.cq.component.dialog.factory;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -19,11 +20,11 @@ import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
-import com.citytechinc.cq.component.dialog.field.impl.DefaultDialogFieldMember;
 import com.citytechinc.cq.component.dialog.impl.Dialog;
 import com.citytechinc.cq.component.dialog.impl.Html5SmartImageWidget;
 import com.citytechinc.cq.component.dialog.impl.Tab;
 import com.citytechinc.cq.component.dialog.impl.WidgetCollection;
+import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 import com.citytechinc.cq.component.dialog.widget.WidgetRegistry;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 
@@ -35,7 +36,8 @@ public class DialogFactory {
 	public static Dialog make(CtClass componentClass, WidgetRegistry widgetRegistry, ClassLoader classLoader,
 		ClassPool classPool) throws InvalidComponentClassException, InvalidComponentFieldException,
 		ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException,
-		InstantiationException, IllegalAccessException {
+		InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
+		NoSuchMethodException {
 
 		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
@@ -73,10 +75,10 @@ public class DialogFactory {
 
 			if (dialogProperty != null) {
 
-				DefaultDialogFieldMember dialogFieldMember = new DefaultDialogFieldMember(dialogProperty, member,
-					trueComponentClass, classLoader, classPool, widgetRegistry);
+				WidgetMakerParameters parameters = new WidgetMakerParameters(dialogProperty, member,
+					trueComponentClass, classLoader, classPool, widgetRegistry, null, true);
 
-				DialogElement builtFieldWidget = WidgetFactory.make(dialogFieldMember, true, -1);
+				DialogElement builtFieldWidget = WidgetFactory.make(parameters, -1);
 
 				builtFieldWidget.setRanking(dialogProperty.ranking());
 

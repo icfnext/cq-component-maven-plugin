@@ -4,25 +4,28 @@ import java.util.Map;
 
 import com.citytechinc.cq.component.annotations.widgets.CheckBox;
 import com.citytechinc.cq.component.dialog.DialogElement;
-import com.citytechinc.cq.component.dialog.field.DialogFieldMember;
 import com.citytechinc.cq.component.dialog.impl.CheckBoxWidget;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
+import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 
 public class CheckBoxWidgetMaker extends AbstractWidgetMaker {
 
-	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName)
-		throws ClassNotFoundException {
+	public CheckBoxWidgetMaker(WidgetMakerParameters parameters) {
+		super(parameters);
+	}
 
-		CheckBox checkBoxAnnotation = field.getAnnotation(CheckBox.class);
+	public DialogElement make() throws ClassNotFoundException {
 
-		String name = getNameForField(field, useDotSlashInName);
-		String fieldName = getFieldNameForField(field);
-		String fieldLabel = getFieldLabelForField(field);
-		String fieldDescription = getFieldDescriptionForField(field);
-		Boolean isRequired = getIsRequiredForField(field);
-		Map<String, String> additionalProperties = getAdditionalPropertiesForField(field);
-		String defaultValue = getDefaultValueForField(field);
-		boolean hideLabel = getHideLabelForField(field);
+		CheckBox checkBoxAnnotation = getAnnotation(CheckBox.class);
+
+		String name = getNameForField();
+		String fieldName = getFieldNameForField();
+		String fieldLabel = getFieldLabelForField();
+		String fieldDescription = getFieldDescriptionForField();
+		Boolean isRequired = getIsRequiredForField();
+		Map<String, String> additionalProperties = getAdditionalPropertiesForField();
+		String defaultValue = getDefaultValueForField();
+		boolean hideLabel = getHideLabelForField();
 
 		String inputValue = getInputValueForField(checkBoxAnnotation);
 		boolean checked = getCheckedForField(checkBoxAnnotation);
@@ -30,7 +33,7 @@ public class CheckBoxWidgetMaker extends AbstractWidgetMaker {
 		CheckBoxWidget widget = new CheckBoxWidget(inputValue, checked, fieldLabel, fieldDescription, !isRequired,
 			hideLabel, defaultValue, name, fieldName, additionalProperties);
 
-		setListeners(widget, field.getAnnotation().listeners());
+		setListeners(widget);
 
 		return widget;
 

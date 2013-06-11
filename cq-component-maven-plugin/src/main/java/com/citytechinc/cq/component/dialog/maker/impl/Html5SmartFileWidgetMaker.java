@@ -6,24 +6,27 @@ import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.widgets.Html5SmartFile;
 import com.citytechinc.cq.component.dialog.DialogElement;
-import com.citytechinc.cq.component.dialog.field.DialogFieldMember;
 import com.citytechinc.cq.component.dialog.impl.Html5SmartFileWidget;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
+import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 
 public class Html5SmartFileWidgetMaker extends AbstractWidgetMaker {
 
-	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName)
-		throws ClassNotFoundException {
+	public Html5SmartFileWidgetMaker(WidgetMakerParameters parameters) {
+		super(parameters);
+	}
 
-		Html5SmartFile smartFileAnnotation = field.getAnnotation(Html5SmartFile.class);
+	public DialogElement make() throws ClassNotFoundException {
 
-		String name = getNameForField(smartFileAnnotation, field, useDotSlashInName);
-		String fieldName = getFieldNameForField(field);
-		String fieldLabel = getFieldLabelForField(field);
-		String fieldDescription = getFieldDescriptionForField(field);
-		Boolean isRequired = getIsRequiredForField(field);
-		Map<String, String> additionalProperties = getAdditionalPropertiesForField(field);
-		boolean hideLabel = getHideLabelForField(field);
+		Html5SmartFile smartFileAnnotation = getAnnotation(Html5SmartFile.class);
+
+		String name = getNameForField(smartFileAnnotation, parameters, parameters.isUseDotSlashInName());
+		String fieldName = getFieldNameForField();
+		String fieldLabel = getFieldLabelForField();
+		String fieldDescription = getFieldDescriptionForField();
+		Boolean isRequired = getIsRequiredForField();
+		Map<String, String> additionalProperties = getAdditionalPropertiesForField();
+		boolean hideLabel = getHideLabelForField();
 
 		boolean allowFileNameEditing = getAllowFileNameEditingForField(smartFileAnnotation);
 		boolean allowFileReference = getAllowFileReferenceForField(smartFileAnnotation);
@@ -40,7 +43,7 @@ public class Html5SmartFileWidgetMaker extends AbstractWidgetMaker {
 			name, fieldName, additionalProperties, allowFileNameEditing, allowFileReference, allowUpload, ddAccept,
 			ddGroups, fileNameParameter, fileReferenceParameter, mimeTypes, mimeTypesDescription, sizeLimit);
 
-		setListeners(widget, field.getAnnotation().listeners());
+		setListeners(widget);
 
 		return widget;
 
@@ -98,12 +101,12 @@ public class Html5SmartFileWidgetMaker extends AbstractWidgetMaker {
 		return smartFileAnnotation.allowFileNameEditing();
 	}
 
-	private String getNameForField(Html5SmartFile smartFileAnnotation, DialogFieldMember field,
+	private String getNameForField(Html5SmartFile smartFileAnnotation, WidgetMakerParameters field,
 		boolean useDotSlashInName) {
 		if (StringUtils.isNotEmpty(smartFileAnnotation.name())) {
 			return smartFileAnnotation.name();
 		}
-		return getNameForField(field, useDotSlashInName);
+		return getNameForField();
 	}
 
 }

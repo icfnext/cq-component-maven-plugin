@@ -4,25 +4,28 @@ import java.util.Map;
 
 import com.citytechinc.cq.component.annotations.widgets.DateField;
 import com.citytechinc.cq.component.dialog.DialogElement;
-import com.citytechinc.cq.component.dialog.field.DialogFieldMember;
 import com.citytechinc.cq.component.dialog.impl.DateFieldWidget;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
+import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 
 public class DateFieldWidgetMaker extends AbstractWidgetMaker {
 
-	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName)
-		throws ClassNotFoundException {
+	public DateFieldWidgetMaker(WidgetMakerParameters parameters) {
+		super(parameters);
+	}
 
-		DateField dateFieldAnnotation = field.getAnnotation(DateField.class);
+	public DialogElement make() throws ClassNotFoundException {
 
-		String name = getNameForField(field, useDotSlashInName);
-		String fieldName = getFieldNameForField(field);
-		String fieldLabel = getFieldLabelForField(field);
-		String fieldDescription = getFieldDescriptionForField(field);
-		Boolean isRequired = getIsRequiredForField(field);
-		Map<String, String> additionalProperties = getAdditionalPropertiesForField(field);
-		String defaultValue = getDefaultValueForField(field);
-		boolean hideLabel = getHideLabelForField(field);
+		DateField dateFieldAnnotation = getAnnotation(DateField.class);
+
+		String name = getNameForField();
+		String fieldName = getFieldNameForField();
+		String fieldLabel = getFieldLabelForField();
+		String fieldDescription = getFieldDescriptionForField();
+		Boolean isRequired = getIsRequiredForField();
+		Map<String, String> additionalProperties = getAdditionalPropertiesForField();
+		String defaultValue = getDefaultValueForField();
+		boolean hideLabel = getHideLabelForField();
 
 		int startDay = getStartDayForField(dateFieldAnnotation);
 		boolean showToday = getShowTodayForField(dateFieldAnnotation);
@@ -31,7 +34,7 @@ public class DateFieldWidgetMaker extends AbstractWidgetMaker {
 		DateFieldWidget widget = new DateFieldWidget(startDay, showToday, format, fieldLabel, fieldDescription,
 			!isRequired, hideLabel, defaultValue, name, fieldName, additionalProperties);
 
-		setListeners(widget, field.getAnnotation().listeners());
+		setListeners(widget);
 
 		return widget;
 

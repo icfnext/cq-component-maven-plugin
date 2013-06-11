@@ -3,27 +3,31 @@ package com.citytechinc.cq.component.dialog.maker.impl;
 import java.util.Map;
 
 import com.citytechinc.cq.component.dialog.DialogElement;
-import com.citytechinc.cq.component.dialog.field.DialogFieldMember;
 import com.citytechinc.cq.component.dialog.impl.SimpleWidget;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
+import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 
 public class SimpleWidgetMaker extends AbstractWidgetMaker {
 
-	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName) {
+	public SimpleWidgetMaker(WidgetMakerParameters parameters) {
+		super(parameters);
+	}
 
-		String name = getNameForField(field, useDotSlashInName);
-		String fieldName = getFieldNameForField(field);
-		String fieldLabel = getFieldLabelForField(field);
-		String fieldDescription = getFieldDescriptionForField(field);
-		Boolean isRequired = getIsRequiredForField(field);
-		Map<String, String> additionalProperties = getAdditionalPropertiesForField(field);
-		String defaultValue = getDefaultValueForField(field);
-		boolean hideLabel = getHideLabelForField(field);
+	public DialogElement make() {
 
-		SimpleWidget widget = new SimpleWidget(xtype, name, fieldName, fieldLabel, fieldDescription, isRequired,
-			hideLabel, additionalProperties, defaultValue);
+		String name = getNameForField();
+		String fieldName = getFieldNameForField();
+		String fieldLabel = getFieldLabelForField();
+		String fieldDescription = getFieldDescriptionForField();
+		Boolean isRequired = getIsRequiredForField();
+		Map<String, String> additionalProperties = getAdditionalPropertiesForField();
+		String defaultValue = getDefaultValueForField();
+		boolean hideLabel = getHideLabelForField();
 
-		setListeners(widget, field.getAnnotation().listeners());
+		SimpleWidget widget = new SimpleWidget(parameters.getXtype(), name, fieldName, fieldLabel, fieldDescription,
+			isRequired, hideLabel, additionalProperties, defaultValue);
+
+		setListeners(widget);
 
 		return widget;
 

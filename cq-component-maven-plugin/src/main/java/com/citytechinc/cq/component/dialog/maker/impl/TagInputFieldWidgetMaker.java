@@ -8,27 +8,30 @@ import java.util.Map;
 import com.citytechinc.cq.component.annotations.TagNameSpace;
 import com.citytechinc.cq.component.annotations.widgets.TagInputField;
 import com.citytechinc.cq.component.dialog.DialogElement;
-import com.citytechinc.cq.component.dialog.field.DialogFieldMember;
 import com.citytechinc.cq.component.dialog.impl.Namespace;
 import com.citytechinc.cq.component.dialog.impl.TagInputFieldWidget;
 import com.citytechinc.cq.component.dialog.impl.WidgetCollection;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
+import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 
 public class TagInputFieldWidgetMaker extends AbstractWidgetMaker {
 
-	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName)
-		throws ClassNotFoundException {
+	public TagInputFieldWidgetMaker(WidgetMakerParameters parameters) {
+		super(parameters);
+	}
 
-		TagInputField tagAnnotation = field.getAnnotation(TagInputField.class);
+	public DialogElement make() throws ClassNotFoundException {
 
-		String name = getNameForField(field, useDotSlashInName);
-		String fieldName = getFieldNameForField(field);
-		String fieldLabel = getFieldLabelForField(field);
-		String fieldDescription = getFieldDescriptionForField(field);
-		Boolean isRequired = getIsRequiredForField(field);
-		Map<String, String> additionalProperties = getAdditionalPropertiesForField(field);
-		String defaultValue = getDefaultValueForField(field);
-		boolean hideLabel = getHideLabelForField(field);
+		TagInputField tagAnnotation = getAnnotation(TagInputField.class);
+
+		String name = getNameForField();
+		String fieldName = getFieldNameForField();
+		String fieldLabel = getFieldLabelForField();
+		String fieldDescription = getFieldDescriptionForField();
+		Boolean isRequired = getIsRequiredForField();
+		Map<String, String> additionalProperties = getAdditionalPropertiesForField();
+		String defaultValue = getDefaultValueForField();
+		boolean hideLabel = getHideLabelForField();
 
 		boolean displayTitles = tagAnnotation.displayTitles();
 		List<DialogElement> widgetCollectionHolder = getWidgetCollectionHolderForField(tagAnnotation);
@@ -36,7 +39,7 @@ public class TagInputFieldWidgetMaker extends AbstractWidgetMaker {
 		TagInputFieldWidget widget = new TagInputFieldWidget(displayTitles, fieldLabel, fieldDescription, !isRequired,
 			hideLabel, defaultValue, name, fieldName, additionalProperties, widgetCollectionHolder);
 
-		setListeners(widget, field.getAnnotation().listeners());
+		setListeners(widget);
 
 		return widget;
 

@@ -1,5 +1,6 @@
 package com.citytechinc.cq.component.dialog.maker.impl;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,32 +12,35 @@ import com.citytechinc.cq.component.annotations.widgets.MultiField;
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.factory.WidgetFactory;
-import com.citytechinc.cq.component.dialog.field.DialogFieldMember;
 import com.citytechinc.cq.component.dialog.impl.MultiFieldWidget;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
+import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 
 public class MultifieldWidgetMaker extends AbstractWidgetMaker {
 
-	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName)
-		throws ClassNotFoundException, SecurityException, InvalidComponentFieldException, CannotCompileException,
-		NotFoundException, NoSuchFieldException, InstantiationException, IllegalAccessException {
+	public MultifieldWidgetMaker(WidgetMakerParameters parameters) {
+		super(parameters);
+	}
 
-		MultiField multiFieldAnnotation = field.getAnnotation(MultiField.class);
+	public DialogElement make() throws ClassNotFoundException, SecurityException, InvalidComponentFieldException,
+		CannotCompileException, NotFoundException, NoSuchFieldException, InstantiationException,
+		IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
 
-		String name = getNameForField(field, useDotSlashInName);
-		String fieldName = getFieldNameForField(field);
-		String fieldLabel = getFieldLabelForField(field);
-		String fieldDescription = getFieldDescriptionForField(field);
-		Map<String, String> additionalProperties = getAdditionalPropertiesForField(field);
-		String defaultValue = getDefaultValueForField(field);
-		boolean hideLabel = getHideLabelForField(field);
+		MultiField multiFieldAnnotation = getAnnotation(MultiField.class);
+
+		String name = getNameForField();
+		String fieldName = getFieldNameForField();
+		String fieldLabel = getFieldLabelForField();
+		String fieldDescription = getFieldDescriptionForField();
+		Map<String, String> additionalProperties = getAdditionalPropertiesForField();
+		String defaultValue = getDefaultValueForField();
+		boolean hideLabel = getHideLabelForField();
 
 		boolean orderable = getOrderableForField(multiFieldAnnotation);
 		String addItemLabel = getAddItemLabelForField(multiFieldAnnotation);
+		parameters.setUseDotSlashInName(false);
+		DialogElement element = WidgetFactory.make(parameters, MultiFieldWidget.RANKING);
 
-		DialogElement element = WidgetFactory.make(field, false, MultiFieldWidget.RANKING);
-
-		// TODO: Why is this needed?
 		element.setFieldName("fieldConfig");
 
 		List<DialogElement> elements = new ArrayList<DialogElement>();

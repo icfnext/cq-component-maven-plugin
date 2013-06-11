@@ -4,22 +4,25 @@ import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.widgets.Html5SmartImage;
 import com.citytechinc.cq.component.dialog.DialogElement;
-import com.citytechinc.cq.component.dialog.field.DialogFieldMember;
 import com.citytechinc.cq.component.dialog.impl.Html5SmartImageWidget;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
+import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 
 public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
 
-	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName)
-		throws ClassNotFoundException {
+	public Html5SmartImageWidgetMaker(WidgetMakerParameters parameters) {
+		super(parameters);
+	}
 
-		Html5SmartImage smartImageAnnotation = field.getAnnotation(Html5SmartImage.class);
+	public DialogElement make() throws ClassNotFoundException {
 
-		String fieldName = getFieldNameForField(field);
-		String fieldLabel = getFieldLabelForField(field);
-		String fieldDescription = getFieldDescriptionForField(field);
-		Boolean isRequired = getIsRequiredForField(field);
-		boolean hideLabel = getHideLabelForField(field);
+		Html5SmartImage smartImageAnnotation = getAnnotation(Html5SmartImage.class);
+
+		String fieldName = getFieldNameForField();
+		String fieldLabel = getFieldLabelForField();
+		String fieldDescription = getFieldDescriptionForField();
+		Boolean isRequired = getIsRequiredForField();
+		boolean hideLabel = getHideLabelForField();
 
 		String name = getNameForField(smartImageAnnotation);
 		boolean disableFlush = getDisableFlushForField(smartImageAnnotation);
@@ -40,7 +43,7 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
 			ddGroups, allowUpload, isRequired, hideLabel, fieldLabel, fieldName, fieldDescription, height,
 			smartImageAnnotation.tab());
 
-		setListeners(widget, field.getAnnotation().listeners());
+		setListeners(widget);
 
 		return widget;
 

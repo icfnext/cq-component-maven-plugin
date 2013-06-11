@@ -24,7 +24,6 @@ import com.citytechinc.cq.component.annotations.widgets.rte.SubSuperscript;
 import com.citytechinc.cq.component.annotations.widgets.rte.Table;
 import com.citytechinc.cq.component.annotations.widgets.rte.Undo;
 import com.citytechinc.cq.component.dialog.DialogElement;
-import com.citytechinc.cq.component.dialog.field.DialogFieldMember;
 import com.citytechinc.cq.component.dialog.impl.KeysRtePlugin;
 import com.citytechinc.cq.component.dialog.impl.RichTextEditorWidget;
 import com.citytechinc.cq.component.dialog.impl.RteParaFormat;
@@ -33,6 +32,7 @@ import com.citytechinc.cq.component.dialog.impl.RteStyle;
 import com.citytechinc.cq.component.dialog.impl.UndoRtePlugin;
 import com.citytechinc.cq.component.dialog.impl.WidgetCollection;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
+import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 
 /**
  * 
@@ -44,26 +44,29 @@ import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
  */
 public class RichTextEditorMaker extends AbstractWidgetMaker {
 
-	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName)
-		throws ClassNotFoundException {
+	public RichTextEditorMaker(WidgetMakerParameters parameters) {
+		super(parameters);
+	}
 
-		RichTextEditor rteAnnotation = field.getAnnotation(RichTextEditor.class);
+	public DialogElement make() throws ClassNotFoundException {
 
-		String name = getNameForField(field, useDotSlashInName);
-		String fieldName = getFieldNameForField(field);
-		String fieldLabel = getFieldLabelForField(field);
-		String fieldDescription = getFieldDescriptionForField(field);
-		Boolean isRequired = getIsRequiredForField(field);
-		Map<String, String> additionalProperties = getAdditionalPropertiesForField(field);
-		String defaultValue = getDefaultValueForField(field);
-		boolean hideLabel = getHideLabelForField(field);
+		RichTextEditor rteAnnotation = getAnnotation(RichTextEditor.class);
+
+		String name = getNameForField();
+		String fieldName = getFieldNameForField();
+		String fieldLabel = getFieldLabelForField();
+		String fieldDescription = getFieldDescriptionForField();
+		Boolean isRequired = getIsRequiredForField();
+		Map<String, String> additionalProperties = getAdditionalPropertiesForField();
+		String defaultValue = getDefaultValueForField();
+		boolean hideLabel = getHideLabelForField();
 
 		final List<DialogElement> rtePlugins = buildRtePlugins(rteAnnotation);
 
 		RichTextEditorWidget widget = new RichTextEditorWidget(fieldLabel, fieldDescription, !isRequired, hideLabel,
 			defaultValue, name, fieldName, additionalProperties, rtePlugins);
 
-		setListeners(widget, field.getAnnotation().listeners());
+		setListeners(widget);
 
 		return widget;
 

@@ -4,25 +4,29 @@ import java.util.Map;
 
 import com.citytechinc.cq.component.annotations.widgets.PathField;
 import com.citytechinc.cq.component.dialog.DialogElement;
-import com.citytechinc.cq.component.dialog.field.DialogFieldMember;
 import com.citytechinc.cq.component.dialog.impl.PathFieldWidget;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
+import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 
 public class PathFieldWidgetMaker extends AbstractWidgetMaker {
 
-	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName)
-		throws ClassNotFoundException {
+	public PathFieldWidgetMaker(WidgetMakerParameters parameters) {
+		super(parameters);
+		// TODO Auto-generated constructor stub
+	}
 
-		PathField pathFieldAnnotation = field.getAnnotation(PathField.class);
+	public DialogElement make() throws ClassNotFoundException {
 
-		String name = getNameForField(field, useDotSlashInName);
-		String fieldName = getFieldNameForField(field);
-		String fieldLabel = getFieldLabelForField(field);
-		String fieldDescription = getFieldDescriptionForField(field);
-		Boolean isRequired = getIsRequiredForField(field);
-		Map<String, String> additionalProperties = getAdditionalPropertiesForField(field);
-		String defaultValue = getDefaultValueForField(field);
-		boolean hideLabel = getHideLabelForField(field);
+		PathField pathFieldAnnotation = getAnnotation(PathField.class);
+
+		String name = getNameForField();
+		String fieldName = getFieldNameForField();
+		String fieldLabel = getFieldLabelForField();
+		String fieldDescription = getFieldDescriptionForField();
+		Boolean isRequired = getIsRequiredForField();
+		Map<String, String> additionalProperties = getAdditionalPropertiesForField();
+		String defaultValue = getDefaultValueForField();
+		boolean hideLabel = getHideLabelForField();
 
 		boolean escapeAmp = getEscapeAmpForField(pathFieldAnnotation);
 		boolean hideTrigger = getHideTriggerForField(pathFieldAnnotation);
@@ -35,7 +39,7 @@ public class PathFieldWidgetMaker extends AbstractWidgetMaker {
 			showTitleInTree, fieldLabel, fieldDescription, !isRequired, hideLabel, defaultValue, name, fieldName,
 			additionalProperties);
 
-		setListeners(widget, field.getAnnotation().listeners());
+		setListeners(widget);
 
 		return widget;
 

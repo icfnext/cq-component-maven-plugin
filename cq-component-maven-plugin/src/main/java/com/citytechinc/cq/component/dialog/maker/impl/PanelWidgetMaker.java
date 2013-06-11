@@ -1,5 +1,6 @@
 package com.citytechinc.cq.component.dialog.maker.impl;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,27 +17,30 @@ import com.citytechinc.cq.component.annotations.widgets.Panel;
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.factory.WidgetFactory;
-import com.citytechinc.cq.component.dialog.field.DialogFieldMember;
-import com.citytechinc.cq.component.dialog.field.impl.DefaultDialogFieldMember;
 import com.citytechinc.cq.component.dialog.impl.PanelWidget;
 import com.citytechinc.cq.component.dialog.impl.WidgetCollection;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
+import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 
 public class PanelWidgetMaker extends AbstractWidgetMaker {
+	public PanelWidgetMaker(WidgetMakerParameters parameters) {
+		super(parameters);
+	}
+
 	private static final String ITEMS = "items";
 
-	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName)
-		throws InvalidComponentFieldException, NotFoundException, ClassNotFoundException, SecurityException,
-		CannotCompileException, NoSuchFieldException, InstantiationException, IllegalAccessException {
+	public DialogElement make() throws InvalidComponentFieldException, NotFoundException, ClassNotFoundException,
+		SecurityException, CannotCompileException, NoSuchFieldException, InstantiationException,
+		IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
 
-		Panel panelAnnotation = field.getAnnotation(Panel.class);
+		Panel panelAnnotation = getAnnotation(Panel.class);
 
-		String fieldName = getFieldNameForField(field);
-		String fieldLabel = getFieldLabelForField(field);
-		String fieldDescription = getFieldDescriptionForField(field);
-		Map<String, String> additionalProperties = getAdditionalPropertiesForField(field);
-		boolean hideLabel = getHideLabelForField(field);
+		String parametersName = getFieldNameForField();
+		String parametersLabel = getFieldLabelForField();
+		String parametersDescription = getFieldDescriptionForField();
+		Map<String, String> additionalProperties = getAdditionalPropertiesForField();
+		boolean hideLabel = getHideLabelForField();
 
 		boolean collapseFirst = panelAnnotation.collapseFirst();
 		boolean collapsible = panelAnnotation.collapsible();
@@ -44,12 +48,12 @@ public class PanelWidgetMaker extends AbstractWidgetMaker {
 		boolean border = panelAnnotation.border();
 		String title = getTitleForField(panelAnnotation);
 
-		List<DialogElement> widgetCollection = buildWidgetCollection(field);
+		List<DialogElement> widgetCollection = buildWidgetCollection();
 
-		PanelWidget widget = new PanelWidget(collapseFirst, collapsible, collapsed, border, title, fieldLabel,
-			fieldDescription, hideLabel, fieldName, additionalProperties, widgetCollection);
+		PanelWidget widget = new PanelWidget(collapseFirst, collapsible, collapsed, border, title, parametersLabel,
+			parametersDescription, hideLabel, parametersName, additionalProperties, widgetCollection);
 
-		setListeners(widget, field.getAnnotation().listeners());
+		setListeners(widget);
 
 		return widget;
 
@@ -64,31 +68,35 @@ public class PanelWidgetMaker extends AbstractWidgetMaker {
 		return null;
 	}
 
-	protected List<DialogElement> buildWidgetCollection(DialogFieldMember field) throws InvalidComponentFieldException,
-		NotFoundException, ClassNotFoundException, SecurityException, CannotCompileException, NoSuchFieldException,
-		InstantiationException, IllegalAccessException {
+	private List<DialogElement> buildWidgetCollection() throws InvalidComponentFieldException, NotFoundException,
+		ClassNotFoundException, SecurityException, CannotCompileException, NoSuchFieldException,
+		InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
+		NoSuchMethodException {
 
 		List<CtMember> fieldsAndMethods = new ArrayList<CtMember>();
 
-		fieldsAndMethods.addAll(ComponentMojoUtil.collectFields(field.getCtType()));
-		fieldsAndMethods.addAll(ComponentMojoUtil.collectMethods(field.getCtType()));
+		fieldsAndMethods.addAll(ComponentMojoUtil.collectFields(getCtType()));
+		fieldsAndMethods.addAll(ComponentMojoUtil.collectMethods(getCtType()));
 
 		List<DialogElement> elements = new ArrayList<DialogElement>();
 
 		for (CtMember curField : fieldsAndMethods) {
 			if (curField.hasAnnotation(DialogField.class)) {
 
-				DialogFieldMember curFieldMember = new DefaultDialogFieldMember(
-					(DialogField) curField.getAnnotation(DialogField.class), curField, field.getType(),
-					field.getClassLoader(), field.getClassPool(), field.getWidgetRegistry());
+				Class<?> fieldClass = parameters.getClassLoader().loadClass(curField.getDeclaringClass().getName());
 
-				DialogElement builtFieldWidget = WidgetFactory.make(curFieldMember, false, -1);
+				WidgetMakerParameters curFieldMember = new WidgetMakerParameters(
+					(DialogField) curField.getAnnotation(DialogField.class), curField, fieldClass,
+					parameters.getClassLoader(), parameters.getClassPool(), parameters.getWidgetRegistry(), null, true);
+
+				DialogElement builtFieldWidget = WidgetFactory.make(curFieldMember, -1);
 
 				elements.add(builtFieldWidget);
 			}
 		}
 
 		return Arrays.asList(new DialogElement[] { new WidgetCollection(elements, ITEMS) });
+
 	}
 
 }

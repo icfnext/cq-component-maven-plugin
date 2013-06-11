@@ -3,7 +3,8 @@ package com.citytechinc.cq.component.dialog.maker;
 import java.util.HashMap;
 import java.util.Map;
 
-import javassist.CannotCompileException;
+import javassist.CtClass;
+import javassist.CtField;
 import javassist.NotFoundException;
 
 import org.codehaus.plexus.util.StringUtils;
@@ -11,53 +12,41 @@ import org.codehaus.plexus.util.StringUtils;
 import com.citytechinc.cq.component.annotations.FieldProperty;
 import com.citytechinc.cq.component.annotations.Listener;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
-import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.Listeners;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
-import com.citytechinc.cq.component.dialog.field.DialogFieldMember;
+import com.citytechinc.cq.component.util.ComponentUtil;
 
 public abstract class AbstractWidgetMaker implements WidgetMaker {
+	protected final WidgetMakerParameters parameters;
 
-	/*
-	 * This default implementation simply defaults the useDotSlashInName
-	 * parameter of the like method.
-	 * 
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.citytechinc.cq.component.dialog.maker.WidgetMaker#make(com.citytechinc
-	 * .cq.component.dialog.field.DialogFieldMember, java.lang.String)
-	 */
-	public DialogElement make(DialogFieldMember field, String xtype) throws ClassNotFoundException,
-		InvalidComponentFieldException, NotFoundException, SecurityException, CannotCompileException,
-		NoSuchFieldException, InstantiationException, IllegalAccessException {
-		return this.make(field, xtype, true);
+	public AbstractWidgetMaker(WidgetMakerParameters parameters) {
+		this.parameters = parameters;
 	}
 
-	protected String getNameForField(DialogFieldMember field, boolean useDotSlashInName) {
-		String overrideName = field.getAnnotation().name();
+	protected String getNameForField() {
+		String overrideName = parameters.getAnnotation().name();
 
 		if (StringUtils.isNotEmpty(overrideName)) {
 			return overrideName;
 		}
-		if (useDotSlashInName) {
-			return "./" + field.getName();
+		if (parameters.isUseDotSlashInName()) {
+			return "./" + getName();
 		}
-		return field.getName();
+		return getName();
 	}
 
-	protected String getFieldNameForField(DialogFieldMember field) {
-		String overrideFieldName = field.getAnnotation().fieldName();
+	protected String getFieldNameForField() {
+		String overrideFieldName = parameters.getAnnotation().fieldName();
 
 		if (StringUtils.isNotEmpty(overrideFieldName)) {
 			return overrideFieldName;
 		}
 
-		return field.getName();
+		return getName();
 	}
 
-	protected String getFieldLabelForField(DialogFieldMember field) {
-		String overrideLabel = field.getAnnotation().fieldLabel();
+	protected String getFieldLabelForField() {
+		String overrideLabel = parameters.getAnnotation().fieldLabel();
 
 		if (StringUtils.isNotEmpty(overrideLabel)) {
 			return overrideLabel;
@@ -66,8 +55,8 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 		return null;
 	}
 
-	protected String getFieldDescriptionForField(DialogFieldMember field) {
-		String overrideFieldDescription = field.getAnnotation().fieldDescription();
+	protected String getFieldDescriptionForField() {
+		String overrideFieldDescription = parameters.getAnnotation().fieldDescription();
 
 		if (StringUtils.isNotEmpty(overrideFieldDescription)) {
 			return overrideFieldDescription;
@@ -76,15 +65,15 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 		return null;
 	}
 
-	protected Boolean getIsRequiredForField(DialogFieldMember field) {
-		return field.getAnnotation().required();
+	protected Boolean getIsRequiredForField() {
+		return parameters.getAnnotation().required();
 	}
 
-	protected Map<String, String> getAdditionalPropertiesForField(DialogFieldMember field) {
-		if (field.getAnnotation().additionalProperties().length > 0) {
+	protected Map<String, String> getAdditionalPropertiesForField() {
+		if (parameters.getAnnotation().additionalProperties().length > 0) {
 			Map<String, String> properties = new HashMap<String, String>();
 
-			for (FieldProperty curProperty : field.getAnnotation().additionalProperties()) {
+			for (FieldProperty curProperty : parameters.getAnnotation().additionalProperties()) {
 				properties.put(curProperty.name(), curProperty.value());
 			}
 
@@ -94,8 +83,8 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 		return null;
 	}
 
-	protected String getDefaultValueForField(DialogFieldMember field) {
-		String defaultValue = field.getAnnotation().defaultValue();
+	protected String getDefaultValueForField() {
+		String defaultValue = parameters.getAnnotation().defaultValue();
 
 		if (StringUtils.isNotEmpty(defaultValue)) {
 			return defaultValue;
@@ -104,14 +93,62 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 		return null;
 	}
 
-	protected boolean getHideLabelForField(DialogFieldMember field) {
-		return field.getAnnotation().hideLabel();
+	protected boolean getHideLabelForField() {
+		return parameters.getAnnotation().hideLabel();
 	}
 
 	// TODO: figure out how this is being used
-	protected void setListeners(AbstractWidget widget, Listener[] listeners) {
+	protected void setListeners(AbstractWidget widget) {
+		Listener[] listeners = parameters.getAnnotation().listeners();
 		if (listeners.length > 0) {
 			widget.setListeners(new Listeners(listeners));
 		}
+	}
+
+	protected String getName() {
+		if (isField()) {
+			return parameters.getCtMember().getName();
+		} else {
+			String tempName = parameters.getCtMember().getName();
+			if (tempName.startsWith("is")) {
+				return StringUtils.uncapitalise(tempName.substring(2));
+			} else if (tempName.startsWith("get")) {
+				return StringUtils.uncapitalise(tempName.substring(3));
+			} else {
+				return StringUtils.uncapitalise(tempName);
+			}
+		}
+	}
+
+	protected boolean isField() {
+		if (parameters.getCtMember() instanceof CtField) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	protected boolean isMethod() {
+		return !isField();
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> T getAnnotation(Class<T> annotationClass) throws ClassNotFoundException {
+		if (parameters.getCtMember().hasAnnotation(annotationClass)) {
+			return (T) parameters.getCtMember().getAnnotation(annotationClass);
+		}
+		return null;
+	}
+
+	public boolean hasAnnotation(Class<?> annotationClass) {
+		return parameters.getCtMember().hasAnnotation(annotationClass);
+	}
+
+	public CtClass getCtType() throws NotFoundException, InvalidComponentFieldException {
+		return parameters.getClassPool().getCtClass(getType().getName());
+	}
+
+	public Class<?> getType() throws InvalidComponentFieldException {
+		return ComponentUtil.getTypeForMember(parameters.getCtMember(), parameters.getContainingClass());
 	}
 }

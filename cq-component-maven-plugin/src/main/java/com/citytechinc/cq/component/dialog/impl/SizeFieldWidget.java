@@ -21,11 +21,11 @@ public class SizeFieldWidget extends AbstractWidget {
 	private final String widthSuffix;
 	private final int fieldWidth;
 
-	public SizeFieldWidget(String xtype, String fieldLabel, String fieldDescription, boolean allowBlank,
-		boolean hideLabel, String defaultValue, String name, String fieldName,
-		Map<String, String> additionalProperties, String heightParameter, String heightPrefix, String heightSuffix,
-		String widthParameter, String widthPrefix, String widthSuffix, int fieldWidth) {
-		super(xtype, fieldLabel, fieldDescription, allowBlank, hideLabel, defaultValue, name, PRIMARY_TYPE, null,
+	public SizeFieldWidget(String fieldLabel, String fieldDescription, boolean allowBlank, boolean hideLabel,
+		String defaultValue, String name, String fieldName, Map<String, String> additionalProperties,
+		String heightParameter, String heightPrefix, String heightSuffix, String widthParameter, String widthPrefix,
+		String widthSuffix, int fieldWidth) {
+		super(XTYPE, fieldLabel, fieldDescription, allowBlank, hideLabel, defaultValue, name, PRIMARY_TYPE, null,
 			fieldName, additionalProperties, null);
 
 		this.heightParameter = heightParameter;

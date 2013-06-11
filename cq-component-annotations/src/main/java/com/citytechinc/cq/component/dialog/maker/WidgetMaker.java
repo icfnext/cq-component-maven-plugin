@@ -1,11 +1,12 @@
 package com.citytechinc.cq.component.dialog.maker;
 
+import java.lang.reflect.InvocationTargetException;
+
 import javassist.CannotCompileException;
 import javassist.NotFoundException;
 
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
-import com.citytechinc.cq.component.dialog.field.DialogFieldMember;
 
 /**
  * The interface which all concrete WidgetMakers will implement. A WidgetMaker
@@ -16,12 +17,7 @@ import com.citytechinc.cq.component.dialog.field.DialogFieldMember;
  */
 public interface WidgetMaker {
 
-	public DialogElement make(DialogFieldMember field, String xtype) throws ClassNotFoundException,
-		InvalidComponentFieldException, NotFoundException, SecurityException, CannotCompileException,
-		NoSuchFieldException, InstantiationException, IllegalAccessException;
-
-	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName)
-		throws ClassNotFoundException, InvalidComponentFieldException, NotFoundException, SecurityException,
-		CannotCompileException, NoSuchFieldException, InstantiationException, IllegalAccessException;
-
+	public DialogElement make() throws InvalidComponentFieldException, NotFoundException, ClassNotFoundException,
+		SecurityException, CannotCompileException, NoSuchFieldException, InstantiationException,
+		IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException;
 }

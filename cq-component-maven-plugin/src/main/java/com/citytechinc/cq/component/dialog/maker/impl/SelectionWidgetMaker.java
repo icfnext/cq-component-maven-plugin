@@ -15,11 +15,11 @@ import org.codehaus.plexus.util.StringUtils;
 import com.citytechinc.cq.component.annotations.widgets.Selection;
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
-import com.citytechinc.cq.component.dialog.field.DialogFieldMember;
 import com.citytechinc.cq.component.dialog.impl.Option;
 import com.citytechinc.cq.component.dialog.impl.SelectionWidget;
 import com.citytechinc.cq.component.dialog.impl.WidgetCollection;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
+import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 
 /**
  * Builds a SelectionWidget from an annotated field. This maker will operate
@@ -29,23 +29,26 @@ import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
  * 
  */
 public class SelectionWidgetMaker extends AbstractWidgetMaker {
+	public SelectionWidgetMaker(WidgetMakerParameters parameters) {
+		super(parameters);
+	}
+
 	private static final String OPTION_FIELD_NAME_PREFIX = "option";
 
-	public DialogElement make(DialogFieldMember field, String xtype, boolean useDotSlashInName)
-		throws ClassNotFoundException, InvalidComponentFieldException, NotFoundException {
+	public DialogElement make() throws ClassNotFoundException, InvalidComponentFieldException, NotFoundException {
 
-		Selection selectionAnnotation = field.getAnnotation(Selection.class);
+		Selection selectionAnnotation = getAnnotation(Selection.class);
 
-		String name = getNameForField(field, useDotSlashInName);
-		String fieldName = getFieldNameForField(field);
-		String fieldLabel = getFieldLabelForField(field);
-		String fieldDescription = getFieldDescriptionForField(field);
-		Boolean isRequired = getIsRequiredForField(field);
-		Map<String, String> additionalProperties = getAdditionalPropertiesForField(field);
-		String defaultValue = getDefaultValueForField(field);
-		boolean hideLabel = getHideLabelForField(field);
+		String name = getNameForField();
+		String fieldName = getFieldNameForField();
+		String fieldLabel = getFieldLabelForField();
+		String fieldDescription = getFieldDescriptionForField();
+		Boolean isRequired = getIsRequiredForField();
+		Map<String, String> additionalProperties = getAdditionalPropertiesForField();
+		String defaultValue = getDefaultValueForField();
+		boolean hideLabel = getHideLabelForField();
 
-		List<DialogElement> options = buildSelectionOptionsForField(field, selectionAnnotation);
+		List<DialogElement> options = buildSelectionOptionsForField(selectionAnnotation);
 		String selectionType = getSelectionTypeForField(selectionAnnotation);
 		String optionsUrl = getOptionsUrlForField(selectionAnnotation);
 		String optionsProvider = getOptionsProviderForField(selectionAnnotation);
@@ -61,7 +64,7 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 			isRequired, hideLabel, defaultValue, additionalProperties, optionsList, optionsUrl, optionsProvider,
 			sortDir);
 
-		setListeners(widget, field.getAnnotation().listeners());
+		setListeners(widget);
 
 		return widget;
 
@@ -100,7 +103,7 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 		}
 	}
 
-	protected List<DialogElement> buildSelectionOptionsForField(DialogFieldMember field, Selection selectionAnnotation)
+	protected List<DialogElement> buildSelectionOptionsForField(Selection selectionAnnotation)
 		throws InvalidComponentFieldException, ClassNotFoundException, NotFoundException {
 
 		List<DialogElement> options = new ArrayList<DialogElement>();
@@ -129,13 +132,13 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 		 * if the field is an Enum and if so, the options are pulled from the
 		 * Enum definition
 		 */
-		else if (field.getType().isEnum()) {
+		else if (getType().isEnum()) {
 			int i = 0;
-			for (Object curEnumObject : field.getClassLoader().loadClass(field.getType().getName()).getEnumConstants()) {
+			for (Object curEnumObject : parameters.getClassLoader().loadClass(getType().getName()).getEnumConstants()) {
 				Enum<?> curEnum = (Enum<?>) curEnumObject;
 				try {
-					options.add(buildSelectionOptionForEnum(curEnum, field.getClassPool(), OPTION_FIELD_NAME_PREFIX
-						+ (i++)));
+					options.add(buildSelectionOptionForEnum(curEnum, parameters.getClassPool(),
+						OPTION_FIELD_NAME_PREFIX + (i++)));
 				} catch (SecurityException e) {
 					throw new InvalidComponentFieldException("Invalid Enum Field", e);
 				} catch (NoSuchFieldException e) {

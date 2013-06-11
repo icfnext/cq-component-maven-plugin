@@ -4,15 +4,15 @@ import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 
 public class WidgetMakerContext {
 
-	private final WidgetMaker maker;
+	private final Class<? extends WidgetMaker> maker;
 	private final String xtype;
 
-	public WidgetMakerContext(WidgetMaker maker, String xtype) {
+	public WidgetMakerContext(Class<? extends WidgetMaker> maker, String xtype) {
 		this.maker = maker;
 		this.xtype = xtype;
 	}
 
-	public WidgetMaker getWidgetMaker() {
+	public Class<? extends WidgetMaker> getWidgetMaker() {
 		return maker;
 	}
 

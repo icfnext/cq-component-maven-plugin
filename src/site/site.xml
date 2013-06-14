@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/DECORATION/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
+
+	<skin>
+		<groupId>lt.velykis.maven.skins</groupId>
+		<artifactId>reflow-maven-skin</artifactId>
+		<version>1.0.0</version>
+	</skin>
+
+
+	<bannerLeft>
+		<name>CQ Component Plugin</name>
+		<href>http://citytechinc.github.io/cq-component-maven-plugin/</href>
+	</bannerLeft>
+
+	<custom>
+		<reflowSkin>
+			<skinAttribution>false</skinAttribution>
+			<!-- Make this to 'false' for local development, i.e. file:// URLs -->
+			<protocolRelativeURLs>false</protocolRelativeURLs>
+			<smoothScroll>true</smoothScroll>
+			<theme>bootswatch-cerulean</theme>
+			<highlightJs>true</highlightJs>
+			<highlightJsTheme>github</highlightJsTheme>
+			<brand>
+				<name>
+					CQ Component Plugin
+				</name>
+				<href>https://github.com/Citytechinc/cq-component-maven-plugin</href>
+			</brand>
+			<slogan>A Plugin for CQ Components!</slogan>
+			<pages>
+				<index project="cq-component-parent">
+					<titleTemplate>CQ Component Plugin </titleTemplate>
+					<breadcrumbs>false</breadcrumbs>
+					<toc>false</toc>
+					<markPageHeader>false</markPageHeader>
+					<sections>
+						<columns>1</columns>
+						<body />
+					</sections>
+				</index>
+			</pages>
+		</reflowSkin>
+	</custom>
+
+	<body>
+		<menu name="Documentation" inherit="top">
+			<item name="Usage" href="usage.html" />
+		</menu>
+	</body>
+</project>

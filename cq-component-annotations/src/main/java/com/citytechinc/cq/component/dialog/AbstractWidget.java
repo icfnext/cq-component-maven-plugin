@@ -1,7 +1,6 @@
 package com.citytechinc.cq.component.dialog;
 
-import java.util.List;
-import java.util.Map;
+import com.citytechinc.cq.component.dialog.widget.WidgetParameters;
 
 public abstract class AbstractWidget extends AbstractDialogElement {
 	private final String xtype;
@@ -12,17 +11,15 @@ public abstract class AbstractWidget extends AbstractDialogElement {
 	private final String name;
 	private final boolean hideLabel;
 
-	public AbstractWidget(String xtype, String fieldLabel, String fieldDescription, boolean allowBlank,
-		boolean hideLabel, String defaultValue, String name, String primaryType, String nameSpace, String fieldName,
-		Map<String, String> additionalProperties, List<? extends DialogElement> containedElements) {
-		super(primaryType, nameSpace, fieldName, additionalProperties, containedElements);
-		this.xtype = xtype;
-		this.fieldLabel = fieldLabel;
-		this.fieldDescription = fieldDescription;
-		this.allowBlank = allowBlank;
-		this.defaultValue = defaultValue;
-		this.name = name;
-		this.hideLabel = hideLabel;
+	public AbstractWidget(WidgetParameters parameters) {
+		super(parameters);
+		this.xtype = parameters.getXtype();
+		this.fieldLabel = parameters.getFieldLabel();
+		this.fieldDescription = parameters.getFieldDescription();
+		this.allowBlank = parameters.isAllowBlank();
+		this.defaultValue = parameters.getDefaultValue();
+		this.name = parameters.getName();
+		this.hideLabel = parameters.isHideLabel();
 	}
 
 	public final String getXtype() {

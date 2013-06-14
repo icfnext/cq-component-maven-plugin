@@ -56,7 +56,6 @@ import com.citytechinc.cq.component.util.WidgetConfigHolder;
 
 public class ComponentMojoUtil {
 	private static final String OUTPUT_PATH = "tempComponentConfig";
-	private static final String CITYTECH_PACKAGE = "com.citytechinc.cq.component.dialog.impl";
 
 	private ComponentMojoUtil() {
 	};
@@ -382,7 +381,6 @@ public class ComponentMojoUtil {
 	public static List<WidgetConfigHolder> getAllWidgetAnnotations(ClassPool classPool, ClassLoader classLoader,
 		Reflections reflections) throws ClassNotFoundException, NotFoundException, MalformedURLException {
 		List<WidgetConfigHolder> builtInWidgets = new ArrayList<WidgetConfigHolder>();
-		List<WidgetConfigHolder> extendedWidgets = new ArrayList<WidgetConfigHolder>();
 
 		for (Class<?> c : reflections.getTypesAnnotatedWith(Widget.class)) {
 			CtClass clazz = classPool.getCtClass(c.getName());
@@ -395,13 +393,10 @@ public class ComponentMojoUtil {
 				AbstractWidget.class);
 			WidgetConfigHolder widgetConfig = new WidgetConfigHolder(annotationClass, widgetClass, makerClass,
 				widgetAnnotation.xtype(), widgetAnnotation.ranking());
-			if (clazz.getPackageName().equals(CITYTECH_PACKAGE)) {
-				builtInWidgets.add(widgetConfig);
-			} else {
-				extendedWidgets.add(widgetConfig);
-			}
+
+			builtInWidgets.add(widgetConfig);
+
 		}
-		builtInWidgets.addAll(extendedWidgets);
 		return builtInWidgets;
 	}
 

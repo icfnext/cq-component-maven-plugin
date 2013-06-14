@@ -23,8 +23,8 @@ import org.codehaus.plexus.util.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.citytechinc.cq.component.dialog.Dialog;
 import com.citytechinc.cq.component.dialog.DialogElement;
-import com.citytechinc.cq.component.dialog.impl.Dialog;
 import com.citytechinc.cq.component.global.Constants;
 
 public class DialogXmlWriter {

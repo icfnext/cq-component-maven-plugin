@@ -11,8 +11,8 @@ import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.FieldProperty;
 import com.citytechinc.cq.component.annotations.Listener;
-import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.Listeners;
+import com.citytechinc.cq.component.dialog.ListenersParameters;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.util.ComponentUtil;
 
@@ -97,12 +97,14 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 		return parameters.getAnnotation().hideLabel();
 	}
 
-	// TODO: figure out how this is being used
-	protected void setListeners(AbstractWidget widget) {
+	protected Listeners getListeners() {
 		Listener[] listeners = parameters.getAnnotation().listeners();
 		if (listeners.length > 0) {
-			widget.setListeners(new Listeners(listeners));
+			ListenersParameters parameters = new ListenersParameters();
+			parameters.setListenerAnnotations(listeners);
+			return new Listeners(parameters);
 		}
+		return null;
 	}
 
 	protected String getName() {

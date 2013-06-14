@@ -6,13 +6,11 @@ import java.util.Map;
 import com.citytechinc.cq.component.annotations.Listener;
 
 public class Listeners extends AbstractDialogElement {
-	private static final String FIELD_NAME = "listeners";
-	private static final String PRIMARY_TYPE = "nt:unstructured";
 	private final Map<String, String> properties = new HashMap<String, String>();
 
-	public Listeners(Listener[] listeners) {
-		super(PRIMARY_TYPE, null, FIELD_NAME, null, null);
-		for (Listener listener : listeners) {
+	public Listeners(ListenersParameters parameters) {
+		super(parameters);
+		for (Listener listener : parameters.getListenerAnnotations()) {
 			properties.put(listener.name(), listener.value());
 		}
 	}

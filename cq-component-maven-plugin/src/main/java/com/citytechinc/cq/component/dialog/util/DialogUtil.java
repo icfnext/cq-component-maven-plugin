@@ -25,11 +25,11 @@ import org.apache.commons.io.IOUtils;
 
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
+import com.citytechinc.cq.component.dialog.Dialog;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.exception.OutputFailureException;
 import com.citytechinc.cq.component.dialog.factory.DialogFactory;
-import com.citytechinc.cq.component.dialog.impl.Dialog;
 import com.citytechinc.cq.component.dialog.widget.WidgetRegistry;
 import com.citytechinc.cq.component.dialog.xml.DialogXmlWriter;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;

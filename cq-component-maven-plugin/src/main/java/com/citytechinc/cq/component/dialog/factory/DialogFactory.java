@@ -17,15 +17,18 @@ import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.DialogField;
+import com.citytechinc.cq.component.dialog.Dialog;
 import com.citytechinc.cq.component.dialog.DialogElement;
+import com.citytechinc.cq.component.dialog.DialogParameters;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
-import com.citytechinc.cq.component.dialog.impl.Dialog;
-import com.citytechinc.cq.component.dialog.impl.Html5SmartImageWidget;
-import com.citytechinc.cq.component.dialog.impl.Tab;
-import com.citytechinc.cq.component.dialog.impl.WidgetCollection;
+import com.citytechinc.cq.component.dialog.html5smartimage.Html5SmartImageWidget;
 import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
+import com.citytechinc.cq.component.dialog.tab.Tab;
+import com.citytechinc.cq.component.dialog.tab.TabParameters;
 import com.citytechinc.cq.component.dialog.widget.WidgetRegistry;
+import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollection;
+import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollectionParameters;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 
 public class DialogFactory {
@@ -98,7 +101,13 @@ public class DialogFactory {
 		}
 
 		for (String curMapKey : tabMap.keySet()) {
-			tabList.add(new Tab(curMapKey, new WidgetCollection(tabMap.get(curMapKey))));
+			WidgetCollectionParameters wcp = new WidgetCollectionParameters();
+			wcp.setContainedElements(tabMap.get(curMapKey));
+			WidgetCollection widgetCollection = new WidgetCollection(wcp);
+			TabParameters tabParams = new TabParameters();
+			tabParams.setTitle(curMapKey);
+			tabParams.setContainedElements(Arrays.asList(new DialogElement[] { widgetCollection }));
+			tabList.add(new Tab(tabParams));
 		}
 		tabList.addAll(imageTabList);
 		Integer width = null;
@@ -109,7 +118,13 @@ public class DialogFactory {
 		if (componentAnnotation.dialogHeight() > 0) {
 			height = componentAnnotation.dialogHeight();
 		}
-		return new Dialog(tabList, dialogTitle, componentAnnotation.fileName(), width, height);
+		DialogParameters dialogParams = new DialogParameters();
+		dialogParams.setContainedElements(Dialog.buildTabPanel(tabList));
+		dialogParams.setTitle(dialogTitle);
+		dialogParams.setFileName(componentAnnotation.fileName());
+		dialogParams.setWidth(width);
+		dialogParams.setHeight(height);
+		return new Dialog(dialogParams);
 	}
 
 	private static final String getTabStringForField(DialogField dialogProperty, Component component) {

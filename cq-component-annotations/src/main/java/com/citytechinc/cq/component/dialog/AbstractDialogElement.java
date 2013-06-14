@@ -13,15 +13,22 @@ public abstract class AbstractDialogElement implements DialogElement {
 	private List<? extends DialogElement> containedElements;
 	private double ranking;
 
-	public AbstractDialogElement(String primaryType, String nameSpace, String fieldName,
-		Map<String, String> additionalProperties, List<? extends DialogElement> containedElements) {
-		this.primaryType = primaryType;
-		this.nameSpace = nameSpace;
-		this.fieldName = fieldName;
-		this.additionalProperties = additionalProperties;
-		this.containedElements = containedElements;
+	public AbstractDialogElement(DialogElementParameters parameters) {
+		this.primaryType = parameters.getPrimaryType();
+		this.nameSpace = parameters.getNameSpace();
+		this.fieldName = parameters.getFieldName();
+		this.additionalProperties = parameters.getAdditionalProperties();
+		this.containedElements = parameters.getContainedElements();
 		if (containedElements != null) {
 			Collections.sort(containedElements, new DialogElementComparator());
+		}
+		if (parameters.getListeners() != null) {
+			List<DialogElement> newElements = new ArrayList<DialogElement>();
+			if (containedElements != null) {
+				newElements.addAll(containedElements);
+			}
+			newElements.add(parameters.getListeners());
+			containedElements = newElements;
 		}
 	}
 
@@ -55,14 +62,5 @@ public abstract class AbstractDialogElement implements DialogElement {
 
 	public double getRanking() {
 		return ranking;
-	}
-
-	public void setListeners(Listeners listeners) {
-		List<DialogElement> newElements = new ArrayList<DialogElement>();
-		if (containedElements != null) {
-			newElements.addAll(containedElements);
-		}
-		newElements.add(listeners);
-		containedElements = newElements;
 	}
 }

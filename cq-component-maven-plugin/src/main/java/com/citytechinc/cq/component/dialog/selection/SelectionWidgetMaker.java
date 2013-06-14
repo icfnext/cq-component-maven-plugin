@@ -23,7 +23,7 @@ import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollectionPara
  * Builds a SelectionWidget from an annotated field. This maker will operate
  * with or without a stacked Selection annotation.
  * 
- * @author paulmichelotti
+ * 
  * 
  */
 public class SelectionWidgetMaker extends AbstractWidgetMaker {

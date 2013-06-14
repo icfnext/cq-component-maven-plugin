@@ -122,32 +122,32 @@ public class ContentUtil {
 		String componentPathBase, String defaultComponentPathSuffix, String defaultComponentGroup,
 		ComponentNameTransformer transformer) throws InvalidComponentClassException, TransformerException,
 		ParserConfigurationException, IOException, OutputFailureException, ClassNotFoundException {
-	
+
 		List<Content> builtContents = new ArrayList<Content>();
-	
+
 		for (CtClass curClass : classList) {
 			ComponentMojoUtil.getLog().debug("Checking class for Component annotation " + curClass);
-	
+
 			Component annotation = (Component) curClass.getAnnotation(Component.class);
-	
+
 			ComponentMojoUtil.getLog().debug("Annotation : " + annotation);
-	
+
 			if (annotation != null) {
 				ComponentMojoUtil.getLog().debug("Processing Component Class " + curClass);
-	
+
 				Content builtContent = ContentFactory.make(curClass, defaultComponentGroup);
-	
+
 				builtContents.add(builtContent);
-	
+
 				File contentFile = writeContentToFile(transformer, builtContent, curClass, buildDirectory,
 					componentPathBase, defaultComponentPathSuffix);
-				writeContentToArchiveFile(transformer, contentFile, curClass, zipOutputStream,
-					reservedNames, componentPathBase, defaultComponentPathSuffix);
+				writeContentToArchiveFile(transformer, contentFile, curClass, zipOutputStream, reservedNames,
+					componentPathBase, defaultComponentPathSuffix);
 			}
 		}
-	
+
 		return builtContents;
-	
+
 	}
 
 }

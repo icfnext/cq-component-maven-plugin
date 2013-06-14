@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
  * The Component marks your class as a CQ Component. Tools will use this
  * annotation to determine whether to perform an operation on the class or not.
  * 
- * @author paulmichelotti
+ * 
  * 
  */
 @Retention(RetentionPolicy.CLASS)

@@ -17,7 +17,7 @@ import com.citytechinc.cq.component.annotations.Option;
  * <li>combobox</li>
  * </ol>
  * 
- * @author paulmichelotti
+ * 
  * 
  */
 @Retention(RetentionPolicy.CLASS)

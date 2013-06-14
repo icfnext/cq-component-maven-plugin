@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * Indicates that a Field is defined by a CQ Dialog input
  * 
- * @author paulmichelotti
+ * 
  * 
  */
 @Retention(RetentionPolicy.CLASS)

@@ -32,12 +32,13 @@
 			</brand>
 			<slogan>A Plugin for CQ Components!</slogan>
 			<pages>
-				<index project="cq-component-parent">
-					<titleTemplate>CQ Component Plugin </titleTemplate>
+				<index project="cq-component-plugin">
+					<titleTemplate>CQ Component Plugin</titleTemplate>
 					<breadcrumbs>false</breadcrumbs>
 					<toc>false</toc>
 					<markPageHeader>false</markPageHeader>
 					<sections>
+						<carousel />
 						<columns>1</columns>
 						<body />
 					</sections>

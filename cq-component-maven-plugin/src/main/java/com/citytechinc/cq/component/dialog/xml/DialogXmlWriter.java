@@ -32,7 +32,7 @@ public class DialogXmlWriter {
 	private static final DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 	private static final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 	private static final List<String> DO_NOT_CALL = Arrays.asList(new String[] { "getPrimaryType", "getNameSpace",
-		"getContainedElements", "getFieldName", "getClass", "getAdditionalProperties", "getRanking" });
+		"getContainedElements", "getFieldName", "getClass", "getRanking" });
 
 	private DialogXmlWriter() {
 	}
@@ -67,9 +67,6 @@ public class DialogXmlWriter {
 			dialogElement, null);
 		Method primaryTypeMethod = dialogClass.getMethod("getPrimaryType", null);
 		String primaryType = (String) primaryTypeMethod.invoke(dialogElement, null);
-		Method additionalPropertiesMethod = dialogClass.getMethod("getAdditionalProperties", null);
-		Map<String, String> additionalPropertiesReturn = (Map<String, String>) additionalPropertiesMethod.invoke(
-			dialogElement, null);
 		Element createdElement;
 		if (StringUtils.isEmpty(namespace)) {
 			createdElement = document.createElement(fieldName);
@@ -100,11 +97,6 @@ public class DialogXmlWriter {
 						createdElement.setAttribute(propertyName, value);
 					}
 				}
-			}
-		}
-		if (additionalPropertiesReturn != null) {
-			for (String key : additionalPropertiesReturn.keySet()) {
-				createdElement.setAttribute(key, additionalPropertiesReturn.get(key));
 			}
 		}
 		if (containedElementsReturn != null && containedElementsReturn.size() > 0) {

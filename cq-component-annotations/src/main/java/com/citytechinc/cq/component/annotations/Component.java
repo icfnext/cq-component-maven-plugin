@@ -101,6 +101,10 @@ public @interface Component {
 	 */
 	String resourceSuperType() default "";
 
+	String emptyText() default "Drag components or assets here";
+
+	boolean editConfigInherit() default false;
+
 	/**
 	 * The name of the xml file to store this dialog under (with out the .xml
 	 * suffix)

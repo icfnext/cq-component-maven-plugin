@@ -3,27 +3,21 @@ package com.citytechinc.cq.component.dialog;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
-public abstract class AbstractDialogElement implements DialogElement {
-	private final String primaryType;
-	private final String nameSpace;
-	private String fieldName;
-	private final Map<String, String> additionalProperties;
-	private List<? extends DialogElement> containedElements;
+import com.citytechinc.cq.component.util.Constants;
+import com.citytechinc.cq.component.xml.AbstractXmlElement;
+import com.citytechinc.cq.component.xml.XmlElement;
+
+public abstract class AbstractDialogElement extends AbstractXmlElement implements DialogElement {
 	private double ranking;
 
 	public AbstractDialogElement(DialogElementParameters parameters) {
-		this.primaryType = parameters.getPrimaryType();
-		this.nameSpace = parameters.getNameSpace();
-		this.fieldName = parameters.getFieldName();
-		this.additionalProperties = parameters.getAdditionalProperties();
-		this.containedElements = parameters.getContainedElements();
+		super(parameters);
 		if (containedElements != null) {
 			Collections.sort(containedElements, new DialogElementComparator());
 		}
 		if (parameters.getListeners() != null) {
-			List<DialogElement> newElements = new ArrayList<DialogElement>();
+			List<XmlElement> newElements = new ArrayList<XmlElement>();
 			if (containedElements != null) {
 				newElements.addAll(containedElements);
 			}
@@ -32,24 +26,9 @@ public abstract class AbstractDialogElement implements DialogElement {
 		}
 	}
 
-	public final String getPrimaryType() {
-		return primaryType;
-	}
-
+	@Override
 	public final String getNameSpace() {
-		return nameSpace;
-	}
-
-	public final String getFieldName() {
-		return fieldName;
-	}
-
-	public final Map<String, String> getAdditionalProperties() {
-		return additionalProperties;
-	}
-
-	public final List<? extends DialogElement> getContainedElements() {
-		return containedElements;
+		return Constants.JCR_NS_URI;
 	}
 
 	public void setFieldName(String fieldName) {

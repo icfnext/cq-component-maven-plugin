@@ -4,14 +4,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javassist.CtClass;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
-
-import javassist.CtClass;
 
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
@@ -23,8 +24,8 @@ import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassExcept
 import com.citytechinc.cq.component.dialog.exception.OutputFailureException;
 import com.citytechinc.cq.component.editconfig.EditConfig;
 import com.citytechinc.cq.component.editconfig.factory.EditConfigFactory;
-import com.citytechinc.cq.component.editconfig.xml.EditConfigXmlWriter;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
+import com.citytechinc.cq.component.xml.XmlWriter;
 
 public class EditConfigUtil {
 	private EditConfigUtil() {
@@ -82,11 +83,17 @@ public class EditConfigUtil {
 	 * @throws IOException
 	 * @throws OutputFailureException
 	 * @throws ClassNotFoundException
+	 * @throws NoSuchMethodException
+	 * @throws InvocationTargetException
+	 * @throws IllegalAccessException
+	 * @throws SecurityException
+	 * @throws IllegalArgumentException
 	 */
 	public static File writeEditConfigToFile(ComponentNameTransformer transformer, EditConfig editConfig,
 		CtClass componentClass, File buildDirectory, String componentPathBase, String defaultComponentPathSuffix)
 		throws TransformerException, ParserConfigurationException, IOException, OutputFailureException,
-		ClassNotFoundException {
+		ClassNotFoundException, IllegalArgumentException, SecurityException, IllegalAccessException,
+		InvocationTargetException, NoSuchMethodException {
 		File componentOutputDirectory = ComponentMojoUtil.getOutputDirectoryForComponentClass(transformer,
 			componentClass, buildDirectory, componentPathBase, defaultComponentPathSuffix);
 
@@ -98,7 +105,7 @@ public class EditConfigUtil {
 
 		editConfigFile.createNewFile();
 
-		EditConfigXmlWriter.writeEditConfig(editConfig, new FileOutputStream(editConfigFile));
+		XmlWriter.writeXml(editConfig, new FileOutputStream(editConfigFile));
 
 		return editConfigFile;
 	}
@@ -118,12 +125,18 @@ public class EditConfigUtil {
 	 * @throws IOException
 	 * @throws OutputFailureException
 	 * @throws ClassNotFoundException
+	 * @throws NoSuchMethodException
+	 * @throws InvocationTargetException
+	 * @throws IllegalAccessException
+	 * @throws SecurityException
+	 * @throws IllegalArgumentException
 	 */
 	public static List<EditConfig> buildEditConfigFromClassList(List<CtClass> classList,
 		ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames, File buildDirectory,
 		String componentPathBase, String defaultComponentPathSuffix, ComponentNameTransformer transformer)
 		throws InvalidComponentClassException, TransformerException, ParserConfigurationException, IOException,
-		OutputFailureException, ClassNotFoundException {
+		OutputFailureException, ClassNotFoundException, IllegalArgumentException, SecurityException,
+		IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 
 		List<EditConfig> builtEditConfigs = new ArrayList<EditConfig>();
 

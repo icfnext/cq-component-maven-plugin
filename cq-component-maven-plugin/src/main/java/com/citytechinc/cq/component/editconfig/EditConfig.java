@@ -1,9 +1,11 @@
 package com.citytechinc.cq.component.editconfig;
 
 import java.util.List;
-import java.util.Map;
 
-public interface EditConfig {
+import com.citytechinc.cq.component.xml.NameSpacedAttribute;
+import com.citytechinc.cq.component.xml.XmlElement;
+
+public interface EditConfig extends XmlElement {
 
 	public static final String FLOATING_DIALOG_MODE = "floating";
 	public static final String INLINE_DIALOG_MODE = "inline";
@@ -13,16 +15,13 @@ public interface EditConfig {
 	public static final String ROLLOVER_LAYOUT = "rollover";
 	public static final String AUTO_LAYOUT = "auto";
 
-	public String getTitle();
+	public NameSpacedAttribute<List<String>> getActions();
 
-	public List<String> getActions();
+	public NameSpacedAttribute<String> getDialogMode();
 
-	public String getDialogMode();
+	public NameSpacedAttribute<String> getLayout();
 
-	public String getLayout();
+	public NameSpacedAttribute<String> getEmptyText();
 
-	public String getPrimaryType();
-
-	public Map<String, String> getListeners();
-
+	public NameSpacedAttribute<Boolean> isInherit();
 }

@@ -31,8 +31,8 @@ import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldExcept
 import com.citytechinc.cq.component.dialog.exception.OutputFailureException;
 import com.citytechinc.cq.component.dialog.factory.DialogFactory;
 import com.citytechinc.cq.component.dialog.widget.WidgetRegistry;
-import com.citytechinc.cq.component.dialog.xml.DialogXmlWriter;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
+import com.citytechinc.cq.component.xml.XmlWriter;
 
 public class DialogUtil {
 	private DialogUtil() {
@@ -72,7 +72,7 @@ public class DialogUtil {
 
 		dialogFile.createNewFile();
 
-		DialogXmlWriter.writeDialog(dialog, new FileOutputStream(dialogFile));
+		XmlWriter.writeXml(dialog, new FileOutputStream(dialogFile));
 
 		return dialogFile;
 	}

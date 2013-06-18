@@ -7,6 +7,7 @@ import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.DialogElementParameters;
+import com.citytechinc.cq.component.xml.XmlElement;
 
 public class TabPanelParameters extends DialogElementParameters {
 	private static final String DEFAULT_FIELD_NAME = "tabs";
@@ -14,7 +15,7 @@ public class TabPanelParameters extends DialogElementParameters {
 
 	@Override
 	public void setPrimaryType(String primaryType) {
-		throw new UnsupportedOperationException("PrimaryType is Static for HiddenWidget");
+		throw new UnsupportedOperationException("PrimaryType is Static for TabPanel");
 	}
 
 	@Override
@@ -31,7 +32,7 @@ public class TabPanelParameters extends DialogElementParameters {
 	}
 
 	@Override
-	public List<? extends DialogElement> getContainedElements() {
+	public List<? extends XmlElement> getContainedElements() {
 		if (containedElements == null) {
 			containedElements = new ArrayList<DialogElement>();
 		}

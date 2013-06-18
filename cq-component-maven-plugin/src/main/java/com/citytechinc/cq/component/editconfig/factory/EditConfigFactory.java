@@ -13,8 +13,12 @@ import org.codehaus.plexus.util.StringUtils;
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.Listener;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
+import com.citytechinc.cq.component.editconfig.DefaultEditConfig;
 import com.citytechinc.cq.component.editconfig.EditConfig;
-import com.citytechinc.cq.component.editconfig.impl.SimpleEditConfig;
+import com.citytechinc.cq.component.editconfig.EditConfigParameters;
+import com.citytechinc.cq.component.editconfig.listeners.EditConfigListeners;
+import com.citytechinc.cq.component.editconfig.listeners.EditConfigListenersParameters;
+import com.citytechinc.cq.component.xml.XmlElement;
 
 public class EditConfigFactory {
 
@@ -29,14 +33,34 @@ public class EditConfigFactory {
 		if (componentAnnotation == null) {
 			throw new InvalidComponentClassException("Class provided is not property annotated");
 		}
+		EditConfigParameters parameters = new EditConfigParameters();
 
 		String title = getTitleForEditConfig(componentClass, componentAnnotation);
-		List<String> actions = getActionsForEditConfig(componentAnnotation, title);
-		String dialogMode = getDialogModeForEditConfig(componentAnnotation);
-		String layout = getLayoutForEditConfig(componentAnnotation);
-		Map<String, String> listeners = getListenersForEditConfig(componentAnnotation);
+		parameters.setActions(getActionsForEditConfig(componentAnnotation, title));
 
-		return new SimpleEditConfig(title, actions, dialogMode, layout, "cq:EditConfig", listeners);
+		parameters.setDialogMode(getDialogModeForEditConfig(componentAnnotation));
+
+		parameters.setLayout(getLayoutForEditConfig(componentAnnotation));
+		parameters.setEmptyText(getEmptyTextForEditConfig(componentAnnotation));
+		parameters.setInherit(getInheritForEditConfig(componentAnnotation));
+
+		List<XmlElement> editConfigChildren = new ArrayList<XmlElement>();
+
+		EditConfigListeners ecl = getListenersForEditConfig(componentAnnotation);
+		if (ecl != null) {
+			editConfigChildren.add(ecl);
+		}
+
+		parameters.setContainedElements(editConfigChildren);
+		return new DefaultEditConfig(parameters);
+	}
+
+	private static boolean getInheritForEditConfig(Component componentAnnotation) {
+		return componentAnnotation.editConfigInherit();
+	}
+
+	private static String getEmptyTextForEditConfig(Component componentAnnotation) {
+		return componentAnnotation.emptyText();
 	}
 
 	private static final String getTitleForEditConfig(CtClass componentClass, Component componentAnnotation) {
@@ -83,15 +107,18 @@ public class EditConfigFactory {
 		return "editbar";
 	}
 
-	private static final Map<String, String> getListenersForEditConfig(Component componenetAnnotation) {
-		if (componenetAnnotation.listeners().length > 0) {
+	private static final EditConfigListeners getListenersForEditConfig(Component componentAnnotation) {
+		if (componentAnnotation.listeners().length > 0) {
 			Map<String, String> listeners = new HashMap<String, String>();
 
-			for (Listener listener : componenetAnnotation.listeners()) {
+			for (Listener listener : componentAnnotation.listeners()) {
 				listeners.put(listener.name(), listener.value());
 			}
 
-			return listeners;
+			EditConfigListenersParameters parameters = new EditConfigListenersParameters();
+			parameters.setListeners(listeners);
+
+			return new EditConfigListeners(parameters);
 		}
 		return null;
 	}

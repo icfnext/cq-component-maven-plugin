@@ -1,4 +1,4 @@
-package com.citytechinc.cq.component.dialog.xml;
+package com.citytechinc.cq.component.xml;
 
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -23,30 +23,26 @@ import org.codehaus.plexus.util.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.citytechinc.cq.component.dialog.Dialog;
-import com.citytechinc.cq.component.dialog.DialogElement;
-import com.citytechinc.cq.component.global.Constants;
-
-public class DialogXmlWriter {
+public class XmlWriter {
 
 	private static final DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 	private static final TransformerFactory transformerFactory = TransformerFactory.newInstance();
-	private static final List<String> DO_NOT_CALL = Arrays.asList(new String[] { "getPrimaryType", "getNameSpace",
+	private static final List<String> DO_NOT_CALL = Arrays.asList(new String[] { "getNameSpace",
 		"getContainedElements", "getFieldName", "getClass", "getRanking" });
 
-	private DialogXmlWriter() {
+	private XmlWriter() {
 	}
 
-	public static final void writeDialog(Dialog dialog, OutputStream outputStream) throws ParserConfigurationException,
-		TransformerException, IllegalArgumentException, SecurityException, IllegalAccessException,
-		InvocationTargetException, NoSuchMethodException {
-		Document dialogDocument = makeDocument(dialog);
+	public static final void writeXml(XmlElement rootXmlElement, OutputStream outputStream)
+		throws ParserConfigurationException, TransformerException, IllegalArgumentException, SecurityException,
+		IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+		Document xmlDocument = makeDocument(rootXmlElement);
 
 		Transformer transformer = transformerFactory.newTransformer();
 		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 		transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 
-		DOMSource domSource = new DOMSource(dialogDocument);
+		DOMSource domSource = new DOMSource(xmlDocument);
 
 		StreamResult resultStream = new StreamResult(outputStream);
 
@@ -54,60 +50,52 @@ public class DialogXmlWriter {
 	}
 
 	@SuppressWarnings({ "all" })
-	private static final Element createElement(DialogElement dialogElement, Document document)
+	private static final Element createElement(XmlElement xmlElement, Document document)
 		throws IllegalArgumentException, IllegalAccessException, InvocationTargetException, SecurityException,
 		NoSuchMethodException {
-		Class dialogClass = dialogElement.getClass();
-		Method namespaceMethod = dialogClass.getMethod("getNameSpace", null);
-		String namespace = (String) namespaceMethod.invoke(dialogElement, null);
-		Method fieldNameMethod = dialogClass.getMethod("getFieldName", null);
-		String fieldName = sanatize((String) fieldNameMethod.invoke(dialogElement, null));
-		Method containedElementsMethod = dialogClass.getMethod("getContainedElements", null);
-		List<DialogElement> containedElementsReturn = (List<DialogElement>) containedElementsMethod.invoke(
-			dialogElement, null);
-		Method primaryTypeMethod = dialogClass.getMethod("getPrimaryType", null);
-		String primaryType = (String) primaryTypeMethod.invoke(dialogElement, null);
+		Class xmlClass = xmlElement.getClass();
+		Method namespaceMethod = xmlClass.getMethod("getNameSpace", null);
+		String namespace = (String) namespaceMethod.invoke(xmlElement, null);
+		Method fieldNameMethod = xmlClass.getMethod("getFieldName", null);
+		String fieldName = sanatize((String) fieldNameMethod.invoke(xmlElement, null));
+		Method containedElementsMethod = xmlClass.getMethod("getContainedElements", null);
+		List<XmlElement> containedElementsReturn = (List<XmlElement>) containedElementsMethod.invoke(xmlElement, null);
 		Element createdElement;
 		if (StringUtils.isEmpty(namespace)) {
 			createdElement = document.createElement(fieldName);
 		} else {
 			createdElement = document.createElementNS(namespace, fieldName);
 		}
-		createdElement.setAttributeNS(Constants.JCR_NS_URI, "jcr:primaryType", primaryType);
-		Method[] methods = dialogElement.getClass().getMethods();
+		Method[] methods = xmlElement.getClass().getMethods();
 		for (Method method : methods) {
 			String methodName = method.getName();
 			if (!DO_NOT_CALL.contains(methodName) && (methodName.startsWith("get") || methodName.startsWith("is"))) {
-				Object methodReturn = method.invoke(dialogElement, null);
+				Object methodReturn = method.invoke(xmlElement, null);
 				if (methodReturn != null) {
 					if (methodReturn instanceof Map<?, ?>) {
 						Map<?, ?> returnMap = (Map<?, ?>) methodReturn;
 						for (Entry<?, ?> entry : returnMap.entrySet()) {
 							createdElement.setAttribute(entry.getKey().toString(), entry.getValue().toString());
 						}
+					} else if (methodReturn instanceof NameSpacedAttribute<?>) {
+						NameSpacedAttribute<?> nsa = (NameSpacedAttribute<?>) methodReturn;
+						setElementValue(createdElement, nsa.getNameSpace(), nsa.getNameSpacePrefix(), methodName,
+							nsa.getValue());
 					} else {
-						String value = methodReturn.toString();
-						String propertyName = null;
-						if (methodName.startsWith("get")) {
-							propertyName = StringUtils.lowercaseFirstLetter(methodName.substring(3));
-						} else if (methodName.startsWith("is")) {
-							propertyName = StringUtils.lowercaseFirstLetter(methodName.substring(2));
-							value = "{Boolean}" + value;
-						}
-						createdElement.setAttribute(propertyName, value);
+						setElementValue(createdElement, null, null, methodName, methodReturn);
 					}
 				}
 			}
 		}
 		if (containedElementsReturn != null && containedElementsReturn.size() > 0) {
-			for (DialogElement de : containedElementsReturn) {
+			for (XmlElement de : containedElementsReturn) {
 				createdElement.appendChild(createElement(de, document));
 			}
 		}
 		return createdElement;
 	}
 
-	private static final Document makeDocument(Dialog dialog) throws ParserConfigurationException,
+	private static final Document makeDocument(XmlElement rootXmlElement) throws ParserConfigurationException,
 		IllegalArgumentException, SecurityException, IllegalAccessException, InvocationTargetException,
 		NoSuchMethodException {
 
@@ -115,7 +103,7 @@ public class DialogXmlWriter {
 
 		Document document = documentBuilder.newDocument();
 
-		Element jcrRootElement = createElement(dialog, document);
+		Element jcrRootElement = createElement(rootXmlElement, document);
 
 		document.appendChild(jcrRootElement);
 
@@ -128,5 +116,22 @@ public class DialogXmlWriter {
 			uncleanString = UUID.randomUUID().toString().replaceAll("-", "").replaceAll("[0-9]", "") + uncleanString;
 		}
 		return uncleanString;
+	}
+
+	private static final void setElementValue(Element element, String nameSpace, String nameSpacePrefix,
+		String methodName, Object methodReturn) {
+		String value = methodReturn.toString();
+		String propertyName = null;
+		if (methodName.startsWith("get")) {
+			propertyName = StringUtils.lowercaseFirstLetter(methodName.substring(3));
+		} else if (methodName.startsWith("is")) {
+			propertyName = StringUtils.lowercaseFirstLetter(methodName.substring(2));
+			value = "{Boolean}" + value;
+		}
+		if (StringUtils.isEmpty(nameSpace)) {
+			element.setAttribute(propertyName, value.toString());
+		} else {
+			element.setAttributeNS(nameSpace, nameSpacePrefix + ":" + propertyName, value.toString());
+		}
 	}
 }

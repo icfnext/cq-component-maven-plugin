@@ -1,6 +1,6 @@
 package com.citytechinc.cq.component.editconfig;
 
-import java.util.List;
+import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.xml.AbstractXmlElement;
 import com.citytechinc.cq.component.xml.NameSpacedAttribute;
@@ -8,7 +8,7 @@ import com.citytechinc.cq.component.xml.NameSpacedAttribute;
 public class DefaultEditConfig extends AbstractXmlElement implements EditConfig {
 	private static final String CQ_NAMESPACE_PREFIX = "cq";
 
-	private final NameSpacedAttribute<List<String>> actions;
+	private final NameSpacedAttribute<String> actions;
 
 	private final NameSpacedAttribute<String> dialogMode;
 
@@ -20,8 +20,10 @@ public class DefaultEditConfig extends AbstractXmlElement implements EditConfig 
 
 	public DefaultEditConfig(EditConfigParameters parameters) {
 		super(parameters);
-		this.actions = new NameSpacedAttribute<List<String>>(com.citytechinc.cq.component.util.Constants.CQ_NS_URI,
-			CQ_NAMESPACE_PREFIX, parameters.getActions());
+		StringBuilder sb = new StringBuilder();
+		sb.append("[").append(StringUtils.join(parameters.getActions().toArray(), ",")).append("]");
+		this.actions = new NameSpacedAttribute<String>(com.citytechinc.cq.component.util.Constants.CQ_NS_URI,
+			CQ_NAMESPACE_PREFIX, sb.toString());
 		this.dialogMode = new NameSpacedAttribute<String>(com.citytechinc.cq.component.util.Constants.CQ_NS_URI,
 			CQ_NAMESPACE_PREFIX, parameters.getDialogMode());
 		this.layout = new NameSpacedAttribute<String>(com.citytechinc.cq.component.util.Constants.CQ_NS_URI,
@@ -32,7 +34,7 @@ public class DefaultEditConfig extends AbstractXmlElement implements EditConfig 
 			CQ_NAMESPACE_PREFIX, parameters.getInherit());
 	}
 
-	public NameSpacedAttribute<List<String>> getActions() {
+	public NameSpacedAttribute<String> getActions() {
 		return actions;
 	}
 

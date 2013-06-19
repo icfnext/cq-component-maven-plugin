@@ -1,7 +1,5 @@
 package com.citytechinc.cq.component.editconfig;
 
-import java.util.List;
-
 import com.citytechinc.cq.component.xml.NameSpacedAttribute;
 import com.citytechinc.cq.component.xml.XmlElement;
 
@@ -15,7 +13,7 @@ public interface EditConfig extends XmlElement {
 	public static final String ROLLOVER_LAYOUT = "rollover";
 	public static final String AUTO_LAYOUT = "auto";
 
-	public NameSpacedAttribute<List<String>> getActions();
+	public NameSpacedAttribute<String> getActions();
 
 	public NameSpacedAttribute<String> getDialogMode();
 

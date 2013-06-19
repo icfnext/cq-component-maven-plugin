@@ -5,6 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.citytechinc.cq.component.annotations.editconfig.ActionConfig;
+
 /**
  * The Component marks your class as a CQ Component. Tools will use this
  * annotation to determine whether to perform an operation on the class or not.
@@ -133,4 +135,11 @@ public @interface Component {
 	 * @return int
 	 */
 	int dialogHeight() default -1;
+
+	/**
+	 * An array of ActionConfig's for the edit config file
+	 * 
+	 * @return ActionConfig[]
+	 */
+	ActionConfig[] actionConfigs() default {};
 }

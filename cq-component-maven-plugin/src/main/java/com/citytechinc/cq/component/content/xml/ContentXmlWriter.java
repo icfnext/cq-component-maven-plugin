@@ -63,6 +63,10 @@ public class ContentXmlWriter {
 				content.getResourceSuperType());
 		}
 
+		for (String key : content.getAdditionalProperties().keySet()) {
+			jcrRootElement.setAttribute(key, content.getAdditionalProperties().get(key));
+		}
+
 		jcrRootElement.setAttributeNS(Constants.JCR_NS_URI, "jcr:title", content.getTitle());
 
 		jcrRootElement.setAttribute("componentGroup", content.getGroup());

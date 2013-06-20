@@ -137,4 +137,7 @@ public @interface Component {
 	 * @return int
 	 */
 	int dialogHeight() default -1;
+
+	ContentProperty[] contentAdditionalProperties() default {};
+
 }

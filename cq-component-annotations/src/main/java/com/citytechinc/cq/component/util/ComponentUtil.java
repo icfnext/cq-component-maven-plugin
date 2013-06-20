@@ -9,6 +9,8 @@ import java.util.List;
 import javassist.CtField;
 import javassist.CtMember;
 
+import org.codehaus.plexus.util.StringUtils;
+
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 
 public class ComponentUtil {
@@ -85,4 +87,15 @@ public class ComponentUtil {
 		return type;
 	}
 
+	public static String generateStringFromList(List<?> list) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("[").append(StringUtils.join(list.toArray(), ",")).append("]");
+		return sb.toString();
+	}
+
+	public static String generateStringFromArray(Object[] array) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("[").append(StringUtils.join(array, ",")).append("]");
+		return sb.toString();
+	}
 }

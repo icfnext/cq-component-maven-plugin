@@ -14,6 +14,7 @@ import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.Listener;
 import com.citytechinc.cq.component.annotations.editconfig.ActionConfig;
 import com.citytechinc.cq.component.annotations.editconfig.ActionConfigProperty;
+import com.citytechinc.cq.component.annotations.editconfig.DropTarget;
 import com.citytechinc.cq.component.annotations.editconfig.FormParameter;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
 import com.citytechinc.cq.component.editconfig.DefaultEditConfig;
@@ -23,6 +24,10 @@ import com.citytechinc.cq.component.editconfig.actionconfigs.EditConfigActionCon
 import com.citytechinc.cq.component.editconfig.actionconfigs.EditConfigActionConfigParameters;
 import com.citytechinc.cq.component.editconfig.actionconfigs.EditConfigActionConfigs;
 import com.citytechinc.cq.component.editconfig.actionconfigs.EditConfigActionConfigsParameters;
+import com.citytechinc.cq.component.editconfig.droptargets.EditConfigDropTarget;
+import com.citytechinc.cq.component.editconfig.droptargets.EditConfigDropTargetParameters;
+import com.citytechinc.cq.component.editconfig.droptargets.EditConfigDropTargets;
+import com.citytechinc.cq.component.editconfig.droptargets.EditConfigDropTargetsParameters;
 import com.citytechinc.cq.component.editconfig.formparameters.EditConfigFormParameters;
 import com.citytechinc.cq.component.editconfig.formparameters.EditConfigFormParametersParameters;
 import com.citytechinc.cq.component.editconfig.inplaceediting.EditConfigInPlaceEditing;
@@ -76,6 +81,11 @@ public class EditConfigFactory {
 		EditConfigFormParameters ecfp = getFormParametersForEditConfig(componentAnnotation);
 		if (ecfp != null) {
 			editConfigChildren.add(ecfp);
+		}
+
+		EditConfigDropTargets ecdt = getDropTargetsForEditConfig(componentAnnotation);
+		if (ecdt != null) {
+			editConfigChildren.add(ecdt);
 		}
 
 		parameters.setContainedElements(editConfigChildren);
@@ -215,6 +225,28 @@ public class EditConfigFactory {
 			parameters.setContainedElements(actionConfigs);
 
 			return new EditConfigActionConfigs(parameters);
+		}
+		return null;
+	}
+
+	private static final EditConfigDropTargets getDropTargetsForEditConfig(Component componentAnnotation) {
+		if (componentAnnotation.actionConfigs().length > 0) {
+
+			List<EditConfigDropTarget> dropTargets = new ArrayList<EditConfigDropTarget>();
+
+			for (DropTarget dropTargetConfig : componentAnnotation.dropTargets()) {
+				EditConfigDropTargetParameters params = new EditConfigDropTargetParameters();
+				params.setFieldName(dropTargetConfig.nodeName());
+				params.setGroups(dropTargetConfig.groups());
+				params.setAccept(dropTargetConfig.accept());
+				params.setPropertyName(dropTargetConfig.propertyName());
+				dropTargets.add(new EditConfigDropTarget(params));
+			}
+
+			EditConfigDropTargetsParameters parameters = new EditConfigDropTargetsParameters();
+			parameters.setContainedElements(dropTargets);
+
+			return new EditConfigDropTargets(parameters);
 		}
 		return null;
 	}

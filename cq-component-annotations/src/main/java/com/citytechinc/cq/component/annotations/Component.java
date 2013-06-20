@@ -6,6 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import com.citytechinc.cq.component.annotations.editconfig.ActionConfig;
+import com.citytechinc.cq.component.annotations.editconfig.DropTarget;
 import com.citytechinc.cq.component.annotations.editconfig.FormParameter;
 
 /**
@@ -151,5 +152,7 @@ public @interface Component {
 	String inPlaceEditingEditorType() default "";
 
 	FormParameter[] formParameters() default {};
+
+	DropTarget[] dropTargets() default {};
 
 }

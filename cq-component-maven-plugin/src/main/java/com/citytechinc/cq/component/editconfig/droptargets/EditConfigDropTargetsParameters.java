@@ -1,9 +1,9 @@
-package com.citytechinc.cq.component.editconfig.actionconfigs;
+package com.citytechinc.cq.component.editconfig.droptargets;
 
 import com.citytechinc.cq.component.util.Constants;
 import com.citytechinc.cq.component.xml.XmlElementParameters;
 
-public class EditConfigActionConfigsParameters extends XmlElementParameters {
+public class EditConfigDropTargetsParameters extends XmlElementParameters {
 	@Override
 	public String getNameSpace() {
 		return Constants.CQ_NS_URI;
@@ -11,17 +11,17 @@ public class EditConfigActionConfigsParameters extends XmlElementParameters {
 
 	@Override
 	public void setNameSpace(String nameSpace) {
-		throw new UnsupportedOperationException("nameSpace is Static for EditConfigActionConfigs");
+		throw new UnsupportedOperationException("nameSpace is Static for EditConfigDropTargets");
 	}
 
 	@Override
 	public String getFieldName() {
-		return "cq:actionConfigs";
+		return "cq:dropTargets";
 	}
 
 	@Override
 	public void setFieldName(String fieldName) {
-		throw new UnsupportedOperationException("fieldName is Static for EditConfigActionConfigs");
+		throw new UnsupportedOperationException("fieldName is Static for EditConfigDropTargets");
 	}
 
 	@Override
@@ -31,6 +31,6 @@ public class EditConfigActionConfigsParameters extends XmlElementParameters {
 
 	@Override
 	public void setPrimaryType(String primaryType) {
-		throw new UnsupportedOperationException("PrimaryType is Static for EditConfigActionConfigs");
+		throw new UnsupportedOperationException("PrimaryType is Static for EditConfigDropTargets");
 	}
 }

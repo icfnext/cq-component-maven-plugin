@@ -1,7 +1,6 @@
 package com.citytechinc.cq.component.editconfig;
 
-import org.codehaus.plexus.util.StringUtils;
-
+import com.citytechinc.cq.component.util.ComponentUtil;
 import com.citytechinc.cq.component.xml.AbstractXmlElement;
 import com.citytechinc.cq.component.xml.NameSpacedAttribute;
 
@@ -20,10 +19,8 @@ public class DefaultEditConfig extends AbstractXmlElement implements EditConfig 
 
 	public DefaultEditConfig(EditConfigParameters parameters) {
 		super(parameters);
-		StringBuilder sb = new StringBuilder();
-		sb.append("[").append(StringUtils.join(parameters.getActions().toArray(), ",")).append("]");
 		this.actions = new NameSpacedAttribute<String>(com.citytechinc.cq.component.util.Constants.CQ_NS_URI,
-			CQ_NAMESPACE_PREFIX, sb.toString());
+			CQ_NAMESPACE_PREFIX, ComponentUtil.generateStringFromList(parameters.getActions()));
 		this.dialogMode = new NameSpacedAttribute<String>(com.citytechinc.cq.component.util.Constants.CQ_NS_URI,
 			CQ_NAMESPACE_PREFIX, parameters.getDialogMode());
 		this.layout = new NameSpacedAttribute<String>(com.citytechinc.cq.component.util.Constants.CQ_NS_URI,

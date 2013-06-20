@@ -39,6 +39,6 @@ public class EditConfigActionConfigParameters extends XmlElementParameters {
 
 	@Override
 	public void setPrimaryType(String primaryType) {
-		throw new UnsupportedOperationException("PrimaryType is Static for EditConfigListeners");
+		throw new UnsupportedOperationException("PrimaryType is Static for EditConfigActionConfig");
 	}
 }

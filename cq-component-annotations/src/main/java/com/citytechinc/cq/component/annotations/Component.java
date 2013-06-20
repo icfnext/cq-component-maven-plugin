@@ -6,6 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import com.citytechinc.cq.component.annotations.editconfig.ActionConfig;
+import com.citytechinc.cq.component.annotations.editconfig.FormParameter;
 
 /**
  * The Component marks your class as a CQ Component. Tools will use this
@@ -148,5 +149,7 @@ public @interface Component {
 	String inPlaceEditingConfigPath() default "";
 
 	String inPlaceEditingEditorType() default "";
+
+	FormParameter[] formParameters() default {};
 
 }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.citytechinc.cq.component.util.Constants;
 import com.citytechinc.cq.component.xml.AbstractXmlElement;
 import com.citytechinc.cq.component.xml.XmlElement;
 
@@ -24,11 +23,6 @@ public abstract class AbstractDialogElement extends AbstractXmlElement implement
 			newElements.add(parameters.getListeners());
 			containedElements = newElements;
 		}
-	}
-
-	@Override
-	public final String getNameSpace() {
-		return Constants.JCR_NS_URI;
 	}
 
 	public void setFieldName(String fieldName) {

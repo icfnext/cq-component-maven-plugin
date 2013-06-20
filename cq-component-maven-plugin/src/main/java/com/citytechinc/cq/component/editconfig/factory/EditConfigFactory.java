@@ -22,6 +22,8 @@ import com.citytechinc.cq.component.editconfig.actionconfigs.EditConfigActionCon
 import com.citytechinc.cq.component.editconfig.actionconfigs.EditConfigActionConfigParameters;
 import com.citytechinc.cq.component.editconfig.actionconfigs.EditConfigActionConfigs;
 import com.citytechinc.cq.component.editconfig.actionconfigs.EditConfigActionConfigsParameters;
+import com.citytechinc.cq.component.editconfig.inplaceediting.EditConfigInPlaceEditing;
+import com.citytechinc.cq.component.editconfig.inplaceediting.EditConfigInPlaceEditingParameters;
 import com.citytechinc.cq.component.editconfig.listeners.EditConfigListeners;
 import com.citytechinc.cq.component.editconfig.listeners.EditConfigListenersParameters;
 import com.citytechinc.cq.component.xml.XmlElement;
@@ -61,6 +63,12 @@ public class EditConfigFactory {
 		EditConfigActionConfigs ecac = getActionConfigsForEditConfig(componentAnnotation);
 		if (ecac != null) {
 			editConfigChildren.add(ecac);
+		}
+
+		EditConfigInPlaceEditing ecipe = getInPlaceEditingForEditConfig(componentAnnotation);
+
+		if (ecipe != null) {
+			editConfigChildren.add(ecipe);
 		}
 
 		parameters.setContainedElements(editConfigChildren);
@@ -117,6 +125,22 @@ public class EditConfigFactory {
 		}
 
 		return "editbar";
+	}
+
+	private static final EditConfigInPlaceEditing getInPlaceEditingForEditConfig(Component componentAnnotation) {
+		if (!StringUtils.isEmpty(componentAnnotation.inPlaceEditingConfigPath())
+			|| !StringUtils.isEmpty(componentAnnotation.inPlaceEditingConfigPath())) {
+			EditConfigInPlaceEditingParameters parameters = new EditConfigInPlaceEditingParameters();
+			if (!StringUtils.isEmpty(componentAnnotation.inPlaceEditingConfigPath())) {
+				parameters.setConfigPath(componentAnnotation.inPlaceEditingConfigPath());
+			}
+			if (!StringUtils.isEmpty(componentAnnotation.inPlaceEditingEditorType())) {
+				parameters.setEditorType(componentAnnotation.inPlaceEditingEditorType());
+			}
+			parameters.setActive(componentAnnotation.inPlaceEditingActive());
+			return new EditConfigInPlaceEditing(parameters);
+		}
+		return null;
 	}
 
 	private static final EditConfigListeners getListenersForEditConfig(Component componentAnnotation) {

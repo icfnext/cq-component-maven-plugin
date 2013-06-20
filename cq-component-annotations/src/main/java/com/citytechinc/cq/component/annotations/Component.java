@@ -142,4 +142,11 @@ public @interface Component {
 	 * @return ActionConfig[]
 	 */
 	ActionConfig[] actionConfigs() default {};
+
+	boolean inPlaceEditingActive() default true;
+
+	String inPlaceEditingConfigPath() default "";
+
+	String inPlaceEditingEditorType() default "";
+
 }

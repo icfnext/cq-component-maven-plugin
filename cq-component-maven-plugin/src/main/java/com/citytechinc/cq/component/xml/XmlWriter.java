@@ -23,8 +23,6 @@ import org.codehaus.plexus.util.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.citytechinc.cq.component.util.ComponentUtil;
-
 public class XmlWriter {
 
 	private static final DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -83,15 +81,23 @@ public class XmlWriter {
 					} else if (methodReturn instanceof List<?>) {
 						List<?> listReturn = (List<?>) methodReturn;
 						setPropertyOnElementForMethod(createdElement, null, null, methodName,
-							ComponentUtil.generateStringFromList(listReturn));
+							generateStringFromList(listReturn));
 					} else if (methodReturn.getClass().isArray()) {
 						Object[] arrayReturn = (Object[]) methodReturn;
 						setPropertyOnElementForMethod(createdElement, null, null, methodName,
-							ComponentUtil.generateStringFromArray(arrayReturn));
+							generateStringFromArray(arrayReturn));
 					} else if (methodReturn instanceof NameSpacedAttribute<?>) {
 						NameSpacedAttribute<?> nsa = (NameSpacedAttribute<?>) methodReturn;
+						Object nsaObject = nsa.getValue();
+						if (nsaObject instanceof List<?>) {
+							List<?> listReturn = (List<?>) nsaObject;
+							nsaObject = generateStringFromList(listReturn);
+						} else if (nsaObject.getClass().isArray()) {
+							Object[] arrayReturn = (Object[]) nsaObject;
+							nsaObject = generateStringFromArray(arrayReturn);
+						}
 						setPropertyOnElementForMethod(createdElement, nsa.getNameSpace(), nsa.getNameSpacePrefix(),
-							methodName, nsa.getValue());
+							methodName, nsaObject);
 					} else {
 						setPropertyOnElementForMethod(createdElement, null, null, methodName, methodReturn);
 					}
@@ -153,5 +159,17 @@ public class XmlWriter {
 				element.setAttributeNS(nameSpace, nameSpacePrefix + ":" + name, propertyValue);
 			}
 		}
+	}
+
+	private static String generateStringFromList(List<?> list) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("[").append(StringUtils.join(list.toArray(), ",")).append("]");
+		return sb.toString();
+	}
+
+	private static String generateStringFromArray(Object[] array) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("[").append(StringUtils.join(array, ",")).append("]");
+		return sb.toString();
 	}
 }

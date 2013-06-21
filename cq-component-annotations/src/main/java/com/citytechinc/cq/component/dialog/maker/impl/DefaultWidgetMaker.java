@@ -8,9 +8,9 @@ import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 import com.citytechinc.cq.component.dialog.widget.WidgetParameters;
 
-public class SimpleWidgetMaker extends AbstractWidgetMaker {
+public class DefaultWidgetMaker extends AbstractWidgetMaker {
 
-	public SimpleWidgetMaker(WidgetMakerParameters parameters) {
+	public DefaultWidgetMaker(WidgetMakerParameters parameters) {
 		super(parameters);
 	}
 

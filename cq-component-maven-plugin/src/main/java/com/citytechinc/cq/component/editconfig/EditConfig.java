@@ -1,28 +1,61 @@
 package com.citytechinc.cq.component.editconfig;
 
+import com.citytechinc.cq.component.util.ComponentUtil;
+import com.citytechinc.cq.component.xml.AbstractXmlElement;
 import com.citytechinc.cq.component.xml.NameSpacedAttribute;
-import com.citytechinc.cq.component.xml.XmlElement;
 
-public interface EditConfig extends XmlElement {
+public class EditConfig extends AbstractXmlElement {
+	private static final String CQ_NAMESPACE_PREFIX = "cq";
 
-	public static final String FLOATING_DIALOG_MODE = "floating";
-	public static final String INLINE_DIALOG_MODE = "inline";
-	public static final String AUTO_DIALOG_MODE = "auto";
+	private final NameSpacedAttribute<String> actions;
 
-	public static final String EDIT_BAR_LAYOUT = "editbar";
-	public static final String ROLLOVER_LAYOUT = "rollover";
-	public static final String AUTO_LAYOUT = "auto";
+	private final NameSpacedAttribute<String> dialogMode;
 
-	public NameSpacedAttribute<String> getActions();
+	private final NameSpacedAttribute<String> layout;
 
-	public NameSpacedAttribute<String> getDialogMode();
+	private final NameSpacedAttribute<String> emptyText;
 
-	public NameSpacedAttribute<String> getLayout();
+	private final NameSpacedAttribute<Boolean> inherit;
 
-	public NameSpacedAttribute<String> getEmptyText();
+	private final NameSpacedAttribute<Boolean> disableTargeting;
 
-	public NameSpacedAttribute<Boolean> isInherit();
+	public EditConfig(EditConfigParameters parameters) {
+		super(parameters);
+		this.actions = new NameSpacedAttribute<String>(com.citytechinc.cq.component.util.Constants.CQ_NS_URI,
+			CQ_NAMESPACE_PREFIX, ComponentUtil.generateStringFromList(parameters.getActions()));
+		this.dialogMode = new NameSpacedAttribute<String>(com.citytechinc.cq.component.util.Constants.CQ_NS_URI,
+			CQ_NAMESPACE_PREFIX, parameters.getDialogMode());
+		this.layout = new NameSpacedAttribute<String>(com.citytechinc.cq.component.util.Constants.CQ_NS_URI,
+			CQ_NAMESPACE_PREFIX, parameters.getLayout());
+		this.emptyText = new NameSpacedAttribute<String>(com.citytechinc.cq.component.util.Constants.CQ_NS_URI,
+			CQ_NAMESPACE_PREFIX, parameters.getEmptyText());
+		this.inherit = new NameSpacedAttribute<Boolean>(com.citytechinc.cq.component.util.Constants.CQ_NS_URI,
+			CQ_NAMESPACE_PREFIX, parameters.getInherit());
+		this.disableTargeting = new NameSpacedAttribute<Boolean>(com.citytechinc.cq.component.util.Constants.CQ_NS_URI,
+			CQ_NAMESPACE_PREFIX, parameters.getDisableTargeting());
+	}
 
-	public NameSpacedAttribute<Boolean> isDisableTargeting();
+	public NameSpacedAttribute<String> getActions() {
+		return actions;
+	}
 
+	public NameSpacedAttribute<String> getDialogMode() {
+		return dialogMode;
+	}
+
+	public NameSpacedAttribute<String> getLayout() {
+		return layout;
+	}
+
+	public NameSpacedAttribute<String> getEmptyText() {
+		return emptyText;
+	}
+
+	public NameSpacedAttribute<Boolean> isInherit() {
+		return inherit;
+	}
+
+	public NameSpacedAttribute<Boolean> isDisableTargeting() {
+		return disableTargeting;
+	}
 }

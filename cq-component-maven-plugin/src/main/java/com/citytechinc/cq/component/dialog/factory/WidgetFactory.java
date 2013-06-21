@@ -14,7 +14,7 @@ import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
-import com.citytechinc.cq.component.dialog.maker.impl.SimpleWidgetMaker;
+import com.citytechinc.cq.component.dialog.maker.impl.DefaultWidgetMaker;
 import com.citytechinc.cq.component.maven.util.LogSingleton;
 import com.citytechinc.cq.component.util.ComponentUtil;
 import com.citytechinc.cq.component.util.WidgetConfigHolder;
@@ -57,7 +57,7 @@ public class WidgetFactory {
 		}
 
 		if (widget != null && widget.hasXtype()) {
-			return new WidgetMakerContext(SimpleWidgetMaker.class, widget.getXtype());
+			return new WidgetMakerContext(DefaultWidgetMaker.class, widget.getXtype());
 		}
 
 		String xtype = getXTypeForField(parameters);
@@ -66,7 +66,7 @@ public class WidgetFactory {
 			throw new InvalidComponentFieldException("An xtype could not be determined for the field");
 		}
 
-		return new WidgetMakerContext(SimpleWidgetMaker.class, xtype);
+		return new WidgetMakerContext(DefaultWidgetMaker.class, xtype);
 	}
 
 	private static final String getXTypeForField(WidgetMakerParameters parameters)

@@ -16,6 +16,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.citytechinc.cq.component.content.Content;
+import com.citytechinc.cq.component.util.Constants;
 
 public class ContentXmlWriter {
 

@@ -17,7 +17,6 @@ import com.citytechinc.cq.component.annotations.editconfig.ActionConfigProperty;
 import com.citytechinc.cq.component.annotations.editconfig.DropTarget;
 import com.citytechinc.cq.component.annotations.editconfig.FormParameter;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
-import com.citytechinc.cq.component.editconfig.DefaultEditConfig;
 import com.citytechinc.cq.component.editconfig.EditConfig;
 import com.citytechinc.cq.component.editconfig.EditConfigParameters;
 import com.citytechinc.cq.component.editconfig.actionconfigs.EditConfigActionConfig;
@@ -90,7 +89,7 @@ public class EditConfigFactory {
 		}
 
 		parameters.setContainedElements(editConfigChildren);
-		return new DefaultEditConfig(parameters);
+		return new EditConfig(parameters);
 	}
 
 	private static Boolean getDisableTargingForEditConfig(Component componentAnnotation) {

@@ -140,4 +140,6 @@ public @interface Component {
 
 	ContentProperty[] contentAdditionalProperties() default {};
 
+	boolean disableTargeting() default false;
+
 }

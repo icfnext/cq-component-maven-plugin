@@ -25,4 +25,6 @@ public interface EditConfig {
 
 	public Map<String, String> getListeners();
 
+	public boolean isDisableTargeting();
+
 }

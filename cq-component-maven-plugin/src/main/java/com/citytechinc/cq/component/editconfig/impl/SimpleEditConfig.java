@@ -13,15 +13,17 @@ public class SimpleEditConfig implements EditConfig {
 	private final String layout;
 	private final String primaryType;
 	private final Map<String, String> listeners;
+	private final boolean disableTargeting;
 
 	public SimpleEditConfig(String title, List<String> actions, String dialogMode, String layout, String primaryType,
-		Map<String, String> listeners) {
+		Map<String, String> listeners, boolean disableTargeting) {
 		this.title = title;
 		this.actions = actions;
 		this.dialogMode = dialogMode;
 		this.layout = layout;
 		this.primaryType = primaryType;
 		this.listeners = listeners;
+		this.disableTargeting = disableTargeting;
 	}
 
 	public String getTitle() {
@@ -46,5 +48,9 @@ public class SimpleEditConfig implements EditConfig {
 
 	public Map<String, String> getListeners() {
 		return listeners;
+	}
+
+	public boolean isDisableTargeting() {
+		return disableTargeting;
 	}
 }

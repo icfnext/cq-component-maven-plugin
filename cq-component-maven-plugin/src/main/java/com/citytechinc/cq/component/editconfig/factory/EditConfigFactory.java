@@ -36,7 +36,8 @@ public class EditConfigFactory {
 		String layout = getLayoutForEditConfig(componentAnnotation);
 		Map<String, String> listeners = getListenersForEditConfig(componentAnnotation);
 
-		return new SimpleEditConfig(title, actions, dialogMode, layout, "cq:EditConfig", listeners);
+		return new SimpleEditConfig(title, actions, dialogMode, layout, "cq:EditConfig", listeners,
+			componentAnnotation.disableTargeting());
 	}
 
 	private static final String getTitleForEditConfig(CtClass componentClass, Component componentAnnotation) {

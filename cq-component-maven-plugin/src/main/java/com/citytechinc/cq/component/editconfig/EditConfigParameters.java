@@ -11,6 +11,7 @@ public class EditConfigParameters extends XmlElementParameters {
 	private String layout;
 	private String emptyText;
 	private Boolean inherit;
+	private Boolean disableTargeting;
 
 	public List<String> getActions() {
 		return actions;
@@ -50,6 +51,14 @@ public class EditConfigParameters extends XmlElementParameters {
 
 	public void setInherit(Boolean inherit) {
 		this.inherit = inherit;
+	}
+
+	public Boolean getDisableTargeting() {
+		return disableTargeting;
+	}
+
+	public void setDisableTargeting(Boolean disableTargeting) {
+		this.disableTargeting = disableTargeting;
 	}
 
 	@Override

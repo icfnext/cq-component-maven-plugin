@@ -60,6 +60,7 @@ public class EditConfigFactory {
 		parameters.setLayout(getLayoutForEditConfig(componentAnnotation));
 		parameters.setEmptyText(getEmptyTextForEditConfig(componentAnnotation));
 		parameters.setInherit(getInheritForEditConfig(componentAnnotation));
+		parameters.setDisableTargeting(getDisableTargingForEditConfig(componentAnnotation));
 
 		List<XmlElement> editConfigChildren = new ArrayList<XmlElement>();
 
@@ -90,6 +91,10 @@ public class EditConfigFactory {
 
 		parameters.setContainedElements(editConfigChildren);
 		return new DefaultEditConfig(parameters);
+	}
+
+	private static Boolean getDisableTargingForEditConfig(Component componentAnnotation) {
+		return componentAnnotation.disableTargeting();
 	}
 
 	private static boolean getInheritForEditConfig(Component componentAnnotation) {

@@ -94,9 +94,13 @@ public class DialogUtil {
 	public static void writeDialogToArchiveFile(ComponentNameTransformer transformer, File dialogFile,
 		CtClass componentClass, ZipArchiveOutputStream archiveStream, Set<String> reservedNames,
 		String componentPathBase, String defaultComponentPathSuffix) throws IOException, ClassNotFoundException {
-		String dialogFilePath = componentPathBase + "/"
+		String dialogFilePath = ComponentMojoUtil.getComponentBasePathForComponentClass(componentClass,
+			componentPathBase)
+			+ "/"
 			+ ComponentMojoUtil.getComponentPathSuffixForComponentClass(componentClass, defaultComponentPathSuffix)
-			+ "/" + ComponentMojoUtil.getComponentNameForComponentClass(transformer, componentClass) + "/"
+			+ "/"
+			+ ComponentMojoUtil.getComponentNameForComponentClass(transformer, componentClass)
+			+ "/"
 			+ dialogFile.getName();
 
 		ComponentMojoUtil.getLog().debug("Archiving dialog file " + dialogFilePath);

@@ -17,6 +17,8 @@ public class DefaultEditConfig extends AbstractXmlElement implements EditConfig 
 
 	private final NameSpacedAttribute<Boolean> inherit;
 
+	private final NameSpacedAttribute<Boolean> disableTargeting;
+
 	public DefaultEditConfig(EditConfigParameters parameters) {
 		super(parameters);
 		this.actions = new NameSpacedAttribute<String>(com.citytechinc.cq.component.util.Constants.CQ_NS_URI,
@@ -29,6 +31,8 @@ public class DefaultEditConfig extends AbstractXmlElement implements EditConfig 
 			CQ_NAMESPACE_PREFIX, parameters.getEmptyText());
 		this.inherit = new NameSpacedAttribute<Boolean>(com.citytechinc.cq.component.util.Constants.CQ_NS_URI,
 			CQ_NAMESPACE_PREFIX, parameters.getInherit());
+		this.disableTargeting = new NameSpacedAttribute<Boolean>(com.citytechinc.cq.component.util.Constants.CQ_NS_URI,
+			CQ_NAMESPACE_PREFIX, parameters.getDisableTargeting());
 	}
 
 	public NameSpacedAttribute<String> getActions() {
@@ -49,5 +53,9 @@ public class DefaultEditConfig extends AbstractXmlElement implements EditConfig 
 
 	public NameSpacedAttribute<Boolean> isInherit() {
 		return inherit;
+	}
+
+	public NameSpacedAttribute<Boolean> isDisableTargeting() {
+		return disableTargeting;
 	}
 }

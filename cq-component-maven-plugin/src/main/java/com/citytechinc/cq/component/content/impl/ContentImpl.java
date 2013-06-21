@@ -1,5 +1,7 @@
 package com.citytechinc.cq.component.content.impl;
 
+import java.util.Map;
+
 import com.citytechinc.cq.component.content.Content;
 
 public class ContentImpl implements Content {
@@ -9,13 +11,16 @@ public class ContentImpl implements Content {
 	private final String title;
 	private final String group;
 	private final String resourceSuperType;
+	private final Map<String, String> additionalProperties;
 
-	public ContentImpl(String title, String group, String resourceSuperType, Boolean isContainer) {
+	public ContentImpl(String title, String group, String resourceSuperType, Boolean isContainer,
+		Map<String, String> additionalProperties) {
 		this.title = title;
 		this.group = group;
 		this.isContainer = isContainer;
 		this.resourceSuperType = resourceSuperType;
 		this.primaryType = "cq:Component";
+		this.additionalProperties = additionalProperties;
 	}
 
 	public Boolean isContainer() {
@@ -36,6 +41,10 @@ public class ContentImpl implements Content {
 
 	public String getResourceSuperType() {
 		return resourceSuperType;
+	}
+
+	public Map<String, String> getAdditionalProperties() {
+		return additionalProperties;
 	}
 
 }

@@ -1,10 +1,14 @@
 package com.citytechinc.cq.component.content.factory;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javassist.CtClass;
 
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.Component;
+import com.citytechinc.cq.component.annotations.ContentProperty;
 import com.citytechinc.cq.component.content.Content;
 import com.citytechinc.cq.component.content.impl.ContentImpl;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
@@ -30,7 +34,16 @@ public class ContentFactory {
 		if (!StringUtils.isEmpty(componentAnnotation.resourceSuperType())) {
 			resourceSuperType = componentAnnotation.resourceSuperType();
 		}
-		return new ContentImpl(title, group, resourceSuperType, isContainer);
+		Map<String, String> additionalPropeties = getContentAdditionalPropertiesForComponent(componentAnnotation);
+		return new ContentImpl(title, group, resourceSuperType, isContainer, additionalPropeties);
+	}
+
+	private static Map<String, String> getContentAdditionalPropertiesForComponent(Component componentAnnotation) {
+		Map<String, String> properties = new HashMap<String, String>();
+		for (ContentProperty contentProp : componentAnnotation.contentAdditionalProperties()) {
+			properties.put(contentProp.name(), contentProp.value());
+		}
+		return properties;
 	}
 
 	private static final Boolean getIsContainerForComponent(CtClass componentClass, Component componentAnnotation) {

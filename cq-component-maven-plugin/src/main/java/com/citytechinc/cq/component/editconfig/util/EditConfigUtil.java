@@ -48,9 +48,12 @@ public class EditConfigUtil {
 	public static void writeEditConfigToArchiveFile(ComponentNameTransformer transformer, File editConfigFile,
 		CtClass componentClass, ZipArchiveOutputStream archiveStream, Set<String> reservedNames,
 		String componentPathBase, String defaultComponentPathSuffix) throws IOException, ClassNotFoundException {
-		String editConfigFilePath = componentPathBase + "/"
+		String editConfigFilePath = ComponentMojoUtil.getComponentBasePathForComponentClass(componentClass,
+			componentPathBase)
+			+ "/"
 			+ ComponentMojoUtil.getComponentPathSuffixForComponentClass(componentClass, defaultComponentPathSuffix)
-			+ "/" + ComponentMojoUtil.getComponentNameForComponentClass(transformer, componentClass)
+			+ "/"
+			+ ComponentMojoUtil.getComponentNameForComponentClass(transformer, componentClass)
 			+ "/_cq_editConfig.xml";
 
 		ComponentMojoUtil.getLog().debug("Archiving edit config file " + editConfigFilePath);

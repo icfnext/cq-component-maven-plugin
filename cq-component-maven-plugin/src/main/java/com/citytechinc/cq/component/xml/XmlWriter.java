@@ -23,6 +23,8 @@ import org.codehaus.plexus.util.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.citytechinc.cq.component.util.ComponentUtil;
+
 public class XmlWriter {
 
 	private static final DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -75,14 +77,23 @@ public class XmlWriter {
 					if (methodReturn instanceof Map<?, ?>) {
 						Map<?, ?> returnMap = (Map<?, ?>) methodReturn;
 						for (Entry<?, ?> entry : returnMap.entrySet()) {
-							createdElement.setAttribute(entry.getKey().toString(), entry.getValue().toString());
+							setPropertyOnElement(createdElement, null, null, entry.getKey().toString(),
+								entry.getValue());
 						}
+					} else if (methodReturn instanceof List<?>) {
+						List<?> listReturn = (List<?>) methodReturn;
+						setPropertyOnElementForMethod(createdElement, null, null, methodName,
+							ComponentUtil.generateStringFromList(listReturn));
+					} else if (methodReturn.getClass().isArray()) {
+						Object[] arrayReturn = (Object[]) methodReturn;
+						setPropertyOnElementForMethod(createdElement, null, null, methodName,
+							ComponentUtil.generateStringFromArray(arrayReturn));
 					} else if (methodReturn instanceof NameSpacedAttribute<?>) {
 						NameSpacedAttribute<?> nsa = (NameSpacedAttribute<?>) methodReturn;
-						setElementValue(createdElement, nsa.getNameSpace(), nsa.getNameSpacePrefix(), methodName,
-							nsa.getValue());
+						setPropertyOnElementForMethod(createdElement, nsa.getNameSpace(), nsa.getNameSpacePrefix(),
+							methodName, nsa.getValue());
 					} else {
-						setElementValue(createdElement, null, null, methodName, methodReturn);
+						setPropertyOnElementForMethod(createdElement, null, null, methodName, methodReturn);
 					}
 				}
 			}
@@ -118,20 +129,29 @@ public class XmlWriter {
 		return uncleanString;
 	}
 
-	private static final void setElementValue(Element element, String nameSpace, String nameSpacePrefix,
+	private static final void setPropertyOnElementForMethod(Element element, String nameSpace, String nameSpacePrefix,
 		String methodName, Object methodReturn) {
-		String value = methodReturn.toString();
 		String propertyName = null;
 		if (methodName.startsWith("get")) {
 			propertyName = StringUtils.lowercaseFirstLetter(methodName.substring(3));
 		} else if (methodName.startsWith("is")) {
 			propertyName = StringUtils.lowercaseFirstLetter(methodName.substring(2));
-			value = "{Boolean}" + value;
 		}
-		if (StringUtils.isEmpty(nameSpace)) {
-			element.setAttribute(propertyName, value.toString());
-		} else {
-			element.setAttributeNS(nameSpace, nameSpacePrefix + ":" + propertyName, value.toString());
+		setPropertyOnElement(element, nameSpace, nameSpacePrefix, propertyName, methodReturn);
+	}
+
+	private static final void setPropertyOnElement(Element element, String nameSpace, String nameSpacePrefix,
+		String name, Object value) {
+		String propertyValue = value.toString();
+		if (value != null) {
+			if (value instanceof Boolean) {
+				value = "{Boolean}" + propertyValue;
+			}
+			if (StringUtils.isEmpty(nameSpace)) {
+				element.setAttribute(name, propertyValue);
+			} else {
+				element.setAttributeNS(nameSpace, nameSpacePrefix + ":" + name, propertyValue);
+			}
 		}
 	}
 }

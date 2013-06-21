@@ -89,15 +89,17 @@ public class XmlWriter {
 					} else if (methodReturn instanceof NameSpacedAttribute<?>) {
 						NameSpacedAttribute<?> nsa = (NameSpacedAttribute<?>) methodReturn;
 						Object nsaObject = nsa.getValue();
-						if (nsaObject instanceof List<?>) {
-							List<?> listReturn = (List<?>) nsaObject;
-							nsaObject = generateStringFromList(listReturn);
-						} else if (nsaObject.getClass().isArray()) {
-							Object[] arrayReturn = (Object[]) nsaObject;
-							nsaObject = generateStringFromArray(arrayReturn);
+						if (nsaObject != null) {
+    						if (nsaObject instanceof List<?>) {
+    							List<?> listReturn = (List<?>) nsaObject;
+    							nsaObject = generateStringFromList(listReturn);
+    						} else if (nsaObject.getClass().isArray()) {
+    							Object[] arrayReturn = (Object[]) nsaObject;
+    							nsaObject = generateStringFromArray(arrayReturn);
+    						}
+    						setPropertyOnElementForMethod(createdElement, nsa.getNameSpace(), nsa.getNameSpacePrefix(),
+    							methodName, nsaObject);
 						}
-						setPropertyOnElementForMethod(createdElement, nsa.getNameSpace(), nsa.getNameSpacePrefix(),
-							methodName, nsaObject);
 					} else {
 						setPropertyOnElementForMethod(createdElement, null, null, methodName, methodReturn);
 					}
@@ -148,10 +150,10 @@ public class XmlWriter {
 
 	private static final void setPropertyOnElement(Element element, String nameSpace, String nameSpacePrefix,
 		String name, Object value) {
-		String propertyValue = value.toString();
 		if (value != null) {
+		    String propertyValue = value.toString();
 			if (value instanceof Boolean) {
-				value = "{Boolean}" + propertyValue;
+			    propertyValue = "{Boolean}" + propertyValue;
 			}
 			if (StringUtils.isEmpty(nameSpace)) {
 				element.setAttribute(name, propertyValue);

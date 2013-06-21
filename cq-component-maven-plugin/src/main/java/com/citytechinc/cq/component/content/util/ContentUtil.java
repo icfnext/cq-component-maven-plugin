@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -20,11 +21,11 @@ import org.apache.commons.io.IOUtils;
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.content.Content;
 import com.citytechinc.cq.component.content.factory.ContentFactory;
-import com.citytechinc.cq.component.content.xml.ContentXmlWriter;
 import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
 import com.citytechinc.cq.component.dialog.exception.OutputFailureException;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
+import com.citytechinc.cq.component.xml.XmlWriter;
 
 public class ContentUtil {
 	private ContentUtil() {
@@ -33,7 +34,7 @@ public class ContentUtil {
 	/**
 	 * Write the content.xml to an output file, the path of which is determined
 	 * by the component class
-	 * 
+	 *
 	 * @param content
 	 * @param componentClass
 	 * @return The written file
@@ -42,11 +43,16 @@ public class ContentUtil {
 	 * @throws IOException
 	 * @throws OutputFailureException
 	 * @throws ClassNotFoundException
+	 * @throws NoSuchMethodException
+	 * @throws InvocationTargetException
+	 * @throws IllegalAccessException
+	 * @throws SecurityException
+	 * @throws IllegalArgumentException
 	 */
 	public static File writeContentToFile(ComponentNameTransformer transformer, Content content,
 		CtClass componentClass, File buildDirectory, String componentPathBase, String defaultComponentPathSuffix)
 		throws TransformerException, ParserConfigurationException, IOException, OutputFailureException,
-		ClassNotFoundException {
+		ClassNotFoundException, IllegalArgumentException, SecurityException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		File componentOutputDirectory = ComponentMojoUtil.getOutputDirectoryForComponentClass(transformer,
 			componentClass, buildDirectory, componentPathBase, defaultComponentPathSuffix);
 
@@ -58,7 +64,7 @@ public class ContentUtil {
 
 		contentFile.createNewFile();
 
-		ContentXmlWriter.writeContent(content, new FileOutputStream(contentFile));
+		XmlWriter.writeXml(content, new FileOutputStream(contentFile));
 
 		return contentFile;
 	}
@@ -66,7 +72,7 @@ public class ContentUtil {
 	/**
 	 * Writes a provided content file to a provided archive output stream at a
 	 * path determined by the class of the component.
-	 * 
+	 *
 	 * @param contentFile
 	 * @param componentClass
 	 * @param archiveStream
@@ -107,7 +113,7 @@ public class ContentUtil {
 	 * Constructs a list of Content objects representing .content.xml files from
 	 * a list of Classes. For each Class annotated with a Component annotation a
 	 * Content object is constructed.
-	 * 
+	 *
 	 * @param classList
 	 * @param zipOutputStream
 	 * @param reservedNames
@@ -118,12 +124,17 @@ public class ContentUtil {
 	 * @throws IOException
 	 * @throws OutputFailureException
 	 * @throws ClassNotFoundException
+	 * @throws NoSuchMethodException
+	 * @throws InvocationTargetException
+	 * @throws IllegalAccessException
+	 * @throws SecurityException
+	 * @throws IllegalArgumentException
 	 */
 	public static List<Content> buildContentFromClassList(List<CtClass> classList,
 		ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames, File buildDirectory,
 		String componentPathBase, String defaultComponentPathSuffix, String defaultComponentGroup,
 		ComponentNameTransformer transformer) throws InvalidComponentClassException, TransformerException,
-		ParserConfigurationException, IOException, OutputFailureException, ClassNotFoundException {
+		ParserConfigurationException, IOException, OutputFailureException, ClassNotFoundException, IllegalArgumentException, SecurityException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 
 		List<Content> builtContents = new ArrayList<Content>();
 

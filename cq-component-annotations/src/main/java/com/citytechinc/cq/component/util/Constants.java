@@ -13,6 +13,7 @@ public class Constants {
 
 	public static final String JCR_NS_PREFIX = "jcr";
 	public static final String CQ_NS_PREFIX = "cq";
+	public static final String SLING_NS_PREFIX = "sling";
 
 	public static String CQ_WIDGET = "cq:Widget";
 

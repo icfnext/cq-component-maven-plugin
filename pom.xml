@@ -29,11 +29,6 @@
 			<url>http://nexus.citytech.ctmsp.com/content/repositories/snapshots</url>
 			<uniqueVersion>false</uniqueVersion>
 		</snapshotRepository>
-		<site>
-			<id>github-pages-site</id>
-			<name>Deployment through GitHub's site deployment plugin</name>
-			<url>site/${project.version}</url>
-		</site>
 	</distributionManagement>
 
 	<build>
@@ -63,7 +58,10 @@
 					<reportPlugins>
 						<plugin>
 							<artifactId>maven-javadoc-plugin</artifactId>
-							<version>2.9</version>
+							<version>2.9.1</version>
+							<configuration>
+								<aggregate>true</aggregate>
+							</configuration>
 						</plugin>
 					</reportPlugins>
 					<skipDeploy>true</skipDeploy>
@@ -89,7 +87,6 @@
 							<message>site for ${project.version}</message>
 							<server>github</server>
 							<merge>true</merge>
-							<force>true</force>
 						</configuration>
 						<executions>
 							<execution>

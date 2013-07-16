@@ -29,6 +29,11 @@
 			<url>http://nexus.citytech.ctmsp.com/content/repositories/snapshots</url>
 			<uniqueVersion>false</uniqueVersion>
 		</snapshotRepository>
+		<site>
+			<id>github-pages-site</id>
+			<name>Deployment through GitHub's site deployment plugin</name>
+			<url>site/${project.version}</url>
+		</site>
 	</distributionManagement>
 
 	<build>
@@ -61,7 +66,29 @@
 							<version>2.9</version>
 						</plugin>
 					</reportPlugins>
+					<skipDeploy>true</skipDeploy>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.github.github</groupId>
+				<artifactId>site-maven-plugin</artifactId>
+				<version>0.7</version>
+				<configuration>
+					<message>Creating site for ${project.artifactId},
+						${project.version}</message>
+					<!-- this does the trick to place every module in the correct subfolder -->
+					<path>${project.distributionManagement.site.url}</path>
+					<merge>true</merge>
+				</configuration>
+				<executions>
+					<execution>
+						<id>github-site</id>
+						<goals>
+							<goal>site</goal>
+						</goals>
+						<phase>site-deploy</phase>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

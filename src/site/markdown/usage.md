@@ -85,6 +85,11 @@ Pathfield saved at ./otherTitle
 
 	@DialogField(fieldLabel="Title",name="./otherTitle")
 	private String title;
+	
+### Widgets
+Each widget annotation is used in conjunction with a DialogField annotation to set the correct xtype and to allow configuration of additional properties.
+
+All of the default widget annotations can be found [here](apidocs/com/citytechinc/cq/component/annotations/widgets/package-summary.html)
 
 
 

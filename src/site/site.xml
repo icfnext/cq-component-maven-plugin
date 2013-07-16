@@ -33,7 +33,7 @@
 			</brand>
 			<slogan>A Plugin for CQ Components!</slogan>
 			<toc>sidebar</toc>
-			<body/>
+			<body />
 			<pages>
 				<index project="cq-component-plugin">
 					<titleTemplate>CQ Component Plugin</titleTemplate>
@@ -46,13 +46,30 @@
 					</sections>
 				</index>
 			</pages>
+			<bottomNav maxSpan="9">
+				<column>Main</column>
+				<column>Basics</column>
+				<column>Extending</column>
+			</bottomNav>
 		</reflowSkin>
 	</custom>
 
 	<body>
-		<menu name="Documentation" inherit="top">
+		<links>
+			<item name="GitHub project"
+				href="https://github.com/Citytechinc/cq-component-maven-plugin/" />
+		</links>
+		<menu name="Main" inherit="top">
+			<item name="Home" href="index.html" />
+			<item name="GitHub project" href="https://github.com/Citytechinc/cq-component-maven-plugin/" />
+		</menu>
+		<menu name="Basics" inherit="top">
 			<item name="Configuration" href="configuration.html" />
 			<item name="Usage" href="usage.html" />
+		</menu>
+		<menu name="Extending" inherit="top">
+			<item name="Adding a Widget" href="adding-a-widget.html" />
+			<item name="Adding a Transformer" href="adding-a-transformer.html" />
 		</menu>
 	</body>
 </project>

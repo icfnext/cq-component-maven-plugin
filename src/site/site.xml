@@ -21,6 +21,7 @@
 			<!-- Make this to 'false' for local development, i.e. file:// URLs -->
 			<protocolRelativeURLs>false</protocolRelativeURLs>
 			<smoothScroll>true</smoothScroll>
+			<titleTemplate>%2$s | %1$s</titleTemplate>
 			<theme>bootswatch-cerulean</theme>
 			<highlightJs>true</highlightJs>
 			<highlightJsTheme>github</highlightJsTheme>
@@ -28,9 +29,11 @@
 				<name>
 					CQ Component Plugin
 				</name>
-				<href>https://github.com/Citytechinc/cq-component-maven-plugin</href>
+				<href>index.html</href>
 			</brand>
 			<slogan>A Plugin for CQ Components!</slogan>
+			<toc>sidebar</toc>
+			<body/>
 			<pages>
 				<index project="cq-component-plugin">
 					<titleTemplate>CQ Component Plugin</titleTemplate>

@@ -1,8 +1,9 @@
+##Configuration
+
 The Component Plugin requires 2 maven configurations to work propertly.  The first is the plugin configuration itself and the
 second is the addition of a maven dependency that contains the required annotations and abstract classes/interfaces used to extends the plugin.
 
-Maven Plugin
------------
+## Maven Plugin
 
 ```xml
 <plugin>
@@ -82,8 +83,7 @@ Maven Plugin
 </table>
 
 
-Maven Dependency
------------
+## Maven Dependency
 
 
 ```xml

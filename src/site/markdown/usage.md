@@ -1,3 +1,4 @@
+## Usage
 
 The cq-component-maven-plugin expects that an installable CQ Package .zip file has been created during
 the build process prior to execution.  As such, the plugin should be run as part of or after the `package`

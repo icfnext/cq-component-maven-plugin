@@ -25,6 +25,7 @@
 			<theme>bootswatch-cerulean</theme>
 			<highlightJs>true</highlightJs>
 			<highlightJsTheme>github</highlightJsTheme>
+			<topNav>Basics|Extending</topNav>
 			<brand>
 				<name>
 					CQ Component Plugin
@@ -63,11 +64,11 @@
 			<item name="Home" href="index.html" />
 			<item name="GitHub project" href="https://github.com/Citytechinc/cq-component-maven-plugin/" />
 		</menu>
-		<menu name="Basics" inherit="top">
+		<menu name="Basics" inherit="bottom">
 			<item name="Configuration" href="configuration.html" />
 			<item name="Usage" href="usage.html" />
 		</menu>
-		<menu name="Extending" inherit="top">
+		<menu name="Extending" inherit="bottom">
 			<item name="Adding a Widget" href="adding-a-widget.html" />
 			<item name="Adding a Transformer" href="adding-a-transformer.html" />
 		</menu>

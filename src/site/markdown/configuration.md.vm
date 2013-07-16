@@ -9,7 +9,7 @@ second is the addition of a maven dependency that contains the required annotati
 <plugin>
     <groupId>com.citytechinc.cq.cq-component-plugin</groupId>
     <artifactId>cq-component-maven-plugin</artifactId>
-    <version>1.1.1</version>
+    <version>${project.version}</version>
     <extensions>true</extensions>
     <executions>
         <execution>
@@ -90,7 +90,7 @@ second is the addition of a maven dependency that contains the required annotati
 <dependency>
 	<groupId>com.citytechinc.cq.cq-component-plugin</groupId>
 	<artifactId>cq-component-annotations</artifactId>
-	<version>1.1.1</version>
+	<version>${project.version}</version>
 </dependency>
 ```
 

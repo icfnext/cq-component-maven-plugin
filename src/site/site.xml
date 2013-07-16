@@ -38,7 +38,6 @@
 					<toc>false</toc>
 					<markPageHeader>false</markPageHeader>
 					<sections>
-						<carousel />
 						<columns>1</columns>
 						<body />
 					</sections>
@@ -49,6 +48,7 @@
 
 	<body>
 		<menu name="Documentation" inherit="top">
+			<item name="Configuration" href="configuration.html" />
 			<item name="Usage" href="usage.html" />
 		</menu>
 	</body>

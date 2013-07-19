@@ -1,6 +1,10 @@
 package com.citytechinc.cq.component.content.xml;
 
-import java.io.OutputStream;
+import com.citytechinc.cq.component.annotations.ContentProperty;
+import com.citytechinc.cq.component.content.Content;
+import com.citytechinc.cq.component.global.Constants;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -11,12 +15,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
-import com.citytechinc.cq.component.content.Content;
-import com.citytechinc.cq.component.global.Constants;
+import java.io.OutputStream;
 
 public class ContentXmlWriter {
 
@@ -63,9 +62,13 @@ public class ContentXmlWriter {
 				content.getResourceSuperType());
 		}
 
-		for (String key : content.getAdditionalProperties().keySet()) {
-			jcrRootElement.setAttribute(key, content.getAdditionalProperties().get(key));
-		}
+        for (ContentProperty property : content.getAdditionalProperties()) {
+            if (property.namespace().isEmpty()) {
+                jcrRootElement.setAttribute(property.name(), property.value());
+            } else {
+                jcrRootElement.setAttributeNS(property.namespace(), property.name(), property.value());
+            }
+        }
 
 		jcrRootElement.setAttributeNS(Constants.JCR_NS_URI, "jcr:title", content.getTitle());
 

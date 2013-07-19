@@ -1,50 +1,55 @@
 package com.citytechinc.cq.component.content.impl;
 
-import java.util.Map;
-
+import com.citytechinc.cq.component.annotations.ContentProperty;
 import com.citytechinc.cq.component.content.Content;
+
+import java.util.List;
 
 public class ContentImpl implements Content {
 
-	private final Boolean isContainer;
-	private final String primaryType;
-	private final String title;
-	private final String group;
-	private final String resourceSuperType;
-	private final Map<String, String> additionalProperties;
+    private final Boolean isContainer;
 
-	public ContentImpl(String title, String group, String resourceSuperType, Boolean isContainer,
-		Map<String, String> additionalProperties) {
-		this.title = title;
-		this.group = group;
-		this.isContainer = isContainer;
-		this.resourceSuperType = resourceSuperType;
-		this.primaryType = "cq:Component";
-		this.additionalProperties = additionalProperties;
-	}
+    private final String primaryType;
 
-	public Boolean isContainer() {
-		return isContainer;
-	}
+    private final String title;
 
-	public String getPrimaryType() {
-		return primaryType;
-	}
+    private final String group;
 
-	public String getTitle() {
-		return title;
-	}
+    private final String resourceSuperType;
 
-	public String getGroup() {
-		return group;
-	}
+    private final List<ContentProperty> additionalProperties;
 
-	public String getResourceSuperType() {
-		return resourceSuperType;
-	}
+    public ContentImpl(String title, String group, String resourceSuperType, Boolean isContainer,
+        List<ContentProperty> additionalProperties) {
+        this.title = title;
+        this.group = group;
+        this.isContainer = isContainer;
+        this.resourceSuperType = resourceSuperType;
+        this.primaryType = "cq:Component";
+        this.additionalProperties = additionalProperties;
+    }
 
-	public Map<String, String> getAdditionalProperties() {
-		return additionalProperties;
-	}
+    public Boolean isContainer() {
+        return isContainer;
+    }
 
+    public String getPrimaryType() {
+        return primaryType;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public String getResourceSuperType() {
+        return resourceSuperType;
+    }
+
+    public List<ContentProperty> getAdditionalProperties() {
+        return additionalProperties;
+    }
 }

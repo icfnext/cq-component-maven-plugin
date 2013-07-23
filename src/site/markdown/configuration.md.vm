@@ -7,27 +7,26 @@ second is the addition of a maven dependency that contains the required annotati
 
 $symbol_pound$symbol_pound Maven Plugin
 
-```xml
-<plugin>
-    <groupId>com.citytechinc.cq.cq-component-plugin</groupId>
-    <artifactId>cq-component-maven-plugin</artifactId>
-    <version>${project.version}</version>
-    <extensions>true</extensions>
-    <executions>
-        <execution>
-            <goals>
-                <goal>component</goal>
-            </goals>
-        </execution>
-    </executions>
-    <configuration>
-        <componentPathBase>jcr_root/apps/client/components</componentPathBase>
-        <componentPathSuffix>content</componentPathSuffix>
-        <defaultComponentGroup>Client Group</defaultComponentGroup>
-        <transformerName>camel-case</transformerName>
-    </configuration>
-</plugin>
-```
+
+	<plugin>
+	    <groupId>com.citytechinc.cq.cq-component-plugin</groupId>
+	    <artifactId>cq-component-maven-plugin</artifactId>
+	    <version>${project.version}</version>
+	    <extensions>true</extensions>
+	    <executions>
+	        <execution>
+	            <goals>
+	                <goal>component</goal>
+	            </goals>
+	        </execution>
+	    </executions>
+	    <configuration>
+	        <componentPathBase>jcr_root/apps/client/components</componentPathBase>
+	        <componentPathSuffix>content</componentPathSuffix>
+	        <defaultComponentGroup>Client Group</defaultComponentGroup>
+	        <transformerName>camel-case</transformerName>
+	    </configuration>
+	</plugin>
 
 <table class="table table-striped break-words-table">
 	<thead>
@@ -71,7 +70,7 @@ $symbol_pound$symbol_pound Maven Plugin
 		<tr>
 			<td>transformerName</td>
 			<td>String</td>
-			<td></td>
+			<td>camel-case</td>
 			<td>The name of the transformer used to change from a the name of a class to the folder in the jcr.  The 
 				defaults available are:
 				<ul>
@@ -88,12 +87,12 @@ $symbol_pound$symbol_pound Maven Plugin
 $symbol_pound$symbol_pound Maven Dependency
 
 
-```xml
-<dependency>
-	<groupId>com.citytechinc.cq.cq-component-plugin</groupId>
-	<artifactId>cq-component-annotations</artifactId>
-	<version>${project.version}</version>
-</dependency>
-```
+
+	<dependency>
+		<groupId>com.citytechinc.cq.cq-component-plugin</groupId>
+		<artifactId>cq-component-annotations</artifactId>
+		<version>${project.version}</version>
+	</dependency>
+
 
 This will allow you to use the Annotations necessary to create the xml files.

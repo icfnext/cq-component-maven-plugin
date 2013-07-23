@@ -3,7 +3,7 @@ The transformer is what determains where in the repository a components files wi
 Adding a transformer can be done by adding a single class.
 
 ### Implementing ComponentNameTransformer
-The first step is to create a class that implements com.citytechinc.cq.component.dialog.ComponentNameTransformer.  The only method that needs to be implemented is transform(String className).
+The first step is to create a class that implements [com.citytechinc.cq.component.dialog.ComponentNameTransformer](apidocs/com/citytechinc/cq/component/dialog/ComponentNameTransformer.html).  The only method that needs to be implemented is transform(String className).
 This will be passed the name of the class that the component annotation is on.
 
 ### Adding Annotation
@@ -12,6 +12,7 @@ annotation will be the value that goes in the transformerName configuration of t
 
 ### Example
 This example will captialise the class name
+
 	import com.citytechinc.cq.component.annotations.transformer.Transformer;
 	import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
 

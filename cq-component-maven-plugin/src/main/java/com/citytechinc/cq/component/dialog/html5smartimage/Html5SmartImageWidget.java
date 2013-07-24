@@ -5,9 +5,10 @@ import org.codehaus.plexus.util.StringUtils;
 import com.citytechinc.cq.component.annotations.config.Widget;
 import com.citytechinc.cq.component.annotations.widgets.Html5SmartImage;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
+import com.citytechinc.cq.component.dialog.TabbableDialogElement;
 
 @Widget(annotationClass = Html5SmartImage.class, makerClass = Html5SmartImageWidgetMaker.class, xtype = Html5SmartImageWidget.XTYPE)
-public class Html5SmartImageWidget extends AbstractWidget {
+public class Html5SmartImageWidget extends AbstractWidget implements TabbableDialogElement {
 	public static final String XTYPE = "html5smartimage";
 	private final String originalName;
 	private final boolean disableFlush;
@@ -23,6 +24,7 @@ public class Html5SmartImageWidget extends AbstractWidget {
 	private final boolean allowUpload;
 	private final Integer height;
 	private final boolean tab;
+	private final String title;
 
 	public Html5SmartImageWidget(Html5SmartImageWidgetParameters parameters) {
 		super(parameters);
@@ -40,6 +42,13 @@ public class Html5SmartImageWidget extends AbstractWidget {
 		this.allowUpload = parameters.isAllowUpload();
 		this.height = parameters.getHeight();
 		this.tab = parameters.isTab();
+
+		if (this.tab) {
+		    this.title = this.getFieldLabel();
+		}
+		else {
+		    this.title = null;
+		}
 	}
 
 	private static String getNameAsPrefix(String name) {
@@ -51,7 +60,7 @@ public class Html5SmartImageWidget extends AbstractWidget {
 	}
 
 	public String getTitle() {
-		return getFieldLabel();
+		return title;
 	}
 
 	public boolean isDisableFlush() {
@@ -110,7 +119,7 @@ public class Html5SmartImageWidget extends AbstractWidget {
 		return allowUpload;
 	}
 
-	public boolean isTab() {
+	public Boolean isTab() {
 		return tab;
 	}
 

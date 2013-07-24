@@ -3,9 +3,7 @@ package com.citytechinc.cq.component.dialog.factory;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import javassist.CannotCompileException;
 import javassist.ClassPool;
@@ -13,12 +11,16 @@ import javassist.CtClass;
 import javassist.CtMember;
 import javassist.NotFoundException;
 
+import org.codehaus.plexus.util.StringUtils;
+
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.dialog.Dialog;
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.DialogParameters;
 import com.citytechinc.cq.component.dialog.TabbableDialogElement;
+import com.citytechinc.cq.component.dialog.cqincludes.CQInclude;
+import com.citytechinc.cq.component.dialog.cqincludes.CQIncludeParameters;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
@@ -32,6 +34,8 @@ import com.citytechinc.cq.component.maven.util.LogSingleton;
 
 public class DialogFactory {
 
+	private static final String DEFAULT_TAB_FIELD_NAME = "tab";
+
 	private DialogFactory() {
 	}
 
@@ -43,8 +47,6 @@ public class DialogFactory {
 
 		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
-		Map<String, List<DialogElement>> tabMap = new LinkedHashMap<String, List<DialogElement>>();
-
 		/*
 		 * Get dialog title
 		 */
@@ -53,16 +55,31 @@ public class DialogFactory {
 		/*
 		 * Setup Tabs from Component tab list
 		 */
-		List<String> tabsList = Arrays.asList(componentAnnotation.tabs());
+		List<TabHolder> tabsList = new ArrayList<TabHolder>();
 
-		if (tabsList.isEmpty()) {
-		    tabsList = Arrays.asList( new String[] {dialogTitle});
+		if (componentAnnotation.tabs().length == 0) {
+			TabHolder tabHolder = new TabHolder();
+			tabHolder.setTitle(dialogTitle);
+			tabsList.add(tabHolder);
+		} else {
+			for (com.citytechinc.cq.component.annotations.Tab tab : componentAnnotation.tabs()) {
+				if (StringUtils.isNotEmpty(tab.title()) && StringUtils.isNotEmpty(tab.path())) {
+					throw new InvalidComponentClassException("Tabs can have only a path or a title");
+				}
+				TabHolder tabHolder = new TabHolder();
+				if (StringUtils.isNotEmpty(tab.title())) {
+					tabHolder.setTitle(tab.title());
+				}
+				if (StringUtils.isNotEmpty(tab.path())) {
+					CQIncludeParameters params = new CQIncludeParameters();
+					params.setFieldName(DEFAULT_TAB_FIELD_NAME + tabsList.size());
+					params.setPath(tab.path());
+					CQInclude cqincludes = new CQInclude(params);
+					tabHolder.addElement(cqincludes);
+				}
+				tabsList.add(tabHolder);
+			}
 		}
-
-		for (String curTab : tabsList) {
-			tabMap.put(curTab, new ArrayList<DialogElement>());
-		}
-
 		List<CtMember> fieldsAndMethods = new ArrayList<CtMember>();
 		fieldsAndMethods.addAll(ComponentMojoUtil.collectFields(componentClass));
 		fieldsAndMethods.addAll(ComponentMojoUtil.collectMethods(componentClass));
@@ -89,18 +106,19 @@ public class DialogFactory {
 				int tabIndex = dialogProperty.tab();
 
 				if (tabIndex < 1 || tabIndex > tabsList.size()) {
-				    throw new InvalidComponentFieldException("Invalid tab index " + tabIndex + " for field " + dialogProperty.fieldName());
+					throw new InvalidComponentFieldException("Invalid tab index " + tabIndex + " for field "
+						+ dialogProperty.fieldName());
 				}
 
-				tabMap.get(tabsList.get(tabIndex - 1)).add(builtFieldWidget);
+				tabsList.get(tabIndex - 1).addElement(builtFieldWidget);
 
 			}
 		}
 
-	    List<DialogElement> tabList = new ArrayList<DialogElement>();
+		List<DialogElement> tabList = new ArrayList<DialogElement>();
 
-		for (String curMapKey : tabMap.keySet()) {
-		    tabList.add(buildTabForDialogElementSet(curMapKey, tabMap.get(curMapKey)));
+		for (TabHolder tab : tabsList) {
+			tabList.add(buildTabForDialogElementSet(tab));
 		}
 
 		Integer width = null;
@@ -120,40 +138,41 @@ public class DialogFactory {
 		return new Dialog(dialogParams);
 	}
 
-	private static final DialogElement buildTabForDialogElementSet(String tabName, List<DialogElement> elements) throws InvalidComponentFieldException {
-	    /*
-	     * Verify that, if elements contains tabbable elements, that it only contains one element.
-	     * If the elements set contains a single tab element, return it as the tab.
-	     */
-	    for(int i=0; i<elements.size(); i++) {
-	        DialogElement curElement = elements.get(i);
-	        if (curElement instanceof TabbableDialogElement) {
-	            LogSingleton.getInstance().error("Tabbable widget found " + curElement.getFieldName());
-	            TabbableDialogElement curTabbableElement = (TabbableDialogElement) curElement;
+	private static final DialogElement buildTabForDialogElementSet(TabHolder tab) throws InvalidComponentFieldException {
+		/*
+		 * Verify that, if elements contains tabbable elements, that it only
+		 * contains one element. If the elements set contains a single tab
+		 * element, return it as the tab.
+		 */
+		for (int i = 0; i < tab.getElements().size(); i++) {
+			DialogElement curElement = tab.getElements().get(i);
+			if (curElement instanceof TabbableDialogElement) {
+				LogSingleton.getInstance().debug("Tabbable widget found " + curElement.getFieldName());
+				TabbableDialogElement curTabbableElement = (TabbableDialogElement) curElement;
 
-	            LogSingleton.getInstance().error("Is Tab? " + curTabbableElement.isTab());
+				LogSingleton.getInstance().debug("Is Tab? " + curTabbableElement.isTab());
 
-	            if (curTabbableElement.isTab()) {
-    	            if (i != 0 || elements.size() != 1) {
-    	                throw new InvalidComponentFieldException("A Tab dialog element can not be placed inside another tab.");
-    	            }
+				if (curTabbableElement.isTab()) {
+					if (i != 0 || tab.getElements().size() != 1) {
+						throw new InvalidComponentFieldException(
+							"A Tab dialog element can not be placed inside another tab.");
+					}
+					curTabbableElement.setTitle(tab.getTitle());
+					return curElement;
+				}
+			}
+		}
 
-    	            //TODO: When this happens - the name from the element gets used as the tab name and not the name specified in the component annotation
-    	            return curElement;
-	            }
-	        }
-	    }
-
-	    /*
-	     * Construct a new Tab object containing all provided elements
-	     */
-        WidgetCollectionParameters wcp = new WidgetCollectionParameters();
-        wcp.setContainedElements(elements);
-        WidgetCollection widgetCollection = new WidgetCollection(wcp);
-        TabParameters tabParams = new TabParameters();
-        tabParams.setTitle(tabName);
-        tabParams.setContainedElements(Arrays.asList(new DialogElement[] { widgetCollection }));
-        return new Tab(tabParams);
+		/*
+		 * Construct a new Tab object containing all provided elements
+		 */
+		WidgetCollectionParameters wcp = new WidgetCollectionParameters();
+		wcp.setContainedElements(tab.getElements());
+		WidgetCollection widgetCollection = new WidgetCollection(wcp);
+		TabParameters tabParams = new TabParameters();
+		tabParams.setTitle(tab.getTitle());
+		tabParams.setContainedElements(Arrays.asList(new DialogElement[] { widgetCollection }));
+		return new Tab(tabParams);
 	}
 
 }

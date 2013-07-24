@@ -14,7 +14,9 @@
 		<name>CQ Component Plugin</name>
 		<href>http://citytechinc.github.io/cq-component-maven-plugin/</href>
 	</bannerLeft>
-
+	
+	<googleAnalyticsAccountId>UA-928005-4</googleAnalyticsAccountId>
+	
 	<custom>
 		<reflowSkin>
 			<skinAttribution>false</skinAttribution>
@@ -57,13 +59,13 @@
 
 	<body>
 		<links>
-			<item name="GitHub project"
+			<item name="GitHub"
 				href="https://github.com/Citytechinc/cq-component-maven-plugin/" />
 			<item name="Java Doc" href="site/apidocs/index.html" />
 		</links>
 		<menu name="Main" inherit="top">
 			<item name="Home" href="index.html" />
-			<item name="GitHub project"
+			<item name="GitHub"
 				href="https://github.com/Citytechinc/cq-component-maven-plugin/" />
 			<item name="Java Doc" href="site/apidocs/index.html" />
 		</menu>

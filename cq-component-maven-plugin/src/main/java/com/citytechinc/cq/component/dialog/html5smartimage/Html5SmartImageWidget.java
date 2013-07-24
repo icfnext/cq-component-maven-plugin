@@ -24,7 +24,7 @@ public class Html5SmartImageWidget extends AbstractWidget implements TabbableDia
 	private final boolean allowUpload;
 	private final Integer height;
 	private final boolean tab;
-	private final String title;
+	private String title;
 
 	public Html5SmartImageWidget(Html5SmartImageWidgetParameters parameters) {
 		super(parameters);
@@ -42,13 +42,6 @@ public class Html5SmartImageWidget extends AbstractWidget implements TabbableDia
 		this.allowUpload = parameters.isAllowUpload();
 		this.height = parameters.getHeight();
 		this.tab = parameters.isTab();
-
-		if (this.tab) {
-		    this.title = this.getFieldLabel();
-		}
-		else {
-		    this.title = null;
-		}
 	}
 
 	private static String getNameAsPrefix(String name) {
@@ -61,6 +54,10 @@ public class Html5SmartImageWidget extends AbstractWidget implements TabbableDia
 
 	public String getTitle() {
 		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public boolean isDisableFlush() {

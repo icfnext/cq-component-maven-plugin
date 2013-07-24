@@ -22,8 +22,11 @@ import javax.xml.transform.TransformerException;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.io.IOUtils;
+import org.codehaus.plexus.util.StringUtils;
 
+import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.DialogField;
+import com.citytechinc.cq.component.annotations.Tab;
 import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
 import com.citytechinc.cq.component.dialog.Dialog;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
@@ -167,22 +170,31 @@ public class DialogUtil {
 		for (CtClass curClass : classList) {
 			ComponentMojoUtil.getLog().debug("Checking class for Component annotation " + curClass);
 
-			boolean hasDialogField = false;
+			boolean hasDialogFieldOrCQIncludeTab = false;
 			for (CtField curField : ComponentMojoUtil.collectFields(curClass)) {
 				if (curField.hasAnnotation(DialogField.class)) {
-					hasDialogField = true;
+					hasDialogFieldOrCQIncludeTab = true;
 					break;
 				}
 			}
-			if (!hasDialogField) {
+			if (!hasDialogFieldOrCQIncludeTab) {
 				for (CtMethod curMethod : ComponentMojoUtil.collectMethods(curClass)) {
 					if (curMethod.hasAnnotation(DialogField.class)) {
-						hasDialogField = true;
+						hasDialogFieldOrCQIncludeTab = true;
 						break;
 					}
 				}
 			}
-			if (hasDialogField) {
+			if (!hasDialogFieldOrCQIncludeTab) {
+				Component componentAnnotation = (Component) curClass.getAnnotation(Component.class);
+				for (Tab tab : componentAnnotation.tabs()) {
+					if (StringUtils.isNotEmpty(tab.path())) {
+						hasDialogFieldOrCQIncludeTab = true;
+						break;
+					}
+				}
+			}
+			if (hasDialogFieldOrCQIncludeTab) {
 				ComponentMojoUtil.getLog().debug("Processing Component Class " + curClass);
 				Dialog builtDialog = DialogFactory.make(curClass, widgetRegistry, classLoader, classPool);
 				dialogList.add(builtDialog);

@@ -34,7 +34,7 @@ extended and the additional fields and accessors for the widget properties must 
 	}
 	
 ### Adding the Widget Class
-The abstract class [AbstractWidget](apidocs/com/citytechinc/cq/component/dialog/widget/AbstractWidget.html) is used as a superclass for all widgets and builds the
+The abstract class [AbstractWidget](apidocs/com/citytechinc/cq/component/dialog/AbstractWidget.html) is used as a superclass for all widgets and builds the
 base component properties based on the WidgetParameters passed in.  This class must be extended and all fields that will end up in the dialog.xml need to have
 getters created.
 

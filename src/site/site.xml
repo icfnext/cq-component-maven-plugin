@@ -63,13 +63,12 @@
 		<links>
 			<item name="GitHub"
 				href="https://github.com/Citytechinc/cq-component-maven-plugin/" />
-			<item name="Java Doc" href="site/apidocs/index.html" />
 		</links>
 		<menu name="Main" inherit="top">
 			<item name="Home" href="index.html" />
 			<item name="GitHub"
 				href="https://github.com/Citytechinc/cq-component-maven-plugin/" />
-			<item name="Java Doc" href="site/apidocs/index.html" />
+			<item name="Java Doc" href="apidocs/index.html" />
 		</menu>
 		<menu name="Basics" inherit="bottom">
 			<item name="Configuration" href="configuration.html" />

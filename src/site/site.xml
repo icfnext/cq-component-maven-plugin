@@ -9,11 +9,13 @@
 		<version>1.0.0</version>
 	</skin>
 
-
 	<bannerLeft>
-		<name>CQ Component Plugin</name>
-		<href>http://citytechinc.github.io/cq-component-maven-plugin/</href>
+		<src>img/logo.png</src>
 	</bannerLeft>
+	<bannerRight>
+		<name>CQ Component Plugin</name>
+		<href>index.html</href>
+	</bannerRight>
 	
 	<googleAnalyticsAccountId>UA-928005-4</googleAnalyticsAccountId>
 	
@@ -24,7 +26,7 @@
 			<protocolRelativeURLs>false</protocolRelativeURLs>
 			<smoothScroll>true</smoothScroll>
 			<titleTemplate>%2$s | %1$s</titleTemplate>
-			<theme>bootswatch-cerulean</theme>
+			<theme>site</theme>
 			<highlightJs>true</highlightJs>
 			<highlightJsTheme>github</highlightJsTheme>
 			<brand>
@@ -33,7 +35,7 @@
 				</name>
 				<href>index.html</href>
 			</brand>
-			<slogan>A Plugin for CQ Components!</slogan>
+			<slogan position="bannerRight">A Plugin for CQ Components!</slogan>
 			<toc>sidebar</toc>
 			<topNav>Basics|Extending</topNav>
 			<body />

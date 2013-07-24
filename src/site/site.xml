@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/DECORATION/1.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/DECORATION/1.3.0 http://maven.apache.org/xsd/decoration-1.3.0.xsd">
 
 	<skin>
 		<groupId>lt.velykis.maven.skins</groupId>
@@ -33,7 +33,8 @@
 			</brand>
 			<slogan>A Plugin for CQ Components!</slogan>
 			<toc>sidebar</toc>
-			<body/>
+			<topNav>Basics|Extending</topNav>
+			<body />
 			<pages>
 				<index project="cq-component-plugin">
 					<titleTemplate>CQ Component Plugin</titleTemplate>
@@ -46,13 +47,34 @@
 					</sections>
 				</index>
 			</pages>
+			<bottomNav maxSpan="9">
+				<column>Main</column>
+				<column>Basics</column>
+				<column>Extending</column>
+			</bottomNav>
 		</reflowSkin>
 	</custom>
 
 	<body>
-		<menu name="Documentation" inherit="top">
+		<links>
+			<item name="GitHub project"
+				href="https://github.com/Citytechinc/cq-component-maven-plugin/" />
+			<item name="Java Doc" href="site/apidocs/index.html" />
+		</links>
+		<menu name="Main" inherit="top">
+			<item name="Home" href="index.html" />
+			<item name="GitHub project"
+				href="https://github.com/Citytechinc/cq-component-maven-plugin/" />
+			<item name="Java Doc" href="site/apidocs/index.html" />
+		</menu>
+		<menu name="Basics" inherit="bottom">
 			<item name="Configuration" href="configuration.html" />
 			<item name="Usage" href="usage.html" />
 		</menu>
+		<menu name="Extending" inherit="bottom">
+			<item name="Adding a Widget" href="adding-a-widget.html" />
+			<item name="Adding a Transformer" href="adding-a-transformer.html" />
+		</menu>
+		<footer></footer>
 	</body>
 </project>

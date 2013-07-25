@@ -11,6 +11,7 @@
 
 	<bannerLeft>
 		<src>img/logo.png</src>
+		<href>http://www.citytechinc.com</href>
 	</bannerLeft>
 	<bannerRight>
 		<name>CQ Component Plugin</name>
@@ -69,7 +70,7 @@
 			<item name="GitHub"
 				href="https://github.com/Citytechinc/cq-component-maven-plugin/" />
 			<item name="Java Doc" href="apidocs/index.html" />
-			<item name="CITYTECH Inc." href="www.citytechinc.com" />
+			<item name="CITYTECH Inc." href="http://www.citytechinc.com" />
 		</menu>
 		<menu name="Basics" inherit="bottom">
 			<item name="Configuration" href="configuration.html" />

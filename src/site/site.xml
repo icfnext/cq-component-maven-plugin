@@ -4,15 +4,11 @@
 	xsi:schemaLocation="http://maven.apache.org/DECORATION/1.3.0 http://maven.apache.org/xsd/decoration-1.3.0.xsd">
 
 	<skin>
-		<groupId>lt.velykis.maven.skins</groupId>
-		<artifactId>reflow-maven-skin</artifactId>
-		<version>1.0.0</version>
+		<groupId>com.citytechinc.maven</groupId>
+		<artifactId>citytech-maven-skin</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
 	</skin>
 
-	<bannerLeft>
-		<src>img/logo.png</src>
-		<href>http://www.citytechinc.com</href>
-	</bannerLeft>
 	<bannerRight>
 		<name>CQ Component Plugin</name>
 		<href>index.html</href>
@@ -27,7 +23,6 @@
 			<protocolRelativeURLs>false</protocolRelativeURLs>
 			<smoothScroll>true</smoothScroll>
 			<titleTemplate>%2$s | %1$s</titleTemplate>
-			<theme>site</theme>
 			<highlightJs>true</highlightJs>
 			<highlightJsTheme>github</highlightJsTheme>
 			<brand>
@@ -36,7 +31,7 @@
 				</name>
 				<href>index.html</href>
 			</brand>
-			<slogan position="bannerRight">A Plugin for CQ Components!</slogan>
+			<slogan>A Plugin for CQ Components!</slogan>
 			<toc>sidebar</toc>
 			<topNav>Basics|Extending</topNav>
 			<body />

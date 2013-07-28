@@ -29,10 +29,10 @@ import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollection;
 import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollectionParameters;
 
 /**
- * 
+ *
  * Based on http://dev.day.com/docs/en/cq/current/administering/
  * configuring_rich_text_editor.html
- * 
+ *
  */
 public class RichTextEditorMaker extends AbstractWidgetMaker {
 	private static final String ALL_FEATURES = "*";
@@ -55,13 +55,13 @@ public class RichTextEditorMaker extends AbstractWidgetMaker {
 		widgetParameters.setDefaultValue(getDefaultValueForField());
 		widgetParameters.setHideLabel(getHideLabelForField());
 		widgetParameters.setListeners(getListeners());
-		widgetParameters.setRtePlugins(buildRtePlugins(rteAnnotation));
+		widgetParameters.setContainedElements(Arrays.asList(new DialogElement[] {buildRtePlugins(rteAnnotation)}));
 
 		return new RichTextEditorWidget(widgetParameters);
 
 	}
 
-	private List<DialogElement> buildRtePlugins(RichTextEditor rteAnnotation) {
+	private RtePlugins buildRtePlugins(RichTextEditor rteAnnotation) {
 		final List<DialogElement> rtePlugins = new ArrayList<DialogElement>();
 
 		RtePlugin editPlugin = buildEditPlugin(rteAnnotation);
@@ -126,7 +126,11 @@ public class RichTextEditorMaker extends AbstractWidgetMaker {
 			rtePlugins.add(undoPlugin);
 		}
 
-		return rtePlugins;
+		RtePluginsParameters rtePluginsParameters = new RtePluginsParameters();
+
+		rtePluginsParameters.setContainedElements(rtePlugins);
+
+		return new RtePlugins(rtePluginsParameters);
 	}
 
 	private RtePlugin buildSubSuperscriptPlugin(RichTextEditor rteAnnotation) {

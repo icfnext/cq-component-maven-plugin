@@ -1,14 +1,19 @@
 package com.citytechinc.cq.component.maven;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-
-import javax.naming.ConfigurationException;
+import java.util.Set;
 
 import javassist.ClassPool;
 import javassist.CtClass;
 
+import javax.naming.ConfigurationException;
+
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -43,13 +48,17 @@ public class ComponentMojo extends AbstractMojo {
 	@Parameter(defaultValue = "camel-case")
 	private String transformerName;
 
-	@SuppressWarnings({ "unchecked" })
+	@Parameter ( required = false )
+    private List<Dependency> excludeDependencies;
+
 	public void execute() throws MojoExecutionException, MojoFailureException {
 
 		LogSingleton.getInstance().setLogger(getLog());
 
 		try {
-			ClassLoader classLoader = ComponentMojoUtil.getClassLoader(project.getCompileClasspathElements(), this
+		    List<String> classpathElements = getClasspathElements();
+
+			ClassLoader classLoader = ComponentMojoUtil.getClassLoader(classpathElements, this
 				.getClass().getClassLoader());
 
 			ClassPool classPool = ComponentMojoUtil.getClassPool(classLoader);
@@ -86,6 +95,63 @@ public class ComponentMojo extends AbstractMojo {
 		}
 
 	}
+
+	/**
+	 * Returns a list of paths to elements of the classpath for the project.  If
+	 * dependencies are specified for exclusion via the excludeDependencies POM configuration,
+	 * the classpath elements related to the excluded dependencies are not included in
+	 * the resultant list.
+	 *
+	 * @return
+	 * @throws DependencyResolutionRequiredException
+	 */
+    @SuppressWarnings("unchecked")
+    private List<String> getClasspathElements() throws DependencyResolutionRequiredException {
+
+        if (excludeDependencies != null && !excludeDependencies.isEmpty()) {
+            List<Artifact> compileArtifacts = project.getCompileArtifacts();
+
+            List<String> classpathElements = new ArrayList<String>();
+
+            classpathElements.add(project.getBuild().getOutputDirectory());
+
+            /*
+             * Construct a set representation of the dependency exclusions mapped by
+             * group id and artifact id for easy lookup
+             */
+            Set<String> excludedArtifactIdentifiers = new HashSet<String>();
+
+            for (Dependency curDependency : excludeDependencies) {
+                excludedArtifactIdentifiers.add(curDependency.getGroupId() + ":" + curDependency.getArtifactId());
+            }
+
+            for (Artifact curArtifact : compileArtifacts) {
+                String referenceIdentifier = curArtifact.getGroupId() + ":" + curArtifact.getArtifactId();
+
+                if (!excludedArtifactIdentifiers.contains(referenceIdentifier)) {
+                    MavenProject identifiedProject = (MavenProject) project.getProjectReferences().get(referenceIdentifier);
+                    if (identifiedProject != null)
+                    {
+                        classpathElements.add(identifiedProject.getBuild().getOutputDirectory());
+                    }
+                    else
+                    {
+                        File file = curArtifact.getFile();
+                        if (file == null)
+                        {
+                            throw new DependencyResolutionRequiredException(curArtifact);
+                        }
+                        classpathElements.add(file.getPath());
+                    }
+                }
+            }
+
+            return classpathElements;
+        }
+
+        return project.getCompileClasspathElements();
+
+    }
 
 	private File getArchiveFileForProject() {
 		File buildDirectory = new File(project.getBuild().getDirectory());

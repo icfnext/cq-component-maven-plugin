@@ -11,16 +11,23 @@ import java.lang.annotation.Target;
 @Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface ContentProperty {
 
+    /**
+     * The namespace of the property on the field
+     *
+     * @return String
+     */
+    String namespace() default "";
+
 	/**
 	 * The name of the property on the field
-	 * 
+	 *
 	 * @return String
 	 */
 	String name();
 
 	/**
 	 * The value of the property on the field
-	 * 
+	 *
 	 * @return String
 	 */
 	String value();

@@ -1,73 +1,66 @@
 package com.citytechinc.cq.component.content.factory;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javassist.CtClass;
-
-import org.codehaus.plexus.util.StringUtils;
-
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.ContentProperty;
 import com.citytechinc.cq.component.content.Content;
 import com.citytechinc.cq.component.content.impl.ContentImpl;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
+import javassist.CtClass;
+import org.codehaus.plexus.util.StringUtils;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class ContentFactory {
 
-	private ContentFactory() {
-	}
+    private ContentFactory() {
 
-	public static final Content make(CtClass componentClass, String defaultGroup)
-		throws InvalidComponentClassException, ClassNotFoundException {
+    }
 
-		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
+    public static final Content make(CtClass componentClass, String defaultGroup)
+        throws InvalidComponentClassException, ClassNotFoundException {
 
-		if (componentAnnotation == null) {
-			throw new InvalidComponentClassException();
-		}
+        Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
-		Boolean isContainer = getIsContainerForComponent(componentClass, componentAnnotation);
-		String title = getTitleForComponent(componentClass, componentAnnotation);
-		String group = getGroupForComponent(componentClass, componentAnnotation, defaultGroup);
-		String resourceSuperType = null;
-		if (!StringUtils.isEmpty(componentAnnotation.resourceSuperType())) {
-			resourceSuperType = componentAnnotation.resourceSuperType();
-		}
-		Map<String, String> additionalPropeties = getContentAdditionalPropertiesForComponent(componentAnnotation);
-		return new ContentImpl(title, group, resourceSuperType, isContainer, additionalPropeties);
-	}
+        if (componentAnnotation == null) {
+            throw new InvalidComponentClassException();
+        }
 
-	private static Map<String, String> getContentAdditionalPropertiesForComponent(Component componentAnnotation) {
-		Map<String, String> properties = new HashMap<String, String>();
-		for (ContentProperty contentProp : componentAnnotation.contentAdditionalProperties()) {
-			properties.put(contentProp.name(), contentProp.value());
-		}
-		return properties;
-	}
+        Boolean isContainer = getIsContainerForComponent(componentClass, componentAnnotation);
+        String title = getTitleForComponent(componentClass, componentAnnotation);
+        String group = getGroupForComponent(componentClass, componentAnnotation, defaultGroup);
+        String resourceSuperType = null;
+        if (!StringUtils.isEmpty(componentAnnotation.resourceSuperType())) {
+            resourceSuperType = componentAnnotation.resourceSuperType();
+        }
 
-	private static final Boolean getIsContainerForComponent(CtClass componentClass, Component componentAnnotation) {
-		return componentAnnotation.isContainer();
-	}
+        List<ContentProperty> additionalProperties = Arrays.asList(componentAnnotation.contentAdditionalProperties());
 
-	private static final String getTitleForComponent(CtClass componentClass, Component componentAnnotation) {
-		String overrideTitle = componentAnnotation.value();
+        return new ContentImpl(title, group, resourceSuperType, isContainer, additionalProperties);
+    }
 
-		if (StringUtils.isNotEmpty(overrideTitle)) {
-			return overrideTitle;
-		}
+    private static final Boolean getIsContainerForComponent(CtClass componentClass, Component componentAnnotation) {
+        return componentAnnotation.isContainer();
+    }
 
-		return componentClass.getSimpleName();
-	}
+    private static final String getTitleForComponent(CtClass componentClass, Component componentAnnotation) {
+        String overrideTitle = componentAnnotation.value();
 
-	private static final String getGroupForComponent(CtClass componentClass, Component componentAnnotation,
-		String defaultGroup) {
-		String overrideGroup = componentAnnotation.group();
+        if (StringUtils.isNotEmpty(overrideTitle)) {
+            return overrideTitle;
+        }
 
-		if (StringUtils.isNotEmpty(overrideGroup)) {
-			return overrideGroup;
-		}
+        return componentClass.getSimpleName();
+    }
 
-		return defaultGroup;
-	}
+    private static final String getGroupForComponent(CtClass componentClass, Component componentAnnotation,
+        String defaultGroup) {
+        String overrideGroup = componentAnnotation.group();
+
+        if (StringUtils.isNotEmpty(overrideGroup)) {
+            return overrideGroup;
+        }
+
+        return defaultGroup;
+    }
 }

@@ -8,7 +8,7 @@ import com.citytechinc.cq.component.util.Constants;
 public class AbstractXmlElement implements XmlElement {
 	protected NameSpacedAttribute<String> primaryType;
 	protected String fieldName;
-	protected Map<String, String> additionalProperties;
+	protected Map<String, ?> additionalProperties;
 	protected List<? extends XmlElement> containedElements;
 	protected String nameSpace;
 
@@ -29,7 +29,7 @@ public class AbstractXmlElement implements XmlElement {
 		return fieldName;
 	}
 
-	public Map<String, String> getAdditionalProperties() {
+	public Map<String, ?> getAdditionalProperties() {
 		return additionalProperties;
 	}
 

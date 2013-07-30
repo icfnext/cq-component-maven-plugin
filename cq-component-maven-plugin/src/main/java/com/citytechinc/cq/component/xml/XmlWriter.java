@@ -75,8 +75,29 @@ public class XmlWriter {
 					if (methodReturn instanceof Map<?, ?>) {
 						Map<?, ?> returnMap = (Map<?, ?>) methodReturn;
 						for (Entry<?, ?> entry : returnMap.entrySet()) {
-							setPropertyOnElement(createdElement, null, null, entry.getKey().toString(),
-								entry.getValue());
+							String key = entry.getKey().toString();
+							Object value = entry.getValue();
+							if (value instanceof NameSpacedAttribute<?>) {
+								NameSpacedAttribute<?> nsa = (NameSpacedAttribute<?>) value;
+								setPropertyOnElement(createdElement, nsa.getNameSpace(), nsa.getNameSpacePrefix(), key,
+									nsa.getValue());
+							} else {
+								setPropertyOnElement(createdElement, null, null, key, value);
+							}
+						}
+					} else if (methodReturn instanceof NameSpacedAttribute<?>) {
+						NameSpacedAttribute<?> nsa = (NameSpacedAttribute<?>) methodReturn;
+						Object nsaObject = nsa.getValue();
+						if (nsaObject != null) {
+							if (nsaObject instanceof List<?>) {
+								List<?> listReturn = (List<?>) nsaObject;
+								nsaObject = generateStringFromList(listReturn);
+							} else if (nsaObject.getClass().isArray()) {
+								Object[] arrayReturn = (Object[]) nsaObject;
+								nsaObject = generateStringFromArray(arrayReturn);
+							}
+							setPropertyOnElementForMethod(createdElement, nsa.getNameSpace(), nsa.getNameSpacePrefix(),
+								methodName, nsaObject);
 						}
 					} else if (methodReturn instanceof List<?>) {
 						List<?> listReturn = (List<?>) methodReturn;
@@ -86,20 +107,6 @@ public class XmlWriter {
 						Object[] arrayReturn = (Object[]) methodReturn;
 						setPropertyOnElementForMethod(createdElement, null, null, methodName,
 							generateStringFromArray(arrayReturn));
-					} else if (methodReturn instanceof NameSpacedAttribute<?>) {
-						NameSpacedAttribute<?> nsa = (NameSpacedAttribute<?>) methodReturn;
-						Object nsaObject = nsa.getValue();
-						if (nsaObject != null) {
-    						if (nsaObject instanceof List<?>) {
-    							List<?> listReturn = (List<?>) nsaObject;
-    							nsaObject = generateStringFromList(listReturn);
-    						} else if (nsaObject.getClass().isArray()) {
-    							Object[] arrayReturn = (Object[]) nsaObject;
-    							nsaObject = generateStringFromArray(arrayReturn);
-    						}
-    						setPropertyOnElementForMethod(createdElement, nsa.getNameSpace(), nsa.getNameSpacePrefix(),
-    							methodName, nsaObject);
-						}
 					} else {
 						setPropertyOnElementForMethod(createdElement, null, null, methodName, methodReturn);
 					}
@@ -151,14 +158,18 @@ public class XmlWriter {
 	private static final void setPropertyOnElement(Element element, String nameSpace, String nameSpacePrefix,
 		String name, Object value) {
 		if (value != null) {
-		    String propertyValue = value.toString();
+			String propertyValue = value.toString();
 			if (value instanceof Boolean) {
-			    propertyValue = "{Boolean}" + propertyValue;
+				propertyValue = "{Boolean}" + propertyValue;
 			}
 			if (StringUtils.isEmpty(nameSpace)) {
 				element.setAttribute(name, propertyValue);
 			} else {
-				element.setAttributeNS(nameSpace, nameSpacePrefix + ":" + name, propertyValue);
+				if (StringUtils.isNotEmpty(nameSpacePrefix)) {
+					element.setAttributeNS(nameSpace, nameSpacePrefix + ":" + name, propertyValue);
+				} else {
+					element.setAttributeNS(nameSpace, name, propertyValue);
+				}
 			}
 		}
 	}

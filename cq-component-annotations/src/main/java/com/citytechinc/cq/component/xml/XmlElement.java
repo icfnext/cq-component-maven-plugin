@@ -10,7 +10,7 @@ public interface XmlElement {
 
 	public String getFieldName();
 
-	public Map<String, String> getAdditionalProperties();
+	public Map<String, ?> getAdditionalProperties();
 
 	public List<? extends XmlElement> getContainedElements();
 }

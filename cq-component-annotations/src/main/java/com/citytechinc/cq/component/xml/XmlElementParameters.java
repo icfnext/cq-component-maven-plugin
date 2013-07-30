@@ -6,7 +6,7 @@ import java.util.Map;
 public class XmlElementParameters {
 	protected String primaryType;
 	protected String fieldName;
-	protected Map<String, String> additionalProperties;
+	protected Map<String, ?> additionalProperties;
 	protected List<? extends XmlElement> containedElements;
 	protected String nameSpace;
 
@@ -26,11 +26,11 @@ public class XmlElementParameters {
 		this.fieldName = fieldName;
 	}
 
-	public Map<String, String> getAdditionalProperties() {
+	public Map<String, ?> getAdditionalProperties() {
 		return additionalProperties;
 	}
 
-	public void setAdditionalProperties(Map<String, String> additionalProperties) {
+	public void setAdditionalProperties(Map<String, ?> additionalProperties) {
 		this.additionalProperties = additionalProperties;
 	}
 

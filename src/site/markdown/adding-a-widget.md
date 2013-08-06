@@ -18,7 +18,8 @@ The class [WidgetParameters](apidocs/com/citytechinc/cq/component/dialog/widget/
 from the WidgetMaker to the implementing widget class.  If the widget requires no extra configuration, this class can be used directly, otherwise it must be
 extended and the additional fields and accessors for the widget properties must be added.
 
-#### Example (For CQ.Ext.form.Checkbox):
+#### Widget Parameters Example
+*(For CQ.Ext.form.Checkbox):*
 
 	import com.citytechinc.cq.component.dialog.widget.WidgetParameters;
 	import com.citytechinc.cq.component.util.Constants;
@@ -47,9 +48,10 @@ extended and the additional fields and accessors for the widget properties must 
 ### Adding the Widget Class
 The abstract class [AbstractWidget](apidocs/com/citytechinc/cq/component/dialog/AbstractWidget.html) is used as a superclass for all widgets and builds the
 core component properties based on the WidgetParameters object passed in.  This class must be extended and all additional fields which are needed in the dialog.xml
-must be exposed via getter methods on the subclass.
+must be exposed via getter methods on the extending class.
 
-#### Example (For CQ.Ext.form.Checkbox):
+#### Widget Class Example
+*(For CQ.Ext.form.Checkbox):*
 
 	import com.citytechinc.cq.component.dialog.AbstractWidget;
 
@@ -78,7 +80,8 @@ The widget associated with a field or method annotated with the [@DialogField](a
 may be further classified as using the custom Widget by applying a stacked annotation alongside the @DialogField annotation.  When defining
 a custom Widget a new stackable annotation is needed in order to indicate to the plugin when to use the custom Widget.
 
-#### Example (For CQ.Ext.form.Checkbox):
+#### Stackable Annotation Example
+*(For CQ.Ext.form.Checkbox):*
 
     public @interface CheckBox {
         String inputValue() default "on";
@@ -91,9 +94,10 @@ The next step is to add a maker class that extends [AbstractWidgetMaker](apidocs
 This class provides some utility methods to get the field name, field label, and other commonly used parameters.  It also provides access to all the annotations
 that are on the field/method by using the getAnnotation method.
 
-When extending AbstractWidgetMaker, the make class must be implemented and must return the build widget class.
+When extending AbstractWidgetMaker, the `make` method must be implemented and must return the build widget class.
 
-#### Example (For CQ.Ext.form.Checkbox):
+#### Widget Maker Example
+*(For CQ.Ext.form.Checkbox):*
 
 	import java.util.Map;
 
@@ -156,11 +160,13 @@ When extending AbstractWidgetMaker, the make class must be implemented and must 
 
 ### Adding the Widget Annotation
 Widget definitions are found by the plugin by scanning all dependencies for the [Widget](apidocs/com/citytechinc/cq/component/annotations/config/Widget.html) annotation.
-As such, this annotation must be added to any custom Widget to make the Widget definition accessible to the plugin at build time.
+As such, this annotation must be added to any custom Widget to make the Widget definition accessible to the plugin.
 This annotation explicitly defines the link between the custom Widget annotation, the custom Widget Maker, and the output xtype, associating
 all three with the annotated Widget.
 
-#### Example (For CQ.Ext.form.Checkbox):
+#### Widget Annotation Example
+*(For CQ.Ext.form.Checkbox):*
+
 	...
 	import com.citytechinc.cq.component.dialog.AbstractWidget;
 

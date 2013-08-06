@@ -2,7 +2,7 @@
 
 $symbol_pound$symbol_pound Configuration
 
-The CQ Component Plugin requires 2 Maven configurations.  First is the plugin configuration itself.
+The CQ Component Plugin requires two Maven configurations.  First is the plugin configuration itself.
 Second is the addition of a Maven dependency containing the annotations used to identify Java Classes as Components
 and Fields and Methods as authorable elements as well as the abstract classes and interfaces necessary extends the plugin.
 
@@ -52,9 +52,9 @@ $symbol_pound$symbol_pound Maven Plugin
 			<td>
 				The content path to your project's components within the apps content tree.  The full path to which
 	          files for an individual component will be written is:
-	          componentPathBase + / + componentPathSuffix + / + component name (annotated per component or based
+	          `componentPathBase + / + componentPathSuffix + / + component name` (annotated per component or based
 	          on the name of the component class if not annotated).  The component path as a whole can be overridden
-	          at the component level via the path property of the @Component annotation.
+	          at the component level via the `path` property of the @Component annotation.
 			</td>
 		</tr>
 		<tr>
@@ -70,7 +70,7 @@ $symbol_pound$symbol_pound Maven Plugin
 			<td>String</td>
 			<td></td>
 			<td>The group to which Components whose files are generated via this plugin will be added in the
-	          CQ Sidekick.  This can be overridden at the component level via the group property of the
+	          CQ Sidekick.  This can be overridden at the component level via the `group` property of the
 	          @Component annotation.
 			</td>
 		</tr>

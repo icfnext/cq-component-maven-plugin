@@ -9,7 +9,7 @@ annotated by the [Transformer](apidocs/com/citytechinc/cq/component/annotations/
 
 ### Implementing ComponentNameTransformer
 The first step is to create a class that implements [com.citytechinc.cq.component.dialog.ComponentNameTransformer](apidocs/com/citytechinc/cq/component/dialog/ComponentNameTransformer.html).
-The only method that needs to be implemented is transform(String className) which, at project build time, will be passed the name of the Component class to translate.
+The only method that needs to be implemented is `transform(String className)` which, at project build time, will be passed the name of the Component class to translate.
 
 ### Adding Annotation
 In order to find all available Transformers, the CQ Component Plugin scans all project dependencies for classes annotated by the
@@ -18,7 +18,7 @@ class as a Transformer, the annotation exposes the name of the Transformer which
 to indicate that the custom Transformer should be used.
 
 ### Example
-This example will capitalize the class name
+This example will capitalize the class name.
 
 #### Addition of the Custom Transformer Class
 

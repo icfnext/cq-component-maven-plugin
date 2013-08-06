@@ -9,18 +9,18 @@ plugin creating the aforementioned archive file.
 
 This plugin will search through the classes built as part of your project along with those contained in any
 dependencies and transitive dependencies which are not included in the excludedDependencies POM configuration
-looking the `@Component` annotation and generating .content.xml, _cq_editConfig, and dialog.xml files based on
-said annotation, the class itself, and the fields of the class which are annotated with `@DialogField` annotations.
-The plugin will attempt to default most configuration present in these generated files based on the class and fields.
-These default choices can be overridden via properties of the annotations and stacked annotations.
+looking for those annotated with the `@Component` annotation and generating .content.xml, _cq_editConfig, and dialog.xml files based on
+said annotation, the class itself, and the fields and methods of the class which are annotated with `@DialogField` annotations.
+The plugin will attempt to default most configuration present in these generated files based on information provided by the classes,
+fields, and methods themselves.  These default choices can be overridden via properties of the annotations and stacked annotations.
 
 Specific files will only be generated if such files do not already exist for the component.  For example,
-if you have created a dialog.xml file for the component already, this plugin will not overwrite your dialog.xml.
+if you have created a dialog.xml file for the component already, this plugin will not overwrite it.
 
 ### Component
 [com.citytechinc.cq.component.annotations.Component](apidocs/com/citytechinc/cq/component/annotations/Component.html)
 
-This is the annotation that signals the plugin that a class represents a component.  It contains configuration for the _cq_editConfig.xml, .content.xml, and dialog.xml files.
+This is the annotation that indicates to the plugin that a class represents a component.  It contains configuration for the _cq_editConfig.xml, .content.xml, and dialog.xml files.
 
 ### DialogField
 [com.citytechinc.cq.component.annotations.DialogField](apidocs/com/citytechinc/cq/component/annotations/DialogField.html)
@@ -68,9 +68,9 @@ Determination of the xtype to be rendered for an authorable element is based on 
     </tbody>
 </table>
 
-The name used will be based off the field name or the method name using java bean format and can be overridden using the name property of the annotation.
+The name used will be based off the field name or the method name using Java bean standards and can be overridden using the `name` property of the annotation.
 
-#### Examples
+#### Dialog Field Examples
 Textfield saved at ./title
 
 	@DialogField(fieldLabel="Title")
@@ -89,9 +89,9 @@ Pathfield saved at ./simplePath
 ### Widgets
 Widget annotations are used in conjunction with a DialogField annotation to set the correct xtype and to allow configuration of additional properties germane to the widget type.
 
-All of the default widget annotations can be found [here](apidocs/com/citytechinc/cq/component/annotations/widgets/package-summary.html)
+All of the default widget annotations can be found [here](apidocs/com/citytechinc/cq/component/annotations/widgets/package-summary.html).
 
-#### Examples
+#### Widget Examples
 Datefield saved at ./date
 
     @DialogField(fieldLabel="Title")

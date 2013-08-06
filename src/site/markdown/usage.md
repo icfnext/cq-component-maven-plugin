@@ -1,22 +1,21 @@
 ## Usage
 
-The cq-component-maven-plugin expects that an installable CQ Package .zip file has been created during
-the build process prior to execution.  As such, the plugin should be run as part of or after the `package`
-lifecycle phase and, if running during the `package` lifecycle phase, should be configured after the
-plugin creating the aforementioned .zip file.
+The cq-component-maven-plugin generates .content.xml, _cq_editConfig.xml, and dialog.xml files for Components
+and injects them into a previously created CQ Package archive file.  As such, the plugin should be run as part of
+or after the `package` lifecycle phase and, if running during the `package` lifecycle phase, should be configured after the
+plugin creating the aforementioned archive file.
 
 ## Annotations
 
 This plugin will search through the classes built as part of your project along with those contained in any
-dependencies specified in the includeDependencies plugin configuration looking the `@Component` annotation and
-generating .content.xml, _cq_editConfig, and dialog.xml files based on said annotation, the class itself,
-and the fields of the class which are annotated with `@DialogField` annotations.  The plugin will attempt to
-default most configuration present in these generated files based on the class and fields.  These default
-choices can be overridden via properties of the annotations.
+dependencies and transitive dependencies which are not included in the excludedDependencies POM configuration
+looking the `@Component` annotation and generating .content.xml, _cq_editConfig, and dialog.xml files based on
+said annotation, the class itself, and the fields of the class which are annotated with `@DialogField` annotations.
+The plugin will attempt to default most configuration present in these generated files based on the class and fields.
+These default choices can be overridden via properties of the annotations and stacked annotations.
 
 Specific files will only be generated if such files do not already exist for the component.  For example,
-if you have created a dialog.xml file for the component already, this plugin will not overwrite your dialog.xml,
-as it is assumed that you created yours for a reason and which to keep it.
+if you have created a dialog.xml file for the component already, this plugin will not overwrite your dialog.xml.
 
 ### Component
 [com.citytechinc.cq.component.annotations.Component](apidocs/com/citytechinc/cq/component/annotations/Component.html)
@@ -26,70 +25,88 @@ This is the annotation that signals the plugin that a class represents a compone
 ### DialogField
 [com.citytechinc.cq.component.annotations.DialogField](apidocs/com/citytechinc/cq/component/annotations/DialogField.html)
 
-This annotation marks a field or method as a field that should appear in the dialog.xml for the component.  It can be used alone or in conjunction with
-one or multiple widget annotations
+This annotation marks a field or method as an authorable element.  Authorable elements are represented in CQ Component Dialogs.  How they are represented is based on the type of the field or method, information provided in the `@DialogField` annotation, and information provided in any stacked annotations.
 
-If used alone, and no xtype is configured the plugin can fall back on defualts based on what class the marked field is or what return type the marked method is.
+Determination of the xtype to be rendered for an authorable element is based on the following process:
+
+1. If the `xtype` property of the `@DialogField` annotation is populated, its value is used.
+2. If a stacked Widget annotation is also associated with the element the xtype associated with the stacked annotation is used.
+3. A guess is made as to the intended xtype based on the type of the field or return type of the method.  The following table denotes the xtypes which the plugin is able to determine via this mechanism.
+
+<table class="table table-striped break-words-table">
+    <thead>
+        <tr>
+            <th>Class/Primitive Type</th>
+            <th>Default xtype</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>? Extends java.lang.Number</td>
+            <td>numberfield</td>
+        </tr>
+        <tr>
+            <td>int</td>
+            <td>numberfield</td>
+        </tr>
+        <tr>
+            <td>double</td>
+            <td>numberfield</td>
+        </tr>
+        <tr>
+            <td>java.lang.String</td>
+            <td>textfield</td>
+        </tr>
+        <tr>
+            <td>java.net.URI</td>
+            <td>pathfield</td>
+        </tr>
+        <tr>
+            <td>java.net.URL</td>
+            <td>pathfield</td>
+        </tr>
+    </tbody>
+</table>
 
 The name used will be based off the field name or the method name using java bean format and can be overridden using the name property of the annotation.
 
-<table class="table table-striped break-words-table">
-	<thead>
-		<tr>
-			<th>Class/Primitive Type</th>
-			<th>Default xtype</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>? Extends java.lang.Number</td>
-			<td>numberfield</td>
-		</tr>
-		<tr>
-			<td>int</td>
-			<td>numberfield</td>
-		</tr>
-		<tr>
-			<td>double</td>
-			<td>numberfield</td>
-		</tr>
-		<tr>
-			<td>java.lang.String</td>
-			<td>textfield</td>
-		</tr>
-		<tr>
-			<td>java.net.URI</td>
-			<td>pathfield</td>
-		</tr>
-		<tr>
-			<td>java.net.URL</td>
-			<td>pathfield</td>
-		</tr>
-	</tbody>
-</table>
-
 #### Examples
-Pathfield saved at ./title
+Textfield saved at ./title
 
 	@DialogField(fieldLabel="Title")
 	private String title;
 
-Datefield saved at ./date
+TextArea saved at ./text
 
-	@DialogField(fieldLabel="Title")
-	@DateField
-	private Date date;
+    @DialogField(fieldLabel="Text", xtype="textarea")
+    private String text;
 
+Pathfield saved at ./simplePath
 
-Pathfield saved at ./otherTitle
+	@DialogField(fieldLabel="Title",name="./simplePath")
+	private URI path;
 
-	@DialogField(fieldLabel="Title",name="./otherTitle")
-	private String title;
-	
 ### Widgets
-Each widget annotation is used in conjunction with a DialogField annotation to set the correct xtype and to allow configuration of additional properties.
+Widget annotations are used in conjunction with a DialogField annotation to set the correct xtype and to allow configuration of additional properties germane to the widget type.
 
 All of the default widget annotations can be found [here](apidocs/com/citytechinc/cq/component/annotations/widgets/package-summary.html)
 
+#### Examples
+Datefield saved at ./date
 
+    @DialogField(fieldLabel="Title")
+    @DateField
+    private Date date;
+
+Pathfield saved at ./mainpath
+
+    @DialogField(fieldLabel="Main Path")
+    @PathField
+    private String mainpath;
+
+Numberfield saved as ./quantity
+
+    @DialogField(fieldLabel="Quantity")
+    @NumberField(allowNegative=false, allowDecimals=true)
+    private Double quantity;
 

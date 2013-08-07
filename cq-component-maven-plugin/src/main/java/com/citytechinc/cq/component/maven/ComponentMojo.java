@@ -1,6 +1,7 @@
 package com.citytechinc.cq.component.maven;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -24,6 +25,7 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 import org.reflections.Reflections;
 
+import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
 import com.citytechinc.cq.component.dialog.widget.WidgetRegistry;
 import com.citytechinc.cq.component.dialog.widget.impl.DefaultWidgetRegistry;
@@ -56,7 +58,9 @@ public class ComponentMojo extends AbstractMojo {
 		LogSingleton.getInstance().setLogger(getLog());
 
 		try {
-			List<String> classpathElements = getClasspathElements();
+
+		    @SuppressWarnings("unchecked")
+            List<String> classpathElements = project.getCompileClasspathElements();
 
 			ClassLoader classLoader = ComponentMojoUtil.getClassLoader(classpathElements, this.getClass()
 				.getClassLoader());
@@ -65,7 +69,7 @@ public class ComponentMojo extends AbstractMojo {
 
 			Reflections reflections = ComponentMojoUtil.getReflections(classLoader);
 
-			List<CtClass> classList = ComponentMojoUtil.getAllComponentAnnotations(classPool, reflections);
+			List<CtClass> classList = ComponentMojoUtil.getAllComponentAnnotations(classPool, reflections, getExcludedClasses());
 
 			WidgetRegistry widgetRegistry = new DefaultWidgetRegistry(classPool, classLoader, reflections);
 
@@ -89,57 +93,68 @@ public class ComponentMojo extends AbstractMojo {
 
 	}
 
-	/**
-	 * Returns a list of paths to elements of the classpath for the project. If
-	 * dependencies are specified for exclusion via the excludeDependencies POM
-	 * configuration, the classpath elements related to the excluded
-	 * dependencies are not included in the resultant list.
-	 * 
-	 * @return
-	 * @throws DependencyResolutionRequiredException
-	 */
+	private Set<String> getExcludedClasses() throws DependencyResolutionRequiredException, MalformedURLException {
+
+	    getLog().debug("Constructing set of excluded Class names");
+
+	    List<String> excludedDependencyPaths = getExcludedDependencyPaths();
+
+	    if (excludedDependencyPaths != null) {
+    	    ClassLoader exclusionClassLoader = ComponentMojoUtil.getClassLoader(excludedDependencyPaths, this
+                .getClass().getClassLoader());
+
+    	    Reflections reflections = ComponentMojoUtil.getReflections(exclusionClassLoader);
+
+    	    Set<String> excludedClassNames = reflections.getStore().getTypesAnnotatedWith(Component.class.getName());
+
+    	    return excludedClassNames;
+	    }
+
+	    return null;
+	}
+
 	@SuppressWarnings("unchecked")
-	private List<String> getClasspathElements() throws DependencyResolutionRequiredException {
+    private List<String> getExcludedDependencyPaths() throws DependencyResolutionRequiredException {
+	    if (excludeDependencies != null && !excludeDependencies.isEmpty()) {
+	        getLog().debug("Exclusions Found");
 
-		if (excludeDependencies != null && !excludeDependencies.isEmpty()) {
-			List<Artifact> compileArtifacts = project.getCompileArtifacts();
+	        List<Artifact> compileArtifacts = project.getCompileArtifacts();
 
-			List<String> classpathElements = new ArrayList<String>();
+	        List<String> excludedClasspathElements = new ArrayList<String>();
 
-			classpathElements.add(project.getBuild().getOutputDirectory());
+	        Set<String> excludedArtifactIdentifiers = new HashSet<String>();
 
-			/*
-			 * Construct a set representation of the dependency exclusions
-			 * mapped by group id and artifact id for easy lookup
-			 */
-			Set<String> excludedArtifactIdentifiers = new HashSet<String>();
+            for (Dependency curDependency : excludeDependencies) {
+                excludedArtifactIdentifiers.add(curDependency.getGroupId() + ":" + curDependency.getArtifactId());
+            }
 
-			for (Dependency curDependency : excludeDependencies) {
-				excludedArtifactIdentifiers.add(curDependency.getGroupId() + ":" + curDependency.getArtifactId());
-			}
+            for (Artifact curArtifact : compileArtifacts) {
+                String referenceIdentifier = curArtifact.getGroupId() + ":" + curArtifact.getArtifactId();
 
-			for (Artifact curArtifact : compileArtifacts) {
-				String referenceIdentifier = curArtifact.getGroupId() + ":" + curArtifact.getArtifactId();
+                if (excludedArtifactIdentifiers.contains(referenceIdentifier)) {
+                    MavenProject identifiedProject = (MavenProject) project.getProjectReferences().get(referenceIdentifier);
+                    if (identifiedProject != null)
+                    {
+                        excludedClasspathElements.add(identifiedProject.getBuild().getOutputDirectory());
+                        getLog().debug("Excluding " + identifiedProject.getBuild().getOutputDirectory());
+                    }
+                    else
+                    {
+                        File file = curArtifact.getFile();
+                        if (file == null)
+                        {
+                            throw new DependencyResolutionRequiredException(curArtifact);
+                        }
+                        excludedClasspathElements.add(file.getPath());
+                        getLog().debug("Excluding " + file.getPath());
+                    }
+                }
+            }
 
-				if (!excludedArtifactIdentifiers.contains(referenceIdentifier)) {
-					MavenProject identifiedProject = (MavenProject) project.getProjectReferences().get(
-						referenceIdentifier);
-					if (identifiedProject != null) {
-						classpathElements.add(identifiedProject.getBuild().getOutputDirectory());
-					} else {
-						File file = curArtifact.getFile();
-						if (file == null) {
-							throw new DependencyResolutionRequiredException(curArtifact);
-						}
-						classpathElements.add(file.getPath());
-					}
-				}
-			}
+            return excludedClasspathElements;
+	    }
 
-			return classpathElements;
-		}
-
-		return project.getCompileClasspathElements();
+	    return null;
 
 	}
 

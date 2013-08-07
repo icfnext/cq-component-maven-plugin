@@ -295,6 +295,7 @@ public @interface Component {
 	DropTarget[] dropTargets() default {};
 
 	/**
+	 * A set of properties which are written to the content XML node.
 	 *
 	 * @return ContentProperty[]
 	 */

@@ -13,6 +13,7 @@ import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.widgets.DialogFieldSet;
+import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.factory.WidgetFactory;
@@ -54,16 +55,16 @@ public class DialogFieldSetWidgetMaker extends AbstractWidgetMaker {
 		}
 		widgetParameters.setTitle(title);
 		widgetParameters.setListeners(getListeners());
-		widgetParameters.setContainedElements(buildWidgetCollection());
+		widgetParameters.setContainedElements(buildWidgetCollection(dialogFieldSetAnnotation));
 
 		return new DialogFieldSetWidget(widgetParameters);
 
 	}
 
-	private List<DialogElement> buildWidgetCollection() throws InvalidComponentFieldException, NotFoundException,
-		ClassNotFoundException, SecurityException, CannotCompileException, NoSuchFieldException,
-		InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
-		NoSuchMethodException {
+	private List<DialogElement> buildWidgetCollection(DialogFieldSet dialogFieldSetAnnotation)
+		throws InvalidComponentFieldException, NotFoundException, ClassNotFoundException, SecurityException,
+		CannotCompileException, NoSuchFieldException, InstantiationException, IllegalAccessException,
+		IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
 
 		List<CtMember> fieldsAndMethods = new ArrayList<CtMember>();
 
@@ -82,7 +83,22 @@ public class DialogFieldSetWidgetMaker extends AbstractWidgetMaker {
 					parameters.getClassLoader(), parameters.getClassPool(), parameters.getWidgetRegistry(), null, true);
 
 				DialogElement builtFieldWidget = WidgetFactory.make(curFieldMember, -1);
-
+				if (builtFieldWidget instanceof AbstractWidget
+					&& StringUtils.isNotEmpty(dialogFieldSetAnnotation.namePrefix())) {
+					AbstractWidget widget = (AbstractWidget) builtFieldWidget;
+					String name = widget.getName();
+					String newName;
+					if (name.startsWith("./")) {
+						newName = name.substring(2);
+					} else {
+						newName = name;
+					}
+					newName = dialogFieldSetAnnotation.namePrefix() + newName;
+					if (name.startsWith("./")) {
+						newName = "./" + newName;
+					}
+					widget.setName(newName);
+				}
 				elements.add(builtFieldWidget);
 			}
 		}
@@ -92,5 +108,4 @@ public class DialogFieldSetWidgetMaker extends AbstractWidgetMaker {
 		return Arrays.asList(new DialogElement[] { new WidgetCollection(wcp) });
 
 	}
-
 }

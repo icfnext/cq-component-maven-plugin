@@ -17,4 +17,6 @@ public @interface DialogFieldSet {
 	boolean border() default true;
 
 	String title() default "";
+
+	String namePrefix() default "";
 }

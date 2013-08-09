@@ -116,12 +116,11 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
 
 	protected String getDdGroupsForField(Html5SmartImage smartImageAnnotation) {
 
-		String ddGroups = smartImageAnnotation.ddGroups();
-		if (StringUtils.isNotEmpty(ddGroups)) {
-			return ddGroups;
-		}
+	    if (smartImageAnnotation.ddGroups().length != 0) {
+            return "[" + StringUtils.join(smartImageAnnotation.ddGroups(), ",") + "]";
+        }
 
-		return null;
+        return null;
 
 	}
 

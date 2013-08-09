@@ -5,6 +5,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Represents a Widget of type CQ.form.PathField
+ *
+ */
 @Retention(RetentionPolicy.CLASS)
 @Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface PathField {
@@ -16,15 +20,45 @@ public @interface PathField {
 	public static final String ROOT_TITLE_DEFAULT = "Websites";
 	public static final boolean SHOW_TITLE_IN_TREE_DEFAULT = true;
 
+	/**
+	 * True to url-encode the ampersand character (&amp;) to %26.
+	 *
+	 * @return boolean
+	 */
 	boolean escapeAmp() default ESCAPE_AMP_DEFAULT;
 
+	/**
+	 * True to disable the option to open the browse dialog
+	 *
+	 * @return boolean
+	 */
 	boolean hideTrigger() default HIDE_TRIGGER_DEFAULT;
 
+	/**
+	 * True to allow paragraph browsing and section in a grid next to the tree panel in the browse dialog. If this is enabled, it is recommended to use a predicate like 'hierarchy' to have pages as leaf nodes in the tree.
+	 *
+	 * @return boolean
+	 */
 	boolean parBrowse() default PAR_BROWSE_DEFAULT;
 
+	/**
+	 * The root path where completion and browsing starts. Use the empty string for the repository root
+	 *
+	 * @return String
+	 */
 	String rootPath() default ROOT_PATH_DEFAULT;
 
+	/**
+	 * Custom title for the root path
+	 *
+	 * @return String
+	 */
 	String rootTitle() default ROOT_TITLE_DEFAULT;
 
+	/**
+	 * Whether to show the (jcr:)titles as names of the tree nodes or the plain jcr node name
+	 *
+	 * @return boolean
+	 */
 	boolean showTitleInTree() default SHOW_TITLE_IN_TREE_DEFAULT;
 }

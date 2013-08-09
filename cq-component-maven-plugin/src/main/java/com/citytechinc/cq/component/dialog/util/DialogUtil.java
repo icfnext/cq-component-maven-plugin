@@ -1,8 +1,6 @@
 package com.citytechinc.cq.component.dialog.util;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -19,9 +17,7 @@ import javassist.NotFoundException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
-import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
-import org.apache.commons.io.IOUtils;
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.Component;
@@ -35,7 +31,6 @@ import com.citytechinc.cq.component.dialog.exception.OutputFailureException;
 import com.citytechinc.cq.component.dialog.factory.DialogFactory;
 import com.citytechinc.cq.component.dialog.widget.WidgetRegistry;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
-import com.citytechinc.cq.component.xml.XmlWriter;
 
 public class DialogUtil {
 	private DialogUtil() {
@@ -64,20 +59,10 @@ public class DialogUtil {
 		throws OutputFailureException, IOException, ParserConfigurationException, TransformerException,
 		ClassNotFoundException, IllegalArgumentException, SecurityException, IllegalAccessException,
 		InvocationTargetException, NoSuchMethodException {
-		File componentOutputDirectory = ComponentMojoUtil.getOutputDirectoryForComponentClass(transformer,
-			componentClass, buildDirectory, componentPathBase, defaultComponentPathSuffix);
 
-		File dialogFile = new File(componentOutputDirectory, dialog.getFileName());
+		return ComponentMojoUtil.writeElementToFile(transformer, dialog, componentClass, buildDirectory,
+			componentPathBase, defaultComponentPathSuffix, dialog.getFileName());
 
-		if (dialogFile.exists()) {
-			dialogFile.delete();
-		}
-
-		dialogFile.createNewFile();
-
-		XmlWriter.writeXml(dialog, new FileOutputStream(dialogFile));
-
-		return dialogFile;
 	}
 
 	/**
@@ -97,32 +82,9 @@ public class DialogUtil {
 	public static void writeDialogToArchiveFile(ComponentNameTransformer transformer, File dialogFile,
 		CtClass componentClass, ZipArchiveOutputStream archiveStream, Set<String> reservedNames,
 		String componentPathBase, String defaultComponentPathSuffix) throws IOException, ClassNotFoundException {
-		String dialogFilePath = ComponentMojoUtil.getComponentBasePathForComponentClass(componentClass,
-			componentPathBase)
-			+ "/"
-			+ ComponentMojoUtil.getComponentPathSuffixForComponentClass(componentClass, defaultComponentPathSuffix)
-			+ "/"
-			+ ComponentMojoUtil.getComponentNameForComponentClass(transformer, componentClass)
-			+ "/"
-			+ dialogFile.getName();
 
-		ComponentMojoUtil.getLog().debug("Archiving dialog file " + dialogFilePath);
-
-		// TODO: I'd like to move this check somewhere before we go through the
-		// trouble of creating the dialog object itself
-		if (!reservedNames.contains(dialogFilePath.toLowerCase())) {
-
-			ZipArchiveEntry entry = new ZipArchiveEntry(dialogFile, dialogFilePath);
-
-			archiveStream.putArchiveEntry(entry);
-
-			IOUtils.copy(new FileInputStream(dialogFile), archiveStream);
-
-			archiveStream.closeArchiveEntry();
-
-		} else {
-			ComponentMojoUtil.getLog().debug("Existing file found at " + dialogFilePath);
-		}
+		ComponentMojoUtil.writeElementToArchiveFile(transformer, dialogFile, componentClass, archiveStream,
+			reservedNames, componentPathBase, defaultComponentPathSuffix, "/" + dialogFile.getName());
 	}
 
 	/**

@@ -1,8 +1,6 @@
 package com.citytechinc.cq.component.editconfig.util;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -14,9 +12,7 @@ import javassist.CtClass;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
-import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
-import org.apache.commons.io.IOUtils;
 
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
@@ -25,7 +21,6 @@ import com.citytechinc.cq.component.dialog.exception.OutputFailureException;
 import com.citytechinc.cq.component.editconfig.EditConfig;
 import com.citytechinc.cq.component.editconfig.factory.EditConfigFactory;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
-import com.citytechinc.cq.component.xml.XmlWriter;
 
 public class EditConfigUtil {
 	private EditConfigUtil() {
@@ -48,29 +43,10 @@ public class EditConfigUtil {
 	public static void writeEditConfigToArchiveFile(ComponentNameTransformer transformer, File editConfigFile,
 		CtClass componentClass, ZipArchiveOutputStream archiveStream, Set<String> reservedNames,
 		String componentPathBase, String defaultComponentPathSuffix) throws IOException, ClassNotFoundException {
-		String editConfigFilePath = ComponentMojoUtil.getComponentBasePathForComponentClass(componentClass,
-			componentPathBase)
-			+ "/"
-			+ ComponentMojoUtil.getComponentPathSuffixForComponentClass(componentClass, defaultComponentPathSuffix)
-			+ "/"
-			+ ComponentMojoUtil.getComponentNameForComponentClass(transformer, componentClass)
-			+ "/_cq_editConfig.xml";
 
-		ComponentMojoUtil.getLog().debug("Archiving edit config file " + editConfigFilePath);
+		ComponentMojoUtil.writeElementToArchiveFile(transformer, editConfigFile, componentClass, archiveStream,
+			reservedNames, componentPathBase, defaultComponentPathSuffix, "/_cq_editConfig.xml");
 
-		if (!reservedNames.contains(editConfigFilePath.toLowerCase())) {
-
-			ZipArchiveEntry entry = new ZipArchiveEntry(editConfigFile, editConfigFilePath);
-
-			archiveStream.putArchiveEntry(entry);
-
-			IOUtils.copy(new FileInputStream(editConfigFile), archiveStream);
-
-			archiveStream.closeArchiveEntry();
-
-		} else {
-			ComponentMojoUtil.getLog().debug("Existing file found at " + editConfigFilePath);
-		}
 	}
 
 	/**
@@ -97,20 +73,9 @@ public class EditConfigUtil {
 		throws TransformerException, ParserConfigurationException, IOException, OutputFailureException,
 		ClassNotFoundException, IllegalArgumentException, SecurityException, IllegalAccessException,
 		InvocationTargetException, NoSuchMethodException {
-		File componentOutputDirectory = ComponentMojoUtil.getOutputDirectoryForComponentClass(transformer,
-			componentClass, buildDirectory, componentPathBase, defaultComponentPathSuffix);
 
-		File editConfigFile = new File(componentOutputDirectory, "_cq_editConfig.xml");
-
-		if (editConfigFile.exists()) {
-			editConfigFile.delete();
-		}
-
-		editConfigFile.createNewFile();
-
-		XmlWriter.writeXml(editConfig, new FileOutputStream(editConfigFile));
-
-		return editConfigFile;
+		return ComponentMojoUtil.writeElementToFile(transformer, editConfig, componentClass, buildDirectory,
+			componentPathBase, defaultComponentPathSuffix, "_cq_editConfig.xml");
 	}
 
 	/**

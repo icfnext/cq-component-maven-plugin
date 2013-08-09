@@ -2,6 +2,7 @@ package com.citytechinc.cq.component.maven.util;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
@@ -53,6 +54,8 @@ import com.citytechinc.cq.component.dialog.util.DialogUtil;
 import com.citytechinc.cq.component.dialog.widget.WidgetRegistry;
 import com.citytechinc.cq.component.editconfig.util.EditConfigUtil;
 import com.citytechinc.cq.component.util.WidgetConfigHolder;
+import com.citytechinc.cq.component.xml.AbstractXmlElement;
+import com.citytechinc.cq.component.xml.XmlWriter;
 
 public class ComponentMojoUtil {
 	private static final String OUTPUT_PATH = "tempComponentConfig";
@@ -67,7 +70,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Constructs a Class Loader based on a list of paths to classes and a
 	 * parent Class Loader
-	 *
+	 * 
 	 * @param paths
 	 * @param mojoClassLoader
 	 * @return The constructed ClassLoader
@@ -93,7 +96,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Constructs as Javassist ClassPool which pulls resources based on the
 	 * paths provided by the passed in ClassLoader
-	 *
+	 * 
 	 * @param classLoader
 	 * @return The constructed ClassPool
 	 * @throws NotFoundException
@@ -106,7 +109,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Constructs a fully qualified class name based on the path to the class
 	 * file
-	 *
+	 * 
 	 * @param filePath
 	 * @param rootPath
 	 * @return The constructed class name
@@ -135,7 +138,7 @@ public class ComponentMojoUtil {
 	 * Add files to the already constructed Archive file by creating a new
 	 * Archive file, appending the contents of the existing Archive file to it,
 	 * and then adding additional entries for the newly constructed artifacts.
-	 *
+	 * 
 	 * @param classList
 	 * @param xtypeMap
 	 * @param classLoader
@@ -242,7 +245,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Finds and retrieves the constructed CQ Package archive file for the
 	 * project
-	 *
+	 * 
 	 * @param project
 	 * @return The archive file found for the project
 	 */
@@ -259,7 +262,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Create a temporary archive file which will live alongside the constructed
 	 * project CQ5 Package archive.
-	 *
+	 * 
 	 * @param project
 	 * @return The temporary archive file
 	 */
@@ -276,7 +279,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Determine the appropriate output directory for a component's artifacts
 	 * based on the component class as well as POM configuration.
-	 *
+	 * 
 	 * @param componentClass
 	 * @param project
 	 * @param componentPathBase
@@ -307,22 +310,24 @@ public class ComponentMojoUtil {
 	public static String getComponentBasePathForComponentClass(CtClass componentClass, String componentPathBase)
 		throws ClassNotFoundException {
 		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
-
+		String toReturnBasePath = componentPathBase;
 		if (componentAnnotation != null) {
 			String basePath = componentAnnotation.basePath();
 
 			if (StringUtils.isNotEmpty(basePath)) {
-				return basePath;
+				toReturnBasePath = basePath;
 			}
 		}
-
-		return componentPathBase;
+		if (toReturnBasePath.endsWith("/")) {
+			toReturnBasePath = toReturnBasePath.substring(0, toReturnBasePath.length() - 1);
+		}
+		return toReturnBasePath;
 	}
 
 	/**
 	 * Deletes the temporary output directory which is created as part of the
 	 * build process to temporarily hold the generated files for components.
-	 *
+	 * 
 	 * @param buildDirectory
 	 * @throws IOException
 	 */
@@ -337,7 +342,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Determines the suffix portion of the path leading to the artifacts of a
 	 * particular component
-	 *
+	 * 
 	 * @param componentClass
 	 * @param defaultComponentPathSuffix
 	 * @return The determined suffix
@@ -347,21 +352,31 @@ public class ComponentMojoUtil {
 		String defaultComponentPathSuffix) throws ClassNotFoundException {
 		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
+		String suffixPathToReturn = defaultComponentPathSuffix;
+
 		if (componentAnnotation != null) {
 			String path = componentAnnotation.path();
 
 			if (StringUtils.isNotEmpty(path)) {
-				return path;
+				suffixPathToReturn = path;
 			}
 		}
 
-		return defaultComponentPathSuffix;
+		if (suffixPathToReturn.endsWith("/")) {
+			suffixPathToReturn = suffixPathToReturn.substring(0, suffixPathToReturn.length() - 1);
+		}
+
+		if (suffixPathToReturn.startsWith("/")) {
+			suffixPathToReturn = suffixPathToReturn.substring(1);
+		}
+
+		return suffixPathToReturn;
 	}
 
 	/**
 	 * Determines the name of the component class for use in constructing file
 	 * paths
-	 *
+	 * 
 	 * @param componentClass
 	 * @return The determined name
 	 * @throws ClassNotFoundException
@@ -384,7 +399,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Constructs a list of widget configurations based on the information
 	 * provided by classes annotated as Widgets.
-	 *
+	 * 
 	 * @param classPool
 	 * @param classLoader
 	 * @param reflections
@@ -418,7 +433,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Retrieves a List of all classes which are annotated as Components and are
 	 * within the scope of the provided Reflections purview.
-	 *
+	 * 
 	 * @param classPool
 	 * @param reflections
 	 * @return A List of classes annotated as Components
@@ -426,25 +441,24 @@ public class ComponentMojoUtil {
 	 * @throws NotFoundException
 	 * @throws MalformedURLException
 	 */
-	public static List<CtClass> getAllComponentAnnotations(ClassPool classPool, Reflections reflections, Set<String> excludedClasses)
-		throws ClassNotFoundException, NotFoundException, MalformedURLException {
-	    getLog().debug("Scanning for Components");
+	public static List<CtClass> getAllComponentAnnotations(ClassPool classPool, Reflections reflections,
+		Set<String> excludedClasses) throws ClassNotFoundException, NotFoundException, MalformedURLException {
+		getLog().debug("Scanning for Components");
 
 		List<CtClass> classes = new ArrayList<CtClass>();
 
 		Set<Class<?>> annotatedClasses = reflections.getTypesAnnotatedWith(Component.class);
 
 		if (excludedClasses != null && !excludedClasses.isEmpty()) {
-		    for (Class<?> c : annotatedClasses) {
-		        if (!excludedClasses.contains(c.getName())) {
-		            classes.add(classPool.getCtClass(c.getName()));
-		        }
-		    }
-		}
-		else {
-		    for (Class<?> c : annotatedClasses) {
-		        classes.add(classPool.getCtClass(c.getName()));
-		    }
+			for (Class<?> c : annotatedClasses) {
+				if (!excludedClasses.contains(c.getName())) {
+					classes.add(classPool.getCtClass(c.getName()));
+				}
+			}
+		} else {
+			for (Class<?> c : annotatedClasses) {
+				classes.add(classPool.getCtClass(c.getName()));
+			}
 		}
 
 		return classes;
@@ -453,7 +467,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Retrieves a List of all classes which are annotated as Transformers and
 	 * are within the scope of the provided Reflections purview.
-	 *
+	 * 
 	 * @param classPool
 	 * @param reflections
 	 * @return A Map of transformer names to transformers
@@ -482,7 +496,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Constructs a list of all fields contained in the provided CtClass and any
 	 * of its parent classes.
-	 *
+	 * 
 	 * @param ctClass
 	 * @return The constructed list of fields
 	 * @throws NotFoundException
@@ -507,7 +521,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Constructs a Reflections object suitable for reflecting on classes
 	 * accessible via the provided ClassLoader
-	 *
+	 * 
 	 * @param classLoader The ClassLoader containing classes to be reflected
 	 *            upon
 	 * @return The constructed Reflections object
@@ -517,6 +531,85 @@ public class ComponentMojoUtil {
 			.setUrls(ClasspathHelper.forClassLoader(new ClassLoader[] { classLoader }))
 			.setScanners(new TypeAnnotationsScanner()));
 		return reflections;
+	}
+
+	/**
+	 * Writes a provided file to a provided archive output stream at a path
+	 * determined by the class of the component.
+	 * 
+	 * @param file
+	 * @param componentClass
+	 * @param archiveStream
+	 * @param reservedNames A list of files which already exist within the Zip
+	 *            Archive. If a file already exists for a particular component,
+	 *            it is left untouched.
+	 * @param componentPathBase
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
+	public static void writeElementToArchiveFile(ComponentNameTransformer transformer, File file,
+		CtClass componentClass, ZipArchiveOutputStream archiveStream, Set<String> reservedNames,
+		String componentPathBase, String defaultComponentPathSuffix, String path) throws IOException,
+		ClassNotFoundException {
+		String editConfigFilePath = ComponentMojoUtil.getComponentBasePathForComponentClass(componentClass,
+			componentPathBase)
+			+ "/"
+			+ ComponentMojoUtil.getComponentPathSuffixForComponentClass(componentClass, defaultComponentPathSuffix)
+			+ "/" + ComponentMojoUtil.getComponentNameForComponentClass(transformer, componentClass) + path;
+
+		if (!reservedNames.contains(editConfigFilePath.toLowerCase())) {
+
+			ZipArchiveEntry entry = new ZipArchiveEntry(file, editConfigFilePath);
+
+			archiveStream.putArchiveEntry(entry);
+
+			IOUtils.copy(new FileInputStream(file), archiveStream);
+
+			archiveStream.closeArchiveEntry();
+
+		} else {
+			ComponentMojoUtil.getLog().debug("Existing file found at " + editConfigFilePath);
+		}
+	}
+
+	/**
+	 * Determines the name of the edit file to be written and writes the the
+	 * file which the provided EditConfig object represents to that determined
+	 * file.
+	 * 
+	 * @param xmlElement
+	 * @param componentClass
+	 * @return The file written
+	 * @throws TransformerException
+	 * @throws ParserConfigurationException
+	 * @throws IOException
+	 * @throws OutputFailureException
+	 * @throws ClassNotFoundException
+	 * @throws NoSuchMethodException
+	 * @throws InvocationTargetException
+	 * @throws IllegalAccessException
+	 * @throws SecurityException
+	 * @throws IllegalArgumentException
+	 */
+	public static File writeElementToFile(ComponentNameTransformer transformer, AbstractXmlElement xmlElement,
+		CtClass componentClass, File buildDirectory, String componentPathBase, String defaultComponentPathSuffix,
+		String path) throws TransformerException, ParserConfigurationException, IOException, OutputFailureException,
+		ClassNotFoundException, IllegalArgumentException, SecurityException, IllegalAccessException,
+		InvocationTargetException, NoSuchMethodException {
+		File componentOutputDirectory = ComponentMojoUtil.getOutputDirectoryForComponentClass(transformer,
+			componentClass, buildDirectory, componentPathBase, defaultComponentPathSuffix);
+
+		File file = new File(componentOutputDirectory, path);
+
+		if (file.exists()) {
+			file.delete();
+		}
+
+		file.createNewFile();
+
+		XmlWriter.writeXml(xmlElement, new FileOutputStream(file));
+
+		return file;
 	}
 
 }

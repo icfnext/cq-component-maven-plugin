@@ -11,6 +11,31 @@
 	<packaging>jar</packaging>
 
 	<name>CQ Component Plugin Annotations</name>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.mycila.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<configuration>
+					<header>../LICENSE</header>
+					<strictCheck>true</strictCheck>
+					<includes>
+						<include>**/*.java</include>
+						<include>**/*.groovy</include>
+					</includes>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>format</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
 	<dependencies>
 		<dependency>

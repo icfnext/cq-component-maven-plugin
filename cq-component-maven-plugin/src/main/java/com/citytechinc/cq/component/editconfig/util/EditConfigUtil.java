@@ -1,9 +1,8 @@
 package com.citytechinc.cq.component.editconfig.util;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -13,9 +12,7 @@ import javassist.CtClass;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
-import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
-import org.apache.commons.io.IOUtils;
 
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
@@ -23,7 +20,6 @@ import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassExcept
 import com.citytechinc.cq.component.dialog.exception.OutputFailureException;
 import com.citytechinc.cq.component.editconfig.EditConfig;
 import com.citytechinc.cq.component.editconfig.factory.EditConfigFactory;
-import com.citytechinc.cq.component.editconfig.xml.EditConfigXmlWriter;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 
 public class EditConfigUtil {
@@ -47,29 +43,10 @@ public class EditConfigUtil {
 	public static void writeEditConfigToArchiveFile(ComponentNameTransformer transformer, File editConfigFile,
 		CtClass componentClass, ZipArchiveOutputStream archiveStream, Set<String> reservedNames,
 		String componentPathBase, String defaultComponentPathSuffix) throws IOException, ClassNotFoundException {
-		String editConfigFilePath = ComponentMojoUtil.getComponentBasePathForComponentClass(componentClass,
-			componentPathBase)
-			+ "/"
-			+ ComponentMojoUtil.getComponentPathSuffixForComponentClass(componentClass, defaultComponentPathSuffix)
-			+ "/"
-			+ ComponentMojoUtil.getComponentNameForComponentClass(transformer, componentClass)
-			+ "/_cq_editConfig.xml";
 
-		ComponentMojoUtil.getLog().debug("Archiving edit config file " + editConfigFilePath);
+		ComponentMojoUtil.writeElementToArchiveFile(transformer, editConfigFile, componentClass, archiveStream,
+			reservedNames, componentPathBase, defaultComponentPathSuffix, "/_cq_editConfig.xml");
 
-		if (!reservedNames.contains(editConfigFilePath.toLowerCase())) {
-
-			ZipArchiveEntry entry = new ZipArchiveEntry(editConfigFile, editConfigFilePath);
-
-			archiveStream.putArchiveEntry(entry);
-
-			IOUtils.copy(new FileInputStream(editConfigFile), archiveStream);
-
-			archiveStream.closeArchiveEntry();
-
-		} else {
-			ComponentMojoUtil.getLog().debug("Existing file found at " + editConfigFilePath);
-		}
 	}
 
 	/**
@@ -85,25 +62,20 @@ public class EditConfigUtil {
 	 * @throws IOException
 	 * @throws OutputFailureException
 	 * @throws ClassNotFoundException
+	 * @throws NoSuchMethodException
+	 * @throws InvocationTargetException
+	 * @throws IllegalAccessException
+	 * @throws SecurityException
+	 * @throws IllegalArgumentException
 	 */
 	public static File writeEditConfigToFile(ComponentNameTransformer transformer, EditConfig editConfig,
 		CtClass componentClass, File buildDirectory, String componentPathBase, String defaultComponentPathSuffix)
 		throws TransformerException, ParserConfigurationException, IOException, OutputFailureException,
-		ClassNotFoundException {
-		File componentOutputDirectory = ComponentMojoUtil.getOutputDirectoryForComponentClass(transformer,
-			componentClass, buildDirectory, componentPathBase, defaultComponentPathSuffix);
+		ClassNotFoundException, IllegalArgumentException, SecurityException, IllegalAccessException,
+		InvocationTargetException, NoSuchMethodException {
 
-		File editConfigFile = new File(componentOutputDirectory, "_cq_editConfig.xml");
-
-		if (editConfigFile.exists()) {
-			editConfigFile.delete();
-		}
-
-		editConfigFile.createNewFile();
-
-		EditConfigXmlWriter.writeEditConfig(editConfig, new FileOutputStream(editConfigFile));
-
-		return editConfigFile;
+		return ComponentMojoUtil.writeElementToFile(transformer, editConfig, componentClass, buildDirectory,
+			componentPathBase, defaultComponentPathSuffix, "_cq_editConfig.xml");
 	}
 
 	/**
@@ -121,12 +93,18 @@ public class EditConfigUtil {
 	 * @throws IOException
 	 * @throws OutputFailureException
 	 * @throws ClassNotFoundException
+	 * @throws NoSuchMethodException
+	 * @throws InvocationTargetException
+	 * @throws IllegalAccessException
+	 * @throws SecurityException
+	 * @throws IllegalArgumentException
 	 */
 	public static List<EditConfig> buildEditConfigFromClassList(List<CtClass> classList,
 		ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames, File buildDirectory,
 		String componentPathBase, String defaultComponentPathSuffix, ComponentNameTransformer transformer)
 		throws InvalidComponentClassException, TransformerException, ParserConfigurationException, IOException,
-		OutputFailureException, ClassNotFoundException {
+		OutputFailureException, ClassNotFoundException, IllegalArgumentException, SecurityException,
+		IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 
 		List<EditConfig> builtEditConfigs = new ArrayList<EditConfig>();
 

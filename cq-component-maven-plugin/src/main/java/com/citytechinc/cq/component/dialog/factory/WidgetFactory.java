@@ -1,31 +1,23 @@
 package com.citytechinc.cq.component.dialog.factory;
 
-import java.lang.reflect.AccessibleObject;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URL;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javassist.CannotCompileException;
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtMember;
 import javassist.NotFoundException;
 
 import org.codehaus.plexus.util.StringUtils;
 
-import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
-import com.citytechinc.cq.component.dialog.impl.MultiFieldWidget;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
-import com.citytechinc.cq.component.dialog.maker.impl.SimpleWidgetMaker;
-import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;
+import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
+import com.citytechinc.cq.component.dialog.maker.impl.DefaultWidgetMaker;
+import com.citytechinc.cq.component.maven.util.LogSingleton;
+import com.citytechinc.cq.component.util.ComponentUtil;
+import com.citytechinc.cq.component.util.WidgetConfigHolder;
 
 public class WidgetFactory {
 
@@ -39,160 +31,61 @@ public class WidgetFactory {
 	private WidgetFactory() {
 	}
 
-	public static DialogElement make(CtClass componentClass, CtMember annotatedWidgetField,
-		AccessibleObject widgetField, Map<Class<?>, WidgetConfigHolder> classToXTypeMap,
-		Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool,
-		boolean useDotSlashInName, int rankingCeiling) throws InvalidComponentFieldException, ClassNotFoundException,
-		CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException {
+	public static DialogElement make(WidgetMakerParameters parameters, int rankingCeiling)
+		throws InvalidComponentFieldException, ClassNotFoundException, CannotCompileException, NotFoundException,
+		SecurityException, NoSuchFieldException, InstantiationException, IllegalAccessException,
+		IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
 
-		DialogField propertyAnnotation = (DialogField) annotatedWidgetField.getAnnotation(DialogField.class);
+		WidgetMakerContext widgetMakerContext = getWidgetMakerForField(parameters, rankingCeiling);
 
-		if (propertyAnnotation == null) {
-			throw new InvalidComponentFieldException();
-		}
+		parameters.setXtype(widgetMakerContext.getXtype());
 
-		String xtype = getXTypeForField(widgetField, annotatedWidgetField, propertyAnnotation, classToXTypeMap,
-			classLoader, classPool, rankingCeiling);
+		WidgetMaker widgetMaker = widgetMakerContext.getWidgetMaker().getConstructor(WidgetMakerParameters.class)
+			.newInstance(parameters);
 
-		Class<?> containingClass = classLoader.loadClass(componentClass.getName());
-
-		if (!xTypeToWidgetMakerMap.containsKey(xtype)) {
-			return new SimpleWidgetMaker().make(xtype, widgetField, annotatedWidgetField, containingClass,
-				componentClass, classToXTypeMap, xTypeToWidgetMakerMap, classLoader, classPool, useDotSlashInName);
-		}
-
-		return xTypeToWidgetMakerMap.get(xtype).make(xtype, widgetField, annotatedWidgetField, containingClass,
-			componentClass, classToXTypeMap, xTypeToWidgetMakerMap, classLoader, classPool, useDotSlashInName);
+		return widgetMaker.make();
 
 	}
 
-	/**
-	 * <p>
-	 * Three mechanisms are employed in attempting to determine the xtype of a
-	 * particular field.
-	 * </p>
-	 * 
-	 * <ol>
-	 * <li>Declared xtype: If the xtype property of the DialogField annotation
-	 * is set, this xtype is used</li>
-	 * <li>Mapped Classes: If an xtype is defined explicitly for the class of
-	 * the field or if a stacked annotation is present to which an xtype is
-	 * mapped, this xtype is used</li>
-	 * <li>Guessed xtype: If mechanism 1 and 2 do not produce an xtype, a
-	 * guessed xtype may be provided for a number of simple xtypes.</li>
-	 * </ol>
-	 * 
-	 * <p>
-	 * If none of these mechanisms produce an xtype, an
-	 * InvalidComponentFieldException is thrown.
-	 * </p>
-	 * 
-	 * <p>
-	 * The following mapping is the basis for xtype guessing:
-	 * </p>
-	 * 
-	 * <ul>
-	 * <li>Numbers and primative numeric types -&gt; numberfield</li>
-	 * <li>String -&gt; textfield</li>
-	 * <li>URI and URL -&gt; pathfield</li>
-	 * <li>Enum -&gt; selection</li>
-	 * <li>List and Array -&gt; multifield</li>
-	 * </ul>
-	 * 
-	 * @param widgetField
-	 * @param ctWidgetField
-	 * @param propertyAnnotation
-	 * @param classToXTypeMap
-	 * @param classLoader
-	 * @param classPool
-	 * @return
-	 * @throws InvalidComponentFieldException
-	 * @throws CannotCompileException
-	 * @throws NotFoundException
-	 * @throws ClassNotFoundException
-	 */
-	private static final String getXTypeForField(AccessibleObject widgetField, CtMember ctWidgetField,
-		DialogField propertyAnnotation, Map<Class<?>, WidgetConfigHolder> classToXTypeMap, ClassLoader classLoader,
-		ClassPool classPool, int rankingCeiling) throws InvalidComponentFieldException, CannotCompileException,
-		NotFoundException, ClassNotFoundException {
+	private static final WidgetMakerContext getWidgetMakerForField(WidgetMakerParameters parameters, int rankingCeiling)
+		throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvalidComponentFieldException {
 
-		/*
-		 * Handle annotated xtypes
-		 * 
-		 */
+		WidgetConfigHolder widget = getWidgetConfig(parameters, rankingCeiling);
 
-		Class<?> fieldClass = null;
-		if (widgetField instanceof Field) {
-			Field field = (Field) widgetField;
-			fieldClass = field.getType();
-		} else if (widgetField instanceof Method) {
-			Method method = (Method) widgetField;
-			fieldClass = method.getReturnType();
-		} else {
-			throw new InvalidComponentFieldException("Only methods and fields can be annotated");
+		if (widget != null && widget.hasMakerClass()) {
+			return new WidgetMakerContext(widget.getMakerClass(), widget.getXtype());
 		}
 
-		/*
-		 * Handle custom types.
-		 * 
-		 * Custom types may be either Classes or Annotations.
-		 */
-		Set<WidgetConfigHolder> possibleMatches = new HashSet<WidgetConfigHolder>();
-		for (Class<?> curCustomClass : classToXTypeMap.keySet()) {
-			if (curCustomClass.isAnnotation()) {
+		if (widget != null && widget.hasXtype()) {
+			return new WidgetMakerContext(DefaultWidgetMaker.class, widget.getXtype());
+		}
 
-				if (ctWidgetField.hasAnnotation(curCustomClass)) {
-					WidgetConfigHolder widget = classToXTypeMap.get(curCustomClass);
-					if (isBelowRankingCeiling(rankingCeiling, widget)) {
-						possibleMatches.add(widget);
-					}
-				}
+		String xtype = getXTypeForField(parameters);
 
-			} else if (curCustomClass.isAssignableFrom(fieldClass)) {
-				WidgetConfigHolder widget = classToXTypeMap.get(curCustomClass);
-				if (isBelowRankingCeiling(rankingCeiling, widget)) {
-					possibleMatches.add(widget);
-				}
-			}
+		if (StringUtils.isEmpty(xtype)) {
+			throw new InvalidComponentFieldException("An xtype could not be determined for the field");
 		}
-		if (possibleMatches.size() > 0) {
-			return getMatchFromPossibleSet(possibleMatches).getXtype();
+
+		return new WidgetMakerContext(DefaultWidgetMaker.class, xtype);
+	}
+
+	private static final String getXTypeForField(WidgetMakerParameters parameters)
+		throws InvalidComponentFieldException {
+
+		if (StringUtils.isNotEmpty(parameters.getAnnotation().xtype())) {
+			return parameters.getAnnotation().xtype();
 		}
-		
-		/*
-		* The xtype property on the DialogField annotation takes precedence
-		* over all other mechanisms of determining xtype.
-		*/
-		String overrideXType = propertyAnnotation.xtype();
-		
-		if (StringUtils.isNotEmpty(overrideXType)) {
-			return overrideXType;
-		}
-		
+
 		/*
 		 * Handle standard types
 		 */
 
-		/*
-		 * numberfield
-		 */
-		if (Number.class.isAssignableFrom(fieldClass) || fieldClass.equals(int.class)
-			|| fieldClass.equals(double.class) || fieldClass.equals(float.class)) {
-			return NUMBERFIELD_XTYPE;
-		}
+		Class<?> fieldClass = ComponentUtil.getTypeForMember(parameters.getCtMember(), parameters.getContainingClass());
 
-		/*
-		 * textfield
-		 */
-		if (fieldClass.equals(String.class)) {
-			return TEXTFIELD_XTYPE;
-		}
+		String simpleXType = getSimpleXTypeForClass(fieldClass);
 
-		/*
-		 * pathfield
-		 */
-		if (URI.class.isAssignableFrom(fieldClass) || URL.class.isAssignableFrom(fieldClass)) {
-			return PATHFIELD_XTYPE;
+		if (StringUtils.isNotEmpty(simpleXType)) {
+			return simpleXType;
 		}
 
 		/*
@@ -202,118 +95,30 @@ public class WidgetFactory {
 			return SELECTION_XTYPE;
 		}
 
-		if (List.class.isAssignableFrom(fieldClass) || fieldClass.isArray()) {
-
-			String simpleXtype = getInnerXTypeForField(widgetField, classToXTypeMap, rankingCeiling, fieldClass);
-
-			if (simpleXtype == null) {
-				throw new InvalidComponentFieldException(
-					"Parameterized class for List is not of a supported type.  Currently supported types are numbers, strings, and links");
-			}
-			if (rankingCeiling < MultiFieldWidget.RANKING) {
-				return MULTIFIELD_XTYPE;
-			} else {
-				return simpleXtype;
-			}
-
-		}
-
-		/*
-		 * If we could not determine an xtype, throw an exception
-		 */
-		throw new InvalidComponentFieldException("An xtype could not be determined for the field {}"
-			+ ctWidgetField.getName());
+		return null;
 	}
 
-	private static final String getInnerXTypeForField(AccessibleObject widgetField,
-		Map<Class<?>, WidgetConfigHolder> xtypeMap, int rankingCeiling, Class<?> fieldClass)
-		throws InvalidComponentFieldException {
-
-		if (List.class.isAssignableFrom(fieldClass)) {
-			return getInnerXTypeForListField(widgetField, xtypeMap, rankingCeiling);
-		}
-		if (fieldClass.isArray()) {
-			return getInnerXTypeForArrayField(widgetField, xtypeMap, rankingCeiling);
-		}
-
-		throw new InvalidComponentFieldException(
-			"List dialog property found with a paramaterized type count not equal to 1");
-
-	}
-
-	private static final String getInnerXTypeForListField(AccessibleObject widgetField,
-		Map<Class<?>, WidgetConfigHolder> xtypeMap, int rankingCeiling) throws InvalidComponentFieldException {
-		ParameterizedType parameterizedType = null;
-		if (widgetField instanceof Field) {
-			Field field = (Field) widgetField;
-			parameterizedType = (ParameterizedType) field.getGenericType();
-		} else {
-			Method method = (Method) widgetField;
-			parameterizedType = (ParameterizedType) method.getGenericReturnType();
-		}
-
-		if (parameterizedType.getActualTypeArguments().length == 0
-			|| parameterizedType.getActualTypeArguments().length > 1) {
-			throw new InvalidComponentFieldException(
-				"List dialog property found with a paramaterized type count not equal to 1");
-		}
-
-		String simpleXtype = getSimpleXTypeForClass((Class<?>) parameterizedType.getActualTypeArguments()[0], xtypeMap,
-			rankingCeiling);
-
-		return simpleXtype;
-	}
-
-	private static final String getInnerXTypeForArrayField(AccessibleObject widgetField,
-		Map<Class<?>, WidgetConfigHolder> xtypeMap, int rankingCeiling) {
-		Class<?> fieldClass = null;
-		if (widgetField instanceof Field) {
-			Field field = (Field) widgetField;
-			fieldClass = field.getType();
-		} else {
-			Method method = (Method) widgetField;
-			fieldClass = method.getReturnType();
-		}
-
-		return getSimpleXTypeForClass(fieldClass.getComponentType(), xtypeMap, rankingCeiling);
-	}
-
-	private static final String getSimpleXTypeForClass(Class<?> fieldClass, Map<Class<?>, WidgetConfigHolder> xtypeMap,
-		int rankingCeiling) {
-
-		/*
-		 * Handle custom types
-		 */
-		Set<WidgetConfigHolder> possibleMatches = new HashSet<WidgetConfigHolder>();
-		for (Class<?> curCustomClass : xtypeMap.keySet()) {
-			WidgetConfigHolder widget = xtypeMap.get(curCustomClass);
-			if (curCustomClass.isAssignableFrom(fieldClass) && isBelowRankingCeiling(rankingCeiling, widget)) {
-				possibleMatches.add(widget);
-			}
-		}
-		if (possibleMatches.size() > 0) {
-			return getMatchFromPossibleSet(possibleMatches).getXtype();
-		}
+	private static final String getSimpleXTypeForClass(Class<?> clazz) {
 
 		/*
 		 * numberfield
 		 */
-		if (Number.class.isAssignableFrom(fieldClass) || fieldClass.equals(int.class)
-			|| fieldClass.equals(double.class) || fieldClass.equals(float.class)) {
+		if (Number.class.isAssignableFrom(clazz) || clazz.equals(int.class) || clazz.equals(double.class)
+			|| clazz.equals(float.class)) {
 			return NUMBERFIELD_XTYPE;
 		}
 
 		/*
 		 * textfield
 		 */
-		if (fieldClass.equals(String.class)) {
+		if (clazz.equals(String.class)) {
 			return TEXTFIELD_XTYPE;
 		}
 
 		/*
 		 * pathfield
 		 */
-		if (URI.class.isAssignableFrom(fieldClass) || URL.class.isAssignableFrom(fieldClass)) {
+		if (URI.class.isAssignableFrom(clazz) || URL.class.isAssignableFrom(clazz)) {
 			return PATHFIELD_XTYPE;
 		}
 
@@ -321,17 +126,35 @@ public class WidgetFactory {
 
 	}
 
-	private static final boolean isBelowRankingCeiling(int rankingCeiling, WidgetConfigHolder widget) {
-		return !(rankingCeiling > 0 && widget.getRanking() >= rankingCeiling);
-	}
+	public static WidgetConfigHolder getWidgetConfig(WidgetMakerParameters parameters, int rankCeiling)
+		throws ClassNotFoundException {
 
-	private static final WidgetConfigHolder getMatchFromPossibleSet(Set<WidgetConfigHolder> possibleMatches) {
-		WidgetConfigHolder match = null;
-		for (WidgetConfigHolder possibleMatch : possibleMatches) {
-			if (match == null || match.getRanking() < possibleMatch.getRanking()) {
-				match = possibleMatch;
+		LogSingleton LOG = LogSingleton.getInstance();
+
+		WidgetConfigHolder highestRankedWidget = null;
+
+		Set<Class<?>> registeredAnnotations = parameters.getWidgetRegistry().getRegisteredAnnotations();
+
+		for (Class<?> curRegisteredAnnotation : registeredAnnotations) {
+			LOG.debug("Checking for known annotation " + curRegisteredAnnotation);
+			if (parameters.getCtMember().hasAnnotation(curRegisteredAnnotation)) {
+				WidgetConfigHolder curPotential = parameters.getWidgetRegistry().getWidgetForAnnotation(
+					curRegisteredAnnotation);
+				if (rankCeiling < 0 || curPotential.getRanking() < rankCeiling) {
+					LOG.debug("Match found in the registry with ranking " + curPotential.getRanking());
+					if (highestRankedWidget == null || curPotential.getRanking() > highestRankedWidget.getRanking()) {
+						highestRankedWidget = curPotential;
+					}
+				}
 			}
 		}
-		return match;
+
+		if (highestRankedWidget != null) {
+			return highestRankedWidget;
+		}
+
+		return null;
+
 	}
+
 }

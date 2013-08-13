@@ -27,10 +27,10 @@ import org.reflections.Reflections;
 
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
-import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
+import com.citytechinc.cq.component.dialog.widget.WidgetRegistry;
+import com.citytechinc.cq.component.dialog.widget.impl.DefaultWidgetRegistry;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 import com.citytechinc.cq.component.maven.util.LogSingleton;
-import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;
 
 @Mojo(name = "component", defaultPhase = LifecyclePhase.PACKAGE, requiresDependencyResolution = ResolutionScope.COMPILE)
 public class ComponentMojo extends AbstractMojo {
@@ -50,19 +50,20 @@ public class ComponentMojo extends AbstractMojo {
 	@Parameter(defaultValue = "camel-case")
 	private String transformerName;
 
-	@Parameter ( required = false )
-    private List<Dependency> excludeDependencies;
+	@Parameter(required = false)
+	private List<Dependency> excludeDependencies;
 
 	public void execute() throws MojoExecutionException, MojoFailureException {
 
 		LogSingleton.getInstance().setLogger(getLog());
 
 		try {
+
 		    @SuppressWarnings("unchecked")
             List<String> classpathElements = project.getCompileClasspathElements();
 
-			ClassLoader classLoader = ComponentMojoUtil.getClassLoader(classpathElements, this
-				.getClass().getClassLoader());
+			ClassLoader classLoader = ComponentMojoUtil.getClassLoader(classpathElements, this.getClass()
+				.getClassLoader());
 
 			ClassPool classPool = ComponentMojoUtil.getClassPool(classLoader);
 
@@ -70,13 +71,7 @@ public class ComponentMojo extends AbstractMojo {
 
 			List<CtClass> classList = ComponentMojoUtil.getAllComponentAnnotations(classPool, reflections, getExcludedClasses());
 
-			List<WidgetConfigHolder> widgetConfigs = ComponentMojoUtil.getAllWidgetAnnotations(classPool, classLoader,
-				reflections);
-
-			Map<Class<?>, WidgetConfigHolder> classToXTypeMap = ComponentMojoUtil
-				.getXTypeMapForCustomXTypeMapping(widgetConfigs);
-
-			Map<String, WidgetMaker> xTypeToWidgetMakerMap = ComponentMojoUtil.getXTypeToWidgetMakerMap(widgetConfigs);
+			WidgetRegistry widgetRegistry = new DefaultWidgetRegistry(classPool, classLoader, reflections);
 
 			Map<String, ComponentNameTransformer> transformers = ComponentMojoUtil.getAllTransformers(classPool,
 				reflections);
@@ -87,10 +82,9 @@ public class ComponentMojo extends AbstractMojo {
 				throw new ConfigurationException("The configured transformer wasn't found");
 			}
 
-			ComponentMojoUtil.buildArchiveFileForProjectAndClassList(classList, classToXTypeMap, xTypeToWidgetMakerMap,
-				classLoader, classPool, new File(project.getBuild().getDirectory()), componentPathBase,
-				componentPathSuffix, defaultComponentGroup, getArchiveFileForProject(), getTempArchiveFileForProject(),
-				transformer);
+			ComponentMojoUtil.buildArchiveFileForProjectAndClassList(classList, widgetRegistry, classLoader, classPool,
+				new File(project.getBuild().getDirectory()), componentPathBase, componentPathSuffix,
+				defaultComponentGroup, getArchiveFileForProject(), getTempArchiveFileForProject(), transformer);
 
 		} catch (Exception e) {
 			getLog().error(e.getMessage(), e);
@@ -161,6 +155,7 @@ public class ComponentMojo extends AbstractMojo {
 	    }
 
 	    return null;
+
 	}
 
 	private File getArchiveFileForProject() {

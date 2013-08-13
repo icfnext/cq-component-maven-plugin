@@ -9,12 +9,10 @@ import java.lang.annotation.Target;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 
 /**
- * <p>
  * Used to indicate that a Class represents a Dialog Widget and makes explicit
  * the connection between the Widget, an annotation necessary to indicate that a
- * field is to be populated by a Dialog Widget of this type, and the mechanism
+ * field or method is to be populated by a Dialog Widget of this type, and the mechanism
  * which will create the widget.
- * </p>
  */
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.TYPE)
@@ -33,7 +31,7 @@ public @interface Widget {
 	 * <em>not</em> contain more than one Annotation class.
 	 * </p>
 	 */
-	Class<? extends Annotation>[] annotationClass() default {};
+	Class<? extends Annotation> annotationClass();
 
 	/**
 	 * The class responsible for making instances of the annotated Widget Class.

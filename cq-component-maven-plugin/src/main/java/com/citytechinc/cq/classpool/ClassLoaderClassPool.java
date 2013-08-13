@@ -12,6 +12,7 @@ public class ClassLoaderClassPool extends ClassPool {
 		this.appendClassPath(new LoaderClassPath(classLoader));
 	}
 
+	@Override
 	public ClassLoader getClassLoader() {
 		return classLoader;
 	}

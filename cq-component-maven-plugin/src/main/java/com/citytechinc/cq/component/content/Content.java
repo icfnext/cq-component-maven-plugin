@@ -1,20 +1,99 @@
 package com.citytechinc.cq.component.content;
 
-import com.citytechinc.cq.component.annotations.ContentProperty;
-
 import java.util.List;
 
-public interface Content {
+import com.citytechinc.cq.component.util.Constants;
+import com.citytechinc.cq.component.xml.AbstractXmlElement;
+import com.citytechinc.cq.component.xml.NameSpacedAttribute;
 
-    public Boolean isContainer();
+/**
+ * Based on http://dev.day.com/docs/en/cq/current/developing/components.html
+ */
+public class Content extends AbstractXmlElement {
 
-    public String getPrimaryType();
+	private final List<String> allowedChildren;
+	private final List<String> allowedParents;
+	private final String componentGroup;
+	private final NameSpacedAttribute<String> cellName;
+	private final NameSpacedAttribute<Boolean> isContainer;
+	private final NameSpacedAttribute<Boolean> noDecoration;
+	private final NameSpacedAttribute<String> templatePath;
+	private final String dialogPath;
+	private final NameSpacedAttribute<String> created;
+	private final NameSpacedAttribute<String> description;
+	private final NameSpacedAttribute<String> title;
+	private final NameSpacedAttribute<String> resourceSuperType;
 
-    public String getTitle();
+	public Content(ContentParameters parameters) {
+		super(parameters);
 
-    public String getGroup();
+		allowedChildren = parameters.getAllowedChildren();
+		allowedParents = parameters.getAllowedParents();
+		componentGroup = parameters.getComponentGroup();
+		cellName = new NameSpacedAttribute<String>(Constants.CQ_NS_URI, Constants.CQ_NS_PREFIX,
+			parameters.getCellName());
+		isContainer = new NameSpacedAttribute<Boolean>(Constants.CQ_NS_URI, Constants.CQ_NS_PREFIX,
+			parameters.getIsContainer());
+		noDecoration = new NameSpacedAttribute<Boolean>(Constants.CQ_NS_URI, Constants.CQ_NS_PREFIX,
+			parameters.getNoDecoration());
+		templatePath = new NameSpacedAttribute<String>(Constants.CQ_NS_URI, Constants.CQ_NS_PREFIX,
+			parameters.getTemplatePath());
+		dialogPath = parameters.getDialogPath();
+		created = new NameSpacedAttribute<String>(Constants.JCR_NS_URI, Constants.JCR_NS_PREFIX,
+			parameters.getCreated());
+		description = new NameSpacedAttribute<String>(Constants.JCR_NS_URI, Constants.JCR_NS_PREFIX,
+			parameters.getDescription());
+		title = new NameSpacedAttribute<String>(Constants.JCR_NS_URI, Constants.JCR_NS_PREFIX, parameters.getTitle());
+		resourceSuperType = new NameSpacedAttribute<String>(Constants.SLING_NS_URI, Constants.SLING_NS_PREFIX,
+			parameters.getResourceSuperType());
+	}
 
-    public String getResourceSuperType();
+	public List<String> getAllowedChildren() {
+		return allowedChildren;
+	}
 
-    public List<ContentProperty> getAdditionalProperties();
+	public List<String> getAllowedParents() {
+		return allowedParents;
+	}
+
+	public String getComponentGroup() {
+		return componentGroup;
+	}
+
+	public NameSpacedAttribute<String> getCellName() {
+		return cellName;
+	}
+
+	public NameSpacedAttribute<Boolean> getIsContainer() {
+		return isContainer;
+	}
+
+	public NameSpacedAttribute<Boolean> getNoDecoration() {
+		return noDecoration;
+	}
+
+	public NameSpacedAttribute<String> getTemplatePath() {
+		return templatePath;
+	}
+
+	public String getDialogPath() {
+		return dialogPath;
+	}
+
+	public NameSpacedAttribute<String> getCreated() {
+		return created;
+	}
+
+	public NameSpacedAttribute<String> getDescription() {
+		return description;
+	}
+
+	public NameSpacedAttribute<String> getTitle() {
+		return title;
+	}
+
+	public NameSpacedAttribute<String> getResourceSuperType() {
+		return resourceSuperType;
+	}
+
 }

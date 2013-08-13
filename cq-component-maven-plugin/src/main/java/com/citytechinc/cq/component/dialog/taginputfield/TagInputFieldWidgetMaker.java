@@ -1,0 +1,68 @@
+package com.citytechinc.cq.component.dialog.taginputfield;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import com.citytechinc.cq.component.annotations.TagNameSpace;
+import com.citytechinc.cq.component.annotations.widgets.TagInputField;
+import com.citytechinc.cq.component.dialog.DialogElement;
+import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
+import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
+import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollection;
+import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollectionParameters;
+
+public class TagInputFieldWidgetMaker extends AbstractWidgetMaker {
+
+	public TagInputFieldWidgetMaker(WidgetMakerParameters parameters) {
+		super(parameters);
+	}
+
+	public DialogElement make() throws ClassNotFoundException {
+
+		TagInputField tagAnnotation = getAnnotation(TagInputField.class);
+
+		TagInputFieldWidgetParameters parameters = new TagInputFieldWidgetParameters();
+
+		parameters.setName(getNameForField());
+		parameters.setFieldName(getFieldNameForField());
+		parameters.setFieldLabel(getFieldLabelForField());
+		parameters.setFieldDescription(getFieldDescriptionForField());
+		parameters.setAllowBlank(!getIsRequiredForField());
+		parameters.setDefaultValue(getDefaultValueForField());
+		parameters.setHideLabel(getHideLabelForField());
+		parameters.setListeners(getListeners());
+		parameters.setContainedElements(getWidgetCollectionHolderForField(tagAnnotation));
+
+		parameters.setDisplayTitles(tagAnnotation.displayTitles());
+
+		return new TagInputFieldWidget(parameters);
+
+	}
+
+	private List<DialogElement> getWidgetCollectionHolderForField(TagInputField tagAnnotation) {
+
+		if (tagAnnotation.namespaces().length == 0) {
+			return null;
+		}
+
+		List<DialogElement> namespaces = new ArrayList<DialogElement>();
+		for (TagNameSpace ns : tagAnnotation.namespaces()) {
+			String max = null;
+			if (ns.maximum() > -1) {
+				max = Integer.toString(ns.maximum());
+			}
+			NamespaceParameters namespaceParameters = new NamespaceParameters();
+			namespaceParameters.setName(ns.value());
+			namespaceParameters.setMaximum(max);
+			Namespace n = new Namespace(namespaceParameters);
+			namespaces.add(n);
+		}
+		WidgetCollectionParameters wcp = new WidgetCollectionParameters();
+		wcp.setFieldName("namespaces");
+		wcp.setContainedElements(namespaces);
+		return Arrays.asList(new DialogElement[] { new WidgetCollection(wcp) });
+
+	}
+
+}

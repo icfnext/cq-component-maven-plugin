@@ -5,34 +5,109 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * CQ.html5.form.SmartImage
+ *
+ */
 @Retention(RetentionPolicy.CLASS)
 @Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface Html5SmartImage {
+
+    /**
+     * True to not render the flush button.
+     *
+     * @return boolean
+     */
 	public boolean disableFlush() default false;
 
+	/**
+	 * True to hide the "information" tool
+	 *
+	 * @return boolean
+	 */
 	public boolean disableInfo() default false;
 
+	/**
+	 * True to not render the zoom slider
+	 *
+	 * @return boolean
+	 */
 	public boolean disableZoom() default false;
 
+	/**
+	 * Name of the form field used for posting the cropping rect; use null or a zero-length String if the cropping tool should be disabled; the value depends on the serverside implementation; use "./imageCrop" for CQ foundation's image component; "./image/imageCrop" for the textimage component
+	 *
+	 * @return String
+	 */
 	public String cropParameter() default "";
 
+	/**
+	 * Name of the form field used for posting the file name. Be aware that you will have to specify a suitable value here, as there is no sensible default value available. Suitable values are dependant on their serverside counterpart and must be "./fileName" for CQ foundation's image and download components; use "./image/fileName" for the textimage component.
+	 *
+	 * @return String
+	 */
 	public String fileNameParameter() default "fileName";
 
+	/**
+	 * Name of the form field used for posting the file reference. Be aware that you will have to specify a suitable value here, as there is no sensible default value available. Suitable values are dependant on their serverside counterpart and must be "./fileReference" for CQ foundation's image and download components; use "./image/fileReference" for the textimage component.
+	 *
+	 * @return String
+	 */
 	public String fileReferenceParameter() default "fileReference";
 
+	/**
+	 * The field's HTML name attribute
+	 *
+	 * @return String
+	 */
 	public String name() default "";
 
+	/**
+	 * Name of the form field used for posting the image map data; use null or a zero-length String if the image mapping tool should be disabled; the value depends on the serverside implementation; use "./imageMap" for CQ foundation's image component; "./image/imageMap" for the textimage component
+	 *
+	 * @return String
+	 */
 	public String mapParameter() default "";
 
+	/**
+	 * Name of the form field used for posting the rotation angle; use null or a zero-length String if the rotate tool should be disabled; the value depends on the serverside implementation; use "./imageRotate" for CQ foundation's image component; "./image/imageRotate" for the textimage component
+	 *
+	 * @return String
+	 */
 	public String rotateParameter() default "";
 
+	/**
+	 * Path to which files will be uploaded.
+	 *
+	 * @return String
+	 */
 	public String uploadUrl() default "/tmp/upload/*";
 
-	public String ddGroups() default "media";
+	/**
+	 * Groups involved in drag & drop
+	 *
+	 * @return String[]
+	 */
+	public String[] ddGroups() default {"media"};
 
+	/**
+	 * Indication of whether the HTML5 Smart Image Widget should be rendered as a stand alone tab.
+	 *
+	 * @return boolean
+	 */
 	public boolean tab() default true;
 
+	/**
+	 * Height of the SmartImage component.  Note: You must explicitly specify height if you intend to render the HTML5 Smart Image Widget outside the context of its own tab.
+	 *
+	 * @return int
+	 */
 	public int height() default 0;
 
+	/**
+	 * Flag if uploading a file is allowed
+	 *
+	 * @return boolean
+	 */
 	public boolean allowUpload() default true;
 }

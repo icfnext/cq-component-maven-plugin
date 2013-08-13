@@ -1,47 +1,40 @@
 package com.citytechinc.cq.component.dialog.maker;
 
-import java.lang.reflect.AccessibleObject;
-import java.util.Map;
+import java.lang.reflect.InvocationTargetException;
+
+import javassist.CannotCompileException;
+import javassist.NotFoundException;
 
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
-import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;
 
-import javassist.CannotCompileException;
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtMember;
-import javassist.NotFoundException;
-
+/**
+ * A WidgetMaker is a class which is intended to create a single Widget based on an annotated
+ * Field in a Component Class. Such a Maker will return an object implementing
+ * DialogElement suitable for addition into a Dialog.
+ *
+ * Widget Makers are tied to concrete widget types by way of a
+ * {@link com.citytechinc.cq.component.annotations.config.Widget} annotation.
+ */
 public interface WidgetMaker {
 
-	/**
-	 * The interface which all concrete WidgetMakers will implement. A
-	 * WidgetMaker is a class which is intended to create a single Widget based
-	 * on an annotated Field in a Component Class. Such a Maker will return an
-	 * object implementing DialogElement suitable for addition into a Dialog.
-	 * 
-	 * @param xtype
-	 * @param widgetField
-	 * @param ctWidgetField
-	 * @param containingClass
-	 * @param ctContainingClass
-	 * @param xtypeMap
-	 * @param xTypeToWidgetMakerMap
-	 * @param classLoader
-	 * @param classPool
-	 * @param useDotSlashInName
-	 * @return A constructed DialogElement
-	 * @throws ClassNotFoundException
-	 * @throws InvalidComponentFieldException
-	 * @throws CannotCompileException
-	 * @throws NotFoundException
-	 * @throws SecurityException
-	 * @throws NoSuchFieldException
-	 */
-	public DialogElement make(String xtype, AccessibleObject widgetField, CtMember ctWidgetField,
-		Class<?> containingClass, CtClass ctContainingClass, Map<Class<?>, WidgetConfigHolder> xtypeMap,
-		Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool,
-		boolean useDotSlashInName) throws ClassNotFoundException, InvalidComponentFieldException,
-		CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException;
+    /**
+     *
+     * @return A constructed DialogElement Widget
+     *
+     * @throws InvalidComponentFieldException
+     * @throws NotFoundException
+     * @throws ClassNotFoundException
+     * @throws SecurityException
+     * @throws CannotCompileException
+     * @throws NoSuchFieldException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException
+     * @throws NoSuchMethodException
+     */
+	public DialogElement make() throws InvalidComponentFieldException, NotFoundException, ClassNotFoundException,
+		SecurityException, CannotCompileException, NoSuchFieldException, InstantiationException,
+		IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException;
 }

@@ -1,5 +1,8 @@
 package com.citytechinc.cq.component.annotations.widgets.rte;
 
+/**
+ * @see com.citytechinc.cq.component.annotations.widgets.RichTextEditor#table()
+ */
 public @interface Table {
 
 	public boolean table() default true;

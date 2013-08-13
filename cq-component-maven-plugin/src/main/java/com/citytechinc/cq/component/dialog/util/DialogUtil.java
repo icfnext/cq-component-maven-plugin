@@ -1,13 +1,10 @@
 package com.citytechinc.cq.component.dialog.util;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javassist.CannotCompileException;
@@ -20,22 +17,20 @@ import javassist.NotFoundException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
-import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
-import org.apache.commons.io.IOUtils;
+import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.DialogField;
+import com.citytechinc.cq.component.annotations.Tab;
 import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
+import com.citytechinc.cq.component.dialog.Dialog;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.exception.OutputFailureException;
 import com.citytechinc.cq.component.dialog.factory.DialogFactory;
-import com.citytechinc.cq.component.dialog.impl.Dialog;
-import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
-import com.citytechinc.cq.component.dialog.xml.DialogXmlWriter;
+import com.citytechinc.cq.component.dialog.widget.WidgetRegistry;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
-import com.citytechinc.cq.component.maven.util.WidgetConfigHolder;
 
 public class DialogUtil {
 	private DialogUtil() {
@@ -64,20 +59,10 @@ public class DialogUtil {
 		throws OutputFailureException, IOException, ParserConfigurationException, TransformerException,
 		ClassNotFoundException, IllegalArgumentException, SecurityException, IllegalAccessException,
 		InvocationTargetException, NoSuchMethodException {
-		File componentOutputDirectory = ComponentMojoUtil.getOutputDirectoryForComponentClass(transformer,
-			componentClass, buildDirectory, componentPathBase, defaultComponentPathSuffix);
 
-		File dialogFile = new File(componentOutputDirectory, dialog.getFileName());
+		return ComponentMojoUtil.writeElementToFile(transformer, dialog, componentClass, buildDirectory,
+			componentPathBase, defaultComponentPathSuffix, dialog.getFileName());
 
-		if (dialogFile.exists()) {
-			dialogFile.delete();
-		}
-
-		dialogFile.createNewFile();
-
-		DialogXmlWriter.writeDialog(dialog, new FileOutputStream(dialogFile));
-
-		return dialogFile;
 	}
 
 	/**
@@ -97,32 +82,9 @@ public class DialogUtil {
 	public static void writeDialogToArchiveFile(ComponentNameTransformer transformer, File dialogFile,
 		CtClass componentClass, ZipArchiveOutputStream archiveStream, Set<String> reservedNames,
 		String componentPathBase, String defaultComponentPathSuffix) throws IOException, ClassNotFoundException {
-		String dialogFilePath = ComponentMojoUtil.getComponentBasePathForComponentClass(componentClass,
-			componentPathBase)
-			+ "/"
-			+ ComponentMojoUtil.getComponentPathSuffixForComponentClass(componentClass, defaultComponentPathSuffix)
-			+ "/"
-			+ ComponentMojoUtil.getComponentNameForComponentClass(transformer, componentClass)
-			+ "/"
-			+ dialogFile.getName();
 
-		ComponentMojoUtil.getLog().debug("Archiving dialog file " + dialogFilePath);
-
-		// TODO: I'd like to move this check somewhere before we go through the
-		// trouble of creating the dialog object itself
-		if (!reservedNames.contains(dialogFilePath.toLowerCase())) {
-
-			ZipArchiveEntry entry = new ZipArchiveEntry(dialogFile, dialogFilePath);
-
-			archiveStream.putArchiveEntry(entry);
-
-			IOUtils.copy(new FileInputStream(dialogFile), archiveStream);
-
-			archiveStream.closeArchiveEntry();
-
-		} else {
-			ComponentMojoUtil.getLog().debug("Existing file found at " + dialogFilePath);
-		}
+		ComponentMojoUtil.writeElementToArchiveFile(transformer, dialogFile, componentClass, archiveStream,
+			reservedNames, componentPathBase, defaultComponentPathSuffix, "/" + dialogFile.getName());
 	}
 
 	/**
@@ -154,50 +116,54 @@ public class DialogUtil {
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 * @throws NoSuchMethodException
+	 * @throws InstantiationException
 	 */
 	public static List<Dialog> buildDialogsFromClassList(ComponentNameTransformer transformer, List<CtClass> classList,
-		ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames, Map<Class<?>, WidgetConfigHolder> xtypeMap,
-		Map<String, WidgetMaker> widgetMakerMap, ClassLoader classLoader, ClassPool classPool, File buildDirectory,
-		String componentPathBase, String defaultComponentPathSuffix) throws InvalidComponentClassException,
-		InvalidComponentFieldException, OutputFailureException, IOException, ParserConfigurationException,
-		TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException,
-		NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException,
-		NoSuchMethodException {
+		ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames, WidgetRegistry widgetRegistry,
+		ClassLoader classLoader, ClassPool classPool, File buildDirectory, String componentPathBase,
+		String defaultComponentPathSuffix) throws InvalidComponentClassException, InvalidComponentFieldException,
+		OutputFailureException, IOException, ParserConfigurationException, TransformerException,
+		ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException,
+		IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException,
+		InstantiationException {
 
 		final List<Dialog> dialogList = new ArrayList<Dialog>();
 
 		for (CtClass curClass : classList) {
 			ComponentMojoUtil.getLog().debug("Checking class for Component annotation " + curClass);
 
-			Component annotation = (Component) curClass.getAnnotation(Component.class);
-
-			ComponentMojoUtil.getLog().debug("Annotation : " + annotation);
-
-			if (annotation != null) {
-				boolean hasDialogField = false;
-				for (CtField curField : ComponentMojoUtil.collectFields(curClass)) {
-					if (curField.hasAnnotation(DialogField.class)) {
-						hasDialogField = true;
+			boolean hasDialogFieldOrCQIncludeTab = false;
+			for (CtField curField : ComponentMojoUtil.collectFields(curClass)) {
+				if (curField.hasAnnotation(DialogField.class)) {
+					hasDialogFieldOrCQIncludeTab = true;
+					break;
+				}
+			}
+			if (!hasDialogFieldOrCQIncludeTab) {
+				for (CtMethod curMethod : ComponentMojoUtil.collectMethods(curClass)) {
+					if (curMethod.hasAnnotation(DialogField.class)) {
+						hasDialogFieldOrCQIncludeTab = true;
 						break;
 					}
 				}
-				if (!hasDialogField) {
-					for (CtMethod curMethod : ComponentMojoUtil.collectMethods(curClass)) {
-						if (curMethod.hasAnnotation(DialogField.class)) {
-							hasDialogField = true;
-							break;
-						}
+			}
+			if (!hasDialogFieldOrCQIncludeTab) {
+				Component componentAnnotation = (Component) curClass.getAnnotation(Component.class);
+				for (Tab tab : componentAnnotation.tabs()) {
+					if (StringUtils.isNotEmpty(tab.path())) {
+						hasDialogFieldOrCQIncludeTab = true;
+						break;
 					}
 				}
-				if (hasDialogField) {
-					ComponentMojoUtil.getLog().debug("Processing Component Class " + curClass);
-					Dialog builtDialog = DialogFactory.make(curClass, xtypeMap, widgetMakerMap, classLoader, classPool);
-					dialogList.add(builtDialog);
-					File dialogFile = writeDialogToFile(transformer, builtDialog, curClass, buildDirectory,
-						componentPathBase, defaultComponentPathSuffix);
-					writeDialogToArchiveFile(transformer, dialogFile, curClass, zipOutputStream, reservedNames,
-						componentPathBase, defaultComponentPathSuffix);
-				}
+			}
+			if (hasDialogFieldOrCQIncludeTab) {
+				ComponentMojoUtil.getLog().debug("Processing Component Class " + curClass);
+				Dialog builtDialog = DialogFactory.make(curClass, widgetRegistry, classLoader, classPool);
+				dialogList.add(builtDialog);
+				File dialogFile = writeDialogToFile(transformer, builtDialog, curClass, buildDirectory,
+					componentPathBase, defaultComponentPathSuffix);
+				writeDialogToArchiveFile(transformer, dialogFile, curClass, zipOutputStream, reservedNames,
+					componentPathBase, defaultComponentPathSuffix);
 			}
 		}
 

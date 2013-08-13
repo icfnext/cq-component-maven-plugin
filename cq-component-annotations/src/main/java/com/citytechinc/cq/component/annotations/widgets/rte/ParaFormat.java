@@ -1,6 +1,8 @@
 package com.citytechinc.cq.component.annotations.widgets.rte;
 
-//TODO: Finish
+/**
+ * @see com.citytechinc.cq.component.annotations.widgets.RichTextEditor#paraformat()
+ */
 public @interface ParaFormat {
 
 	public ParaFormatFormat[] formats() default {};

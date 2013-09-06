@@ -7,29 +7,44 @@
 	<packaging>pom</packaging>
 	<version>2.1.0-SNAPSHOT</version>
 	<name>CQ Component Plugin</name>
+	<description>Plugin enabling annotation driven CQ5 Component development.</description>
 
 	<modules>
 		<module>cq-component-annotations</module>
 		<module>cq-component-maven-plugin</module>
 	</modules>
 
+	<organization>
+        <name>CITYTECH, Inc.</name>
+        <url>http://www.citytechinc.com</url>
+    </organization>
+
+	<url>http://code.citytechinc.com/cq-component-maven-plugin/index.html</url>
+
+	<developers>
+        <developer>
+            <name>Michael Hodgdon</name>
+            <email>mhodgdon@citytechinc.com</email>
+        </developer>
+        <developer>
+            <name>Paul Michelotti</name>
+            <email>pmichelotti@citytechinc.com</email>
+        </developer>
+    </developers>
+
+	<licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
 	<scm>
 		<connection>scm:git:git@github.com:Citytechinc/cq-component-maven-plugin.git</connection>
 		<url>https://github.com/Citytechinc/cq-component-maven-plugin</url>
 		<developerConnection>scm:git:git@github.com:Citytechinc/cq-component-maven-plugin.git</developerConnection>
 	</scm>
-
-	<distributionManagement>
-		<repository>
-			<id>citytech-releases</id>
-			<url>http://nexus.citytech.ctmsp.com/content/repositories/releases</url>
-		</repository>
-		<snapshotRepository>
-			<id>citytech-snapshots</id>
-			<url>http://nexus.citytech.ctmsp.com/content/repositories/snapshots</url>
-			<uniqueVersion>false</uniqueVersion>
-		</snapshotRepository>
-	</distributionManagement>
 
 	<build>
 		<plugins>
@@ -67,6 +82,14 @@
 					<skipDeploy>true</skipDeploy>
 				</configuration>
 			</plugin>
+	        <plugin>
+	            <groupId>com.atlassian.maven.plugins</groupId>
+	            <artifactId>maven-jgitflow-plugin</artifactId>
+	            <version>1.0-alpha20</version>
+	            <configuration>
+	                <noDeploy>true</noDeploy>
+	            </configuration>
+	        </plugin>
 		</plugins>
 	</build>
 
@@ -101,6 +124,31 @@
 				</plugins>
 			</build>
 		</profile>
+		<profile>
+	        <id>sign-artifacts</id>
+	        <activation>
+	            <property>
+	                <name>sign-artifacts</name>
+	            </property>
+	        </activation>
+	        <build>
+	            <plugins>
+	                <plugin>
+	                    <groupId>org.apache.maven.plugins</groupId>
+	                    <artifactId>maven-gpg-plugin</artifactId>
+	                    <version>1.4</version>
+	                    <executions>
+	                        <execution>
+	                            <phase>verify</phase>
+	                            <goals>
+	                                <goal>sign</goal>
+	                            </goals>
+	                        </execution>
+	                    </executions>
+	                </plugin>
+	           </plugins>
+	       </build>
+	    </profile>
 	</profiles>
 
 	<dependencyManagement>

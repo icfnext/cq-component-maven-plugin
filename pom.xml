@@ -46,6 +46,13 @@
 		<developerConnection>scm:git:git@github.com:Citytechinc/cq-component-maven-plugin.git</developerConnection>
 	</scm>
 
+	<distributionManagement>
+        <repository>
+            <id>sonatype-nexus-staging</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
 	<build>
 		<plugins>
 			<plugin>

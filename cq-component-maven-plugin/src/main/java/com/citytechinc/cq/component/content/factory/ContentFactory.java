@@ -15,21 +15,19 @@
  */
 package com.citytechinc.cq.component.content.factory;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javassist.CtClass;
-
-import org.codehaus.plexus.util.StringUtils;
-
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.ContentProperty;
 import com.citytechinc.cq.component.content.Content;
 import com.citytechinc.cq.component.content.ContentParameters;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
 import com.citytechinc.cq.component.xml.NameSpacedAttribute;
+import javassist.CtClass;
+import org.codehaus.plexus.util.StringUtils;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ContentFactory {
 
@@ -60,9 +58,19 @@ public class ContentFactory {
 		parameters.setTitle(getTitleForComponent(componentClass, componentAnnotation));
 		parameters.setResourceSuperType(getResourceSuperTypeForComponent(componentAnnotation));
 		parameters.setAdditionalProperties(getAdditionalPropertiesForComponent(componentAnnotation));
+        parameters.setClassName(componentClass.getName());
+        parameters.setInstanceName(getInstanceNameForComponent(componentClass, componentAnnotation));
 
 		return new Content(parameters);
 	}
+
+    private static String getInstanceNameForComponent(CtClass componentClass, Component componentAnnotation) {
+        if (StringUtils.isNotEmpty(componentAnnotation.instanceName())) {
+            return componentAnnotation.instanceName();
+        }
+
+        return StringUtils.uncapitalise(componentClass.getSimpleName());
+    }
 
 	private static Map<String, ?> getAdditionalPropertiesForComponent(Component componentAnnotation) {
 		if (componentAnnotation.contentAdditionalProperties().length > 0) {

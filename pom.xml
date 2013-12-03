@@ -52,6 +52,10 @@
         </repository>
     </distributionManagement>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -97,6 +101,15 @@
 	            </configuration>
 	        </plugin>
 		</plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.mycila.maven-license-plugin</groupId>
+                    <artifactId>maven-license-plugin</artifactId>
+                    <version>1.9.0</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
 	</build>
 
 	<profiles>

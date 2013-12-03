@@ -39,7 +39,6 @@ public class Content extends AbstractXmlElement {
 	private final NameSpacedAttribute<String> title;
 	private final NameSpacedAttribute<String> resourceSuperType;
     private final String className;
-    private final String instanceName;
 
 	public Content(ContentParameters parameters) {
 		super(parameters);
@@ -64,7 +63,6 @@ public class Content extends AbstractXmlElement {
 		resourceSuperType = new NameSpacedAttribute<String>(Constants.SLING_NS_URI, Constants.SLING_NS_PREFIX,
 			parameters.getResourceSuperType());
         className = parameters.getClassName();
-        instanceName = parameters.getInstanceName();
 	}
 
 	public List<String> getAllowedChildren() {
@@ -86,10 +84,6 @@ public class Content extends AbstractXmlElement {
 	public NameSpacedAttribute<String> getCellName() {
 		return cellName;
 	}
-
-    public String getInstanceName() {
-        return instanceName;
-    }
 
     public NameSpacedAttribute<Boolean> getIsContainer() {
 		return isContainer;

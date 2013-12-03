@@ -59,18 +59,9 @@ public class ContentFactory {
 		parameters.setResourceSuperType(getResourceSuperTypeForComponent(componentAnnotation));
 		parameters.setAdditionalProperties(getAdditionalPropertiesForComponent(componentAnnotation));
         parameters.setClassName(componentClass.getName());
-        parameters.setInstanceName(getInstanceNameForComponent(componentClass, componentAnnotation));
 
 		return new Content(parameters);
 	}
-
-    private static String getInstanceNameForComponent(CtClass componentClass, Component componentAnnotation) {
-        if (StringUtils.isNotEmpty(componentAnnotation.instanceName())) {
-            return componentAnnotation.instanceName();
-        }
-
-        return StringUtils.uncapitalise(componentClass.getSimpleName());
-    }
 
 	private static Map<String, ?> getAdditionalPropertiesForComponent(Component componentAnnotation) {
 		if (componentAnnotation.contentAdditionalProperties().length > 0) {

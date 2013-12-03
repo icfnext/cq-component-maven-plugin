@@ -36,7 +36,6 @@ public class ContentParameters extends XmlElementParameters {
 	private String title;
 	private String resourceSuperType;
     private String className;
-    private String instanceName;
 
     public String getClassName() {
         return className;
@@ -44,14 +43,6 @@ public class ContentParameters extends XmlElementParameters {
 
     public void setClassName(String className) {
         this.className = className;
-    }
-
-    public String getInstanceName() {
-        return instanceName;
-    }
-
-    public void setInstanceName(String instanceName) {
-        this.instanceName = instanceName;
     }
 
     public List<String> getAllowedChildren() {

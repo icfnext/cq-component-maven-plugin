@@ -325,6 +325,4 @@ public @interface Component {
 	 * @return boolean
 	 */
 	boolean disableTargeting() default false;
-
-    String instanceName() default "";
 }

@@ -52,7 +52,7 @@ public abstract class AbstractWidget extends AbstractDialogElement {
 	 * 
 	 * @return xtype of the Widget
 	 */
-	public final String getXtype() {
+	public String getXtype() {
 		return xtype;
 	}
 
@@ -60,7 +60,7 @@ public abstract class AbstractWidget extends AbstractDialogElement {
 	 * 
 	 * @return name of the Widget
 	 */
-	public final String getName() {
+	public String getName() {
 		return name;
 	}
 
@@ -68,7 +68,7 @@ public abstract class AbstractWidget extends AbstractDialogElement {
 	 * 
 	 * @return field label to be applied to the rendered Widget
 	 */
-	public final String getFieldLabel() {
+	public String getFieldLabel() {
 		return fieldLabel;
 	}
 
@@ -76,7 +76,7 @@ public abstract class AbstractWidget extends AbstractDialogElement {
 	 * 
 	 * @return field description to be applied to the rendered Widget
 	 */
-	public final String getFieldDescription() {
+	public String getFieldDescription() {
 		return fieldDescription;
 	}
 
@@ -85,7 +85,7 @@ public abstract class AbstractWidget extends AbstractDialogElement {
 	 * @return Indication of whether the Widget may be left blank in an
 	 *         authoring Dialog
 	 */
-	public final boolean isAllowBlank() {
+	public boolean isAllowBlank() {
 		return allowBlank;
 	}
 
@@ -94,7 +94,7 @@ public abstract class AbstractWidget extends AbstractDialogElement {
 	 * @return Indication of whether the field label should be hidden for the
 	 *         Widget in the authoring Dialog
 	 */
-	public final boolean isHideLabel() {
+	public boolean isHideLabel() {
 		return hideLabel;
 	}
 
@@ -102,7 +102,7 @@ public abstract class AbstractWidget extends AbstractDialogElement {
 	 * 
 	 * @return Default value of the Widget input
 	 */
-	public final String getDefaultValue() {
+	public String getDefaultValue() {
 		return defaultValue;
 	}
 
@@ -110,7 +110,7 @@ public abstract class AbstractWidget extends AbstractDialogElement {
 	 * 
 	 * @param name
 	 */
-	public final void setName(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 

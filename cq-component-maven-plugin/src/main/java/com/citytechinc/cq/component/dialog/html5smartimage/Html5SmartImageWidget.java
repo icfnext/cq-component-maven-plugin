@@ -150,4 +150,9 @@ public class Html5SmartImageWidget extends AbstractWidget implements TabbableDia
 			return "/" + originalName + ".img.png";
 		}
 	}
+
+	@Override
+	public String getName() {
+		return getNameAsPrefix(originalName);
+	}
 }

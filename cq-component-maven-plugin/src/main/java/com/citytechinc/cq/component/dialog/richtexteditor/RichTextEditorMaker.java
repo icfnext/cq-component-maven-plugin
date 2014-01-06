@@ -383,7 +383,7 @@ public class RichTextEditorMaker extends AbstractWidgetMaker {
 				styleList.add(new RteStyle(styleParameters));
 			}
 			RtePluginParameters widgetParameters = new RtePluginParameters();
-			widgetParameters.setFieldName("spellcheck");
+			widgetParameters.setFieldName("styles");
 			widgetParameters.setFeatures(ALL_FEATURES);
 			widgetParameters.setContainedElements(styleList);
 			return new RtePlugin(widgetParameters);

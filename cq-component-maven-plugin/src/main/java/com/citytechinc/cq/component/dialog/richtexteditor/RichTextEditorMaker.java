@@ -382,10 +382,15 @@ public class RichTextEditorMaker extends AbstractWidgetMaker {
 				styleParameters.setText(stylesAnnotation.styles()[i].text());
 				styleList.add(new RteStyle(styleParameters));
 			}
+			WidgetCollectionParameters wcp = new WidgetCollectionParameters();
+			wcp.setContainedElements(styleList);
+			wcp.setFieldName("styles");
+
+			List<DialogElement> stylesDialogElements = Arrays.asList(new DialogElement[] { new WidgetCollection(wcp) });
 			RtePluginParameters widgetParameters = new RtePluginParameters();
-			widgetParameters.setFieldName("spellcheck");
+			widgetParameters.setFieldName("styles");
 			widgetParameters.setFeatures(ALL_FEATURES);
-			widgetParameters.setContainedElements(styleList);
+			widgetParameters.setContainedElements(stylesDialogElements);
 			return new RtePlugin(widgetParameters);
 		}
 

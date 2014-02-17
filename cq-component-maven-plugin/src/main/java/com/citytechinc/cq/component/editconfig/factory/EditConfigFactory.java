@@ -249,7 +249,7 @@ public class EditConfigFactory {
 	}
 
 	private static final EditConfigDropTargets getDropTargetsForEditConfig(Component componentAnnotation) {
-		if (componentAnnotation.actionConfigs().length > 0) {
+		if (componentAnnotation.dropTargets().length > 0) {
 
 			List<EditConfigDropTarget> dropTargets = new ArrayList<EditConfigDropTarget>();
 

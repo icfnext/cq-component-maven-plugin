@@ -40,6 +40,7 @@ public class NumberFieldWidgetMaker extends AbstractWidgetMaker {
 		parameters.setDefaultValue(getDefaultValueForField());
 		parameters.setHideLabel(getHideLabelForField());
 		parameters.setListeners(getListeners());
+		parameters.setAdditionalProperties(getAdditionalPropertiesForField());
 
 		parameters.setAllowDecimals(getAllowDecimalsForField(numberFieldAnnotation));
 		parameters.setAllowNegative(getAllowNegativeForField(numberFieldAnnotation));

@@ -22,7 +22,7 @@ import java.lang.annotation.Target;
 
 /**
  * Represents a Widget of type CQ.Ext.form.NumberField
- *
+ * 
  */
 @Retention(RetentionPolicy.CLASS)
 @Target({ ElementType.FIELD, ElementType.METHOD })
@@ -35,29 +35,29 @@ public @interface NumberField {
 
 	/**
 	 * False to disallow decimal values
-	 *
+	 * 
 	 * @return boolean
 	 */
-	boolean allowDecimals() default true;
+	boolean allowDecimals() default ALLOW_DECIMALS_DEFAULT;
 
 	/**
 	 * False to prevent entering a negative sign
-	 *
+	 * 
 	 * @return boolean
 	 */
-	boolean allowNegative() default true;
+	boolean allowNegative() default ALLOW_NEGATIVE_DEFAULT;
 
 	/**
 	 * The maximum precision to display after the decimal separator
-	 *
+	 * 
 	 * @return int
 	 */
-	int decimalPrecision() default 2;
+	int decimalPrecision() default DECIMAL_PRECISION_DEFAULT;
 
 	/**
 	 * Character(s) to allow as the decimal separator
-	 *
+	 * 
 	 * @return String
 	 */
-	String decimalSeparator() default ".";
+	String decimalSeparator() default DECIMAL_SEPARATOR_DEFAULT;
 }

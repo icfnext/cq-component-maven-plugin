@@ -18,8 +18,10 @@ package com.citytechinc.cq.component.dialog.dialogfieldset;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
+import com.citytechinc.cq.component.dialog.DialogElementComparator;
 import javassist.CannotCompileException;
 import javassist.CtMember;
 import javassist.NotFoundException;
@@ -90,11 +92,13 @@ public class DialogFieldSetWidgetMaker extends AbstractWidgetMaker {
 
 		for (CtMember curField : fieldsAndMethods) {
 			if (curField.hasAnnotation(DialogField.class)) {
-
 				Class<?> fieldClass = parameters.getClassLoader().loadClass(curField.getDeclaringClass().getName());
 
+                DialogField dialogField = (DialogField)curField.getAnnotation(DialogField.class);
+                double ranking = dialogField.ranking();
+
 				WidgetMakerParameters curFieldMember = new WidgetMakerParameters(
-					(DialogField) curField.getAnnotation(DialogField.class), curField, fieldClass,
+					dialogField, curField, fieldClass,
 					parameters.getClassLoader(), parameters.getClassPool(), parameters.getWidgetRegistry(), null, true);
 
 				DialogElement builtFieldWidget = WidgetFactory.make(curFieldMember, -1);
@@ -114,9 +118,11 @@ public class DialogFieldSetWidgetMaker extends AbstractWidgetMaker {
 					}
 					widget.setName(newName);
 				}
+                builtFieldWidget.setRanking(ranking);
 				elements.add(builtFieldWidget);
 			}
 		}
+        Collections.sort(elements, new DialogElementComparator());
 		WidgetCollectionParameters wcp = new WidgetCollectionParameters();
 		wcp.setContainedElements(elements);
 		wcp.setFieldName(ITEMS);

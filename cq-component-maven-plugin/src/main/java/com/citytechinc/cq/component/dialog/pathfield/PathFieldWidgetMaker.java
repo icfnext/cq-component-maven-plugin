@@ -39,6 +39,7 @@ public class PathFieldWidgetMaker extends AbstractWidgetMaker {
 		parameters.setDefaultValue(getDefaultValueForField());
 		parameters.setHideLabel(getHideLabelForField());
 		parameters.setListeners(getListeners());
+		parameters.setAdditionalProperties(getAdditionalPropertiesForField());
 
 		parameters.setEscapeAmp(getEscapeAmpForField(pathFieldAnnotation));
 		parameters.setHideTrigger(getHideTriggerForField(pathFieldAnnotation));

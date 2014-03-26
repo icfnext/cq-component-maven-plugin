@@ -40,6 +40,7 @@ public class HiddenWidgetMaker extends AbstractWidgetMaker {
 		parameters.setDefaultValue(getDefaultValueForField());
 		parameters.setHideLabel(getHideLabelForField());
 		parameters.setListeners(getListeners());
+		parameters.setAdditionalProperties(getAdditionalPropertiesForField());
 
 		parameters.setValue(hiddenFieldAnnotation.value());
 

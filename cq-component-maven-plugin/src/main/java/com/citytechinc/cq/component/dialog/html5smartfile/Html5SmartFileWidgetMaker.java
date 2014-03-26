@@ -42,6 +42,7 @@ public class Html5SmartFileWidgetMaker extends AbstractWidgetMaker {
 		parameters.setDefaultValue(getDefaultValueForField());
 		parameters.setHideLabel(getHideLabelForField());
 		parameters.setListeners(getListeners());
+		parameters.setAdditionalProperties(getAdditionalPropertiesForField());
 
 		parameters.setAllowFileNameEditing(getAllowFileNameEditingForField(smartFileAnnotation));
 		parameters.setAllowFileReference(getAllowFileReferenceForField(smartFileAnnotation));

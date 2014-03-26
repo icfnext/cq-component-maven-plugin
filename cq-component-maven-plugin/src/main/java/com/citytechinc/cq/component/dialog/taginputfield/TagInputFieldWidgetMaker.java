@@ -48,6 +48,7 @@ public class TagInputFieldWidgetMaker extends AbstractWidgetMaker {
 		parameters.setHideLabel(getHideLabelForField());
 		parameters.setListeners(getListeners());
 		parameters.setContainedElements(getWidgetCollectionHolderForField(tagAnnotation));
+		parameters.setAdditionalProperties(getAdditionalPropertiesForField());
 
 		parameters.setDisplayTitles(tagAnnotation.displayTitles());
 

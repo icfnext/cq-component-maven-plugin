@@ -42,6 +42,7 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
 		parameters.setDefaultValue(getDefaultValueForField());
 		parameters.setHideLabel(getHideLabelForField());
 		parameters.setListeners(getListeners());
+		parameters.setAdditionalProperties(getAdditionalPropertiesForField());
 
 		parameters.setDisableFlush(getDisableFlushForField(smartImageAnnotation));
 		parameters.setDisableInfo(getDisableInfoForField(smartImageAnnotation));
@@ -131,11 +132,11 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
 
 	protected String getDdGroupsForField(Html5SmartImage smartImageAnnotation) {
 
-	    if (smartImageAnnotation.ddGroups().length != 0) {
-            return "[" + StringUtils.join(smartImageAnnotation.ddGroups(), ",") + "]";
-        }
+		if (smartImageAnnotation.ddGroups().length != 0) {
+			return "[" + StringUtils.join(smartImageAnnotation.ddGroups(), ",") + "]";
+		}
 
-        return null;
+		return null;
 
 	}
 

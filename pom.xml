@@ -293,6 +293,11 @@
 				<artifactId>gradle-base-services-groovy</artifactId>
 				<version>${gradle.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>1.7.2</version>
+			</dependency>
 
 			<dependency>
 				<groupId>org.codehaus.groovy</groupId>

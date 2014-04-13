@@ -27,11 +27,13 @@ import com.citytechinc.cq.component.dialog.ComponentNameTransformer
 import com.citytechinc.cq.component.dialog.widget.WidgetRegistry
 import com.citytechinc.cq.component.dialog.widget.impl.DefaultWidgetRegistry
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil
+import com.citytechinc.cq.component.maven.util.LogSingleton
 
 class GenerateComponentsTask extends DefaultTask{
 
 	@TaskAction
 	def generateComponents(){
+		LogSingleton.instance.logger=new GradleMavenLog(this.logger)
 		def urls=[]
 		urls.addAll(project.sourceSets.main.runtimeClasspath.collect { it.toURI().toURL() }.flatten())
 		ClassLoader classLoader = new URLClassLoader(urls as URL[],this.class.classLoader)

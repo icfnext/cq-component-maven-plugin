@@ -42,6 +42,7 @@ public class SizeFieldWidgetMaker extends AbstractWidgetMaker {
 		parameters.setDefaultValue(getDefaultValueForField());
 		parameters.setHideLabel(getHideLabelForField());
 		parameters.setListeners(getListeners());
+		parameters.setAdditionalProperties(getAdditionalPropertiesForField());
 
 		parameters.setHeightParameter(getHeightParameterForField(sizeFieldAnnotation));
 		parameters.setHeightPrefix(getHeightPrefixForField(sizeFieldAnnotation));

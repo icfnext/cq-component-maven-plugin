@@ -25,7 +25,7 @@ import com.citytechinc.cq.component.dialog.TabbableDialogElement;
 @Widget(annotationClass = Html5SmartImage.class, makerClass = Html5SmartImageWidgetMaker.class, xtype = Html5SmartImageWidget.XTYPE)
 public class Html5SmartImageWidget extends AbstractWidget implements TabbableDialogElement {
 	public static final String XTYPE = "html5smartimage";
-	private final String originalName;
+	private String originalName;
 	private final boolean disableFlush;
 	private final boolean disableInfo;
 	private final boolean disableZoom;
@@ -154,5 +154,10 @@ public class Html5SmartImageWidget extends AbstractWidget implements TabbableDia
 	@Override
 	public String getName() {
 		return getNameAsPrefix(originalName);
+	}
+
+	@Override
+	public void setName(String name) {
+		originalName = name;
 	}
 }

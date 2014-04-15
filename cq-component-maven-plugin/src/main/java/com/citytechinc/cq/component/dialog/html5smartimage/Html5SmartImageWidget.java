@@ -158,6 +158,13 @@ public class Html5SmartImageWidget extends AbstractWidget implements TabbableDia
 
 	@Override
 	public void setName(String name) {
-		originalName = name;
+		String newName = name;
+		if (name.startsWith("./")) {
+			newName = newName.substring(2);
+		}
+		if (name.endsWith("/")) {
+			newName = newName.substring(0, newName.length() - 1);
+		}
+		originalName = newName;
 	}
 }

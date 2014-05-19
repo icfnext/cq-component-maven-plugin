@@ -15,14 +15,20 @@
  */
 package com.citytechinc.cq.component.dialog.html5smartimage;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.codehaus.plexus.util.StringUtils;
 
+import com.citytechinc.cq.component.annotations.widgets.AspectRatio;
 import com.citytechinc.cq.component.annotations.widgets.Html5SmartImage;
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 
 public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
+	private static final String ASPECT_RATIO_PREFIX = "aspectRatio";
 
 	public Html5SmartImageWidgetMaker(WidgetMakerParameters parameters) {
 		super(parameters);
@@ -57,6 +63,14 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
 		parameters.setAllowUpload(getAllowUploadForField(smartImageAnnotation));
 		parameters.setHeight(getHeightForField(smartImageAnnotation));
 		parameters.setTab(smartImageAnnotation.tab());
+
+		List<DialogElement> children = new ArrayList<DialogElement>();
+
+		if (smartImageAnnotation.cropAspectRatios().length > 0) {
+			children.add(buildCropConfig(smartImageAnnotation.cropAspectRatios()));
+		}
+
+		parameters.setContainedElements(children);
 
 		return new Html5SmartImageWidget(parameters);
 
@@ -164,5 +178,29 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
 
 	protected boolean getAllowUploadForField(Html5SmartImage smartImageAnnotation) {
 		return smartImageAnnotation.allowUpload();
+	}
+
+	protected CropConfig buildCropConfig(AspectRatio[] cropAspectRatios) {
+		List<com.citytechinc.cq.component.dialog.html5smartimage.AspectRatio> aspectRatioList = new ArrayList<com.citytechinc.cq.component.dialog.html5smartimage.AspectRatio>();
+		int count = 0;
+		for (AspectRatio cropAspectRatio : cropAspectRatios) {
+			AspectRatioParameters arp = new AspectRatioParameters();
+			arp.setText(cropAspectRatio.text());
+			arp.setWidth(cropAspectRatio.width());
+			arp.setHeight(cropAspectRatio.height());
+			arp.setFieldName(ASPECT_RATIO_PREFIX + count++);
+			com.citytechinc.cq.component.dialog.html5smartimage.AspectRatio aspectRatio = new com.citytechinc.cq.component.dialog.html5smartimage.AspectRatio(
+				arp);
+			aspectRatioList.add(aspectRatio);
+		}
+
+		AspectRatiosParameters arp = new AspectRatiosParameters();
+		arp.setContainedElements(aspectRatioList);
+		AspectRatios aspectRatios = new AspectRatios(arp);
+
+		CropConfigParameters ccp = new CropConfigParameters();
+		ccp.setContainedElements(Arrays.asList(new DialogElement[] { aspectRatios }));
+
+		return new CropConfig(ccp);
 	}
 }

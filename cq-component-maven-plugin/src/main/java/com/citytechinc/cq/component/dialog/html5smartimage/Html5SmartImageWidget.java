@@ -25,7 +25,7 @@ import com.citytechinc.cq.component.dialog.TabbableDialogElement;
 @Widget(annotationClass = Html5SmartImage.class, makerClass = Html5SmartImageWidgetMaker.class, xtype = Html5SmartImageWidget.XTYPE)
 public class Html5SmartImageWidget extends AbstractWidget implements TabbableDialogElement {
 	public static final String XTYPE = "html5smartimage";
-	private final String originalName;
+	private String originalName;
 	private final boolean disableFlush;
 	private final boolean disableInfo;
 	private final boolean disableZoom;
@@ -88,6 +88,9 @@ public class Html5SmartImageWidget extends AbstractWidget implements TabbableDia
 	}
 
 	public String getCropParameter() {
+		if (!StringUtils.isEmpty(cropParameter)) {
+			return getNameAsPrefix(originalName) + cropParameter;
+		}
 		return cropParameter;
 	}
 
@@ -147,12 +150,24 @@ public class Html5SmartImageWidget extends AbstractWidget implements TabbableDia
 		if (StringUtils.isEmpty(originalName)) {
 			return ".img.png";
 		} else {
-			return "/" + originalName + ".img.png";
+			return ".img." + originalName + ".png";
 		}
 	}
 
 	@Override
 	public String getName() {
 		return getNameAsPrefix(originalName);
+	}
+
+	@Override
+	public void setName(String name) {
+		String newName = name;
+		if (name.startsWith("./")) {
+			newName = newName.substring(2);
+		}
+		if (name.endsWith("/")) {
+			newName = newName.substring(0, newName.length() - 1);
+		}
+		originalName = newName;
 	}
 }

@@ -28,11 +28,11 @@ import java.lang.annotation.Target;
 @Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface Html5SmartImage {
 
-    /**
-     * True to not render the flush button.
-     *
-     * @return boolean
-     */
+	/**
+	 * True to not render the flush button.
+	 *
+	 * @return boolean
+	 */
 	public boolean disableFlush() default false;
 
 	/**
@@ -50,21 +50,36 @@ public @interface Html5SmartImage {
 	public boolean disableZoom() default false;
 
 	/**
-	 * Name of the form field used for posting the cropping rect; use null or a zero-length String if the cropping tool should be disabled; the value depends on the serverside implementation; use "./imageCrop" for CQ foundation's image component; "./image/imageCrop" for the textimage component
-	 *
+	 * Name of the form field used for posting the cropping rect; use null or a
+	 * zero-length String if the cropping tool should be disabled; the value
+	 * should always be "./imageCrop" for CQ
+	 ** 
+	 * @deprecated use {@link #allowCrop()} to automatically to set the value to
+	 *             what CQ expects
 	 * @return String
 	 */
+	@Deprecated
 	public String cropParameter() default "";
 
 	/**
-	 * Name of the form field used for posting the file name. Be aware that you will have to specify a suitable value here, as there is no sensible default value available. Suitable values are dependant on their serverside counterpart and must be "./fileName" for CQ foundation's image and download components; use "./image/fileName" for the textimage component.
+	 * Name of the form field used for posting the file name. Be aware that you
+	 * will have to specify a suitable value here, as there is no sensible
+	 * default value available. Suitable values are dependant on their
+	 * serverside counterpart and must be "./fileName" for CQ foundation's image
+	 * and download components; use "./image/fileName" for the textimage
+	 * component.
 	 *
 	 * @return String
 	 */
 	public String fileNameParameter() default "fileName";
 
 	/**
-	 * Name of the form field used for posting the file reference. Be aware that you will have to specify a suitable value here, as there is no sensible default value available. Suitable values are dependant on their serverside counterpart and must be "./fileReference" for CQ foundation's image and download components; use "./image/fileReference" for the textimage component.
+	 * Name of the form field used for posting the file reference. Be aware that
+	 * you will have to specify a suitable value here, as there is no sensible
+	 * default value available. Suitable values are dependant on their
+	 * serverside counterpart and must be "./fileReference" for CQ foundation's
+	 * image and download components; use "./image/fileReference" for the
+	 * textimage component.
 	 *
 	 * @return String
 	 */
@@ -78,17 +93,29 @@ public @interface Html5SmartImage {
 	public String name() default "";
 
 	/**
-	 * Name of the form field used for posting the image map data; use null or a zero-length String if the image mapping tool should be disabled; the value depends on the serverside implementation; use "./imageMap" for CQ foundation's image component; "./image/imageMap" for the textimage component
+	 * 
+	 * Name of the form field used for posting the image map data; use null or a
+	 * zero-length String if the image mapping tool should be disabled; the
+	 * value deshould always be "./imageMap" for CQ
 	 *
+	 * @deprecated use {@link #allowMap()} to automatically to set the value to
+	 *             what CQ expects
 	 * @return String
 	 */
+	@Deprecated
 	public String mapParameter() default "";
 
 	/**
-	 * Name of the form field used for posting the rotation angle; use null or a zero-length String if the rotate tool should be disabled; the value depends on the serverside implementation; use "./imageRotate" for CQ foundation's image component; "./image/imageRotate" for the textimage component
+	 * 
+	 * Name of the form field used for posting the rotation angle; use null or a
+	 * zero-length String if the rotate tool should be disabled; The value
+	 * should always be "imageRotate" for CQ
 	 *
+	 * @deprecated use {@link #allowRotate()} to automatically to set the value
+	 *             to what CQ expects
 	 * @return String
 	 */
+	@Deprecated
 	public String rotateParameter() default "";
 
 	/**
@@ -103,17 +130,20 @@ public @interface Html5SmartImage {
 	 *
 	 * @return String[]
 	 */
-	public String[] ddGroups() default {"media"};
+	public String[] ddGroups() default { "media" };
 
 	/**
-	 * Indication of whether the HTML5 Smart Image Widget should be rendered as a stand alone tab.
+	 * Indication of whether the HTML5 Smart Image Widget should be rendered as
+	 * a stand alone tab.
 	 *
 	 * @return boolean
 	 */
 	public boolean tab() default true;
 
 	/**
-	 * Height of the SmartImage component.  Note: You must explicitly specify height if you intend to render the HTML5 Smart Image Widget outside the context of its own tab.
+	 * Height of the SmartImage component. Note: You must explicitly specify
+	 * height if you intend to render the HTML5 Smart Image Widget outside the
+	 * context of its own tab.
 	 *
 	 * @return int
 	 */
@@ -125,4 +155,36 @@ public @interface Html5SmartImage {
 	 * @return boolean
 	 */
 	public boolean allowUpload() default true;
+
+	/**
+	 * Crop Config Aspect Ratios
+	 * 
+	 * @return AspectRatio[]
+	 */
+	public AspectRatio[] cropAspectRatios() default {};
+
+	/**
+	 * Method to turn on cropping and automatically set the cropParameter; this
+	 * simplifies {@link #cropParameter()}
+	 * 
+	 * @return boolean
+	 */
+	public boolean allowCrop() default false;
+
+	/**
+	 * Method to turn on rotating and automatically set the rotateParameter;
+	 * this simplifies {@link #rotateParameter()}
+	 * 
+	 * @return boolean
+	 */
+	public boolean allowRotate() default false;
+
+	/**
+	 * Method to turn on mapping and automatically set the mapParameter; this
+	 * simplifies {@link #mapParameter()}
+	 * 
+	 * @return boolean
+	 */
+	public boolean allowMap() default false;
+
 }

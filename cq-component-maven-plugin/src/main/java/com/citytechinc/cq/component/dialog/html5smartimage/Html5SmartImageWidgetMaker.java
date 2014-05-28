@@ -15,14 +15,23 @@
  */
 package com.citytechinc.cq.component.dialog.html5smartimage;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.codehaus.plexus.util.StringUtils;
 
+import com.citytechinc.cq.component.annotations.widgets.AspectRatio;
 import com.citytechinc.cq.component.annotations.widgets.Html5SmartImage;
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 
 public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
+	private static final String ASPECT_RATIO_PREFIX = "aspectRatio";
+	private static final String DEFAULT_CROP_PARAMETER = "imageCrop";
+	private static final String DEFAULT_ROTATE_PARAMETER = "imageRotate";
+	private static final String DEFAULT_MAP_PARAMETER = "imageMap";
 
 	public Html5SmartImageWidgetMaker(WidgetMakerParameters parameters) {
 		super(parameters);
@@ -58,6 +67,14 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
 		parameters.setHeight(getHeightForField(smartImageAnnotation));
 		parameters.setTab(smartImageAnnotation.tab());
 
+		List<DialogElement> children = new ArrayList<DialogElement>();
+
+		if (smartImageAnnotation.cropAspectRatios().length > 0) {
+			children.add(buildCropConfig(smartImageAnnotation.cropAspectRatios()));
+		}
+
+		parameters.setContainedElements(children);
+
 		return new Html5SmartImageWidget(parameters);
 
 	}
@@ -72,11 +89,16 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
 		return null;
 	}
 
+	@SuppressWarnings("deprecation")
 	protected String getCropParameterForField(Html5SmartImage smartImageAnnotation) {
 		String cropParameter = smartImageAnnotation.cropParameter();
 
 		if (StringUtils.isNotEmpty(cropParameter)) {
 			return cropParameter;
+		}
+
+		if (smartImageAnnotation.allowCrop()) {
+			return DEFAULT_CROP_PARAMETER;
 		}
 
 		return null;
@@ -102,6 +124,7 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
 		return null;
 	}
 
+	@SuppressWarnings("deprecation")
 	protected String getMapParameterForField(Html5SmartImage smartImageAnnotation) {
 		String mapParameter = smartImageAnnotation.mapParameter();
 
@@ -109,13 +132,22 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
 			return mapParameter;
 		}
 
+		if (smartImageAnnotation.allowMap()) {
+			return DEFAULT_MAP_PARAMETER;
+		}
+
 		return null;
 	}
 
+	@SuppressWarnings("deprecation")
 	protected String getRotateParameterForField(Html5SmartImage smartImageAnnotation) {
 		String rotateParameter = smartImageAnnotation.rotateParameter();
 		if (StringUtils.isNotEmpty(rotateParameter)) {
 			return rotateParameter;
+		}
+
+		if (smartImageAnnotation.allowRotate()) {
+			return DEFAULT_ROTATE_PARAMETER;
 		}
 
 		return null;
@@ -164,5 +196,29 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
 
 	protected boolean getAllowUploadForField(Html5SmartImage smartImageAnnotation) {
 		return smartImageAnnotation.allowUpload();
+	}
+
+	protected CropConfig buildCropConfig(AspectRatio[] cropAspectRatios) {
+		List<com.citytechinc.cq.component.dialog.html5smartimage.AspectRatio> aspectRatioList = new ArrayList<com.citytechinc.cq.component.dialog.html5smartimage.AspectRatio>();
+		int count = 0;
+		for (AspectRatio cropAspectRatio : cropAspectRatios) {
+			AspectRatioParameters arp = new AspectRatioParameters();
+			arp.setText(cropAspectRatio.text());
+			arp.setWidth(cropAspectRatio.width());
+			arp.setHeight(cropAspectRatio.height());
+			arp.setFieldName(ASPECT_RATIO_PREFIX + count++);
+			com.citytechinc.cq.component.dialog.html5smartimage.AspectRatio aspectRatio = new com.citytechinc.cq.component.dialog.html5smartimage.AspectRatio(
+				arp);
+			aspectRatioList.add(aspectRatio);
+		}
+
+		AspectRatiosParameters arp = new AspectRatiosParameters();
+		arp.setContainedElements(aspectRatioList);
+		AspectRatios aspectRatios = new AspectRatios(arp);
+
+		CropConfigParameters ccp = new CropConfigParameters();
+		ccp.setContainedElements(Arrays.asList(new DialogElement[] { aspectRatios }));
+
+		return new CropConfig(ccp);
 	}
 }

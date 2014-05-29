@@ -88,6 +88,9 @@ public class Html5SmartImageWidget extends AbstractWidget implements TabbableDia
 	}
 
 	public String getCropParameter() {
+		if (!StringUtils.isEmpty(cropParameter)) {
+			return getNameAsPrefix(originalName) + cropParameter;
+		}
 		return cropParameter;
 	}
 
@@ -147,7 +150,7 @@ public class Html5SmartImageWidget extends AbstractWidget implements TabbableDia
 		if (StringUtils.isEmpty(originalName)) {
 			return ".img.png";
 		} else {
-			return "/" + originalName + ".img.png";
+			return ".img." + originalName + ".png";
 		}
 	}
 

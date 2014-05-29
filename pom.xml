@@ -4,7 +4,7 @@
 	<groupId>com.citytechinc.cq.cq-component-plugin</groupId>
 	<artifactId>cq-component-plugin</artifactId>
 	<packaging>pom</packaging>
-	<version>2.5.0</version>
+	<version>2.6.0</version>
 	<name>CQ Component Plugin</name>
 	<description>Plugin enabling annotation driven CQ5 Component development.</description>
 
@@ -14,30 +14,30 @@
 	</modules>
 
 	<organization>
-        <name>CITYTECH, Inc.</name>
-        <url>http://www.citytechinc.com</url>
-    </organization>
+		<name>CITYTECH, Inc.</name>
+		<url>http://www.citytechinc.com</url>
+	</organization>
 
 	<url>http://code.citytechinc.com/cq-component-maven-plugin/index.html</url>
 
 	<developers>
-        <developer>
-            <name>Michael Hodgdon</name>
-            <email>mhodgdon@citytechinc.com</email>
-        </developer>
-        <developer>
-            <name>Paul Michelotti</name>
-            <email>pmichelotti@citytechinc.com</email>
-        </developer>
-    </developers>
+		<developer>
+			<name>Michael Hodgdon</name>
+			<email>mhodgdon@citytechinc.com</email>
+		</developer>
+		<developer>
+			<name>Paul Michelotti</name>
+			<email>pmichelotti@citytechinc.com</email>
+		</developer>
+	</developers>
 
 	<licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
 	<scm>
 		<connection>scm:git:git@github.com:Citytechinc/cq-component-maven-plugin.git</connection>
@@ -46,67 +46,81 @@
 	</scm>
 
 	<distributionManagement>
-        <repository>
-            <id>sonatype-nexus-staging</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
+		<repository>
+			<id>sonatype-nexus-staging</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+	<repositories>
+		<repository>
+			<id>gradle</id>
+			<name>gradle-releases</name>
+			<url>http://repo.gradle.org/gradle/libs-releases-local</url>
+		</repository>
+		<repository>
+			<id>spring</id>
+			<name>spring-releases</name>
+			<url>http://repo.spring.io/ext-release-local</url>
+		</repository>
+	</repositories>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<gradle.version>1.6</gradle.version>
+	</properties>
 
 	<build>
 		<plugins>
-            <plugin>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9</version>
-                <executions>
-                    <execution>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>2.2.1</version>
-                <executions>
-                    <execution>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.4</version>
-                <executions>
-                    <execution>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>2.7</version>
-                <executions>
-                    <execution>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>deploy</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+			<plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9</version>
+				<executions>
+					<execution>
+						<phase>deploy</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
+				<executions>
+					<execution>
+						<phase>deploy</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<phase>deploy</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.7</version>
+				<executions>
+					<execution>
+						<phase>deploy</phase>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
@@ -141,7 +155,7 @@
 					<skipDeploy>true</skipDeploy>
 				</configuration>
 			</plugin>
-	        <plugin>
+			<plugin>
 				<groupId>com.atlassian.maven.plugins</groupId>
 				<artifactId>maven-jgitflow-plugin</artifactId>
 				<version>1.0-alpha20</version>
@@ -159,15 +173,15 @@
 				</configuration>
 			</plugin>
 		</plugins>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>com.mycila.maven-license-plugin</groupId>
-                    <artifactId>maven-license-plugin</artifactId>
-                    <version>1.9.0</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>com.mycila.maven-license-plugin</groupId>
+					<artifactId>maven-license-plugin</artifactId>
+					<version>1.9.0</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 
 	<profiles>
@@ -261,6 +275,33 @@
 				<groupId>org.reflections</groupId>
 				<artifactId>reflections</artifactId>
 				<version>0.9.9-RC1</version>
+			</dependency>
+			<!-- GRADLE -->
+			<dependency>
+				<groupId>org.gradle</groupId>
+				<artifactId>gradle-core</artifactId>
+				<version>${gradle.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.gradle</groupId>
+				<artifactId>gradle-base-services</artifactId>
+				<version>${gradle.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.gradle</groupId>
+				<artifactId>gradle-base-services-groovy</artifactId>
+				<version>${gradle.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>1.7.2</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.codehaus.groovy</groupId>
+				<artifactId>groovy-all</artifactId>
+				<version>2.2.1</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

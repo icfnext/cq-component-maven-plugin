@@ -29,6 +29,9 @@ import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 
 public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
 	private static final String ASPECT_RATIO_PREFIX = "aspectRatio";
+	private static final String DEFAULT_CROP_PARAMETER = "imageCrop";
+	private static final String DEFAULT_ROTATE_PARAMETER = "imageRotate";
+	private static final String DEFAULT_MAP_PARAMETER = "imageMap";
 
 	public Html5SmartImageWidgetMaker(WidgetMakerParameters parameters) {
 		super(parameters);
@@ -86,11 +89,16 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
 		return null;
 	}
 
+	@SuppressWarnings("deprecation")
 	protected String getCropParameterForField(Html5SmartImage smartImageAnnotation) {
 		String cropParameter = smartImageAnnotation.cropParameter();
 
 		if (StringUtils.isNotEmpty(cropParameter)) {
 			return cropParameter;
+		}
+
+		if (smartImageAnnotation.allowCrop()) {
+			return DEFAULT_CROP_PARAMETER;
 		}
 
 		return null;
@@ -116,6 +124,7 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
 		return null;
 	}
 
+	@SuppressWarnings("deprecation")
 	protected String getMapParameterForField(Html5SmartImage smartImageAnnotation) {
 		String mapParameter = smartImageAnnotation.mapParameter();
 
@@ -123,13 +132,22 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
 			return mapParameter;
 		}
 
+		if (smartImageAnnotation.allowMap()) {
+			return DEFAULT_MAP_PARAMETER;
+		}
+
 		return null;
 	}
 
+	@SuppressWarnings("deprecation")
 	protected String getRotateParameterForField(Html5SmartImage smartImageAnnotation) {
 		String rotateParameter = smartImageAnnotation.rotateParameter();
 		if (StringUtils.isNotEmpty(rotateParameter)) {
 			return rotateParameter;
+		}
+
+		if (smartImageAnnotation.allowRotate()) {
+			return DEFAULT_ROTATE_PARAMETER;
 		}
 
 		return null;

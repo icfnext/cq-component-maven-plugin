@@ -52,12 +52,13 @@ public @interface Html5SmartImage {
 	/**
 	 * Name of the form field used for posting the cropping rect; use null or a
 	 * zero-length String if the cropping tool should be disabled; the value
-	 * depends on the serverside implementation; use "./imageCrop" for CQ
-	 * foundation's image component; "./image/imageCrop" for the textimage
-	 * component
-	 *
+	 * should always be "./imageCrop" for CQ
+	 ** 
+	 * @deprecated use {@link #allowCrop()} to automatically to set the value to
+	 *             what CQ expects
 	 * @return String
 	 */
+	@Deprecated
 	public String cropParameter() default "";
 
 	/**
@@ -92,25 +93,29 @@ public @interface Html5SmartImage {
 	public String name() default "";
 
 	/**
+	 * 
 	 * Name of the form field used for posting the image map data; use null or a
 	 * zero-length String if the image mapping tool should be disabled; the
-	 * value depends on the serverside implementation; use "./imageMap" for CQ
-	 * foundation's image component; "./image/imageMap" for the textimage
-	 * component
+	 * value deshould always be "./imageMap" for CQ
 	 *
+	 * @deprecated use {@link #allowMap()} to automatically to set the value to
+	 *             what CQ expects
 	 * @return String
 	 */
+	@Deprecated
 	public String mapParameter() default "";
 
 	/**
+	 * 
 	 * Name of the form field used for posting the rotation angle; use null or a
-	 * zero-length String if the rotate tool should be disabled; the value
-	 * depends on the serverside implementation; use "./imageRotate" for CQ
-	 * foundation's image component; "./image/imageRotate" for the textimage
-	 * component
+	 * zero-length String if the rotate tool should be disabled; The value
+	 * should always be "imageRotate" for CQ
 	 *
+	 * @deprecated use {@link #allowRotate()} to automatically to set the value
+	 *             to what CQ expects
 	 * @return String
 	 */
+	@Deprecated
 	public String rotateParameter() default "";
 
 	/**
@@ -157,4 +162,29 @@ public @interface Html5SmartImage {
 	 * @return AspectRatio[]
 	 */
 	public AspectRatio[] cropAspectRatios() default {};
+
+	/**
+	 * Method to turn on cropping and automatically set the cropParameter; this
+	 * simplifies {@link #cropParameter()}
+	 * 
+	 * @return boolean
+	 */
+	public boolean allowCrop() default false;
+
+	/**
+	 * Method to turn on rotating and automatically set the rotateParameter;
+	 * this simplifies {@link #rotateParameter()}
+	 * 
+	 * @return boolean
+	 */
+	public boolean allowRotate() default false;
+
+	/**
+	 * Method to turn on mapping and automatically set the mapParameter; this
+	 * simplifies {@link #mapParameter()}
+	 * 
+	 * @return boolean
+	 */
+	public boolean allowMap() default false;
+
 }

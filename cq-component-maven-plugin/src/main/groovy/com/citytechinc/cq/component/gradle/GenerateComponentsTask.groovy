@@ -42,6 +42,7 @@ class GenerateComponentsTask extends DefaultTask{
 
 		Reflections reflections = ComponentMojoUtil.getReflections(classLoader)
 
+		//TODO: Implement excludedDependences
 		List<CtClass> classList = ComponentMojoUtil.getAllComponentAnnotations(classPool, reflections, [] as Set)
 
 		WidgetRegistry widgetRegistry = new DefaultWidgetRegistry(classPool, classLoader, reflections)

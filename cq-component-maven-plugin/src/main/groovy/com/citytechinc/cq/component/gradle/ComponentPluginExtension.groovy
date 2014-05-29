@@ -22,5 +22,5 @@ class ComponentPluginExtension {
 	String componentPathSuffix="content"
 	String defaultComponentGroup="Components"
 	String transformerName="camel-case"
-	List<String> excludeDependencies
+	//TODO: Implement excludedDependences
 }

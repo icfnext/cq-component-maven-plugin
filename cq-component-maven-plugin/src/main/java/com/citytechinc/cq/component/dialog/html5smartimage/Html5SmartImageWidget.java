@@ -150,7 +150,7 @@ public class Html5SmartImageWidget extends AbstractWidget implements TabbableDia
 		if (StringUtils.isEmpty(originalName)) {
 			return ".img.png";
 		} else {
-			return ".img." + originalName + ".png";
+			return "/" + originalName + ".img.png";
 		}
 	}
 

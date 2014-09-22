@@ -19,8 +19,12 @@ import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.ContentProperty;
 import com.citytechinc.cq.component.content.Content;
 import com.citytechinc.cq.component.content.ContentParameters;
+import com.citytechinc.cq.component.content.htmltag.HtmlTag;
+import com.citytechinc.cq.component.content.htmltag.HtmlTagParameters;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
 import com.citytechinc.cq.component.xml.NameSpacedAttribute;
+import com.citytechinc.cq.component.xml.XmlElement;
+import com.google.common.collect.Lists;
 import javassist.CtClass;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -34,7 +38,7 @@ public class ContentFactory {
 	private ContentFactory() {
 	}
 
-	public static final Content make(CtClass componentClass, String defaultGroup)
+	public static Content make(CtClass componentClass, String defaultGroup)
 		throws InvalidComponentClassException, ClassNotFoundException {
 
 		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
@@ -59,6 +63,14 @@ public class ContentFactory {
 		parameters.setResourceSuperType(getResourceSuperTypeForComponent(componentAnnotation));
 		parameters.setAdditionalProperties(getAdditionalPropertiesForComponent(componentAnnotation));
         parameters.setClassName(componentClass.getName());
+
+        if (componentAnnotation.htmlTag().length > 0) {
+            List<XmlElement> containedElements = Lists.newArrayList();
+
+            containedElements.add(getHtmlTagForComponent(componentAnnotation));
+
+            parameters.setContainedElements(containedElements);
+        }
 
 		return new Content(parameters);
 	}
@@ -140,11 +152,11 @@ public class ContentFactory {
 		return null;
 	}
 
-	private static final Boolean getIsContainerForComponent(CtClass componentClass, Component componentAnnotation) {
+	private static Boolean getIsContainerForComponent(CtClass componentClass, Component componentAnnotation) {
 		return componentAnnotation.isContainer();
 	}
 
-	private static final String getTitleForComponent(CtClass componentClass, Component componentAnnotation) {
+	private static String getTitleForComponent(CtClass componentClass, Component componentAnnotation) {
 		String overrideTitle = componentAnnotation.value();
 
 		if (StringUtils.isNotEmpty(overrideTitle)) {
@@ -154,7 +166,7 @@ public class ContentFactory {
 		return componentClass.getSimpleName();
 	}
 
-	private static final String getGroupForComponent(CtClass componentClass, Component componentAnnotation,
+	private static String getGroupForComponent(CtClass componentClass, Component componentAnnotation,
 		String defaultGroup) {
 		String overrideGroup = componentAnnotation.group();
 
@@ -164,4 +176,20 @@ public class ContentFactory {
 
 		return defaultGroup;
 	}
+
+    private static HtmlTag getHtmlTagForComponent(Component componentAnnotation) {
+        HtmlTagParameters htmlTagParameters = new HtmlTagParameters();
+        com.citytechinc.cq.component.annotations.HtmlTag htmlTag = componentAnnotation.htmlTag()[0];
+
+        htmlTagParameters.setTagName(htmlTag.tagName());
+
+        if (StringUtils.isNotBlank(htmlTag.cssClass())) {
+            htmlTagParameters.setCssClass(htmlTag.cssClass());
+        }
+        if (StringUtils.isNotBlank(htmlTag.id())) {
+            htmlTagParameters.setId(htmlTag.id());
+        }
+
+        return new HtmlTag(htmlTagParameters);
+    }
 }

@@ -325,4 +325,13 @@ public @interface Component {
 	 * @return boolean
 	 */
 	boolean disableTargeting() default false;
+
+    /**
+     * Definition of the cq:htmlTag child node of the component definition node.  See
+     * <a href="http://docs.adobe.com/docs/en/aem/6-0/develop/components.html#Properties and Child Nodes of a Component">
+     * this document</a> for more information.
+     *
+     * @return HtmlTag[]
+     */
+    HtmlTag[] htmlTag() default {};
 }

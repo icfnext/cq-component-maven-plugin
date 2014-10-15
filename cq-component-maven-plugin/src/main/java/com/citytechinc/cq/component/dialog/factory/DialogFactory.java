@@ -15,6 +15,19 @@
  */
 package com.citytechinc.cq.component.dialog.factory;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import javassist.CannotCompileException;
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.CtMember;
+import javassist.NotFoundException;
+
+import org.codehaus.plexus.util.StringUtils;
+
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.Listener;
@@ -31,22 +44,12 @@ import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldExcept
 import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 import com.citytechinc.cq.component.dialog.tab.Tab;
 import com.citytechinc.cq.component.dialog.tab.TabParameters;
+import com.citytechinc.cq.component.dialog.util.DialogUtil;
 import com.citytechinc.cq.component.dialog.widget.WidgetRegistry;
 import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollection;
 import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollectionParameters;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 import com.citytechinc.cq.component.maven.util.LogSingleton;
-import javassist.CannotCompileException;
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtMember;
-import javassist.NotFoundException;
-import org.codehaus.plexus.util.StringUtils;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class DialogFactory {
 
@@ -87,13 +90,13 @@ public class DialogFactory {
 					tabHolder.setTitle(tab.title());
 				}
 
-                Listener[] listeners = tab.listeners();
+				Listener[] listeners = tab.listeners();
 
-                if (listeners.length > 0) {
-                    ListenersParameters parameters = new ListenersParameters();
-                    parameters.setListenerAnnotations(listeners);
-                    tabHolder.setListeners(new Listeners(parameters));
-                }
+				if (listeners.length > 0) {
+					ListenersParameters parameters = new ListenersParameters();
+					parameters.setListenerAnnotations(listeners);
+					tabHolder.setListeners(new Listeners(parameters));
+				}
 
 				if (StringUtils.isNotEmpty(tab.path())) {
 					CQIncludeParameters params = new CQIncludeParameters();
@@ -118,6 +121,14 @@ public class DialogFactory {
 		for (CtMember member : fieldsAndMethods) {
 
 			DialogField dialogProperty = (DialogField) member.getAnnotation(DialogField.class);
+
+			if (dialogProperty == null) {
+				CtMember newMember = DialogUtil.getMemberForAnnotatedInterfaceMethod(member);
+				if (newMember != null) {
+					member = newMember;
+					dialogProperty = (DialogField) member.getAnnotation(DialogField.class);
+				}
+			}
 
 			if (dialogProperty != null) {
 
@@ -197,7 +208,7 @@ public class DialogFactory {
 		TabParameters tabParams = new TabParameters();
 		tabParams.setTitle(tab.getTitle());
 		tabParams.setContainedElements(Arrays.asList(new DialogElement[] { widgetCollection }));
-        tabParams.setListeners(tab.getListeners());
+		tabParams.setListeners(tab.getListeners());
 		return new Tab(tabParams);
 	}
 }

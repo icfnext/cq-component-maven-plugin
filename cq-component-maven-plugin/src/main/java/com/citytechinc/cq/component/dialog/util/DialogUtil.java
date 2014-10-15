@@ -26,6 +26,7 @@ import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
+import javassist.CtMember;
 import javassist.CtMethod;
 import javassist.NotFoundException;
 
@@ -37,6 +38,7 @@ import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.DialogField;
+import com.citytechinc.cq.component.annotations.IgnoreDialogField;
 import com.citytechinc.cq.component.annotations.Tab;
 import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
 import com.citytechinc.cq.component.dialog.Dialog;
@@ -184,6 +186,35 @@ public class DialogUtil {
 
 		return dialogList;
 
+	}
+
+	public static CtMember getMemberForAnnotatedInterfaceMethod(CtMember member) throws InvalidComponentClassException,
+		ClassNotFoundException, NotFoundException {
+		CtMember newMember = null;
+		if (member instanceof CtMethod && !member.hasAnnotation(IgnoreDialogField.class)
+			&& member.getDeclaringClass().getInterfaces().length > 0) {
+			CtMethod methodMember = (CtMethod) member;
+			for (CtClass ctclass : methodMember.getDeclaringClass().getInterfaces()) {
+				try {
+					CtMethod newMethodMember = ctclass.getDeclaredMethod(methodMember.getName(),
+						methodMember.getParameterTypes());
+					DialogField tempDialogProperty = (DialogField) newMethodMember.getAnnotation(DialogField.class);
+					if (tempDialogProperty != null) {
+						if (newMember == null) {
+							newMember = newMethodMember;
+						} else {
+							throw new InvalidComponentClassException(
+								"Class has multiple interfaces that have the same method signature annotated");
+						}
+					}
+				} catch (NotFoundException e) {
+				}
+			}
+			if (newMember != null) {
+				member = newMember;
+			}
+		}
+		return newMember;
 	}
 
 }

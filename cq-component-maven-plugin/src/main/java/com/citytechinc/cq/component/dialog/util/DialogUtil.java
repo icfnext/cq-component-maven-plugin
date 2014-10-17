@@ -19,6 +19,8 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -38,10 +40,13 @@ import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.DialogField;
-import com.citytechinc.cq.component.annotations.IgnoreDialogField;
+import com.citytechinc.cq.component.annotations.DialogFieldOverride;
+import com.citytechinc.cq.component.annotations.FieldProperty;
+import com.citytechinc.cq.component.annotations.Listener;
 import com.citytechinc.cq.component.annotations.Tab;
 import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
 import com.citytechinc.cq.component.dialog.Dialog;
+import com.citytechinc.cq.component.dialog.DialogFieldConfig;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.exception.OutputFailureException;
@@ -188,33 +193,109 @@ public class DialogUtil {
 
 	}
 
-	public static CtMember getMemberForAnnotatedInterfaceMethod(CtMember member) throws InvalidComponentClassException,
-		ClassNotFoundException, NotFoundException {
-		CtMember newMember = null;
-		if (member instanceof CtMethod && !member.hasAnnotation(IgnoreDialogField.class)
-			&& member.getDeclaringClass().getInterfaces().length > 0) {
-			CtMethod methodMember = (CtMethod) member;
-			for (CtClass ctclass : methodMember.getDeclaringClass().getInterfaces()) {
-				try {
-					CtMethod newMethodMember = ctclass.getDeclaredMethod(methodMember.getName(),
-						methodMember.getParameterTypes());
-					DialogField tempDialogProperty = (DialogField) newMethodMember.getAnnotation(DialogField.class);
-					if (tempDialogProperty != null) {
-						if (newMember == null) {
-							newMember = newMethodMember;
-						} else {
-							throw new InvalidComponentClassException(
-								"Class has multiple interfaces that have the same method signature annotated");
-						}
+	private static CtMember getMemberForAnnotatedInterfaceMethod(CtMethod member)
+		throws InvalidComponentClassException, ClassNotFoundException, NotFoundException {
+		CtMethod newMember = null;
+		List<CtClass> interfaces = new ArrayList<CtClass>();
+		CtClass clazz = member.getDeclaringClass();
+		while (clazz != null) {
+			interfaces.addAll(Arrays.asList(clazz.getInterfaces()));
+			clazz = clazz.getSuperclass();
+		}
+		for (CtClass ctclass : interfaces) {
+			try {
+				CtMethod newMethodMember = ctclass.getDeclaredMethod(member.getName(), member.getParameterTypes());
+				DialogField tempDialogProperty = (DialogField) newMethodMember.getAnnotation(DialogField.class);
+				if (tempDialogProperty != null) {
+					if (newMember == null) {
+						newMember = newMethodMember;
+					} else {
+						throw new InvalidComponentClassException(
+							"Class has multiple interfaces that have the same method signature annotated");
 					}
-				} catch (NotFoundException e) {
 				}
+			} catch (NotFoundException e) {
 			}
-			if (newMember != null) {
-				member = newMember;
-			}
+		}
+		if (newMember != null) {
+			member = newMember;
 		}
 		return newMember;
 	}
 
+	public static DialogFieldConfig getDialogFieldFromSuperClasses(CtMethod method) throws NotFoundException,
+		ClassNotFoundException, InvalidComponentClassException {
+		DialogFieldConfig dialogFieldConfig = null;
+		List<CtClass> classes = new ArrayList<CtClass>();
+		CtClass clazz = method.getDeclaringClass();
+		classes.add(clazz);
+		while (clazz.getSuperclass() != null) {
+			classes.add(clazz.getSuperclass());
+			clazz = clazz.getSuperclass();
+		}
+		Collections.reverse(classes);
+		CtMember interfaceMember = getMemberForAnnotatedInterfaceMethod(method);
+		if (interfaceMember != null) {
+			dialogFieldConfig = new DialogFieldConfig((DialogField) interfaceMember.getAnnotation(DialogField.class),
+				method);
+		}
+		for (CtClass ctclass : classes) {
+			try {
+				CtMethod superClassMethod = ctclass.getDeclaredMethod(method.getName(), method.getParameterTypes());
+				if (superClassMethod.hasAnnotation(DialogField.class)) {
+					dialogFieldConfig = new DialogFieldConfig(
+						(DialogField) superClassMethod.getAnnotation(DialogField.class), superClassMethod);
+				} else if (superClassMethod.hasAnnotation(DialogFieldOverride.class)) {
+					mergeDialogFields(dialogFieldConfig, superClassMethod);
+				}
+			} catch (NotFoundException e) {
+			}
+		}
+		return dialogFieldConfig;
+	}
+
+	private static void mergeDialogFields(DialogFieldConfig dialogFieldConfig, CtMethod method)
+		throws ClassNotFoundException {
+		if (dialogFieldConfig != null && method.hasAnnotation(DialogFieldOverride.class)) {
+			DialogFieldOverride dialogField = (DialogFieldOverride) method.getAnnotation(DialogFieldOverride.class);
+			if (StringUtils.isNotEmpty(dialogField.fieldLabel())) {
+				dialogFieldConfig.setFieldLabel(dialogField.fieldLabel());
+			}
+
+			if (StringUtils.isNotEmpty(dialogField.fieldDescription())) {
+				dialogFieldConfig.setFieldDescription(dialogField.fieldDescription());
+			}
+
+			dialogFieldConfig.setRequired(dialogField.required());
+
+			dialogFieldConfig.setHideLabel(dialogField.hideLabel());
+
+			if (StringUtils.isNotEmpty(dialogField.defaultValue())) {
+				dialogFieldConfig.setDefaultValue(dialogField.defaultValue());
+			}
+
+			dialogFieldConfig.setTab(dialogField.tab());
+
+			dialogFieldConfig.setRanking(dialogField.ranking());
+
+			if (dialogField.additionalProperties().length > 0) {
+				List<FieldProperty> properties = new ArrayList<FieldProperty>();
+				properties.addAll(Arrays.asList(dialogField.additionalProperties()));
+				if (dialogField.mergeAdditionalProperties()) {
+					properties.addAll(Arrays.asList(dialogFieldConfig.getAdditionalProperties()));
+				}
+				dialogFieldConfig.setAdditionalProperties(properties.toArray(new FieldProperty[properties.size()]));
+			}
+
+			if (dialogField.listeners().length > 0) {
+				List<Listener> listeners = new ArrayList<Listener>();
+				listeners.addAll(Arrays.asList(dialogField.listeners()));
+				if (dialogField.mergeAdditionalProperties()) {
+					listeners.addAll(Arrays.asList(dialogFieldConfig.getListeners()));
+				}
+				dialogFieldConfig.setListeners(listeners.toArray(new Listener[listeners.size()]));
+			}
+		}
+
+	}
 }

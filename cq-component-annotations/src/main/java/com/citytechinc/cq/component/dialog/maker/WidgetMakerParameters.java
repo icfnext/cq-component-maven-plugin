@@ -19,18 +19,18 @@ import javassist.ClassPool;
 import javassist.CtMember;
 import javassist.NotFoundException;
 
-import com.citytechinc.cq.component.annotations.DialogField;
+import com.citytechinc.cq.component.dialog.DialogFieldConfig;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.widget.WidgetRegistry;
 
 /**
- * Base parameters which all Widgets use during their creation.  This class may be extended
- * to support additional parameters needed for custom widget types.
+ * Base parameters which all Widgets use during their creation. This class may
+ * be extended to support additional parameters needed for custom widget types.
  *
  */
 public class WidgetMakerParameters {
 
-	private DialogField annotation;
+	private DialogFieldConfig dialogField;
 	private CtMember ctMember;
 	private Class<?> containingClass;
 	private ClassLoader classLoader;
@@ -41,7 +41,7 @@ public class WidgetMakerParameters {
 
 	/**
 	 *
-	 * @param annotation
+	 * @param dialogField
 	 * @param ctMember
 	 * @param containingClass
 	 * @param classLoader
@@ -52,11 +52,11 @@ public class WidgetMakerParameters {
 	 * @throws InvalidComponentFieldException
 	 * @throws NotFoundException
 	 */
-	public WidgetMakerParameters(DialogField annotation, CtMember ctMember, Class<?> containingClass,
+	public WidgetMakerParameters(DialogFieldConfig dialogField, CtMember ctMember, Class<?> containingClass,
 		ClassLoader classLoader, ClassPool classPool, WidgetRegistry widgetRegistry, String xtype,
 		boolean useDotSlashInName) throws InvalidComponentFieldException, NotFoundException {
 
-		this.annotation = annotation;
+		this.dialogField = dialogField;
 		this.ctMember = ctMember;
 		this.containingClass = containingClass;
 		this.classLoader = classLoader;
@@ -70,16 +70,16 @@ public class WidgetMakerParameters {
 	 *
 	 * @return The DialogField annotation associated with the Widget
 	 */
-	public DialogField getAnnotation() {
-		return annotation;
+	public DialogFieldConfig getDialogField() {
+		return dialogField;
 	}
 
 	/**
 	 *
 	 * @param annotation
 	 */
-	public void setAnnotation(DialogField annotation) {
-		this.annotation = annotation;
+	public void setDialogField(DialogFieldConfig dialogField) {
+		this.dialogField = dialogField;
 	}
 
 	/**

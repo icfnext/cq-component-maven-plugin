@@ -30,8 +30,7 @@ import com.citytechinc.cq.component.dialog.widget.WidgetRegistry;
  */
 public class WidgetMakerParameters {
 
-	private DialogFieldConfig dialogField;
-	private CtMember ctMember;
+	private DialogFieldConfig dialogFieldConfig;
 	private Class<?> containingClass;
 	private ClassLoader classLoader;
 	private ClassPool classPool;
@@ -52,12 +51,11 @@ public class WidgetMakerParameters {
 	 * @throws InvalidComponentFieldException
 	 * @throws NotFoundException
 	 */
-	public WidgetMakerParameters(DialogFieldConfig dialogField, CtMember ctMember, Class<?> containingClass,
-		ClassLoader classLoader, ClassPool classPool, WidgetRegistry widgetRegistry, String xtype,
-		boolean useDotSlashInName) throws InvalidComponentFieldException, NotFoundException {
+	public WidgetMakerParameters(DialogFieldConfig dialogField, Class<?> containingClass, ClassLoader classLoader,
+		ClassPool classPool, WidgetRegistry widgetRegistry, String xtype, boolean useDotSlashInName)
+		throws InvalidComponentFieldException, NotFoundException {
 
-		this.dialogField = dialogField;
-		this.ctMember = ctMember;
+		this.dialogFieldConfig = dialogField;
 		this.containingClass = containingClass;
 		this.classLoader = classLoader;
 		this.classPool = classPool;
@@ -70,16 +68,16 @@ public class WidgetMakerParameters {
 	 *
 	 * @return The DialogField annotation associated with the Widget
 	 */
-	public DialogFieldConfig getDialogField() {
-		return dialogField;
+	public DialogFieldConfig getDialogFieldConfig() {
+		return dialogFieldConfig;
 	}
 
 	/**
 	 *
 	 * @param annotation
 	 */
-	public void setDialogField(DialogFieldConfig dialogField) {
-		this.dialogField = dialogField;
+	public void setDialogFieldConfig(DialogFieldConfig dialogField) {
+		this.dialogFieldConfig = dialogField;
 	}
 
 	/**
@@ -87,15 +85,7 @@ public class WidgetMakerParameters {
 	 * @return The CtMember representing the Widget
 	 */
 	public CtMember getCtMember() {
-		return ctMember;
-	}
-
-	/**
-	 *
-	 * @param ctMember
-	 */
-	public void setCtMember(CtMember ctMember) {
-		this.ctMember = ctMember;
+		return dialogFieldConfig.getMember();
 	}
 
 	/**

@@ -90,8 +90,8 @@ public class WidgetFactory {
 	private static final String getXTypeForField(WidgetMakerParameters parameters)
 		throws InvalidComponentFieldException {
 
-		if (StringUtils.isNotEmpty(parameters.getDialogField().getXtype())) {
-			return parameters.getDialogField().getXtype();
+		if (StringUtils.isNotEmpty(parameters.getDialogFieldConfig().getXtype())) {
+			return parameters.getDialogFieldConfig().getXtype();
 		}
 
 		/*

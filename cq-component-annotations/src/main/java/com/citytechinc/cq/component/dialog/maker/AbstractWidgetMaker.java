@@ -64,7 +64,7 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 	 *         provided, otherwise the result of the {@link #getName()} method.
 	 */
 	protected String getNameForField() {
-		String overrideName = parameters.getDialogField().getName();
+		String overrideName = parameters.getDialogFieldConfig().getName();
 
 		if (StringUtils.isNotEmpty(overrideName)) {
 			return overrideName;
@@ -81,7 +81,7 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 	 *         provided, the result of the {@link #getName()} method otherwise.
 	 */
 	protected String getFieldNameForField() {
-		String overrideFieldName = parameters.getDialogField().getFieldName();
+		String overrideFieldName = parameters.getDialogFieldConfig().getFieldName();
 
 		if (StringUtils.isNotEmpty(overrideFieldName)) {
 			return overrideFieldName;
@@ -96,7 +96,7 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 	 *         provided, null otherwise.
 	 */
 	protected String getFieldLabelForField() {
-		String overrideLabel = parameters.getDialogField().getFieldLabel();
+		String overrideLabel = parameters.getDialogFieldConfig().getFieldLabel();
 
 		if (StringUtils.isNotEmpty(overrideLabel)) {
 			return overrideLabel;
@@ -111,7 +111,7 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 	 *         one is provided, null otherwise.
 	 */
 	protected String getFieldDescriptionForField() {
-		String overrideFieldDescription = parameters.getDialogField().getFieldDescription();
+		String overrideFieldDescription = parameters.getDialogFieldConfig().getFieldDescription();
 
 		if (StringUtils.isNotEmpty(overrideFieldDescription)) {
 			return overrideFieldDescription;
@@ -125,7 +125,7 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 	 * @return required property of the DialogField annotation.
 	 */
 	protected Boolean getIsRequiredForField() {
-		return parameters.getDialogField().isRequired();
+		return parameters.getDialogFieldConfig().isRequired();
 	}
 
 	/**
@@ -135,10 +135,10 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 	 *         defined.
 	 */
 	protected Map<String, String> getAdditionalPropertiesForField() {
-		if (parameters.getDialogField().getAdditionalProperties().length > 0) {
+		if (parameters.getDialogFieldConfig().getAdditionalProperties().length > 0) {
 			Map<String, String> properties = new HashMap<String, String>();
 
-			for (FieldProperty curProperty : parameters.getDialogField().getAdditionalProperties()) {
+			for (FieldProperty curProperty : parameters.getDialogFieldConfig().getAdditionalProperties()) {
 				properties.put(curProperty.name(), curProperty.value());
 			}
 
@@ -154,7 +154,7 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 	 *         provided, null otherwise.
 	 */
 	protected String getDefaultValueForField() {
-		String defaultValue = parameters.getDialogField().getDefaultValue();
+		String defaultValue = parameters.getDialogFieldConfig().getDefaultValue();
 
 		if (StringUtils.isNotEmpty(defaultValue)) {
 			return defaultValue;
@@ -168,7 +168,7 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 	 * @return The hideLabel property of the DialogField annotation.
 	 */
 	protected boolean getHideLabelForField() {
-		return parameters.getDialogField().isHideLabel();
+		return parameters.getDialogFieldConfig().isHideLabel();
 	}
 
 	/**
@@ -178,7 +178,7 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 	 *         defined.
 	 */
 	protected Listeners getListeners() {
-		Listener[] listeners = parameters.getDialogField().getListeners();
+		Listener[] listeners = parameters.getDialogFieldConfig().getListeners();
 		if (listeners.length > 0) {
 			ListenersParameters parameters = new ListenersParameters();
 			parameters.setListenerAnnotations(listeners);

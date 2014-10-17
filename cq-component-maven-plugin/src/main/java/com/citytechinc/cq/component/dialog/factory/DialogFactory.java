@@ -135,9 +135,8 @@ public class DialogFactory {
 
 				if (dialogFieldConfig != null) {
 
-					WidgetMakerParameters parameters = new WidgetMakerParameters(dialogFieldConfig,
-						dialogFieldConfig.getMember(), trueComponentClass, classLoader, classPool, widgetRegistry,
-						null, true);
+					WidgetMakerParameters parameters = new WidgetMakerParameters(dialogFieldConfig, trueComponentClass,
+						classLoader, classPool, widgetRegistry, null, true);
 
 					DialogElement builtFieldWidget = WidgetFactory.make(parameters, -1);
 

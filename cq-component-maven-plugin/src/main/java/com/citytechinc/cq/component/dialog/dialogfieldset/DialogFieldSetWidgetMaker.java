@@ -117,9 +117,9 @@ public class DialogFieldSetWidgetMaker extends AbstractWidgetMaker {
 
 					double ranking = dialogFieldConfig.getRanking();
 
-					WidgetMakerParameters curFieldMember = new WidgetMakerParameters(dialogFieldConfig,
-						dialogFieldConfig.getMember(), fieldClass, parameters.getClassLoader(),
-						parameters.getClassPool(), parameters.getWidgetRegistry(), null, true);
+					WidgetMakerParameters curFieldMember = new WidgetMakerParameters(dialogFieldConfig, fieldClass,
+						parameters.getClassLoader(), parameters.getClassPool(), parameters.getWidgetRegistry(), null,
+						true);
 
 					DialogElement builtFieldWidget = WidgetFactory.make(curFieldMember, -1);
 					if (builtFieldWidget instanceof AbstractWidget

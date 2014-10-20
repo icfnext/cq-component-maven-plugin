@@ -274,6 +274,10 @@ public class DialogUtil {
 				dialogFieldConfig.setDefaultValue(dialogField.defaultValue());
 			}
 
+			if (StringUtils.isNotEmpty(dialogField.name())) {
+				dialogFieldConfig.setName(dialogField.name());
+			}
+
 			dialogFieldConfig.setTab(dialogField.tab());
 
 			dialogFieldConfig.setRanking(dialogField.ranking());

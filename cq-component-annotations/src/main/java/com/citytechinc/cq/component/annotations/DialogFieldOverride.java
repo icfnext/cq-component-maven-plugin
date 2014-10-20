@@ -30,6 +30,14 @@ import java.lang.annotation.Target;
 public @interface DialogFieldOverride {
 
 	/**
+	 * The path to which the value for the authorable element will be saved
+	 * during content authoring.
+	 *
+	 * @return String
+	 */
+	public String name() default "";
+
+	/**
 	 * The human-readable label for the input field which will be presented in a
 	 * dialog.
 	 *

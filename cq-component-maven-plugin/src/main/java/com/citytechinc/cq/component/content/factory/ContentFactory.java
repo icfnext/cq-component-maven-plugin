@@ -15,6 +15,15 @@
  */
 package com.citytechinc.cq.component.content.factory;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javassist.CtClass;
+
+import org.codehaus.plexus.util.StringUtils;
+
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.ContentProperty;
 import com.citytechinc.cq.component.content.Content;
@@ -25,21 +34,14 @@ import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassExcept
 import com.citytechinc.cq.component.xml.NameSpacedAttribute;
 import com.citytechinc.cq.component.xml.XmlElement;
 import com.google.common.collect.Lists;
-import javassist.CtClass;
-import org.codehaus.plexus.util.StringUtils;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class ContentFactory {
 
 	private ContentFactory() {
 	}
 
-	public static Content make(CtClass componentClass, String defaultGroup)
-		throws InvalidComponentClassException, ClassNotFoundException {
+	public static Content make(CtClass componentClass, String defaultGroup) throws InvalidComponentClassException,
+		ClassNotFoundException {
 
 		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
@@ -62,15 +64,15 @@ public class ContentFactory {
 		parameters.setTitle(getTitleForComponent(componentClass, componentAnnotation));
 		parameters.setResourceSuperType(getResourceSuperTypeForComponent(componentAnnotation));
 		parameters.setAdditionalProperties(getAdditionalPropertiesForComponent(componentAnnotation));
-        parameters.setClassName(componentClass.getName());
+		parameters.setClassName(componentClass.getName());
 
-        if (componentAnnotation.htmlTag().length > 0) {
-            List<XmlElement> containedElements = Lists.newArrayList();
+		if (componentAnnotation.htmlTag().length > 0) {
+			List<XmlElement> containedElements = Lists.newArrayList();
 
-            containedElements.add(getHtmlTagForComponent(componentAnnotation));
+			containedElements.add(getHtmlTagForComponent(componentAnnotation));
 
-            parameters.setContainedElements(containedElements);
-        }
+			parameters.setContainedElements(containedElements);
+		}
 
 		return new Content(parameters);
 	}
@@ -177,19 +179,19 @@ public class ContentFactory {
 		return defaultGroup;
 	}
 
-    private static HtmlTag getHtmlTagForComponent(Component componentAnnotation) {
-        HtmlTagParameters htmlTagParameters = new HtmlTagParameters();
-        com.citytechinc.cq.component.annotations.HtmlTag htmlTag = componentAnnotation.htmlTag()[0];
+	private static HtmlTag getHtmlTagForComponent(Component componentAnnotation) {
+		HtmlTagParameters htmlTagParameters = new HtmlTagParameters();
+		com.citytechinc.cq.component.annotations.HtmlTag htmlTag = componentAnnotation.htmlTag()[0];
 
-        htmlTagParameters.setTagName(htmlTag.tagName());
+		htmlTagParameters.setTagName(htmlTag.tagName());
 
-        if (StringUtils.isNotBlank(htmlTag.cssClass())) {
-            htmlTagParameters.setCssClass(htmlTag.cssClass());
-        }
-        if (StringUtils.isNotBlank(htmlTag.id())) {
-            htmlTagParameters.setId(htmlTag.id());
-        }
+		if (StringUtils.isNotBlank(htmlTag.cssClass())) {
+			htmlTagParameters.setCssClass(htmlTag.cssClass());
+		}
+		if (StringUtils.isNotBlank(htmlTag.id())) {
+			htmlTagParameters.setId(htmlTag.id());
+		}
 
-        return new HtmlTag(htmlTagParameters);
-    }
+		return new HtmlTag(htmlTagParameters);
+	}
 }

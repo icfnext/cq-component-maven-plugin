@@ -16,18 +16,19 @@
 package com.citytechinc.cq.component.annotations.editconfig;
 
 /**
- * Defines a single Action Configuration for a Component.  For more information on using
- * Action Configurations see the
- * <a href="http://dev.day.com/docs/en/cq/current/developing/components/edit_config.html#cq:actionConfigs">Configuring Edit Behavior Documentation</a>.
+ * Defines a single Action Configuration for a Component. For more information
+ * on using Action Configurations see the <a href=
+ * "http://dev.day.com/docs/en/cq/current/developing/components/edit_config.html#cq:actionConfigs"
+ * >Configuring Edit Behavior Documentation</a>.
  *
  */
 public @interface ActionConfig {
 
-    /**
-     * The xtype to use for the Action Configuration.
-     *
-     * @return String
-     */
+	/**
+	 * The xtype to use for the Action Configuration.
+	 *
+	 * @return String
+	 */
 	String xtype() default "";
 
 	/**
@@ -45,7 +46,8 @@ public @interface ActionConfig {
 	String text() default "";
 
 	/**
-	 * A set of properties which are written to the Action Configuration xml node.
+	 * A set of properties which are written to the Action Configuration xml
+	 * node.
 	 *
 	 * @return ActionConfigProperty[]
 	 */

@@ -50,14 +50,17 @@ public @interface PathField {
 	boolean hideTrigger() default HIDE_TRIGGER_DEFAULT;
 
 	/**
-	 * True to allow paragraph browsing and section in a grid next to the tree panel in the browse dialog. If this is enabled, it is recommended to use a predicate like 'hierarchy' to have pages as leaf nodes in the tree.
+	 * True to allow paragraph browsing and section in a grid next to the tree
+	 * panel in the browse dialog. If this is enabled, it is recommended to use
+	 * a predicate like 'hierarchy' to have pages as leaf nodes in the tree.
 	 *
 	 * @return boolean
 	 */
 	boolean parBrowse() default PAR_BROWSE_DEFAULT;
 
 	/**
-	 * The root path where completion and browsing starts. Use the empty string for the repository root
+	 * The root path where completion and browsing starts. Use the empty string
+	 * for the repository root
 	 *
 	 * @return String
 	 */
@@ -71,7 +74,8 @@ public @interface PathField {
 	String rootTitle() default ROOT_TITLE_DEFAULT;
 
 	/**
-	 * Whether to show the (jcr:)titles as names of the tree nodes or the plain jcr node name
+	 * Whether to show the (jcr:)titles as names of the tree nodes or the plain
+	 * jcr node name
 	 *
 	 * @return boolean
 	 */

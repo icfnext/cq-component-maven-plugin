@@ -28,10 +28,10 @@ import java.lang.annotation.Target;
 @Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface Hidden {
 
-    /**
-     * A value to initialize this field with.
-     *
-     * @return String
-     */
+	/**
+	 * A value to initialize this field with.
+	 *
+	 * @return String
+	 */
 	String value() default "";
 }

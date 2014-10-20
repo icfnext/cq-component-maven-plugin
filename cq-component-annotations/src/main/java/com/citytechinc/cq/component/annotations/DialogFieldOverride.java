@@ -21,22 +21,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * The DialogField annotation is used to mark a Field or Method in a Component
- * Class as an authorable element. Authorable elements are represented in the
- * dialog of the Component to which they belong.
+ * The DialogFieldOverride annotation is used to override settings from a
+ * DialogField annotation on an interface or overriden method.
  *
  */
 @Retention(RetentionPolicy.CLASS)
 @Target({ ElementType.FIELD, ElementType.METHOD })
-public @interface DialogField {
-
-	/**
-	 * Allows for explicit definition of a dialog widget xtype associated with
-	 * the element annotated.
-	 *
-	 * @return String
-	 */
-	public String xtype() default "";
+public @interface DialogFieldOverride {
 
 	/**
 	 * The path to which the value for the authorable element will be saved
@@ -55,16 +46,6 @@ public @interface DialogField {
 	public String fieldLabel() default "";
 
 	/**
-	 * While not technically part of the dialog property, the field name can be
-	 * used to define a unique name for the dialog property within your dialog.
-	 * This field name is used as the element name of the XML element
-	 * representing this authorable element in the dialog.
-	 *
-	 * @return String
-	 */
-	public String fieldName() default "";
-
-	/**
 	 * Populates the fieldDescription widget property in the dialog.
 	 *
 	 * @return String
@@ -73,18 +54,23 @@ public @interface DialogField {
 
 	/**
 	 * Indicates that population of the widget input in the dialog is required.
-	 * Used to set the allowBlank widget property in the dialog.
+	 * Used to set the allowBlank widget property in the dialog. Unlike
+	 * DialogField this is required because we can't default to the value set on
+	 * DialogField
 	 *
 	 * @return boolean
 	 */
-	public boolean required() default false;
+	public boolean required();
 
 	/**
-	 * Used to set the hideLabel widget property in the dialog.
+	 * Used to set the hideLabel widget property in the dialog. Unlike
+	 * DialogField this is required because we can't default to the value set on
+	 * DialogField
+	 * 
 	 *
 	 * @return boolean
 	 */
-	public boolean hideLabel() default false;
+	public boolean hideLabel();
 
 	/**
 	 * Used to set the defaultValue widget property in the dialog.
@@ -112,6 +98,13 @@ public @interface DialogField {
 	public FieldProperty[] additionalProperties() default {};
 
 	/**
+	 * If this is set to true, the instead of overriding the additional
+	 * properties, the additional properties from the parent will be merged with
+	 * the ones from this annotation.
+	 */
+	public boolean mergeAdditionalProperties() default false;
+
+	/**
 	 * The set of listeners which will be attributed to the dialog widget
 	 * associated with the authorable element. Listeners are output as
 	 * properties in the listeners XML node which is a child of the XML node
@@ -120,6 +113,13 @@ public @interface DialogField {
 	 * @return Listener[]
 	 */
 	public Listener[] listeners() default {};
+
+	/**
+	 * If this is set to true, the instead of overriding the listeners, the
+	 * listeners from the parent will be merged with the ones from this
+	 * annotation.
+	 */
+	public boolean mergeLiseners() default false;
 
 	/**
 	 * Used to order dialog widgets within a tab. Widgets representing

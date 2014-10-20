@@ -28,11 +28,12 @@ import java.lang.annotation.Target;
 @Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface CheckBox {
 
-    /**
-     * The value that should go into the generated input element's value attribute
-     *
-     * @return String
-     */
+	/**
+	 * The value that should go into the generated input element's value
+	 * attribute
+	 *
+	 * @return String
+	 */
 	String inputValue() default "on";
 
 	/**

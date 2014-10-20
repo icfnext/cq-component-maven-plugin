@@ -542,7 +542,7 @@ public class ComponentMojoUtil {
 	 * @return The constructed Reflections object
 	 */
 	public static Reflections getReflections(ClassLoader classLoader) {
-		Reflections.log=null;
+		Reflections.log = null;
 		Reflections reflections = new Reflections(new ConfigurationBuilder().addClassLoader(classLoader)
 			.setUrls(ClasspathHelper.forClassLoader(new ClassLoader[] { classLoader }))
 			.setScanners(new TypeAnnotationsScanner()));

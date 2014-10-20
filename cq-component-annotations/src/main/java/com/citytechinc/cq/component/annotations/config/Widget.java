@@ -26,8 +26,8 @@ import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 /**
  * Used to indicate that a Class represents a Dialog Widget and makes explicit
  * the connection between the Widget, an annotation necessary to indicate that a
- * field or method is to be populated by a Dialog Widget of this type, and the mechanism
- * which will create the widget.
+ * field or method is to be populated by a Dialog Widget of this type, and the
+ * mechanism which will create the widget.
  */
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.TYPE)

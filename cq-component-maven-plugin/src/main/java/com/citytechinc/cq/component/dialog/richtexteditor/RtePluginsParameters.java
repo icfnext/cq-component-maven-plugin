@@ -22,15 +22,15 @@ import com.citytechinc.cq.component.dialog.DialogElementParameters;
 
 public class RtePluginsParameters extends DialogElementParameters {
 
-    private List<DialogElement> rtePlugins;
+	private List<DialogElement> rtePlugins;
 
-    public List<DialogElement> getRtePlugins() {
-        return rtePlugins;
-    }
+	public List<DialogElement> getRtePlugins() {
+		return rtePlugins;
+	}
 
-    public void setRtePlugins(List<DialogElement> rtePlugins) {
-        this.rtePlugins = rtePlugins;
-    }
+	public void setRtePlugins(List<DialogElement> rtePlugins) {
+		this.rtePlugins = rtePlugins;
+	}
 
 	@Override
 	public String getPrimaryType() {

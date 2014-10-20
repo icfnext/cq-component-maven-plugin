@@ -74,8 +74,8 @@ public class ComponentMojo extends AbstractMojo {
 
 		try {
 
-		    @SuppressWarnings("unchecked")
-            List<String> classpathElements = project.getCompileClasspathElements();
+			@SuppressWarnings("unchecked")
+			List<String> classpathElements = project.getCompileClasspathElements();
 
 			ClassLoader classLoader = ComponentMojoUtil.getClassLoader(classpathElements, this.getClass()
 				.getClassLoader());
@@ -84,7 +84,8 @@ public class ComponentMojo extends AbstractMojo {
 
 			Reflections reflections = ComponentMojoUtil.getReflections(classLoader);
 
-			List<CtClass> classList = ComponentMojoUtil.getAllComponentAnnotations(classPool, reflections, getExcludedClasses());
+			List<CtClass> classList = ComponentMojoUtil.getAllComponentAnnotations(classPool, reflections,
+				getExcludedClasses());
 
 			WidgetRegistry widgetRegistry = new DefaultWidgetRegistry(classPool, classLoader, reflections);
 
@@ -110,66 +111,63 @@ public class ComponentMojo extends AbstractMojo {
 
 	private Set<String> getExcludedClasses() throws DependencyResolutionRequiredException, MalformedURLException {
 
-	    getLog().debug("Constructing set of excluded Class names");
+		getLog().debug("Constructing set of excluded Class names");
 
-	    List<String> excludedDependencyPaths = getExcludedDependencyPaths();
+		List<String> excludedDependencyPaths = getExcludedDependencyPaths();
 
-	    if (excludedDependencyPaths != null) {
-    	    ClassLoader exclusionClassLoader = ComponentMojoUtil.getClassLoader(excludedDependencyPaths, this
-                .getClass().getClassLoader());
+		if (excludedDependencyPaths != null) {
+			ClassLoader exclusionClassLoader = ComponentMojoUtil.getClassLoader(excludedDependencyPaths, this
+				.getClass().getClassLoader());
 
-    	    Reflections reflections = ComponentMojoUtil.getReflections(exclusionClassLoader);
+			Reflections reflections = ComponentMojoUtil.getReflections(exclusionClassLoader);
 
-    	    Set<String> excludedClassNames = reflections.getStore().getTypesAnnotatedWith(Component.class.getName());
+			Set<String> excludedClassNames = reflections.getStore().getTypesAnnotatedWith(Component.class.getName());
 
-    	    return excludedClassNames;
-	    }
+			return excludedClassNames;
+		}
 
-	    return null;
+		return null;
 	}
 
 	@SuppressWarnings("unchecked")
-    private List<String> getExcludedDependencyPaths() throws DependencyResolutionRequiredException {
-	    if (excludeDependencies != null && !excludeDependencies.isEmpty()) {
-	        getLog().debug("Exclusions Found");
+	private List<String> getExcludedDependencyPaths() throws DependencyResolutionRequiredException {
+		if (excludeDependencies != null && !excludeDependencies.isEmpty()) {
+			getLog().debug("Exclusions Found");
 
-	        List<Artifact> compileArtifacts = project.getCompileArtifacts();
+			List<Artifact> compileArtifacts = project.getCompileArtifacts();
 
-	        List<String> excludedClasspathElements = new ArrayList<String>();
+			List<String> excludedClasspathElements = new ArrayList<String>();
 
-	        Set<String> excludedArtifactIdentifiers = new HashSet<String>();
+			Set<String> excludedArtifactIdentifiers = new HashSet<String>();
 
-            for (Dependency curDependency : excludeDependencies) {
-                excludedArtifactIdentifiers.add(curDependency.getGroupId() + ":" + curDependency.getArtifactId());
-            }
+			for (Dependency curDependency : excludeDependencies) {
+				excludedArtifactIdentifiers.add(curDependency.getGroupId() + ":" + curDependency.getArtifactId());
+			}
 
-            for (Artifact curArtifact : compileArtifacts) {
-                String referenceIdentifier = curArtifact.getGroupId() + ":" + curArtifact.getArtifactId();
+			for (Artifact curArtifact : compileArtifacts) {
+				String referenceIdentifier = curArtifact.getGroupId() + ":" + curArtifact.getArtifactId();
 
-                if (excludedArtifactIdentifiers.contains(referenceIdentifier)) {
-                    MavenProject identifiedProject = (MavenProject) project.getProjectReferences().get(referenceIdentifier);
-                    if (identifiedProject != null)
-                    {
-                        excludedClasspathElements.add(identifiedProject.getBuild().getOutputDirectory());
-                        getLog().debug("Excluding " + identifiedProject.getBuild().getOutputDirectory());
-                    }
-                    else
-                    {
-                        File file = curArtifact.getFile();
-                        if (file == null)
-                        {
-                            throw new DependencyResolutionRequiredException(curArtifact);
-                        }
-                        excludedClasspathElements.add(file.getPath());
-                        getLog().debug("Excluding " + file.getPath());
-                    }
-                }
-            }
+				if (excludedArtifactIdentifiers.contains(referenceIdentifier)) {
+					MavenProject identifiedProject = (MavenProject) project.getProjectReferences().get(
+						referenceIdentifier);
+					if (identifiedProject != null) {
+						excludedClasspathElements.add(identifiedProject.getBuild().getOutputDirectory());
+						getLog().debug("Excluding " + identifiedProject.getBuild().getOutputDirectory());
+					} else {
+						File file = curArtifact.getFile();
+						if (file == null) {
+							throw new DependencyResolutionRequiredException(curArtifact);
+						}
+						excludedClasspathElements.add(file.getPath());
+						getLog().debug("Excluding " + file.getPath());
+					}
+				}
+			}
 
-            return excludedClasspathElements;
-	    }
+			return excludedClasspathElements;
+		}
 
-	    return null;
+		return null;
 
 	}
 

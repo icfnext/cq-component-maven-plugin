@@ -39,7 +39,8 @@ public @interface MultiField {
 	String addItemLabel() default ADD_ITEM_LABEL_DEFAULT;
 
 	/**
-	 * If the list of fields should be orderable and Up/Down buttons are rendered
+	 * If the list of fields should be orderable and Up/Down buttons are
+	 * rendered
 	 *
 	 * @return boolean
 	 */

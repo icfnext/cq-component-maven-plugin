@@ -80,15 +80,18 @@ public class WidgetFactory {
 		if (StringUtils.isEmpty(xtype)) {
 			throw new InvalidComponentFieldException("An xtype could not be determined for the field");
 		}
-
+		widget = getWidgetConfigByXtype(xtype, parameters, rankingCeiling);
+		if (widget != null && widget.hasMakerClass()) {
+			return new WidgetMakerContext(widget.getMakerClass(), widget.getXtype());
+		}
 		return new WidgetMakerContext(DefaultWidgetMaker.class, xtype);
 	}
 
 	private static final String getXTypeForField(WidgetMakerParameters parameters)
 		throws InvalidComponentFieldException {
 
-		if (StringUtils.isNotEmpty(parameters.getAnnotation().xtype())) {
-			return parameters.getAnnotation().xtype();
+		if (StringUtils.isNotEmpty(parameters.getDialogFieldConfig().getXtype())) {
+			return parameters.getDialogFieldConfig().getXtype();
 		}
 
 		/*
@@ -170,6 +173,34 @@ public class WidgetFactory {
 
 		return null;
 
+	}
+
+	public static WidgetConfigHolder getWidgetConfigByXtype(String xtype, WidgetMakerParameters parameters,
+		int rankCeiling) {
+		LogSingleton LOG = LogSingleton.getInstance();
+
+		WidgetConfigHolder highestRankedWidget = null;
+
+		Set<Class<?>> registeredAnnotations = parameters.getWidgetRegistry().getRegisteredAnnotations();
+
+		for (Class<?> curRegisteredAnnotation : registeredAnnotations) {
+			LOG.debug("Checking for known annotation " + curRegisteredAnnotation);
+			WidgetConfigHolder curPotential = parameters.getWidgetRegistry().getWidgetForAnnotation(
+				curRegisteredAnnotation);
+			if (curPotential.getXtype().equals(xtype) && rankCeiling < 0 || curPotential.getRanking() < rankCeiling) {
+				LOG.debug("Match found in the registry with ranking " + curPotential.getRanking());
+				if (highestRankedWidget == null || curPotential.getRanking() > highestRankedWidget.getRanking()) {
+					highestRankedWidget = curPotential;
+				}
+			}
+
+		}
+
+		if (highestRankedWidget != null) {
+			return highestRankedWidget;
+		}
+
+		return null;
 	}
 
 }

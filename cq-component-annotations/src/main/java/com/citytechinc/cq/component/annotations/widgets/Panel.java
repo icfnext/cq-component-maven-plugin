@@ -28,15 +28,19 @@ import java.lang.annotation.Target;
 @Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface Panel {
 
-    /**
-     * true to make sure the collapse/expand toggle button always renders first (to the left of) any other tools in the panel's title bar, false to render it last
-     *
-     * @return boolean
-     */
+	/**
+	 * true to make sure the collapse/expand toggle button always renders first
+	 * (to the left of) any other tools in the panel's title bar, false to
+	 * render it last
+	 *
+	 * @return boolean
+	 */
 	boolean collapseFirst() default true;
 
 	/**
-	 * True to make the panel collapsible and have the expand/collapse toggle button automatically rendered into the header tool button area, false to keep the panel statically sized with no button
+	 * True to make the panel collapsible and have the expand/collapse toggle
+	 * button automatically rendered into the header tool button area, false to
+	 * keep the panel statically sized with no button
 	 *
 	 * @return boolean
 	 */
@@ -50,14 +54,16 @@ public @interface Panel {
 	boolean collapsed() default false;
 
 	/**
-	 * True to display the borders of the panel's body element, false to hide them
+	 * True to display the borders of the panel's body element, false to hide
+	 * them
 	 *
 	 * @return boolean
 	 */
 	boolean border() default true;
 
 	/**
-	 * The title text to be used as innerHTML (html tags are accepted) to display in the panel header
+	 * The title text to be used as innerHTML (html tags are accepted) to
+	 * display in the panel header
 	 *
 	 * @return String
 	 */

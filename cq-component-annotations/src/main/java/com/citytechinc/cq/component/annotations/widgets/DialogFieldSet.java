@@ -28,15 +28,19 @@ import java.lang.annotation.Target;
 @Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface DialogFieldSet {
 
-    /**
-     * true to make sure the collapse/expand toggle button always renders first (to the left of) any other tools in the panel's title bar, false to render it last.
-     *
-     * @return boolean
-     */
+	/**
+	 * true to make sure the collapse/expand toggle button always renders first
+	 * (to the left of) any other tools in the panel's title bar, false to
+	 * render it last.
+	 *
+	 * @return boolean
+	 */
 	boolean collapseFirst() default true;
 
 	/**
-	 * True to make the panel collapsible and have the expand/collapse toggle button automatically rendered into the header tool button area, false to keep the panel statically sized with no button.
+	 * True to make the panel collapsible and have the expand/collapse toggle
+	 * button automatically rendered into the header tool button area, false to
+	 * keep the panel statically sized with no button.
 	 *
 	 * @return boolean
 	 */
@@ -50,21 +54,30 @@ public @interface DialogFieldSet {
 	boolean collapsed() default false;
 
 	/**
-	 * True to display the borders of the panel's body element, false to hide them.
+	 * True to display the borders of the panel's body element, false to hide
+	 * them.
 	 *
 	 * @return boolean
 	 */
 	boolean border() default true;
 
 	/**
-	 * The title text to be used as innerHTML (html tags are accepted) to display in the panel header (defaults to ''). When a title is specified the header element will automatically be created and displayed unless header is explicitly set to false. If you do not want to specify a title at config time, but you may want one later, you must either specify a non-empty title (a blank space ' ' will do) or header:true so that the container element will get created.
+	 * The title text to be used as innerHTML (html tags are accepted) to
+	 * display in the panel header (defaults to ''). When a title is specified
+	 * the header element will automatically be created and displayed unless
+	 * header is explicitly set to false. If you do not want to specify a title
+	 * at config time, but you may want one later, you must either specify a
+	 * non-empty title (a blank space ' ' will do) or header:true so that the
+	 * container element will get created.
 	 *
 	 * @return Title String
 	 */
 	String title() default "";
 
 	/**
-	 * Used to prefix names of widgets contained within the DialogFieldSet.  This allows for reuse of the DialogFieldSet within a single Component without field name collisions.
+	 * Used to prefix names of widgets contained within the DialogFieldSet. This
+	 * allows for reuse of the DialogFieldSet within a single Component without
+	 * field name collisions.
 	 *
 	 * @return The specified name prefix.
 	 */

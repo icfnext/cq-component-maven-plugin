@@ -30,15 +30,17 @@ import com.citytechinc.cq.component.annotations.TagNameSpace;
 @Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface TagInputField {
 
-    /**
-     * Whether to display tag titles instead of the pure tag IDs in the input field, autocompletion, tree or cloud view.
-     *
-     * @return boolean
-     */
+	/**
+	 * Whether to display tag titles instead of the pure tag IDs in the input
+	 * field, autocompletion, tree or cloud view.
+	 *
+	 * @return boolean
+	 */
 	boolean displayTitles() default true;
 
 	/**
-	 * A list of the tag namespaces that should be displayed and allowed. If empty, all available namespaces will be allowed.
+	 * A list of the tag namespaces that should be displayed and allowed. If
+	 * empty, all available namespaces will be allowed.
 	 *
 	 * @return TagNameSpace[]
 	 */

@@ -27,11 +27,11 @@ import java.lang.annotation.Target;
 @Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface Option {
 
-    /**
-     * Author facing text for the selection option.
-     *
-     * @return String
-     */
+	/**
+	 * Author facing text for the selection option.
+	 *
+	 * @return String
+	 */
 	String text() default "";
 
 	/**

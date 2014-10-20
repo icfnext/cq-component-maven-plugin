@@ -28,11 +28,11 @@ import java.lang.annotation.Target;
 @Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface SizeField {
 
-    /**
-     * The name of the height parameter.
-     *
-     * @return String
-     */
+	/**
+	 * The name of the height parameter.
+	 *
+	 * @return String
+	 */
 	public String heightParameter() default "./height";
 
 	/**

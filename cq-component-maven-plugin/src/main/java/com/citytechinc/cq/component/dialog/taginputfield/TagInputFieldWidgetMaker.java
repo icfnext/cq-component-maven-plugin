@@ -63,20 +63,20 @@ public class TagInputFieldWidgetMaker extends AbstractWidgetMaker {
 		}
 
 		List<DialogElement> namespaces = new ArrayList<DialogElement>();
-        for (int i=0; i < tagAnnotation.namespaces().length; i++) {
-            TagNameSpace ns = tagAnnotation.namespaces()[i];
+		for (int i = 0; i < tagAnnotation.namespaces().length; i++) {
+			TagNameSpace ns = tagAnnotation.namespaces()[i];
 
-            String max = null;
-            if (ns.maximum() > -1) {
-                max = Integer.toString(ns.maximum());
-            }
-            NamespaceParameters namespaceParameters = new NamespaceParameters();
-            namespaceParameters.setFieldName("namespace" + i);
-            namespaceParameters.setName(ns.value());
-            namespaceParameters.setMaximum(max);
-            Namespace n = new Namespace(namespaceParameters);
-            namespaces.add(n);
-        }
+			String max = null;
+			if (ns.maximum() > -1) {
+				max = Integer.toString(ns.maximum());
+			}
+			NamespaceParameters namespaceParameters = new NamespaceParameters();
+			namespaceParameters.setFieldName("namespace" + i);
+			namespaceParameters.setName(ns.value());
+			namespaceParameters.setMaximum(max);
+			Namespace n = new Namespace(namespaceParameters);
+			namespaces.add(n);
+		}
 
 		WidgetCollectionParameters wcp = new WidgetCollectionParameters();
 		wcp.setFieldName("namespaces");

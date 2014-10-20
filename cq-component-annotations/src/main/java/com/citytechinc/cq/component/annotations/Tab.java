@@ -20,26 +20,28 @@ package com.citytechinc.cq.component.annotations;
  */
 public @interface Tab {
 
-    /**
-     * Title of the dialog Tab.
-     *
-     * @return String
-     */
-    String title() default "";
+	/**
+	 * Title of the dialog Tab.
+	 *
+	 * @return String
+	 */
+	String title() default "";
 
-    /**
-     * Defines the path to the Tab definition in the content repository.  This property may be used when the Tab is to be
-     * populated in the rendered dialog using an existing definition in the repository.
-     *
-     * @return String
-     */
-    String path() default "";
+	/**
+	 * Defines the path to the Tab definition in the content repository. This
+	 * property may be used when the Tab is to be populated in the rendered
+	 * dialog using an existing definition in the repository.
+	 *
+	 * @return String
+	 */
+	String path() default "";
 
-    /**
-     * The set of listeners which will be attributed to the tab.  Listeners are output as properties in the listeners
-     * XML node which is a child of the XML node representing the dialog tab..
-     *
-     * @return Listener[]
-     */
-    public Listener[] listeners() default { };
+	/**
+	 * The set of listeners which will be attributed to the tab. Listeners are
+	 * output as properties in the listeners XML node which is a child of the
+	 * XML node representing the dialog tab..
+	 *
+	 * @return Listener[]
+	 */
+	public Listener[] listeners() default {};
 }

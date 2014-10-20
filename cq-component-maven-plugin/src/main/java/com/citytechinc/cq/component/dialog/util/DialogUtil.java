@@ -237,7 +237,7 @@ public class DialogUtil {
 		CtMember interfaceMember = getMemberForAnnotatedInterfaceMethod(method);
 		if (interfaceMember != null) {
 			dialogFieldConfig = new DialogFieldConfig((DialogField) interfaceMember.getAnnotation(DialogField.class),
-				method);
+				interfaceMember);
 		}
 		for (CtClass ctclass : classes) {
 			try {

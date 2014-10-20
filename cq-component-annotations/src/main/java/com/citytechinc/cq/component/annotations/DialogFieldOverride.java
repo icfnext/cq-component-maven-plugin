@@ -54,18 +54,23 @@ public @interface DialogFieldOverride {
 
 	/**
 	 * Indicates that population of the widget input in the dialog is required.
-	 * Used to set the allowBlank widget property in the dialog.
+	 * Used to set the allowBlank widget property in the dialog. Unlike
+	 * DialogField this is required because we can't default to the value set on
+	 * DialogField
 	 *
 	 * @return boolean
 	 */
-	public boolean required() default false;
+	public boolean required();
 
 	/**
-	 * Used to set the hideLabel widget property in the dialog.
+	 * Used to set the hideLabel widget property in the dialog. Unlike
+	 * DialogField this is required because we can't default to the value set on
+	 * DialogField
+	 * 
 	 *
 	 * @return boolean
 	 */
-	public boolean hideLabel() default false;
+	public boolean hideLabel();
 
 	/**
 	 * Used to set the defaultValue widget property in the dialog.

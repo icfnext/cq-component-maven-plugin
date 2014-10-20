@@ -19,19 +19,18 @@ import javassist.ClassPool;
 import javassist.CtMember;
 import javassist.NotFoundException;
 
-import com.citytechinc.cq.component.annotations.DialogField;
+import com.citytechinc.cq.component.dialog.DialogFieldConfig;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.widget.WidgetRegistry;
 
 /**
- * Base parameters which all Widgets use during their creation.  This class may be extended
- * to support additional parameters needed for custom widget types.
+ * Base parameters which all Widgets use during their creation. This class may
+ * be extended to support additional parameters needed for custom widget types.
  *
  */
 public class WidgetMakerParameters {
 
-	private DialogField annotation;
-	private CtMember ctMember;
+	private DialogFieldConfig dialogFieldConfig;
 	private Class<?> containingClass;
 	private ClassLoader classLoader;
 	private ClassPool classPool;
@@ -41,7 +40,7 @@ public class WidgetMakerParameters {
 
 	/**
 	 *
-	 * @param annotation
+	 * @param dialogField
 	 * @param ctMember
 	 * @param containingClass
 	 * @param classLoader
@@ -52,12 +51,11 @@ public class WidgetMakerParameters {
 	 * @throws InvalidComponentFieldException
 	 * @throws NotFoundException
 	 */
-	public WidgetMakerParameters(DialogField annotation, CtMember ctMember, Class<?> containingClass,
-		ClassLoader classLoader, ClassPool classPool, WidgetRegistry widgetRegistry, String xtype,
-		boolean useDotSlashInName) throws InvalidComponentFieldException, NotFoundException {
+	public WidgetMakerParameters(DialogFieldConfig dialogField, Class<?> containingClass, ClassLoader classLoader,
+		ClassPool classPool, WidgetRegistry widgetRegistry, String xtype, boolean useDotSlashInName)
+		throws InvalidComponentFieldException, NotFoundException {
 
-		this.annotation = annotation;
-		this.ctMember = ctMember;
+		this.dialogFieldConfig = dialogField;
 		this.containingClass = containingClass;
 		this.classLoader = classLoader;
 		this.classPool = classPool;
@@ -70,16 +68,16 @@ public class WidgetMakerParameters {
 	 *
 	 * @return The DialogField annotation associated with the Widget
 	 */
-	public DialogField getAnnotation() {
-		return annotation;
+	public DialogFieldConfig getDialogFieldConfig() {
+		return dialogFieldConfig;
 	}
 
 	/**
 	 *
 	 * @param annotation
 	 */
-	public void setAnnotation(DialogField annotation) {
-		this.annotation = annotation;
+	public void setDialogFieldConfig(DialogFieldConfig dialogField) {
+		this.dialogFieldConfig = dialogField;
 	}
 
 	/**
@@ -87,15 +85,7 @@ public class WidgetMakerParameters {
 	 * @return The CtMember representing the Widget
 	 */
 	public CtMember getCtMember() {
-		return ctMember;
-	}
-
-	/**
-	 *
-	 * @param ctMember
-	 */
-	public void setCtMember(CtMember ctMember) {
-		this.ctMember = ctMember;
+		return dialogFieldConfig.getMember();
 	}
 
 	/**

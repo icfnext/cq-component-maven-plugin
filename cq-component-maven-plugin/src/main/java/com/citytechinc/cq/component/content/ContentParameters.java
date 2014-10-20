@@ -15,9 +15,9 @@
  */
 package com.citytechinc.cq.component.content;
 
-import com.citytechinc.cq.component.xml.XmlElementParameters;
-
 import java.util.List;
+
+import com.citytechinc.cq.component.xml.XmlElementParameters;
 
 public class ContentParameters extends XmlElementParameters {
 
@@ -35,17 +35,17 @@ public class ContentParameters extends XmlElementParameters {
 	private String description;
 	private String title;
 	private String resourceSuperType;
-    private String className;
+	private String className;
 
-    public String getClassName() {
-        return className;
-    }
+	public String getClassName() {
+		return className;
+	}
 
-    public void setClassName(String className) {
-        this.className = className;
-    }
+	public void setClassName(String className) {
+		this.className = className;
+	}
 
-    public List<String> getAllowedChildren() {
+	public List<String> getAllowedChildren() {
 		return allowedChildren;
 	}
 

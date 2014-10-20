@@ -40,8 +40,8 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 	protected final WidgetMakerParameters parameters;
 
 	/**
-	 * Widget Makers will take, as input to their constructor, Widget parameters which
-	 * they can later use as they make their intended Widget.
+	 * Widget Makers will take, as input to their constructor, Widget parameters
+	 * which they can later use as they make their intended Widget.
 	 *
 	 * @param parameters
 	 */
@@ -51,19 +51,20 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 
 	/**
 	 * <p>
-	 * Determines and returns the name for the dialog field.  The name is the relative
-	 * path to where any authored input using the resultant widget will be housed in the
-	 * content repository.
+	 * Determines and returns the name for the dialog field. The name is the
+	 * relative path to where any authored input using the resultant widget will
+	 * be housed in the content repository.
 	 * </p>
 	 * <p>
-	 * When useDotSlashInName is true, the string './' will be prepended to the determined name.
+	 * When useDotSlashInName is true, the string './' will be prepended to the
+	 * determined name.
 	 * </p>
 	 *
-	 * @return The name property of the DialogField annotation if one is provided, otherwise
-	 *         the result of the {@link #getName()} method.
+	 * @return The name property of the DialogField annotation if one is
+	 *         provided, otherwise the result of the {@link #getName()} method.
 	 */
 	protected String getNameForField() {
-		String overrideName = parameters.getAnnotation().name();
+		String overrideName = parameters.getDialogFieldConfig().getName();
 
 		if (StringUtils.isNotEmpty(overrideName)) {
 			return overrideName;
@@ -76,11 +77,11 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 
 	/**
 	 *
-	 * @return The fieldName property of the DialogField annotation if one is provided, the
-	 *         result of the {@link #getName()} method otherwise.
+	 * @return The fieldName property of the DialogField annotation if one is
+	 *         provided, the result of the {@link #getName()} method otherwise.
 	 */
 	protected String getFieldNameForField() {
-		String overrideFieldName = parameters.getAnnotation().fieldName();
+		String overrideFieldName = parameters.getDialogFieldConfig().getFieldName();
 
 		if (StringUtils.isNotEmpty(overrideFieldName)) {
 			return overrideFieldName;
@@ -91,11 +92,11 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 
 	/**
 	 *
-	 * @return The fieldLabel property of the DialogField annotation if one is provided, null
-	 *         otherwise.
+	 * @return The fieldLabel property of the DialogField annotation if one is
+	 *         provided, null otherwise.
 	 */
 	protected String getFieldLabelForField() {
-		String overrideLabel = parameters.getAnnotation().fieldLabel();
+		String overrideLabel = parameters.getDialogFieldConfig().getFieldLabel();
 
 		if (StringUtils.isNotEmpty(overrideLabel)) {
 			return overrideLabel;
@@ -106,11 +107,11 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 
 	/**
 	 *
-	 * @return The fieldDescription property of the DialogField annotation if one is provided,
-	 *         null otherwise.
+	 * @return The fieldDescription property of the DialogField annotation if
+	 *         one is provided, null otherwise.
 	 */
 	protected String getFieldDescriptionForField() {
-		String overrideFieldDescription = parameters.getAnnotation().fieldDescription();
+		String overrideFieldDescription = parameters.getDialogFieldConfig().getFieldDescription();
 
 		if (StringUtils.isNotEmpty(overrideFieldDescription)) {
 			return overrideFieldDescription;
@@ -124,19 +125,20 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 	 * @return required property of the DialogField annotation.
 	 */
 	protected Boolean getIsRequiredForField() {
-		return parameters.getAnnotation().required();
+		return parameters.getDialogFieldConfig().isRequired();
 	}
 
 	/**
 	 *
-	 * @return Name Value pairs represented by the additional properties tied to the
-	 *         DialogField annotation, or null if no such properties are defined.
+	 * @return Name Value pairs represented by the additional properties tied to
+	 *         the DialogField annotation, or null if no such properties are
+	 *         defined.
 	 */
 	protected Map<String, String> getAdditionalPropertiesForField() {
-		if (parameters.getAnnotation().additionalProperties().length > 0) {
+		if (parameters.getDialogFieldConfig().getAdditionalProperties().length > 0) {
 			Map<String, String> properties = new HashMap<String, String>();
 
-			for (FieldProperty curProperty : parameters.getAnnotation().additionalProperties()) {
+			for (FieldProperty curProperty : parameters.getDialogFieldConfig().getAdditionalProperties()) {
 				properties.put(curProperty.name(), curProperty.value());
 			}
 
@@ -148,11 +150,11 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 
 	/**
 	 *
-	 * @return The defaultValue property of the DialogField annotation if one is provided,
-	 *         null otherwise.
+	 * @return The defaultValue property of the DialogField annotation if one is
+	 *         provided, null otherwise.
 	 */
 	protected String getDefaultValueForField() {
-		String defaultValue = parameters.getAnnotation().defaultValue();
+		String defaultValue = parameters.getDialogFieldConfig().getDefaultValue();
 
 		if (StringUtils.isNotEmpty(defaultValue)) {
 			return defaultValue;
@@ -166,16 +168,17 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 	 * @return The hideLabel property of the DialogField annotation.
 	 */
 	protected boolean getHideLabelForField() {
-		return parameters.getAnnotation().hideLabel();
+		return parameters.getDialogFieldConfig().isHideLabel();
 	}
 
 	/**
 	 *
-	 * @return The Listeners object configured via the listeners property of the DialogField
-	 *         annotation or null if no such configuration is defined.
+	 * @return The Listeners object configured via the listeners property of the
+	 *         DialogField annotation or null if no such configuration is
+	 *         defined.
 	 */
 	protected Listeners getListeners() {
-		Listener[] listeners = parameters.getAnnotation().listeners();
+		Listener[] listeners = parameters.getDialogFieldConfig().getListeners();
 		if (listeners.length > 0) {
 			ListenersParameters parameters = new ListenersParameters();
 			parameters.setListenerAnnotations(listeners);
@@ -186,10 +189,11 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 
 	/**
 	 *
-	 * @return When the widget is represented by a field in the Java class, this method will
-	 *         return the name of the field.  When the widget is represented by a method in
-	 *         the Java Class, the string 'is' or 'get' is stripped from the method name if
-	 *         it starts with either of these strings, and then returns the resultant string.
+	 * @return When the widget is represented by a field in the Java class, this
+	 *         method will return the name of the field. When the widget is
+	 *         represented by a method in the Java Class, the string 'is' or
+	 *         'get' is stripped from the method name if it starts with either
+	 *         of these strings, and then returns the resultant string.
 	 */
 	protected String getName() {
 		if (isField()) {
@@ -208,7 +212,8 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 
 	/**
 	 *
-	 * @return True if the Widget is represented by a field in the Component class, false otherwise.
+	 * @return True if the Widget is represented by a field in the Component
+	 *         class, false otherwise.
 	 */
 	protected boolean isField() {
 		if (parameters.getCtMember() instanceof CtField) {
@@ -220,7 +225,8 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 
 	/**
 	 *
-	 * @return True if the Widget is represented by a method in the Component class, false otherwise.
+	 * @return True if the Widget is represented by a method in the Component
+	 *         class, false otherwise.
 	 */
 	protected boolean isMethod() {
 		return !isField();
@@ -228,9 +234,11 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 
 	/**
 	 *
-	 * @param annotationClass The type of annotation to look for on the Widget element
-	 * @return An Annotation of the type requested if one is associated with the field or
-	 *         method representing the Widget being made, null otherwise.
+	 * @param annotationClass The type of annotation to look for on the Widget
+	 *            element
+	 * @return An Annotation of the type requested if one is associated with the
+	 *         field or method representing the Widget being made, null
+	 *         otherwise.
 	 * @throws ClassNotFoundException
 	 */
 	@SuppressWarnings("unchecked")
@@ -243,9 +251,11 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 
 	/**
 	 *
-	 * @param annotationClass The type of annotation to look for on the Widget element
-	 * @return True if an annotation of the type specified is associated with the field or method
-	 *         representing the Widget being made, false otherwise.
+	 * @param annotationClass The type of annotation to look for on the Widget
+	 *            element
+	 * @return True if an annotation of the type specified is associated with
+	 *         the field or method representing the Widget being made, false
+	 *         otherwise.
 	 */
 	public boolean hasAnnotation(Class<?> annotationClass) {
 		return parameters.getCtMember().hasAnnotation(annotationClass);

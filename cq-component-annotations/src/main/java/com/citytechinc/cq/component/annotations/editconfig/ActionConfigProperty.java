@@ -21,7 +21,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Defines a property to be written to an Action Configuration in a Component's _cq_editConfig.xml.
+ * Defines a property to be written to an Action Configuration in a Component's
+ * _cq_editConfig.xml.
  *
  */
 @Retention(RetentionPolicy.CLASS)

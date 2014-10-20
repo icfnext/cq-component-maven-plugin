@@ -28,11 +28,11 @@ import java.lang.annotation.Target;
 @Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface Html5SmartFile {
 
-    /**
-     * The field's HTML name attribute
-     *
-     * @return String
-     */
+	/**
+	 * The field's HTML name attribute
+	 *
+	 * @return String
+	 */
 	public String name() default "";
 
 	/**
@@ -57,7 +57,8 @@ public @interface Html5SmartFile {
 	public boolean allowUpload() default true;
 
 	/**
-	 * MIME type definition of files that are allowed for referencing using drag & drop
+	 * MIME type definition of files that are allowed for referencing using drag
+	 * & drop
 	 *
 	 * @return String
 	 */
@@ -71,14 +72,24 @@ public @interface Html5SmartFile {
 	public String[] ddGroups() default {};
 
 	/**
-	 * Name of the form field used for posting the file name. Be aware that you will have to specify a suitable value here, as there is no sensible default value available. Suitable values are dependant on their serverside counterpart and must be "./fileName" for CQ foundation's image and download components; use "./image/fileName" for the textimage component.
+	 * Name of the form field used for posting the file name. Be aware that you
+	 * will have to specify a suitable value here, as there is no sensible
+	 * default value available. Suitable values are dependant on their
+	 * serverside counterpart and must be "./fileName" for CQ foundation's image
+	 * and download components; use "./image/fileName" for the textimage
+	 * component.
 	 *
 	 * @return String
 	 */
 	public String fileNameParameter();
 
 	/**
-	 * Name of the form field used for posting the file reference. Be aware that you will have to specify a suitable value here, as there is no sensible default value available. Suitable values are dependant on their serverside counterpart and must be "./fileReference" for CQ foundation's image and download components; use "./image/fileReference" for the textimage component.
+	 * Name of the form field used for posting the file reference. Be aware that
+	 * you will have to specify a suitable value here, as there is no sensible
+	 * default value available. Suitable values are dependant on their
+	 * serverside counterpart and must be "./fileReference" for CQ foundation's
+	 * image and download components; use "./image/fileReference" for the
+	 * textimage component.
 	 *
 	 * @return String
 	 */
@@ -91,7 +102,9 @@ public @interface Html5SmartFile {
 	// support
 
 	/**
-	 * MIME types allowed for uploading (each separated by a semicolon; wildcard * is allowed; for example: "*.*" or "*.jpg;*.gif;*.png" (defaults to "*.*".) Also support MIME type syntax; for example (image/jpg or image/*)
+	 * MIME types allowed for uploading (each separated by a semicolon; wildcard
+	 * * is allowed; for example: "*.*" or "*.jpg;*.gif;*.png" (defaults to
+	 * "*.*".) Also support MIME type syntax; for example (image/jpg or image/*)
 	 *
 	 * @return String
 	 */

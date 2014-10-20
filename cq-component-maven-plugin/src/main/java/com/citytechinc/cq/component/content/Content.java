@@ -15,11 +15,11 @@
  */
 package com.citytechinc.cq.component.content;
 
+import java.util.List;
+
 import com.citytechinc.cq.component.util.Constants;
 import com.citytechinc.cq.component.xml.AbstractXmlElement;
 import com.citytechinc.cq.component.xml.NameSpacedAttribute;
-
-import java.util.List;
 
 /**
  * Based on http://dev.day.com/docs/en/cq/current/developing/components.html
@@ -38,7 +38,7 @@ public class Content extends AbstractXmlElement {
 	private final NameSpacedAttribute<String> description;
 	private final NameSpacedAttribute<String> title;
 	private final NameSpacedAttribute<String> resourceSuperType;
-    private final String className;
+	private final String className;
 
 	public Content(ContentParameters parameters) {
 		super(parameters);
@@ -62,7 +62,7 @@ public class Content extends AbstractXmlElement {
 		title = new NameSpacedAttribute<String>(Constants.JCR_NS_URI, Constants.JCR_NS_PREFIX, parameters.getTitle());
 		resourceSuperType = new NameSpacedAttribute<String>(Constants.SLING_NS_URI, Constants.SLING_NS_PREFIX,
 			parameters.getResourceSuperType());
-        className = parameters.getClassName();
+		className = parameters.getClassName();
 	}
 
 	public List<String> getAllowedChildren() {
@@ -73,11 +73,11 @@ public class Content extends AbstractXmlElement {
 		return allowedParents;
 	}
 
-    public String getClassName() {
-        return className;
-    }
+	public String getClassName() {
+		return className;
+	}
 
-    public String getComponentGroup() {
+	public String getComponentGroup() {
 		return componentGroup;
 	}
 
@@ -85,7 +85,7 @@ public class Content extends AbstractXmlElement {
 		return cellName;
 	}
 
-    public NameSpacedAttribute<Boolean> getIsContainer() {
+	public NameSpacedAttribute<Boolean> getIsContainer() {
 		return isContainer;
 	}
 

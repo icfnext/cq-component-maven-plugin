@@ -64,22 +64,27 @@ public @interface Selection {
 	public String optionsUrl() default "";
 
 	/**
-	 * A function or the name of a function that will be called on processRecords to receive the options. The function must return an array of options.
+	 * A function or the name of a function that will be called on
+	 * processRecords to receive the options. The function must return an array
+	 * of options.
 	 *
 	 * @return String
-	 * @see <a href="http://dev.day.com/docs/en/cq/5-6/widgets-api/output/CQ.form.Selection.html#options">Options</a>
+	 * @see <a
+	 *      href="http://dev.day.com/docs/en/cq/5-6/widgets-api/output/CQ.form.Selection.html#options">Options</a>
 	 */
 	public String optionsProvider() default "";
 
 	/**
-	 * The sort direction of the the options. If "ASC" or "DESC" the options will be sorted by its (internationalized) text.
+	 * The sort direction of the the options. If "ASC" or "DESC" the options
+	 * will be sorted by its (internationalized) text.
 	 *
 	 * @return String
 	 */
 	public String sortDir() default "";
 
 	/**
-	 * The type of the selection. One of "checkbox", "radio", "select" or "combobox". "checkbox" is the only type that supports mulitple values.
+	 * The type of the selection. One of "checkbox", "radio", "select" or
+	 * "combobox". "checkbox" is the only type that supports mulitple values.
 	 *
 	 * @return String
 	 */

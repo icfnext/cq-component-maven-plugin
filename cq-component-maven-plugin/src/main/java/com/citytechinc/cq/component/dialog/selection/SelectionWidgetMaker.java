@@ -48,6 +48,7 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 
 	private static final String OPTION_FIELD_NAME_PREFIX = "option";
 
+	@Override
 	public DialogElement make() throws ClassNotFoundException, InvalidComponentFieldException, NotFoundException {
 
 		Selection selectionAnnotation = getAnnotation(Selection.class);
@@ -70,7 +71,7 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 
 		List<DialogElement> optionsList = null;
 
-		if (StringUtils.isEmpty(parameters.getOptions())) {
+		if (options.size() > 0) {
 			WidgetCollectionParameters wcp = new WidgetCollectionParameters();
 			wcp.setContainedElements(options);
 			wcp.setFieldName("options");

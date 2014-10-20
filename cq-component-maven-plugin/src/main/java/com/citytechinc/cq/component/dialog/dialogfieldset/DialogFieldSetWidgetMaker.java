@@ -21,21 +21,26 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import com.citytechinc.cq.component.dialog.DialogElementComparator;
 import javassist.CannotCompileException;
 import javassist.CtMember;
+import javassist.CtMethod;
 import javassist.NotFoundException;
 
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.DialogField;
+import com.citytechinc.cq.component.annotations.IgnoreDialogField;
 import com.citytechinc.cq.component.annotations.widgets.DialogFieldSet;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.DialogElement;
+import com.citytechinc.cq.component.dialog.DialogElementComparator;
+import com.citytechinc.cq.component.dialog.DialogFieldConfig;
+import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.factory.WidgetFactory;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
+import com.citytechinc.cq.component.dialog.util.DialogUtil;
 import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollection;
 import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollectionParameters;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
@@ -48,6 +53,7 @@ public class DialogFieldSetWidgetMaker extends AbstractWidgetMaker {
 
 	private static final String ITEMS = "items";
 
+	@Override
 	public DialogElement make() throws ClassNotFoundException, SecurityException, InvalidComponentFieldException,
 		NotFoundException, CannotCompileException, NoSuchFieldException, InstantiationException,
 		IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
@@ -90,39 +96,54 @@ public class DialogFieldSetWidgetMaker extends AbstractWidgetMaker {
 
 		List<DialogElement> elements = new ArrayList<DialogElement>();
 
-		for (CtMember curField : fieldsAndMethods) {
-			if (curField.hasAnnotation(DialogField.class)) {
-				Class<?> fieldClass = parameters.getClassLoader().loadClass(curField.getDeclaringClass().getName());
-
-                DialogField dialogField = (DialogField)curField.getAnnotation(DialogField.class);
-                double ranking = dialogField.ranking();
-
-				WidgetMakerParameters curFieldMember = new WidgetMakerParameters(
-					dialogField, curField, fieldClass,
-					parameters.getClassLoader(), parameters.getClassPool(), parameters.getWidgetRegistry(), null, true);
-
-				DialogElement builtFieldWidget = WidgetFactory.make(curFieldMember, -1);
-				if (builtFieldWidget instanceof AbstractWidget
-					&& StringUtils.isNotEmpty(dialogFieldSetAnnotation.namePrefix())) {
-					AbstractWidget widget = (AbstractWidget) builtFieldWidget;
-					String name = widget.getName();
-					String newName;
-					if (name.startsWith("./")) {
-						newName = name.substring(2);
-					} else {
-						newName = name;
+		for (CtMember member : fieldsAndMethods) {
+			if (!member.hasAnnotation(IgnoreDialogField.class)) {
+				DialogFieldConfig dialogFieldConfig = null;
+				if (member instanceof CtMethod) {
+					try {
+						dialogFieldConfig = DialogUtil.getDialogFieldFromSuperClasses((CtMethod) member);
+					} catch (InvalidComponentClassException e) {
+						throw new InvalidComponentFieldException(e.getMessage(), e);
 					}
-					newName = dialogFieldSetAnnotation.namePrefix() + newName;
-					if (name.startsWith("./")) {
-						newName = "./" + newName;
+				} else {
+					if (member.hasAnnotation(DialogField.class)) {
+						dialogFieldConfig = new DialogFieldConfig(
+							(DialogField) member.getAnnotation(DialogField.class), member);
 					}
-					widget.setName(newName);
 				}
-                builtFieldWidget.setRanking(ranking);
-				elements.add(builtFieldWidget);
+
+				if (dialogFieldConfig != null) {
+					Class<?> fieldClass = parameters.getClassLoader().loadClass(member.getDeclaringClass().getName());
+
+					double ranking = dialogFieldConfig.getRanking();
+
+					WidgetMakerParameters curFieldMember = new WidgetMakerParameters(dialogFieldConfig, fieldClass,
+						parameters.getClassLoader(), parameters.getClassPool(), parameters.getWidgetRegistry(), null,
+						true);
+
+					DialogElement builtFieldWidget = WidgetFactory.make(curFieldMember, -1);
+					if (builtFieldWidget instanceof AbstractWidget
+						&& StringUtils.isNotEmpty(dialogFieldSetAnnotation.namePrefix())) {
+						AbstractWidget widget = (AbstractWidget) builtFieldWidget;
+						String name = widget.getName();
+						String newName;
+						if (name.startsWith("./")) {
+							newName = name.substring(2);
+						} else {
+							newName = name;
+						}
+						newName = dialogFieldSetAnnotation.namePrefix() + newName;
+						if (name.startsWith("./")) {
+							newName = "./" + newName;
+						}
+						widget.setName(newName);
+					}
+					builtFieldWidget.setRanking(ranking);
+					elements.add(builtFieldWidget);
+				}
 			}
 		}
-        Collections.sort(elements, new DialogElementComparator());
+		Collections.sort(elements, new DialogElementComparator());
 		WidgetCollectionParameters wcp = new WidgetCollectionParameters();
 		wcp.setContainedElements(elements);
 		wcp.setFieldName(ITEMS);

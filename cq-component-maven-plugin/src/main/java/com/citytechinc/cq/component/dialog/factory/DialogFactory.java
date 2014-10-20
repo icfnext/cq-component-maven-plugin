@@ -15,11 +15,27 @@
  */
 package com.citytechinc.cq.component.dialog.factory;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import javassist.CannotCompileException;
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.CtMember;
+import javassist.CtMethod;
+import javassist.NotFoundException;
+
+import org.codehaus.plexus.util.StringUtils;
+
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.DialogField;
+import com.citytechinc.cq.component.annotations.IgnoreDialogField;
 import com.citytechinc.cq.component.annotations.Listener;
 import com.citytechinc.cq.component.dialog.Dialog;
 import com.citytechinc.cq.component.dialog.DialogElement;
+import com.citytechinc.cq.component.dialog.DialogFieldConfig;
 import com.citytechinc.cq.component.dialog.DialogParameters;
 import com.citytechinc.cq.component.dialog.Listeners;
 import com.citytechinc.cq.component.dialog.ListenersParameters;
@@ -31,22 +47,12 @@ import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldExcept
 import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 import com.citytechinc.cq.component.dialog.tab.Tab;
 import com.citytechinc.cq.component.dialog.tab.TabParameters;
+import com.citytechinc.cq.component.dialog.util.DialogUtil;
 import com.citytechinc.cq.component.dialog.widget.WidgetRegistry;
 import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollection;
 import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollectionParameters;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 import com.citytechinc.cq.component.maven.util.LogSingleton;
-import javassist.CannotCompileException;
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtMember;
-import javassist.NotFoundException;
-import org.codehaus.plexus.util.StringUtils;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class DialogFactory {
 
@@ -87,13 +93,13 @@ public class DialogFactory {
 					tabHolder.setTitle(tab.title());
 				}
 
-                Listener[] listeners = tab.listeners();
+				Listener[] listeners = tab.listeners();
 
-                if (listeners.length > 0) {
-                    ListenersParameters parameters = new ListenersParameters();
-                    parameters.setListenerAnnotations(listeners);
-                    tabHolder.setListeners(new Listeners(parameters));
-                }
+				if (listeners.length > 0) {
+					ListenersParameters parameters = new ListenersParameters();
+					parameters.setListenerAnnotations(listeners);
+					tabHolder.setListeners(new Listeners(parameters));
+				}
 
 				if (StringUtils.isNotEmpty(tab.path())) {
 					CQIncludeParameters params = new CQIncludeParameters();
@@ -116,27 +122,36 @@ public class DialogFactory {
 		 * Iterate through all fields establishing proper widgets for each
 		 */
 		for (CtMember member : fieldsAndMethods) {
-
-			DialogField dialogProperty = (DialogField) member.getAnnotation(DialogField.class);
-
-			if (dialogProperty != null) {
-
-				WidgetMakerParameters parameters = new WidgetMakerParameters(dialogProperty, member,
-					trueComponentClass, classLoader, classPool, widgetRegistry, null, true);
-
-				DialogElement builtFieldWidget = WidgetFactory.make(parameters, -1);
-
-				builtFieldWidget.setRanking(dialogProperty.ranking());
-
-				int tabIndex = dialogProperty.tab();
-
-				if (tabIndex < 1 || tabIndex > tabsList.size()) {
-					throw new InvalidComponentFieldException("Invalid tab index " + tabIndex + " for field "
-						+ dialogProperty.fieldName());
+			if (!member.hasAnnotation(IgnoreDialogField.class)) {
+				DialogFieldConfig dialogFieldConfig = null;
+				if (member instanceof CtMethod) {
+					dialogFieldConfig = DialogUtil.getDialogFieldFromSuperClasses((CtMethod) member);
+				} else {
+					if (member.hasAnnotation(DialogField.class)) {
+						dialogFieldConfig = new DialogFieldConfig(
+							(DialogField) member.getAnnotation(DialogField.class), member);
+					}
 				}
 
-				tabsList.get(tabIndex - 1).addElement(builtFieldWidget);
+				if (dialogFieldConfig != null) {
 
+					WidgetMakerParameters parameters = new WidgetMakerParameters(dialogFieldConfig, trueComponentClass,
+						classLoader, classPool, widgetRegistry, null, true);
+
+					DialogElement builtFieldWidget = WidgetFactory.make(parameters, -1);
+
+					builtFieldWidget.setRanking(dialogFieldConfig.getRanking());
+
+					int tabIndex = dialogFieldConfig.getTab();
+
+					if (tabIndex < 1 || tabIndex > tabsList.size()) {
+						throw new InvalidComponentFieldException("Invalid tab index " + tabIndex + " for field "
+							+ dialogFieldConfig.getFieldName());
+					}
+
+					tabsList.get(tabIndex - 1).addElement(builtFieldWidget);
+
+				}
 			}
 		}
 
@@ -197,7 +212,7 @@ public class DialogFactory {
 		TabParameters tabParams = new TabParameters();
 		tabParams.setTitle(tab.getTitle());
 		tabParams.setContainedElements(Arrays.asList(new DialogElement[] { widgetCollection }));
-        tabParams.setListeners(tab.getListeners());
+		tabParams.setListeners(tab.getListeners());
 		return new Tab(tabParams);
 	}
 }

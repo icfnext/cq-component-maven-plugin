@@ -25,11 +25,11 @@ import com.citytechinc.cq.component.util.WidgetConfigHolder;
  */
 public interface WidgetRegistry {
 
-    /**
-     *
-     * @param annotation
-     * @return The Widget Configuration associated with the specified annotation
-     */
+	/**
+	 *
+	 * @param annotation
+	 * @return The Widget Configuration associated with the specified annotation
+	 */
 	public WidgetConfigHolder getWidgetForAnnotation(Class<?> annotation);
 
 	/**

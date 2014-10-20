@@ -15,6 +15,12 @@
  */
 package com.citytechinc.cq.component.dialog.richtexteditor;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.codehaus.plexus.util.StringUtils;
+
 import com.citytechinc.cq.component.annotations.widgets.RichTextEditor;
 import com.citytechinc.cq.component.annotations.widgets.rte.Edit;
 import com.citytechinc.cq.component.annotations.widgets.rte.FindReplace;
@@ -36,11 +42,6 @@ import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollection;
 import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollectionParameters;
-import org.codehaus.plexus.util.StringUtils;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  *
@@ -69,7 +70,7 @@ public class RichTextEditorMaker extends AbstractWidgetMaker {
 		widgetParameters.setDefaultValue(getDefaultValueForField());
 		widgetParameters.setHideLabel(getHideLabelForField());
 		widgetParameters.setListeners(getListeners());
-		widgetParameters.setContainedElements(Arrays.asList(new DialogElement[] {buildRtePlugins(rteAnnotation)}));
+		widgetParameters.setContainedElements(Arrays.asList(new DialogElement[] { buildRtePlugins(rteAnnotation) }));
 
 		return new RichTextEditorWidget(widgetParameters);
 

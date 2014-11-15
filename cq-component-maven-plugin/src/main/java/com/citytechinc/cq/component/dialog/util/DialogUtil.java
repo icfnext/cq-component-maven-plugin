@@ -140,10 +140,17 @@ public class DialogUtil {
 	 * @throws NoSuchMethodException
 	 * @throws InstantiationException
 	 */
-	public static List<Dialog> buildDialogsFromClassList(ComponentNameTransformer transformer, List<CtClass> classList,
-		ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames, WidgetRegistry widgetRegistry,
-		ClassLoader classLoader, ClassPool classPool, File buildDirectory, String componentPathBase,
-		String defaultComponentPathSuffix) throws InvalidComponentClassException, InvalidComponentFieldException,
+	public static List<Dialog> buildDialogsFromClassList(
+            ComponentNameTransformer transformer,
+            List<CtClass> classList,
+		    ZipArchiveOutputStream zipOutputStream,
+            Set<String> reservedNames,
+            WidgetRegistry widgetRegistry,
+		    ClassLoader classLoader,
+            ClassPool classPool,
+            File buildDirectory,
+            String componentPathBase,
+		    String defaultComponentPathSuffix) throws InvalidComponentClassException, InvalidComponentFieldException,
 		OutputFailureException, IOException, ParserConfigurationException, TransformerException,
 		ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException,
 		IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException,

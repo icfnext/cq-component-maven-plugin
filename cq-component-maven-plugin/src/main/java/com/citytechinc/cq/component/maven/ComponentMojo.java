@@ -68,6 +68,12 @@ public class ComponentMojo extends AbstractMojo {
 	@Parameter(required = false)
 	private List<Dependency> excludeDependencies;
 
+    @Parameter(defaultValue = "false")
+    private String generateTouchUiDialogs;
+
+    @Parameter(defaultValue = "true")
+    private String generateExtJsDialogs;
+
 	public void execute() throws MojoExecutionException, MojoFailureException {
 
 		LogSingleton.getInstance().setLogger(getLog());
@@ -98,9 +104,20 @@ public class ComponentMojo extends AbstractMojo {
 				throw new ConfigurationException("The configured transformer wasn't found");
 			}
 
-			ComponentMojoUtil.buildArchiveFileForProjectAndClassList(classList, widgetRegistry, classLoader, classPool,
-				new File(project.getBuild().getDirectory()), componentPathBase, componentPathSuffix,
-				defaultComponentGroup, getArchiveFileForProject(), getTempArchiveFileForProject(), transformer);
+			ComponentMojoUtil.buildArchiveFileForProjectAndClassList(
+                    classList,
+                    widgetRegistry,
+                    classLoader,
+                    classPool,
+				    new File(project.getBuild().getDirectory()),
+                    componentPathBase,
+                    componentPathSuffix,
+				    defaultComponentGroup,
+                    getArchiveFileForProject(),
+                    getTempArchiveFileForProject(),
+                    transformer,
+                    isGenerateExtJsDialogs(),
+                    isGenerateTouchUiDialogs());
 
 		} catch (Exception e) {
 			getLog().error(e.getMessage(), e);
@@ -190,5 +207,13 @@ public class ComponentMojo extends AbstractMojo {
 
 		return new File(buildDirectory, zipFileName);
 	}
+
+    private boolean isGenerateTouchUiDialogs() {
+        return "true".equals(generateTouchUiDialogs);
+    }
+
+    private boolean isGenerateExtJsDialogs() {
+        return "true".equals(generateExtJsDialogs);
+    }
 
 }

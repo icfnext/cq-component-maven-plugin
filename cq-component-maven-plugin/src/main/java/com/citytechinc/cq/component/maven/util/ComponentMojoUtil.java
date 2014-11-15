@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.citytechinc.cq.component.touchuidialog.util.TouchUiDialogUtil;
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -181,10 +182,20 @@ public class ComponentMojoUtil {
 	 * @throws NoSuchMethodException
 	 * @throws InstantiationException
 	 */
-	public static void buildArchiveFileForProjectAndClassList(List<CtClass> classList, WidgetRegistry widgetRegistry,
-		ClassLoader classLoader, ClassPool classPool, File buildDirectory, String componentPathBase,
-		String defaultComponentPathSuffix, String defaultComponentGroup, File existingArchiveFile,
-		File tempArchiveFile, ComponentNameTransformer transformer) throws OutputFailureException, IOException,
+	public static void buildArchiveFileForProjectAndClassList(
+            List<CtClass> classList,
+            WidgetRegistry widgetRegistry,
+		    ClassLoader classLoader,
+            ClassPool classPool,
+            File buildDirectory,
+            String componentPathBase,
+		    String defaultComponentPathSuffix,
+            String defaultComponentGroup,
+            File existingArchiveFile,
+		    File tempArchiveFile,
+            ComponentNameTransformer transformer,
+            boolean generateExtJsDialogs,
+            boolean generateTouchUiDialogs) throws OutputFailureException, IOException,
 		InvalidComponentClassException, InvalidComponentFieldException, ParserConfigurationException,
 		TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException,
 		NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException,
@@ -236,8 +247,14 @@ public class ComponentMojoUtil {
 		/*
 		 * Create Dialogs within temp archive
 		 */
-		DialogUtil.buildDialogsFromClassList(transformer, classList, tempOutputStream, existingArchiveEntryNames,
-			widgetRegistry, classLoader, classPool, buildDirectory, componentPathBase, defaultComponentPathSuffix);
+        if (generateExtJsDialogs) {
+            DialogUtil.buildDialogsFromClassList(transformer, classList, tempOutputStream, existingArchiveEntryNames,
+                    widgetRegistry, classLoader, classPool, buildDirectory, componentPathBase, defaultComponentPathSuffix);
+        }
+
+        if (generateTouchUiDialogs) {
+            TouchUiDialogUtil.buildDialogsFromClassList();
+        }
 
 		/*
 		 * Create edit config within temp archive

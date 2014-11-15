@@ -20,9 +20,9 @@ import com.citytechinc.cq.component.touchuidialog.TouchUIDialog;
 
 import java.util.List;
 
-public class TouchUiDialogUtil {
+public class TouchUIDialogUtil {
 
-    private TouchUiDialogUtil() {}
+    private TouchUIDialogUtil() {}
 
     public static List<TouchUIDialog> buildDialogsFromClassList() {
         LogSingleton.getInstance().info("I was asked to build Touch UI Dialogs");

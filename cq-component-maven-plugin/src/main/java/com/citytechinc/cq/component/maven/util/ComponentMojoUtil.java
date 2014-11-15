@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.citytechinc.cq.component.touchuidialog.util.TouchUiDialogUtil;
+import com.citytechinc.cq.component.touchuidialog.util.TouchUIDialogUtil;
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -253,7 +253,7 @@ public class ComponentMojoUtil {
         }
 
         if (generateTouchUiDialogs) {
-            TouchUiDialogUtil.buildDialogsFromClassList();
+            TouchUIDialogUtil.buildDialogsFromClassList();
         }
 
 		/*

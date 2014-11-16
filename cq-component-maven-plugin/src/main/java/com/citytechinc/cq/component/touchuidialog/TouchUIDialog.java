@@ -36,7 +36,7 @@ public class TouchUIDialog extends AbstractTouchUIDialogElement {
     }
 
     public String getFileName() {
-        return fileName;
+        return fileName + ".xml";
     }
 
     public NameSpacedAttribute<String> getTitle() {

@@ -19,10 +19,17 @@ import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialog;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogParameters;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
+import com.citytechinc.cq.component.touchuidialog.layout.Layout;
+import com.citytechinc.cq.component.touchuidialog.layout.maker.LayoutMaker;
+import com.citytechinc.cq.component.touchuidialog.layout.maker.LayoutMakerParameters;
+import com.citytechinc.cq.component.touchuidialog.layout.tabs.TabsLayoutMaker;
+import com.citytechinc.cq.component.xml.XmlElement;
 import org.codehaus.plexus.util.StringUtils;
 import javassist.CtClass;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TouchUIDialogFactory {
 
@@ -48,6 +55,18 @@ public class TouchUIDialogFactory {
             if (StringUtils.isNotBlank(componentAnnotation.helpPath())) {
                 parameters.setHelpPath(componentAnnotation.helpPath());
             }
+
+            //Determine the LayoutMaker to use
+            LayoutMaker layoutMaker = new TabsLayoutMaker(new LayoutMakerParameters());
+
+            //Delegate the rest of the production to the LayoutMaker
+            Layout layout = layoutMaker.make();
+
+            //Add the generated Layout to the Dialog's contained elements
+            List<XmlElement> containedElements = new ArrayList<XmlElement>();
+            containedElements.add(layout);
+
+            parameters.setContainedElements(containedElements);
 
             return new TouchUIDialog(parameters);
 

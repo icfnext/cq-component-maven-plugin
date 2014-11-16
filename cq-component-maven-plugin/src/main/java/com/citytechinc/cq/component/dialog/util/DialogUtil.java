@@ -119,7 +119,6 @@ public class DialogUtil {
 	 * @param classList
 	 * @param zipOutputStream
 	 * @param reservedNames
-	 * @param xtypeMap
 	 * @param classLoader
 	 * @param classPool
 	 * @return A list of constructed Dialog objects

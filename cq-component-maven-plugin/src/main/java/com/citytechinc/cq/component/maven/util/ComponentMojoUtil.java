@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
+import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogWriteException;
 import com.citytechinc.cq.component.touchuidialog.util.TouchUIDialogUtil;
 import javassist.CannotCompileException;
 import javassist.ClassPool;
@@ -112,8 +114,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Constructs as Javassist ClassPool which pulls resources based on the
 	 * paths provided by the passed in ClassLoader
-	 * 
-	 * @param classLoader
+	 *
 	 * @return The constructed ClassPool
 	 * @throws NotFoundException
 	 */
@@ -156,7 +157,6 @@ public class ComponentMojoUtil {
 	 * and then adding additional entries for the newly constructed artifacts.
 	 * 
 	 * @param classList
-	 * @param xtypeMap
 	 * @param classLoader
 	 * @param classPool
 	 * @param buildDirectory
@@ -196,10 +196,10 @@ public class ComponentMojoUtil {
             ComponentNameTransformer transformer,
             boolean generateExtJsDialogs,
             boolean generateTouchUiDialogs) throws OutputFailureException, IOException,
-		InvalidComponentClassException, InvalidComponentFieldException, ParserConfigurationException,
-		TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException,
-		NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException,
-		NoSuchMethodException, InstantiationException {
+            InvalidComponentClassException, InvalidComponentFieldException, ParserConfigurationException,
+            TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException,
+            NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException,
+            NoSuchMethodException, InstantiationException, TouchUIDialogWriteException, TouchUIDialogGenerationException {
 
 		if (!existingArchiveFile.exists()) {
 			throw new OutputFailureException("Archive file does not exist");
@@ -253,7 +253,7 @@ public class ComponentMojoUtil {
         }
 
         if (generateTouchUiDialogs) {
-            TouchUIDialogUtil.buildDialogsFromClassList();
+            TouchUIDialogUtil.buildDialogsFromClassList(classList, transformer, buildDirectory, componentPathBase, defaultComponentPathSuffix, tempOutputStream, existingArchiveEntryNames);
         }
 
 		/*
@@ -313,7 +313,6 @@ public class ComponentMojoUtil {
 	 * based on the component class as well as POM configuration.
 	 * 
 	 * @param componentClass
-	 * @param project
 	 * @param componentPathBase
 	 * @return The determined output directory
 	 * @throws OutputFailureException

@@ -16,35 +16,22 @@
 package com.citytechinc.cq.component.touchuidialog;
 
 import com.citytechinc.cq.component.util.Constants;
+import com.citytechinc.cq.component.xml.AbstractXmlElement;
 import com.citytechinc.cq.component.xml.NameSpacedAttribute;
 
-public class TouchUIDialog extends AbstractTouchUIDialogElement {
+public abstract class AbstractTouchUIDialogElement extends AbstractXmlElement implements TouchUIDialogElement {
 
-    public static final String RESOURCE_TYPE = "cq/gui/components/authoring/dialog";
-    public static final String PRIMARY_TYPE = "nt:unstructured";
+    private NameSpacedAttribute<String> resourceType;
 
-    private String fileName;
-    private NameSpacedAttribute<String> title;
-    private String helpPath;
-
-    public TouchUIDialog(TouchUIDialogParameters parameters) {
+    public AbstractTouchUIDialogElement(TouchUIDialogElementParameters parameters) {
         super(parameters);
 
-        this.fileName = parameters.getFileName();
-        this.title = new NameSpacedAttribute<String>(Constants.JCR_NS_URI, Constants.JCR_NS_PREFIX, parameters.getTitle());
-        this.helpPath = parameters.getHelpPath();
+        resourceType = new NameSpacedAttribute<String>(Constants.SLING_NS_URI, Constants.SLING_NS_PREFIX, parameters.getResourceType());
     }
 
-    public String getFileName() {
-        return fileName;
-    }
-
-    public NameSpacedAttribute<String> getTitle() {
-        return title;
-    }
-
-    public String getHelpPath() {
-        return helpPath;
+    @Override
+    public NameSpacedAttribute<String> getResourceType() {
+        return resourceType;
     }
 
 }

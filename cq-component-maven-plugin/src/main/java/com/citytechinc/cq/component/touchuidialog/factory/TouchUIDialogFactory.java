@@ -19,12 +19,16 @@ import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialog;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogParameters;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
+import org.codehaus.plexus.util.StringUtils;
 import javassist.CtClass;
+
+import javax.annotation.Nullable;
 
 public class TouchUIDialogFactory {
 
     private TouchUIDialogFactory() {}
 
+    @Nullable
     public static TouchUIDialog make(
             CtClass componentClass
     ) throws TouchUIDialogGenerationException {
@@ -32,9 +36,18 @@ public class TouchUIDialogFactory {
 
             Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
+            //If output of the Touch UI dialog is disabled, return null
+            if (componentAnnotation.suppressTouchUIDialog()) {
+                return null;
+            }
+
             TouchUIDialogParameters parameters = new TouchUIDialogParameters();
 
             parameters.setTitle(componentAnnotation.value());
+
+            if (StringUtils.isNotBlank(componentAnnotation.helpPath())) {
+                parameters.setHelpPath(componentAnnotation.helpPath());
+            }
 
             return new TouchUIDialog(parameters);
 

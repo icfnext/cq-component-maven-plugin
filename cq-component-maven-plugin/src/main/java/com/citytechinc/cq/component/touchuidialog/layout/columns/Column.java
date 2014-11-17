@@ -13,14 +13,13 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.touchuidialog.layout.fixedcolumns;
+package com.citytechinc.cq.component.touchuidialog.layout.columns;
 
 import com.citytechinc.cq.component.touchuidialog.container.Container;
-import com.citytechinc.cq.component.touchuidialog.layout.Layout;
 
-public class FixedColumnsLayout extends Container implements Layout {
+public class Column extends Container {
 
-    public FixedColumnsLayout(FixedColumnsLayoutParameters parameters) {
+    public Column(ColumnParameters parameters) {
         super(parameters);
     }
 

@@ -13,20 +13,10 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.touchuidialog.layout.fixedcolumns;
+package com.citytechinc.cq.component.touchuidialog.layout.columns.fixedcolumns;
 
-import com.citytechinc.cq.component.touchuidialog.layout.LayoutElementParameters;
+import com.citytechinc.cq.component.touchuidialog.container.ContainerParameters;
 
-public class FixedColumnsLayoutElementParameters extends LayoutElementParameters {
-
-    @Override
-    public String getResourceType() {
-        return FixedColumnsLayoutElement.RESOURCE_TYPE;
-    }
-
-    @Override
-    public void setResourceType(String resourceType) {
-        throw new UnsupportedOperationException("resource type is Static for Tabs Layout Element");
-    }
+public class FixedColumnsLayoutParameters extends ContainerParameters {
 
 }

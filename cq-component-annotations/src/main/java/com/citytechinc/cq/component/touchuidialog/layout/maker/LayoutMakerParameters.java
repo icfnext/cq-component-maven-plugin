@@ -47,4 +47,5 @@ public class LayoutMakerParameters {
     public void setClassPool(ClassPool classPool) {
         this.classPool = classPool;
     }
+
 }

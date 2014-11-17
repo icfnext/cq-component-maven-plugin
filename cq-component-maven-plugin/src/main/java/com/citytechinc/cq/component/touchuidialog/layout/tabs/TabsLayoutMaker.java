@@ -23,11 +23,15 @@ import com.citytechinc.cq.component.touchuidialog.container.items.Items;
 import com.citytechinc.cq.component.touchuidialog.container.items.ItemsParameters;
 import com.citytechinc.cq.component.touchuidialog.layout.Layout;
 import com.citytechinc.cq.component.touchuidialog.layout.LayoutElement;
-import com.citytechinc.cq.component.touchuidialog.layout.fixedcolumns.FixedColumnsLayoutElement;
-import com.citytechinc.cq.component.touchuidialog.layout.fixedcolumns.FixedColumnsLayoutElementParameters;
+import com.citytechinc.cq.component.touchuidialog.layout.columns.Column;
+import com.citytechinc.cq.component.touchuidialog.layout.columns.ColumnParameters;
+import com.citytechinc.cq.component.touchuidialog.layout.columns.fixedcolumns.FixedColumnsLayoutElement;
+import com.citytechinc.cq.component.touchuidialog.layout.columns.fixedcolumns.FixedColumnsLayoutElementParameters;
 import com.citytechinc.cq.component.touchuidialog.layout.maker.AbstractLayoutMaker;
 import com.citytechinc.cq.component.touchuidialog.layout.maker.LayoutMakerParameters;
 import com.citytechinc.cq.component.touchuidialog.layout.maker.exceptions.LayoutMakerException;
+import com.citytechinc.cq.component.touchuidialog.widget.TouchUIWidgetParameters;
+import com.citytechinc.cq.component.touchuidialog.widget.textfield.TextFieldWidget;
 import com.citytechinc.cq.component.xml.XmlElement;
 
 import java.util.ArrayList;
@@ -107,6 +111,18 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
 
             tabParameters.add(currentTabParameters);
         }
+
+        //Add Fields To Tabs
+        TouchUIWidgetParameters widgetParameters = new TouchUIWidgetParameters();
+        widgetParameters.setResourceType(TextFieldWidget.RESOURCE_TYPE);
+        widgetParameters.setFieldLabel("Test Field");
+        widgetParameters.setName("./testField");
+        widgetParameters.setFieldName("testField");
+
+        ColumnParameters columnParameters = new ColumnParameters();
+        columnParameters.setFieldName("column");
+        columnParameters.addItem(new TextFieldWidget(widgetParameters));
+        tabParameters.get(0).addItem(new Column(columnParameters));
 
         //Create all the Tabs
         List<Section> tabs = new ArrayList<Section>();

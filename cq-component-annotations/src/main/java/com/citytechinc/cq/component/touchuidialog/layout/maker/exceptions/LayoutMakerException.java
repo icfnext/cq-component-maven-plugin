@@ -13,17 +13,16 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.touchuidialog.layout;
+package com.citytechinc.cq.component.touchuidialog.layout.maker.exceptions;
 
-import com.citytechinc.cq.component.touchuidialog.AbstractTouchUIDialogElement;
+public class LayoutMakerException extends Exception {
 
-public abstract class AbstractLayoutElement extends AbstractTouchUIDialogElement implements LayoutElement {
+    public LayoutMakerException(String m) {
+        super(m);
+    }
 
-    public static final String ELEMENT_NAME = "layout";
-    public static final String PRIMARY_TYPE = "nt:unstructured";
-
-    public AbstractLayoutElement(LayoutElementParameters parameters) {
-        super(parameters);
+    public LayoutMakerException(String m, Exception e) {
+        super(m, e);
     }
 
 }

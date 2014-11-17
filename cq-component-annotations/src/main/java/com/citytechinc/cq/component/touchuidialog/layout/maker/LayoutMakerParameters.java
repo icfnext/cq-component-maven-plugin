@@ -15,8 +15,36 @@
  */
 package com.citytechinc.cq.component.touchuidialog.layout.maker;
 
-/**
- * Created by paulmichelotti on 11/16/14.
- */
+import javassist.ClassPool;
+import javassist.CtClass;
+
 public class LayoutMakerParameters {
+
+    private CtClass componentClass;
+    private ClassLoader classLoader;
+    private ClassPool classPool;
+
+    public CtClass getComponentClass() {
+        return componentClass;
+    }
+
+    public void setComponentClass(CtClass componentClass) {
+        this.componentClass = componentClass;
+    }
+
+    public ClassLoader getClassLoader() {
+        return classLoader;
+    }
+
+    public void setClassLoader(ClassLoader classLoader) {
+        this.classLoader = classLoader;
+    }
+
+    public ClassPool getClassPool() {
+        return classPool;
+    }
+
+    public void setClassPool(ClassPool classPool) {
+        this.classPool = classPool;
+    }
 }

@@ -13,17 +13,25 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.touchuidialog.layout;
+package com.citytechinc.cq.component.touchuidialog.container;
 
-import com.citytechinc.cq.component.touchuidialog.AbstractTouchUIDialogElement;
+import com.citytechinc.cq.component.util.Constants;
+import com.citytechinc.cq.component.xml.NameSpacedAttribute;
 
-public abstract class AbstractLayoutElement extends AbstractTouchUIDialogElement implements LayoutElement {
+public class Section extends Container {
 
-    public static final String ELEMENT_NAME = "layout";
-    public static final String PRIMARY_TYPE = "nt:unstructured";
+    public static final String RESOURCE_TYPE = "granite/ui/components/foundation/section";
 
-    public AbstractLayoutElement(LayoutElementParameters parameters) {
+    private NameSpacedAttribute<String> title;
+
+    public Section(SectionParameters parameters) {
         super(parameters);
+
+        this.title = new NameSpacedAttribute<String>(Constants.JCR_NS_URI, Constants.JCR_NS_PREFIX, parameters.getTitle());
+    }
+
+    public NameSpacedAttribute<String> getTitle() {
+        return title;
     }
 
 }

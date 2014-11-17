@@ -13,17 +13,23 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.touchuidialog.layout;
+package com.citytechinc.cq.component.touchuidialog.container;
 
-import com.citytechinc.cq.component.touchuidialog.AbstractTouchUIDialogElement;
+public class SectionParameters extends ContainerParameters {
 
-public abstract class AbstractLayoutElement extends AbstractTouchUIDialogElement implements LayoutElement {
+    private String title;
 
-    public static final String ELEMENT_NAME = "layout";
-    public static final String PRIMARY_TYPE = "nt:unstructured";
+    @Override
+    public String getResourceType() {
+        return Section.RESOURCE_TYPE;
+    }
 
-    public AbstractLayoutElement(LayoutElementParameters parameters) {
-        super(parameters);
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
 }

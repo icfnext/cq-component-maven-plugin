@@ -15,11 +15,19 @@
  */
 package com.citytechinc.cq.component.touchuidialog.layout.tabs;
 
+import com.citytechinc.cq.component.annotations.Component;
+import com.citytechinc.cq.component.annotations.Tab;
+import com.citytechinc.cq.component.touchuidialog.container.Section;
+import com.citytechinc.cq.component.touchuidialog.container.SectionParameters;
 import com.citytechinc.cq.component.touchuidialog.container.items.Items;
 import com.citytechinc.cq.component.touchuidialog.container.items.ItemsParameters;
 import com.citytechinc.cq.component.touchuidialog.layout.Layout;
+import com.citytechinc.cq.component.touchuidialog.layout.LayoutElement;
+import com.citytechinc.cq.component.touchuidialog.layout.fixedcolumns.FixedColumnsLayoutElement;
+import com.citytechinc.cq.component.touchuidialog.layout.fixedcolumns.FixedColumnsLayoutElementParameters;
 import com.citytechinc.cq.component.touchuidialog.layout.maker.AbstractLayoutMaker;
 import com.citytechinc.cq.component.touchuidialog.layout.maker.LayoutMakerParameters;
+import com.citytechinc.cq.component.touchuidialog.layout.maker.exceptions.LayoutMakerException;
 import com.citytechinc.cq.component.xml.XmlElement;
 
 import java.util.ArrayList;
@@ -32,7 +40,7 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
     }
 
     @Override
-    public Layout make() {
+    public Layout make() throws LayoutMakerException {
 
         //Construct the TabsLayout Parameters
         TabsLayoutParameters layoutParameters = new TabsLayoutParameters();
@@ -49,13 +57,71 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
         //Add both to the contained elements list
         List<XmlElement> containedElements = new ArrayList<XmlElement>();
         containedElements.add(layoutElement);
-        containedElements.add(items);
+        containedElements.add(makeItems());
 
         layoutParameters.setContainedElements(containedElements);
 
         layoutParameters.setFieldName("content");
 
         return new TabsLayout(layoutParameters);
+
+    }
+
+    protected Items makeItems() throws LayoutMakerException {
+
+        ItemsParameters itemsParameters = new ItemsParameters();
+        itemsParameters.setFieldName("items");
+
+        Component componentAnnotation = null;
+        try {
+            componentAnnotation = (Component) parameters.getComponentClass().getAnnotation(Component.class);
+        } catch (ClassNotFoundException e) {
+            throw new LayoutMakerException("Class Not Found Exception encountered looking up Component annotation", e);
+        }
+
+        /*
+         * Determine the Tabs to create
+         */
+        List<SectionParameters> tabParameters = new ArrayList<SectionParameters>();
+        if (componentAnnotation.tabs().length > 0) {
+            for (Tab currentTabAnnotation : componentAnnotation.tabs()) {
+                SectionParameters currentTabParameters = new SectionParameters();
+
+                currentTabParameters.setTitle(currentTabAnnotation.title());
+
+                //Determine the layout to use for the Tab
+                LayoutElement currentTabLayoutElement = new FixedColumnsLayoutElement(new FixedColumnsLayoutElementParameters());
+                currentTabParameters.setLayoutElement(currentTabLayoutElement);
+
+                tabParameters.add(currentTabParameters);
+            }
+        }
+        else {
+            SectionParameters currentTabParameters = new SectionParameters();
+
+            currentTabParameters.setTitle(componentAnnotation.value());
+
+            //Determine the layout to use for the Tab
+            LayoutElement currentTabLayoutElement = new FixedColumnsLayoutElement(new FixedColumnsLayoutElementParameters());
+            currentTabParameters.setLayoutElement(currentTabLayoutElement);
+
+            tabParameters.add(currentTabParameters);
+        }
+
+        //Create all the Tabs
+        List<Section> tabs = new ArrayList<Section>();
+        for (int i=0; i < tabParameters.size(); i++) {
+            SectionParameters currentSectionParameters = tabParameters.get(i);
+
+            currentSectionParameters.setFieldName("tab_" + i);
+
+            tabs.add(new Section(currentSectionParameters));
+        }
+
+        itemsParameters.setContainedElements(tabs);
+
+        return new Items(itemsParameters);
+
     }
 
 }

@@ -13,16 +13,16 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.touchuidialog.layout;
+package com.citytechinc.cq.component.touchuidialog.layout.fixedcolumns;
 
-import com.citytechinc.cq.component.touchuidialog.AbstractTouchUIDialogElement;
+import com.citytechinc.cq.component.touchuidialog.layout.AbstractLayoutElement;
+import com.citytechinc.cq.component.touchuidialog.layout.LayoutElementParameters;
 
-public abstract class AbstractLayoutElement extends AbstractTouchUIDialogElement implements LayoutElement {
+public class FixedColumnsLayoutElement extends AbstractLayoutElement {
 
-    public static final String ELEMENT_NAME = "layout";
-    public static final String PRIMARY_TYPE = "nt:unstructured";
+    public static final String RESOURCE_TYPE = "granite/ui/components/foundation/layouts/fixedcolumns";
 
-    public AbstractLayoutElement(LayoutElementParameters parameters) {
+    public FixedColumnsLayoutElement(LayoutElementParameters parameters) {
         super(parameters);
     }
 

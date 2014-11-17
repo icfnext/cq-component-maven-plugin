@@ -13,17 +13,20 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.touchuidialog.layout;
+package com.citytechinc.cq.component.touchuidialog.layout.fixedcolumns;
 
-import com.citytechinc.cq.component.touchuidialog.AbstractTouchUIDialogElement;
+import com.citytechinc.cq.component.touchuidialog.layout.LayoutElementParameters;
 
-public abstract class AbstractLayoutElement extends AbstractTouchUIDialogElement implements LayoutElement {
+public class FixedColumnsLayoutElementParameters extends LayoutElementParameters {
 
-    public static final String ELEMENT_NAME = "layout";
-    public static final String PRIMARY_TYPE = "nt:unstructured";
+    @Override
+    public String getResourceType() {
+        return FixedColumnsLayoutElement.RESOURCE_TYPE;
+    }
 
-    public AbstractLayoutElement(LayoutElementParameters parameters) {
-        super(parameters);
+    @Override
+    public void setResourceType(String resourceType) {
+        throw new UnsupportedOperationException("resource type is Static for Tabs Layout Element");
     }
 
 }

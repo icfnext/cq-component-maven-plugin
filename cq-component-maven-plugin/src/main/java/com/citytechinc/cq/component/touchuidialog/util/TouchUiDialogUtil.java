@@ -15,15 +15,21 @@
  */
 package com.citytechinc.cq.component.touchuidialog.util;
 
+import com.citytechinc.cq.component.annotations.DialogField;
+import com.citytechinc.cq.component.annotations.IgnoreDialogField;
 import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
+import com.citytechinc.cq.component.dialog.DialogFieldConfig;
+import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
 import com.citytechinc.cq.component.dialog.exception.OutputFailureException;
+import com.citytechinc.cq.component.dialog.util.DialogUtil;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 import com.citytechinc.cq.component.maven.util.LogSingleton;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialog;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogWriteException;
 import com.citytechinc.cq.component.touchuidialog.factory.TouchUIDialogFactory;
-import javassist.CtClass;
+import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
+import javassist.*;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -41,6 +47,8 @@ public class TouchUIDialogUtil {
 
     public static List<TouchUIDialog> buildDialogsFromClassList(
             List<CtClass> classList,
+            ClassLoader classLoader,
+            ClassPool classPool,
             ComponentNameTransformer transformer,
             File buildDirectory,
             String componentPathBase,
@@ -54,7 +62,7 @@ public class TouchUIDialogUtil {
         LogSingleton.getInstance().info("I was asked to build Touch UI Dialogs");
 
         for(CtClass currentComponentClass : classList) {
-            TouchUIDialog currentDialog = TouchUIDialogFactory.make(currentComponentClass);
+            TouchUIDialog currentDialog = TouchUIDialogFactory.make(currentComponentClass, classLoader, classPool);
 
             if (currentDialog != null) {
                 File currentDialogOutput = writeDialogToFile(transformer, currentDialog, currentComponentClass, buildDirectory, componentPathBase, defaultComponentPathSuffix);
@@ -110,6 +118,46 @@ public class TouchUIDialogUtil {
         } catch (Exception e) {
             throw new TouchUIDialogWriteException("Exception encountered while writing Dialog File to Archive", e);
         }
+
+    }
+
+    public static List<TouchUIWidgetMakerParameters> getWidgetMakerParametersForComponentClass(CtClass componentClass, ClassLoader classLoader, ClassPool classPool) throws NotFoundException, ClassNotFoundException, InvalidComponentClassException {
+
+        List<TouchUIWidgetMakerParameters> widgetMakerParametersList = new ArrayList<TouchUIWidgetMakerParameters>();
+
+        List<CtMember> fieldsAndMethods = new ArrayList<CtMember>();
+        fieldsAndMethods.addAll(ComponentMojoUtil.collectFields(componentClass));
+        fieldsAndMethods.addAll(ComponentMojoUtil.collectMethods(componentClass));
+
+        // Load the true class
+        Class<?> trueComponentClass = classLoader.loadClass(componentClass.getName());
+
+        //Iterate through all the fields creating configs for each and preparing the necessary widget maker parameters
+        for (CtMember member : fieldsAndMethods) {
+            if (!member.hasAnnotation(IgnoreDialogField.class)) {
+                DialogFieldConfig dialogFieldConfig = null;
+                if (member instanceof CtMethod) {
+                    dialogFieldConfig = DialogUtil.getDialogFieldFromSuperClasses((CtMethod) member);
+                } else {
+                    if (member.hasAnnotation(DialogField.class)) {
+                        dialogFieldConfig = new DialogFieldConfig(
+                                (DialogField) member.getAnnotation(DialogField.class), member);
+                    }
+                }
+
+                if (dialogFieldConfig != null) {
+                    TouchUIWidgetMakerParameters touchUIWidgetMakerParameters = new TouchUIWidgetMakerParameters();
+                    touchUIWidgetMakerParameters.setClassLoader(classLoader);
+                    touchUIWidgetMakerParameters.setContainingClass(trueComponentClass);
+                    touchUIWidgetMakerParameters.setDialogFieldConfig(dialogFieldConfig);
+                    touchUIWidgetMakerParameters.setClassPool(classPool);
+                    touchUIWidgetMakerParameters.setUseDotSlashInName(true);
+                    widgetMakerParametersList.add(touchUIWidgetMakerParameters);
+                }
+            }
+        }
+
+        return widgetMakerParametersList;
 
     }
 

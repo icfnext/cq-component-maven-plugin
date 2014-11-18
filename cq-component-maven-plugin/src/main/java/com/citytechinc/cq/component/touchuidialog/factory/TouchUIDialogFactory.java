@@ -25,6 +25,7 @@ import com.citytechinc.cq.component.touchuidialog.layout.maker.LayoutMakerParame
 import com.citytechinc.cq.component.touchuidialog.layout.maker.exceptions.LayoutMakerException;
 import com.citytechinc.cq.component.touchuidialog.layout.tabs.TabsLayoutMaker;
 import com.citytechinc.cq.component.xml.XmlElement;
+import javassist.ClassPool;
 import org.codehaus.plexus.util.StringUtils;
 import javassist.CtClass;
 
@@ -38,7 +39,9 @@ public class TouchUIDialogFactory {
 
     @Nullable
     public static TouchUIDialog make(
-            CtClass componentClass
+            CtClass componentClass,
+            ClassLoader classLoader,
+            ClassPool classPool
     ) throws TouchUIDialogGenerationException {
         try {
 
@@ -61,6 +64,8 @@ public class TouchUIDialogFactory {
             LayoutMakerParameters layoutMakerParameters = new LayoutMakerParameters();
 
             layoutMakerParameters.setComponentClass(componentClass);
+            layoutMakerParameters.setClassLoader(classLoader);
+            layoutMakerParameters.setClassPool(classPool);
             LayoutMaker layoutMaker = new TabsLayoutMaker(layoutMakerParameters);
 
             //Delegate the rest of the production to the LayoutMaker

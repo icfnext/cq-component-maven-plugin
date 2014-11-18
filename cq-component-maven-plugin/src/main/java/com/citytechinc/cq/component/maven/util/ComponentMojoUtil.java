@@ -253,7 +253,7 @@ public class ComponentMojoUtil {
         }
 
         if (generateTouchUiDialogs) {
-            TouchUIDialogUtil.buildDialogsFromClassList(classList, transformer, buildDirectory, componentPathBase, defaultComponentPathSuffix, tempOutputStream, existingArchiveEntryNames);
+            TouchUIDialogUtil.buildDialogsFromClassList(classList, classLoader, classPool, transformer, buildDirectory, componentPathBase, defaultComponentPathSuffix, tempOutputStream, existingArchiveEntryNames);
         }
 
 		/*

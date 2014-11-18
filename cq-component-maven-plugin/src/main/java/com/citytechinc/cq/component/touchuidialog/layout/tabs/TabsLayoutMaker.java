@@ -30,8 +30,9 @@ import com.citytechinc.cq.component.touchuidialog.layout.columns.fixedcolumns.Fi
 import com.citytechinc.cq.component.touchuidialog.layout.maker.AbstractLayoutMaker;
 import com.citytechinc.cq.component.touchuidialog.layout.maker.LayoutMakerParameters;
 import com.citytechinc.cq.component.touchuidialog.layout.maker.exceptions.LayoutMakerException;
-import com.citytechinc.cq.component.touchuidialog.widget.TouchUIWidgetParameters;
-import com.citytechinc.cq.component.touchuidialog.widget.textfield.TextFieldWidget;
+import com.citytechinc.cq.component.touchuidialog.util.TouchUIDialogUtil;
+import com.citytechinc.cq.component.touchuidialog.widget.factory.TouchUIWidgetFactory;
+import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 import com.citytechinc.cq.component.xml.XmlElement;
 
 import java.util.ArrayList;
@@ -113,15 +114,19 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
         }
 
         //Add Fields To Tabs
-        TouchUIWidgetParameters widgetParameters = new TouchUIWidgetParameters();
-        widgetParameters.setResourceType(TextFieldWidget.RESOURCE_TYPE);
-        widgetParameters.setFieldLabel("Test Field");
-        widgetParameters.setName("./testField");
-        widgetParameters.setFieldName("testField");
-
         ColumnParameters columnParameters = new ColumnParameters();
         columnParameters.setFieldName("column");
-        columnParameters.addItem(new TextFieldWidget(widgetParameters));
+
+        try {
+            List<TouchUIWidgetMakerParameters> widgetMakerParameters = TouchUIDialogUtil.getWidgetMakerParametersForComponentClass(parameters.getComponentClass(), parameters.getClassLoader(), parameters.getClassPool());
+
+            for (TouchUIWidgetMakerParameters currentWidgetMakerParameters : widgetMakerParameters) {
+                columnParameters.addItem(TouchUIWidgetFactory.make(currentWidgetMakerParameters, -1));
+            }
+        } catch (Exception e) {
+            throw new LayoutMakerException("Exception encountered while constructing widgets for layout", e);
+        }
+
         tabParameters.get(0).addItem(new Column(columnParameters));
 
         //Create all the Tabs

@@ -13,16 +13,15 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.touchuidialog.widget.textfield;
+package com.citytechinc.cq.component.touchuidialog.widget.maker;
 
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
+import com.citytechinc.cq.component.touchuidialog.widget.SimpleTouchUIWidget;
 import com.citytechinc.cq.component.touchuidialog.widget.TouchUIWidgetParameters;
-import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
-import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 
-public class TextFieldWidgetMaker extends AbstractTouchUIWidgetMaker {
+public class DefaultTouchUIWidgetMaker extends AbstractTouchUIWidgetMaker {
 
-    public TextFieldWidgetMaker(TouchUIWidgetMakerParameters parameters) {
+    public DefaultTouchUIWidgetMaker(TouchUIWidgetMakerParameters parameters) {
         super(parameters);
     }
 
@@ -34,9 +33,9 @@ public class TextFieldWidgetMaker extends AbstractTouchUIWidgetMaker {
         widgetParameters.setFieldName(getFieldNameForField());
         widgetParameters.setName(getNameForField());
         widgetParameters.setFieldLabel(getFieldLabelForField());
-        widgetParameters.setResourceType(TextFieldWidget.RESOURCE_TYPE);
+        widgetParameters.setResourceType(parameters.getResourceType());
 
-        return new TextFieldWidget(widgetParameters);
+        return new SimpleTouchUIWidget(widgetParameters);
 
     }
 

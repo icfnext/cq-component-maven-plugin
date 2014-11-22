@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.citytechinc.cq.component.touchuidialog.widget.registry.DefaultTouchUIWidgetRegistry;
+import com.citytechinc.cq.component.touchuidialog.widget.registry.TouchUIWidgetRegistry;
 import javassist.ClassPool;
 import javassist.CtClass;
 
@@ -95,6 +97,8 @@ public class ComponentMojo extends AbstractMojo {
 
 			WidgetRegistry widgetRegistry = new DefaultWidgetRegistry(classPool, classLoader, reflections);
 
+            TouchUIWidgetRegistry touchUIWidgetRegistry = new DefaultTouchUIWidgetRegistry(classPool, classLoader, reflections);
+
 			Map<String, ComponentNameTransformer> transformers = ComponentMojoUtil.getAllTransformers(classPool,
 				reflections);
 
@@ -107,6 +111,7 @@ public class ComponentMojo extends AbstractMojo {
 			ComponentMojoUtil.buildArchiveFileForProjectAndClassList(
                     classList,
                     widgetRegistry,
+                    touchUIWidgetRegistry,
                     classLoader,
                     classPool,
 				    new File(project.getBuild().getDirectory()),

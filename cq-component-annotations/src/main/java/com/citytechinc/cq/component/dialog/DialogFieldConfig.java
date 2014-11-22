@@ -23,6 +23,7 @@ import com.citytechinc.cq.component.annotations.Listener;
 
 public class DialogFieldConfig {
 	private String xtype;
+    private String resourceType;
 	private String name;
 	private String fieldLabel;
 	private String fieldName;
@@ -38,6 +39,7 @@ public class DialogFieldConfig {
 
 	public DialogFieldConfig(DialogField dialogField, CtMember member) {
 		this.xtype = dialogField.xtype();
+        this.resourceType = dialogField.resourceType();
 		this.name = dialogField.name();
 		this.fieldLabel = dialogField.fieldLabel();
 		this.fieldName = dialogField.fieldName();
@@ -155,4 +157,9 @@ public class DialogFieldConfig {
 	public void setMember(CtMember member) {
 		this.member = member;
 	}
+
+    public String getResourceType() {
+        return resourceType;
+    }
+
 }

@@ -20,7 +20,6 @@ import com.citytechinc.cq.component.annotations.IgnoreDialogField;
 import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
 import com.citytechinc.cq.component.dialog.DialogFieldConfig;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
-import com.citytechinc.cq.component.dialog.exception.OutputFailureException;
 import com.citytechinc.cq.component.dialog.util.DialogUtil;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 import com.citytechinc.cq.component.maven.util.LogSingleton;
@@ -29,14 +28,11 @@ import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenera
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogWriteException;
 import com.citytechinc.cq.component.touchuidialog.factory.TouchUIDialogFactory;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
+import com.citytechinc.cq.component.touchuidialog.widget.registry.TouchUIWidgetRegistry;
 import javassist.*;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -49,6 +45,7 @@ public class TouchUIDialogUtil {
             List<CtClass> classList,
             ClassLoader classLoader,
             ClassPool classPool,
+            TouchUIWidgetRegistry widgetRegistry,
             ComponentNameTransformer transformer,
             File buildDirectory,
             String componentPathBase,
@@ -62,7 +59,7 @@ public class TouchUIDialogUtil {
         LogSingleton.getInstance().info("I was asked to build Touch UI Dialogs");
 
         for(CtClass currentComponentClass : classList) {
-            TouchUIDialog currentDialog = TouchUIDialogFactory.make(currentComponentClass, classLoader, classPool);
+            TouchUIDialog currentDialog = TouchUIDialogFactory.make(currentComponentClass, classLoader, classPool, widgetRegistry);
 
             if (currentDialog != null) {
                 File currentDialogOutput = writeDialogToFile(transformer, currentDialog, currentComponentClass, buildDirectory, componentPathBase, defaultComponentPathSuffix);
@@ -121,7 +118,7 @@ public class TouchUIDialogUtil {
 
     }
 
-    public static List<TouchUIWidgetMakerParameters> getWidgetMakerParametersForComponentClass(CtClass componentClass, ClassLoader classLoader, ClassPool classPool) throws NotFoundException, ClassNotFoundException, InvalidComponentClassException {
+    public static List<TouchUIWidgetMakerParameters> getWidgetMakerParametersForComponentClass(CtClass componentClass, ClassLoader classLoader, ClassPool classPool, TouchUIWidgetRegistry widgetRegistry) throws NotFoundException, ClassNotFoundException, InvalidComponentClassException {
 
         List<TouchUIWidgetMakerParameters> widgetMakerParametersList = new ArrayList<TouchUIWidgetMakerParameters>();
 
@@ -152,6 +149,7 @@ public class TouchUIDialogUtil {
                     touchUIWidgetMakerParameters.setDialogFieldConfig(dialogFieldConfig);
                     touchUIWidgetMakerParameters.setClassPool(classPool);
                     touchUIWidgetMakerParameters.setUseDotSlashInName(true);
+                    touchUIWidgetMakerParameters.setWidgetRegistry(widgetRegistry);
                     widgetMakerParametersList.add(touchUIWidgetMakerParameters);
                 }
             }

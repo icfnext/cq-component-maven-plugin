@@ -32,9 +32,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.citytechinc.cq.component.annotations.config.TouchUIWidget;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogWriteException;
 import com.citytechinc.cq.component.touchuidialog.util.TouchUIDialogUtil;
+import com.citytechinc.cq.component.touchuidialog.widget.AbstractTouchUIWidget;
+import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMaker;
+import com.citytechinc.cq.component.touchuidialog.widget.registry.TouchUIWidgetRegistry;
+import com.citytechinc.cq.component.util.TouchUIWidgetConfigHolder;
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -185,6 +190,7 @@ public class ComponentMojoUtil {
 	public static void buildArchiveFileForProjectAndClassList(
             List<CtClass> classList,
             WidgetRegistry widgetRegistry,
+            TouchUIWidgetRegistry touchUIWidgetRegistry,
 		    ClassLoader classLoader,
             ClassPool classPool,
             File buildDirectory,
@@ -253,7 +259,7 @@ public class ComponentMojoUtil {
         }
 
         if (generateTouchUiDialogs) {
-            TouchUIDialogUtil.buildDialogsFromClassList(classList, classLoader, classPool, transformer, buildDirectory, componentPathBase, defaultComponentPathSuffix, tempOutputStream, existingArchiveEntryNames);
+            TouchUIDialogUtil.buildDialogsFromClassList(classList, classLoader, classPool, touchUIWidgetRegistry, transformer, buildDirectory, componentPathBase, defaultComponentPathSuffix, tempOutputStream, existingArchiveEntryNames);
         }
 
 		/*
@@ -460,6 +466,22 @@ public class ComponentMojoUtil {
 		}
 		return builtInWidgets;
 	}
+
+    public static List<TouchUIWidgetConfigHolder> getAllTouchUIWidgetAnnotations(ClassPool classPool, ClassLoader classLoader, Reflections reflections) throws NotFoundException, ClassNotFoundException {
+        List<TouchUIWidgetConfigHolder> widgetConfigurations = new ArrayList<TouchUIWidgetConfigHolder>();
+
+        for (Class<?> c : reflections.getTypesAnnotatedWith(TouchUIWidget.class)) {
+            CtClass clazz = classPool.getCtClass(c.getName());
+            TouchUIWidget widgetAnnotation = (TouchUIWidget) clazz.getAnnotation(TouchUIWidget.class);
+            Class<? extends Annotation> annotationClass = widgetAnnotation.annotationClass();
+            Class<? extends TouchUIWidgetMaker> widgetMakerClass = widgetAnnotation.makerClass();
+            Class<? extends AbstractTouchUIWidget> widgetClass = classLoader.loadClass(clazz.getName()).asSubclass(AbstractTouchUIWidget.class);
+
+            widgetConfigurations.add(new TouchUIWidgetConfigHolder(annotationClass, widgetClass, widgetMakerClass, widgetAnnotation.resourceType(), widgetAnnotation.ranking()));
+        }
+
+        return widgetConfigurations;
+    }
 
 	/**
 	 * Retrieves a List of all classes which are annotated as Components and are

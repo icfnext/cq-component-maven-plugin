@@ -38,6 +38,15 @@ public @interface DialogField {
 	 */
 	public String xtype() default "";
 
+    /**
+     * Applicable to Touch-UI only
+     *
+     * Allows for explicit definition of a dialog field's sling:resourceType.
+     *
+     * @return String
+     */
+    public String resourceType() default "";
+
 	/**
 	 * The path to which the value for the authorable element will be saved
 	 * during content authoring.

@@ -16,6 +16,7 @@
 package com.citytechinc.cq.component.touchuidialog.widget.maker;
 
 import com.citytechinc.cq.component.dialog.DialogFieldConfig;
+import com.citytechinc.cq.component.touchuidialog.widget.registry.TouchUIWidgetRegistry;
 import javassist.ClassPool;
 import javassist.CtMember;
 
@@ -27,6 +28,7 @@ public class TouchUIWidgetMakerParameters {
     private ClassPool classPool;
     private String resourceType;
     private boolean useDotSlashInName;
+    private TouchUIWidgetRegistry widgetRegistry;
 
     public DialogFieldConfig getDialogFieldConfig() {
         return dialogFieldConfig;
@@ -83,4 +85,13 @@ public class TouchUIWidgetMakerParameters {
     public CtMember getCtMember() {
         return dialogFieldConfig.getMember();
     }
+
+    public TouchUIWidgetRegistry getWidgetRegistry() {
+        return widgetRegistry;
+    }
+
+    public void setWidgetRegistry(TouchUIWidgetRegistry widgetRegistry) {
+        this.widgetRegistry = widgetRegistry;
+    }
+
 }

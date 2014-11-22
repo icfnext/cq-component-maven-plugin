@@ -118,7 +118,7 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
         columnParameters.setFieldName("column");
 
         try {
-            List<TouchUIWidgetMakerParameters> widgetMakerParameters = TouchUIDialogUtil.getWidgetMakerParametersForComponentClass(parameters.getComponentClass(), parameters.getClassLoader(), parameters.getClassPool());
+            List<TouchUIWidgetMakerParameters> widgetMakerParameters = TouchUIDialogUtil.getWidgetMakerParametersForComponentClass(parameters.getComponentClass(), parameters.getClassLoader(), parameters.getClassPool(), parameters.getWidgetRegistry());
 
             for (TouchUIWidgetMakerParameters currentWidgetMakerParameters : widgetMakerParameters) {
                 columnParameters.addItem(TouchUIWidgetFactory.make(currentWidgetMakerParameters, -1));

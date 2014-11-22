@@ -15,6 +15,7 @@
  */
 package com.citytechinc.cq.component.touchuidialog.layout.maker;
 
+import com.citytechinc.cq.component.touchuidialog.widget.registry.TouchUIWidgetRegistry;
 import javassist.ClassPool;
 import javassist.CtClass;
 
@@ -23,6 +24,7 @@ public class LayoutMakerParameters {
     private CtClass componentClass;
     private ClassLoader classLoader;
     private ClassPool classPool;
+    private TouchUIWidgetRegistry widgetRegistry;
 
     public CtClass getComponentClass() {
         return componentClass;
@@ -48,4 +50,11 @@ public class LayoutMakerParameters {
         this.classPool = classPool;
     }
 
+    public TouchUIWidgetRegistry getWidgetRegistry() {
+        return widgetRegistry;
+    }
+
+    public void setWidgetRegistry(TouchUIWidgetRegistry widgetRegistry) {
+        this.widgetRegistry = widgetRegistry;
+    }
 }

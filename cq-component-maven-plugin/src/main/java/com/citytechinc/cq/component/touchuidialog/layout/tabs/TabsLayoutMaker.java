@@ -17,6 +17,8 @@ package com.citytechinc.cq.component.touchuidialog.layout.tabs;
 
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.Tab;
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
+import com.citytechinc.cq.component.touchuidialog.container.ContainerParameters;
 import com.citytechinc.cq.component.touchuidialog.container.Section;
 import com.citytechinc.cq.component.touchuidialog.container.SectionParameters;
 import com.citytechinc.cq.component.touchuidialog.container.items.Items;
@@ -84,10 +86,9 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
             throw new LayoutMakerException("Class Not Found Exception encountered looking up Component annotation", e);
         }
 
-        /*
-         * Determine the Tabs to create
-         */
-        List<SectionParameters> tabParameters = new ArrayList<SectionParameters>();
+        // Determine the Tabs to create
+        List<SectionParameters> tabParametersList = new ArrayList<SectionParameters>();
+        List<ColumnParameters> tabContentParametersList = new ArrayList<ColumnParameters>();
         if (componentAnnotation.tabs().length > 0) {
             for (Tab currentTabAnnotation : componentAnnotation.tabs()) {
                 SectionParameters currentTabParameters = new SectionParameters();
@@ -95,10 +96,18 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
                 currentTabParameters.setTitle(currentTabAnnotation.title());
 
                 //Determine the layout to use for the Tab
+                //TODO: This probably needs to allow for dynamic in tab layout at some point
                 LayoutElement currentTabLayoutElement = new FixedColumnsLayoutElement(new FixedColumnsLayoutElementParameters());
                 currentTabParameters.setLayoutElement(currentTabLayoutElement);
 
-                tabParameters.add(currentTabParameters);
+                //Based on the layout set up container parameters to match the tab parameters
+                //TODO: This probably needs to allow for dynamic in tab layout at some point
+                ColumnParameters tabContentParameters = new ColumnParameters();
+                tabContentParameters.setFieldName("column");
+
+                tabContentParametersList.add(tabContentParameters);
+                tabParametersList.add(currentTabParameters);
+
             }
         }
         else {
@@ -107,32 +116,50 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
             currentTabParameters.setTitle(componentAnnotation.value());
 
             //Determine the layout to use for the Tab
+            //TODO: This probably needs to allow for dynamic in tab layout at some point
             LayoutElement currentTabLayoutElement = new FixedColumnsLayoutElement(new FixedColumnsLayoutElementParameters());
             currentTabParameters.setLayoutElement(currentTabLayoutElement);
 
-            tabParameters.add(currentTabParameters);
+            //Based on the layout set up container parameters to match the tab parameters
+            //TODO: This probably needs to allow for dynamic in tab layout at some point
+            ColumnParameters tabContentParameters = new ColumnParameters();
+            tabContentParameters.setFieldName("column");
+
+            tabContentParametersList.add(tabContentParameters);
+            tabParametersList.add(currentTabParameters);
         }
 
-        //Add Fields To Tabs
-        ColumnParameters columnParameters = new ColumnParameters();
-        columnParameters.setFieldName("column");
-
         try {
+
+            //Populate the content for each tab
+            //TODO: Rank sorting
             List<TouchUIWidgetMakerParameters> widgetMakerParameters = TouchUIDialogUtil.getWidgetMakerParametersForComponentClass(parameters.getComponentClass(), parameters.getClassLoader(), parameters.getClassPool(), parameters.getWidgetRegistry());
 
             for (TouchUIWidgetMakerParameters currentWidgetMakerParameters : widgetMakerParameters) {
-                columnParameters.addItem(TouchUIWidgetFactory.make(currentWidgetMakerParameters, -1));
+
+                TouchUIDialogElement currentElement = TouchUIWidgetFactory.make(currentWidgetMakerParameters, -1);
+
+                if (currentWidgetMakerParameters.getDialogFieldConfig().getTab() <= tabParametersList.size()) {
+                    tabContentParametersList.get(currentWidgetMakerParameters.getDialogFieldConfig().getTab() - 1).addItem(TouchUIWidgetFactory.make(currentWidgetMakerParameters, -1));
+                }
+                else {
+                    throw new LayoutMakerException("Field " + currentWidgetMakerParameters.getDialogFieldConfig().getName() + " placed in non-existant tab " + currentWidgetMakerParameters.getDialogFieldConfig().getTab());
+                }
+
             }
         } catch (Exception e) {
             throw new LayoutMakerException("Exception encountered while constructing widgets for layout", e);
         }
 
-        tabParameters.get(0).addItem(new Column(columnParameters));
+        //Add content to all the tabs
+        for (int i=0; i<tabParametersList.size(); i++) {
+            tabParametersList.get(i).addItem(new Column(tabContentParametersList.get(i)));
+        }
 
         //Create all the Tabs
         List<Section> tabs = new ArrayList<Section>();
-        for (int i=0; i < tabParameters.size(); i++) {
-            SectionParameters currentSectionParameters = tabParameters.get(i);
+        for (int i=0; i < tabParametersList.size(); i++) {
+            SectionParameters currentSectionParameters = tabParametersList.get(i);
 
             currentSectionParameters.setFieldName("tab_" + i);
 

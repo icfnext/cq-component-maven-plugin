@@ -97,6 +97,20 @@ public abstract class AbstractTouchUIWidgetMaker implements TouchUIWidgetMaker {
         return null;
     }
 
+    protected boolean getRequiredForField() {
+        return parameters.getDialogFieldConfig().isRequired();
+    }
+
+    protected String getDefaultValueForField() {
+        String overrideFieldValue = parameters.getDialogFieldConfig().getDefaultValue();
+
+        if (StringUtils.isNotEmpty(overrideFieldValue)) {
+            return overrideFieldValue;
+        }
+
+        return null;
+    }
+
     /**
      *
      * @return When the widget is represented by a field in the Java class, this
@@ -142,5 +156,12 @@ public abstract class AbstractTouchUIWidgetMaker implements TouchUIWidgetMaker {
         return !isField();
     }
 
+    @SuppressWarnings("unchecked")
+    public <T> T getAnnotation(Class<T> annotationClass) throws ClassNotFoundException {
+        if (parameters.getCtMember().hasAnnotation(annotationClass)) {
+            return (T) parameters.getCtMember().getAnnotation(annotationClass);
+        }
+        return null;
+    }
 
 }

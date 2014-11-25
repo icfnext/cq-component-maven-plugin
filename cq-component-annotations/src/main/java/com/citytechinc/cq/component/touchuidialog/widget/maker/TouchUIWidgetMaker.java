@@ -19,6 +19,6 @@ import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 
 public interface TouchUIWidgetMaker {
 
-    public TouchUIDialogElement make();
+    public TouchUIDialogElement make() throws ClassNotFoundException;
 
 }

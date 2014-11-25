@@ -63,6 +63,7 @@ public class TouchUIDialogFactory {
             }
 
             //Determine the LayoutMaker to use
+            //TODO: Make dynamic - currently we always use the tabs layout maker
             LayoutMakerParameters layoutMakerParameters = new LayoutMakerParameters();
 
             layoutMakerParameters.setComponentClass(componentClass);

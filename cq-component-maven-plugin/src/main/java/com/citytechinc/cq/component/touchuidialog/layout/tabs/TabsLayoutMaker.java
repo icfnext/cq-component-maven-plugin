@@ -56,18 +56,16 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
         TabsLayoutElementParameters tabsLayoutElementParameters = new TabsLayoutElementParameters();
         TabsLayoutElement layoutElement = new TabsLayoutElement(tabsLayoutElementParameters);
 
-        //Construct the appropriate Items set
-        ItemsParameters itemsParameters = new ItemsParameters();
-        itemsParameters.setFieldName("items");
-        Items items = new Items(itemsParameters);
+        //TODO: Some of the example tab layouts use a type of 'nav'.  Determine what this does and if it is appropriate to set type here
 
-        //Add both to the contained elements list
+        //Add the Layout element and Items to the contained elements list
         List<XmlElement> containedElements = new ArrayList<XmlElement>();
         containedElements.add(layoutElement);
         containedElements.add(makeItems());
 
         layoutParameters.setContainedElements(containedElements);
 
+        //TODO: Determine how to set this - in the case of nested layouts this won't always be "content"
         layoutParameters.setFieldName("content");
 
         return new TabsLayout(layoutParameters);
@@ -140,10 +138,10 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
                 TouchUIDialogElement currentElement = TouchUIWidgetFactory.make(currentWidgetMakerParameters, -1);
 
                 if (currentWidgetMakerParameters.getDialogFieldConfig().getTab() <= tabParametersList.size()) {
-                    tabContentParametersList.get(currentWidgetMakerParameters.getDialogFieldConfig().getTab() - 1).addItem(TouchUIWidgetFactory.make(currentWidgetMakerParameters, -1));
+                    tabContentParametersList.get(currentWidgetMakerParameters.getDialogFieldConfig().getTab() - 1).addItem(currentElement);
                 }
                 else {
-                    throw new LayoutMakerException("Field " + currentWidgetMakerParameters.getDialogFieldConfig().getName() + " placed in non-existant tab " + currentWidgetMakerParameters.getDialogFieldConfig().getTab());
+                    throw new LayoutMakerException("Field " + currentWidgetMakerParameters.getDialogFieldConfig().getName() + " of class " + currentWidgetMakerParameters.getClass().getName() + " placed in non-existant tab " + currentWidgetMakerParameters.getDialogFieldConfig().getTab());
                 }
 
             }

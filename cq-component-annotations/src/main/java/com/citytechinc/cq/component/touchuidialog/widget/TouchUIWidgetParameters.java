@@ -23,6 +23,11 @@ public class TouchUIWidgetParameters extends TouchUIDialogElementParameters {
 
     protected String name;
     protected String fieldLabel;
+    protected String fieldDescription;
+    protected boolean required;
+    protected String value;
+    protected String defaultValue;
+    protected boolean disabled;
 
     public String getFieldLabel() {
         return fieldLabel;
@@ -46,5 +51,45 @@ public class TouchUIWidgetParameters extends TouchUIDialogElementParameters {
         }
 
         return super.getPrimaryType();
+    }
+
+    public String getFieldDescription() {
+        return fieldDescription;
+    }
+
+    public void setFieldDescription(String fieldDescription) {
+        this.fieldDescription = fieldDescription;
+    }
+
+    public boolean isRequired() {
+        return required;
+    }
+
+    public void setRequired(boolean required) {
+        this.required = required;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public String getDefaultValue() {
+        return defaultValue;
+    }
+
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
+    }
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
     }
 }

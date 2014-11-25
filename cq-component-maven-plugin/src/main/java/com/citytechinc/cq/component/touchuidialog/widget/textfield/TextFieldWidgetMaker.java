@@ -34,6 +34,9 @@ public class TextFieldWidgetMaker extends AbstractTouchUIWidgetMaker {
         widgetParameters.setFieldName(getFieldNameForField());
         widgetParameters.setName(getNameForField());
         widgetParameters.setFieldLabel(getFieldLabelForField());
+        widgetParameters.setFieldDescription(getFieldDescriptionForField());
+        widgetParameters.setRequired(getRequiredForField());
+        widgetParameters.setDefaultValue(getDefaultValueForField());
         widgetParameters.setResourceType(TextFieldWidget.RESOURCE_TYPE);
 
         return new TextFieldWidget(widgetParameters);

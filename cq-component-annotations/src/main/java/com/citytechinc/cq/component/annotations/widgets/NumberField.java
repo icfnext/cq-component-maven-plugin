@@ -42,6 +42,8 @@ public @interface NumberField {
 
 	/**
 	 * False to prevent entering a negative sign
+     *
+     * In Touch UI, if no min is set, setting allowNegative to false will set min to 0.0.
 	 * 
 	 * @return boolean
 	 */
@@ -60,4 +62,35 @@ public @interface NumberField {
 	 * @return String
 	 */
 	String decimalSeparator() default DECIMAL_SEPARATOR_DEFAULT;
+
+    /**
+     * Used for Touch UI Only
+     *
+     * Indicates the minimum allowed value in the field
+     *
+     * @return String
+     */
+    String min() default "";
+
+    /**
+     * Used for Touch UI Only
+     *
+     * Indicates the maximum allowed value in the field
+     *
+     * @return String
+     */
+    String max() default "";
+
+    /**
+     * Used for Touch UI Only
+     *
+     * Indicates the valid numeric increments for values in the field
+     *
+     * Defaults to 1 - <em>NOTE</em> setting this to anything other than 1 really does not work due to
+     * Javascripts floating point arithmetic limitations.
+     *
+     * @return String
+     */
+    double step() default 1;
+
 }

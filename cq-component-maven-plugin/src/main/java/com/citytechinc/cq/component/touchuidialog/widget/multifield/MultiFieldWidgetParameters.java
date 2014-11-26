@@ -13,15 +13,9 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.touchuidialog;
+package com.citytechinc.cq.component.touchuidialog.widget.multifield;
 
-import com.citytechinc.cq.component.xml.NameSpacedAttribute;
-import com.citytechinc.cq.component.xml.XmlElement;
+import com.citytechinc.cq.component.touchuidialog.widget.TouchUIWidgetParameters;
 
-public interface TouchUIDialogElement extends XmlElement {
-
-    public NameSpacedAttribute<String> getResourceType();
-
-    public void setFieldName(String fieldName);
-
+public class MultiFieldWidgetParameters extends TouchUIWidgetParameters {
 }

@@ -34,4 +34,8 @@ public abstract class AbstractTouchUIDialogElement extends AbstractXmlElement im
         return resourceType;
     }
 
+    @Override
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
+    }
 }

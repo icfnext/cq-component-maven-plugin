@@ -40,7 +40,8 @@ public class NumberFieldWidgetMaker extends AbstractTouchUIWidgetMaker {
 
         //TODO: Deal with "value"
         //TODO: Deal with "disabled"
-
+        //TODO: Deal with "class"
+        
         //Number field specific stuff
         NumberField numberField = getAnnotation(NumberField.class);
 

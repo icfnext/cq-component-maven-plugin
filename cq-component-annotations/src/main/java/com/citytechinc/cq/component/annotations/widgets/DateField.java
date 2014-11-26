@@ -53,4 +53,40 @@ public @interface DateField {
 	 * @return String
 	 */
 	String format() default "m/d/Y";
+
+    /**
+     * For Touch-UI only
+     *
+     * Similar to format but uses a different standard for specifying date formats.
+     *
+     * @return String
+     */
+    String storedFormat() default "MM/DD/YYYY";
+
+    /**
+     * For Touch-UI only
+     *
+     * Display format for the date selected
+     *
+     * @return String
+     */
+    String displayedFormat() default "MM/DD/YYYY";
+
+    /**
+     * For Touch-UI only
+     *
+     * The minimum selectable date
+     *
+     * @return String
+     */
+    String minDate() default "";
+
+    /**
+     * For Touch-UI only
+     *
+     * The maximum selectable date
+     *
+     * @return String
+     */
+    String maxDate() default "";
 }

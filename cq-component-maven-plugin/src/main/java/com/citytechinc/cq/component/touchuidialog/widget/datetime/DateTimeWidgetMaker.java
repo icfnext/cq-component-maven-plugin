@@ -38,6 +38,9 @@ public class DateTimeWidgetMaker extends DateFieldWidgetMaker {
         widgetParameters.setRequired(getRequiredForField());
         widgetParameters.setDefaultValue(getDefaultValueForField());
         widgetParameters.setResourceType(DateFieldWidget.RESOURCE_TYPE);
+        widgetParameters.setValue(getValueForField());
+        widgetParameters.setDisabled(getDisabledForField());
+        widgetParameters.setCssClass(getCssClassForField());
 
         //Date field specific stuff
         DateTime annotation = getAnnotation(DateTime.class);

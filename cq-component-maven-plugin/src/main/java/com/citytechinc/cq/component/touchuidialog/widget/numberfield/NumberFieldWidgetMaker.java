@@ -37,10 +37,9 @@ public class NumberFieldWidgetMaker extends AbstractTouchUIWidgetMaker {
         widgetParameters.setFieldDescription(getFieldDescriptionForField());
         widgetParameters.setRequired(getRequiredForField());
         widgetParameters.setDefaultValue(getDefaultValueForField());
-
-        //TODO: Deal with "value"
-        //TODO: Deal with "disabled"
-        //TODO: Deal with "class"
+        widgetParameters.setValue(getValueForField());
+        widgetParameters.setDisabled(getDisabledForField());
+        widgetParameters.setCssClass(getCssClassForField());
         
         //Number field specific stuff
         NumberField numberField = getAnnotation(NumberField.class);

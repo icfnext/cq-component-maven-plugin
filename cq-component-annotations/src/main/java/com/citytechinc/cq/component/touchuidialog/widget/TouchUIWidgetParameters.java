@@ -28,6 +28,7 @@ public class TouchUIWidgetParameters extends TouchUIDialogElementParameters {
     protected String value;
     protected String defaultValue;
     protected boolean disabled;
+    protected String cssClass;
 
     public String getFieldLabel() {
         return fieldLabel;
@@ -92,4 +93,13 @@ public class TouchUIWidgetParameters extends TouchUIDialogElementParameters {
     public void setDisabled(boolean disabled) {
         this.disabled = disabled;
     }
+
+    public String getCssClass() {
+        return cssClass;
+    }
+
+    public void setCssClass(String cssClass) {
+        this.cssClass = cssClass;
+    }
+    
 }

@@ -36,6 +36,9 @@ public class DialogFieldConfig {
 	private Listener[] listeners;
 	private double ranking;
 	private CtMember member;
+    private String value;
+    private boolean disabled;
+    private String cssClass;
 
 	public DialogFieldConfig(DialogField dialogField, CtMember member) {
 		this.xtype = dialogField.xtype();
@@ -52,6 +55,9 @@ public class DialogFieldConfig {
 		this.listeners = dialogField.listeners();
 		this.ranking = dialogField.ranking();
 		this.member = member;
+        this.value = dialogField.value();
+        this.disabled = dialogField.disabled();
+        this.cssClass = dialogField.cssClass();
 	}
 
 	public String getXtype() {
@@ -162,4 +168,27 @@ public class DialogFieldConfig {
         return resourceType;
     }
 
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
+    public String getCssClass() {
+        return cssClass;
+    }
+
+    public void setCssClass(String cssClass) {
+        this.cssClass = cssClass;
+    }
 }

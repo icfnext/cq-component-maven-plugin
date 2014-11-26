@@ -139,4 +139,31 @@ public @interface DialogField {
 	 * @return double
 	 */
 	public double ranking() default 0;
+
+    /**
+     * For Touch-UI Only
+     *
+     * I have no idea what this does
+     *
+     * @return String
+     */
+    public String value() default "";
+
+    /**
+     * For Touch-UI Only
+     *
+     * Indicates that the particular field should be rendered in a disabled state
+     *
+     * @return boolean
+     */
+    public boolean disabled() default false;
+
+    /**
+     * For Touch-UI Only
+     *
+     * Additional css classes to attribute to the rendered field
+     *
+     * @return String
+     */
+    public String cssClass() default "";
 }

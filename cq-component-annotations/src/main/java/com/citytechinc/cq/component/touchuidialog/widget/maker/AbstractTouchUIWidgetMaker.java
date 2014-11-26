@@ -111,6 +111,26 @@ public abstract class AbstractTouchUIWidgetMaker implements TouchUIWidgetMaker {
         return null;
     }
 
+    protected String getValueForField() {
+        if (StringUtils.isNotBlank(parameters.getDialogFieldConfig().getValue())) {
+            return parameters.getDialogFieldConfig().getValue();
+        }
+
+        return null;
+    }
+
+    protected boolean getDisabledForField() {
+        return parameters.getDialogFieldConfig().isDisabled();
+    }
+
+    protected String getCssClassForField() {
+        if (StringUtils.isNotBlank(parameters.getDialogFieldConfig().getCssClass())) {
+            return parameters.getDialogFieldConfig().getCssClass();
+        }
+
+        return null;
+    }
+
     /**
      *
      * @return When the widget is represented by a field in the Java class, this

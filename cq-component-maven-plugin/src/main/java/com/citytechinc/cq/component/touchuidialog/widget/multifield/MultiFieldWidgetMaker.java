@@ -43,8 +43,9 @@ public class MultiFieldWidgetMaker extends AbstractTouchUIWidgetMaker {
         widgetParameters.setFieldDescription(getFieldDescriptionForField());
         widgetParameters.setRequired(getRequiredForField());
         widgetParameters.setResourceType(MultiFieldWidget.RESOURCE_TYPE);
-
-        //TODO: See TextFieldWidgetMaker's todos
+        widgetParameters.setValue(getValueForField());
+        widgetParameters.setDisabled(getDisabledForField());
+        widgetParameters.setCssClass(getCssClassForField());
 
         TouchUIDialogElement field = TouchUIWidgetFactory.make(parameters, MultiFieldWidget.RANKING);
         field.setFieldName("field");

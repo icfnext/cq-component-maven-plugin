@@ -16,17 +16,33 @@
 package com.citytechinc.cq.component.touchuidialog.widget;
 
 import com.citytechinc.cq.component.touchuidialog.AbstractTouchUIDialogElement;
+import org.codehaus.plexus.util.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class AbstractTouchUIWidget extends AbstractTouchUIDialogElement {
 
     private final String name;
     private final String fieldLabel;
+    private final String fieldDescription;
+    private final boolean required;
+    private final String value;
+    private final String defaultValue;
+    private final boolean disabled;
+    private final String cssClass;
 
     public AbstractTouchUIWidget(TouchUIWidgetParameters parameters) {
         super(parameters);
 
         this.name = parameters.name;
         this.fieldLabel = parameters.fieldLabel;
+        this.fieldDescription = parameters.getFieldDescription();
+        this.required = parameters.isRequired();
+        this.value = parameters.getValue();
+        this.defaultValue = parameters.getDefaultValue();
+        this.disabled = parameters.isDisabled();
+        this.cssClass = parameters.getCssClass();
     }
 
     public String getName() {
@@ -35,5 +51,37 @@ public class AbstractTouchUIWidget extends AbstractTouchUIDialogElement {
 
     public String getFieldLabel() {
         return fieldLabel;
+    }
+
+    public String getFieldDescription() {
+        return fieldDescription;
+    }
+
+    public boolean isRequired() {
+        return required;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public String getDefaultValue() {
+        return defaultValue;
+    }
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public Map<String, String> getCssClass() {
+
+        Map<String, String> retMap = new HashMap<String, String>();
+
+        if (StringUtils.isNotBlank(cssClass)) {
+            retMap.put("class", cssClass);
+        }
+
+        return retMap;
+
     }
 }

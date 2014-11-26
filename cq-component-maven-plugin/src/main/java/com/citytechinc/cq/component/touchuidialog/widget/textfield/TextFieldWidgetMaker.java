@@ -38,10 +38,9 @@ public class TextFieldWidgetMaker extends AbstractTouchUIWidgetMaker {
         widgetParameters.setRequired(getRequiredForField());
         widgetParameters.setDefaultValue(getDefaultValueForField());
         widgetParameters.setResourceType(TextFieldWidget.RESOURCE_TYPE);
-
-        //TODO: Deal with "value"
-        //TODO: Deal with "disabled"
-        //TODO: Deal with "class"
+        widgetParameters.setValue(getValueForField());
+        widgetParameters.setDisabled(getDisabledForField());
+        widgetParameters.setCssClass(getCssClassForField());
 
         return new TextFieldWidget(widgetParameters);
 

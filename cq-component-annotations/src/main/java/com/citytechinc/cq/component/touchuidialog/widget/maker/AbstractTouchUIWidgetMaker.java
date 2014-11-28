@@ -15,7 +15,11 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.maker;
 
+import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
+import com.citytechinc.cq.component.util.ComponentUtil;
+import javassist.CtClass;
 import javassist.CtField;
+import javassist.NotFoundException;
 import org.codehaus.plexus.util.StringUtils;
 
 public abstract class AbstractTouchUIWidgetMaker implements TouchUIWidgetMaker {
@@ -182,6 +186,25 @@ public abstract class AbstractTouchUIWidgetMaker implements TouchUIWidgetMaker {
             return (T) parameters.getCtMember().getAnnotation(annotationClass);
         }
         return null;
+    }
+
+    /**
+     *
+     * @return THe CtType of the field or method representing the Widget
+     * @throws javassist.NotFoundException
+     * @throws com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException
+     */
+    public CtClass getCtType() throws NotFoundException, InvalidComponentFieldException {
+        return parameters.getClassPool().getCtClass(getType().getName());
+    }
+
+    /**
+     *
+     * @return The Class of the field or method representing the Widget
+     * @throws InvalidComponentFieldException
+     */
+    public Class<?> getType() throws InvalidComponentFieldException {
+        return ComponentUtil.getTypeForMember(parameters.getCtMember(), parameters.getContainingClass());
     }
 
 }

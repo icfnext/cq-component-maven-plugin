@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.citytechinc.cq.component.annotations.config.TouchUIWidget;
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogWriteException;
 import com.citytechinc.cq.component.touchuidialog.util.TouchUIDialogUtil;
@@ -475,7 +476,7 @@ public class ComponentMojoUtil {
             TouchUIWidget widgetAnnotation = (TouchUIWidget) clazz.getAnnotation(TouchUIWidget.class);
             Class<? extends Annotation> annotationClass = widgetAnnotation.annotationClass();
             Class<? extends TouchUIWidgetMaker> widgetMakerClass = widgetAnnotation.makerClass();
-            Class<? extends AbstractTouchUIWidget> widgetClass = classLoader.loadClass(clazz.getName()).asSubclass(AbstractTouchUIWidget.class);
+            Class<? extends TouchUIDialogElement> widgetClass = classLoader.loadClass(clazz.getName()).asSubclass(TouchUIDialogElement.class);
 
             widgetConfigurations.add(new TouchUIWidgetConfigHolder(annotationClass, widgetClass, widgetMakerClass, widgetAnnotation.resourceType(), widgetAnnotation.ranking()));
         }

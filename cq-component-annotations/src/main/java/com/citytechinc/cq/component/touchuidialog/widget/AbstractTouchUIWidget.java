@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class AbstractTouchUIWidget extends AbstractTouchUIDialogElement {
 
-    private final String name;
+    private String name;
     private final String fieldLabel;
     private final String fieldDescription;
     private final boolean required;
@@ -47,6 +47,10 @@ public class AbstractTouchUIWidget extends AbstractTouchUIDialogElement {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getFieldLabel() {

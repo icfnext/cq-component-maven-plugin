@@ -15,18 +15,19 @@
  */
 package com.citytechinc.cq.component.util;
 
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.widget.AbstractTouchUIWidget;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMaker;
 
 public class TouchUIWidgetConfigHolder {
 
     private final Class<?> annotationClass;
-    private final Class<? extends AbstractTouchUIWidget> widgetClass;
+    private final Class<? extends TouchUIDialogElement> widgetClass;
     private final Class<? extends TouchUIWidgetMaker> makerClass;
     private final String resourceType;
     private final int ranking;
 
-    public TouchUIWidgetConfigHolder(Class<?> annotationClass, Class<? extends AbstractTouchUIWidget> widgetClass, Class<? extends TouchUIWidgetMaker> makerClass, String resourceType, int ranking) {
+    public TouchUIWidgetConfigHolder(Class<?> annotationClass, Class<? extends TouchUIDialogElement> widgetClass, Class<? extends TouchUIWidgetMaker> makerClass, String resourceType, int ranking) {
         this.annotationClass = annotationClass;
         this.widgetClass = widgetClass;
         this.makerClass = makerClass;
@@ -38,7 +39,7 @@ public class TouchUIWidgetConfigHolder {
         return annotationClass;
     }
 
-    public Class<? extends AbstractTouchUIWidget> getWidgetClass() {
+    public Class<? extends TouchUIDialogElement> getWidgetClass() {
         return widgetClass;
     }
 

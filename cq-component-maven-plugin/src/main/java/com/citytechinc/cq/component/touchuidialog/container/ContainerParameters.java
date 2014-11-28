@@ -29,7 +29,7 @@ public class ContainerParameters extends TouchUIDialogElementParameters {
 
     private LayoutElement layoutElement;
 
-    private List<TouchUIDialogElement> items;
+    protected List<TouchUIDialogElement> items;
 
     public ContainerParameters() {
         items = new ArrayList<TouchUIDialogElement>();

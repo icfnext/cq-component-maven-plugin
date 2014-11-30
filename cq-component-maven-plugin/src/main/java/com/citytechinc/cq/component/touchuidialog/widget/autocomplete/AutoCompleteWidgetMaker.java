@@ -13,84 +13,59 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.touchuidialog.widget.textarea;
+package com.citytechinc.cq.component.touchuidialog.widget.autocomplete;
 
-import com.citytechinc.cq.component.annotations.widgets.TextArea;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
+import com.citytechinc.cq.component.touchuidialog.widget.autocomplete.datasource.AutoCompleteDataSource;
+import com.citytechinc.cq.component.touchuidialog.widget.autocomplete.options.AutoCompleteOptions;
+import com.citytechinc.cq.component.touchuidialog.widget.autocomplete.values.AutoCompleteValues;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 import com.citytechinc.cq.component.touchuidialog.widget.textfield.TextFieldWidget;
-import org.codehaus.plexus.util.StringUtils;
 
-public class TextAreaWidgetMaker extends AbstractTouchUIWidgetMaker {
+public abstract class AutoCompleteWidgetMaker extends AbstractTouchUIWidgetMaker {
 
-    public TextAreaWidgetMaker(TouchUIWidgetMakerParameters parameters) {
+    public AutoCompleteWidgetMaker(TouchUIWidgetMakerParameters parameters) {
         super(parameters);
     }
 
     @Override
     public TouchUIDialogElement make() throws ClassNotFoundException, InvalidComponentFieldException, TouchUIDialogGenerationException {
 
-        TextAreaWidgetParameters widgetParameters = new TextAreaWidgetParameters();
+        AutoCompleteWidgetParameters widgetParameters = new AutoCompleteWidgetParameters();
 
+        //Common parameters
         widgetParameters.setFieldName(getFieldNameForField());
         widgetParameters.setName(getNameForField());
         widgetParameters.setFieldLabel(getFieldLabelForField());
         widgetParameters.setFieldDescription(getFieldDescriptionForField());
         widgetParameters.setRequired(getRequiredForField());
         widgetParameters.setDefaultValue(getDefaultValueForField());
-        widgetParameters.setResourceType(TextAreaWidget.RESOURCE_TYPE);
+        widgetParameters.setResourceType(AutoCompleteWidget.RESOURCE_TYPE);
         widgetParameters.setValue(getValueForField());
         widgetParameters.setDisabled(getDisabledForField());
         widgetParameters.setCssClass(getCssClassForField());
 
-        TextArea widgetAnnotation = getAnnotation(TextArea.class);
+        //Autocomplete specific parameters
+        widgetParameters.setMultiple(getMultipleForField());
+        widgetParameters.setMode(getModeForField());
+        widgetParameters.setDatasource(makeDataSource());
+        widgetParameters.setOptions(makeOptions());
+        widgetParameters.setValues(makeValues());
 
-        //Text Area specific properties
-        widgetParameters.setCols(getColsForField(widgetAnnotation));
-        widgetParameters.setRows(getRowsForField(widgetAnnotation));
-        widgetParameters.setResize(getResizeForField(widgetAnnotation));
-
-        return new TextAreaWidget(widgetParameters);
-
+        return new AutoCompleteWidget(widgetParameters);
     }
 
-    public Integer getColsForField(TextArea annotation) {
-        if (annotation == null) {
-            return null;
-        }
+    protected abstract AutoCompleteDataSource makeDataSource();
 
-        if (annotation.cols() != -1) {
-            return annotation.cols();
-        }
+    protected abstract AutoCompleteOptions makeOptions();
 
-        return null;
-    }
+    protected abstract AutoCompleteValues makeValues();
 
-    public Integer getRowsForField(TextArea annotation) {
-        if (annotation == null) {
-            return null;
-        }
+    protected abstract boolean getMultipleForField();
 
-        if (annotation.rows() != -1) {
-            return annotation.rows();
-        }
-
-        return null;
-    }
-
-    public String getResizeForField(TextArea annotation) {
-        if (annotation == null) {
-            return null;
-        }
-
-        if (StringUtils.isNotBlank(annotation.resize())) {
-            return annotation.resize();
-        }
-
-        return null;
-    }
+    protected abstract String getModeForField();
 
 }

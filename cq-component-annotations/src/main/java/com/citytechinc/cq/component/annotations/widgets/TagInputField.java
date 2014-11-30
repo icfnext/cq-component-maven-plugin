@@ -45,4 +45,14 @@ public @interface TagInputField {
 	 * @return TagNameSpace[]
 	 */
 	TagNameSpace[] namespaces() default {};
+
+    /**
+     * Used for Touch-UI only
+     *
+     * Indicates whether selection of multiple tags is allowed
+     *
+     * @return boolean
+     */
+    boolean multiple() default true;
+
 }

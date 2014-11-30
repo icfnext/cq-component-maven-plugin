@@ -13,18 +13,13 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.touchuidialog.widget.dialogfieldset;
+package com.citytechinc.cq.component.touchuidialog.widget.autocomplete.options;
 
-import com.citytechinc.cq.component.annotations.config.TouchUIWidget;
-import com.citytechinc.cq.component.annotations.widgets.DialogFieldSet;
-import com.citytechinc.cq.component.touchuidialog.layout.well.WellLayout;
+import com.citytechinc.cq.component.touchuidialog.AbstractTouchUIDialogElement;
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElementParameters;
 
-//TODO: Potentially change from Well to granite/ui/components/foundation/form/fieldset
-@TouchUIWidget(annotationClass = DialogFieldSet.class, makerClass = DialogFieldSetWidgetMaker.class, resourceType = DialogFieldSetWidget.RESOURCE_TYPE)
-public class DialogFieldSetWidget extends WellLayout {
-
-    public DialogFieldSetWidget(DialogFieldSetWidgetParameters parameters) {
+public class AutoCompleteOptions extends AbstractTouchUIDialogElement {
+    public AutoCompleteOptions(TouchUIDialogElementParameters parameters) {
         super(parameters);
     }
-
 }

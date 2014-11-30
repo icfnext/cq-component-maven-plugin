@@ -13,17 +13,17 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.touchuidialog.widget.dialogfieldset;
+package com.citytechinc.cq.component.touchuidialog.widget.richtexteditor;
 
 import com.citytechinc.cq.component.annotations.config.TouchUIWidget;
-import com.citytechinc.cq.component.annotations.widgets.DialogFieldSet;
-import com.citytechinc.cq.component.touchuidialog.layout.well.WellLayout;
+import com.citytechinc.cq.component.annotations.widgets.RichTextEditor;
+import com.citytechinc.cq.component.touchuidialog.widget.textarea.TextAreaWidget;
+import com.citytechinc.cq.component.touchuidialog.widget.textarea.TextAreaWidgetParameters;
 
-//TODO: Potentially change from Well to granite/ui/components/foundation/form/fieldset
-@TouchUIWidget(annotationClass = DialogFieldSet.class, makerClass = DialogFieldSetWidgetMaker.class, resourceType = DialogFieldSetWidget.RESOURCE_TYPE)
-public class DialogFieldSetWidget extends WellLayout {
+@TouchUIWidget(annotationClass = RichTextEditor.class, makerClass = RichTextEditorWidgetMaker.class, resourceType = RichTextEditorWidget.RESOURCE_TYPE)
+public class RichTextEditorWidget extends TextAreaWidget {
 
-    public DialogFieldSetWidget(DialogFieldSetWidgetParameters parameters) {
+    public RichTextEditorWidget(TextAreaWidgetParameters parameters) {
         super(parameters);
     }
 

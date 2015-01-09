@@ -80,4 +80,32 @@ public @interface PathField {
 	 * @return boolean
 	 */
 	boolean showTitleInTree() default SHOW_TITLE_IN_TREE_DEFAULT;
+
+	/**
+	 * Used for Touch UI only
+	 *
+	 * Javascript source code for an option loader callback function. Takes two arguments: (path, callback).
+	 * See the default option loader implementation for more details on how to use this. If not given, a
+	 * default option loader will be used that just returns paths from the current repository.
+	 *
+	 * @return String
+	 */
+	String optionLoader() default "";
+
+	/**
+	 * Javascript source code for callback function that gets an option value object as parameter and
+	 * should return a stringified value for this option.
+	 *
+	 * @return String
+	 */
+	String optionValueReader() default "";
+
+	/**
+	 * Javascript source code for callback function that gets an option value object as parameter and should
+	 * return a stringified title for this option.
+	 *
+	 * @return String
+	 */
+	String optionTitleReader() default "";
+
 }

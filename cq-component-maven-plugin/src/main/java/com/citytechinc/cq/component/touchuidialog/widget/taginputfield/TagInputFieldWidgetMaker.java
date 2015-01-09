@@ -21,9 +21,10 @@ import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElementParameters;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
 import com.citytechinc.cq.component.touchuidialog.widget.autocomplete.AutoCompleteWidgetMaker;
-import com.citytechinc.cq.component.touchuidialog.widget.autocomplete.datasource.AutoCompleteDataSource;
 import com.citytechinc.cq.component.touchuidialog.widget.autocomplete.options.AutoCompleteOptions;
 import com.citytechinc.cq.component.touchuidialog.widget.autocomplete.values.AutoCompleteValues;
+import com.citytechinc.cq.component.touchuidialog.widget.datasource.DataSource;
+import com.citytechinc.cq.component.touchuidialog.widget.datasource.DataSourceParameters;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 
 public class TagInputFieldWidgetMaker extends AutoCompleteWidgetMaker {
@@ -40,16 +41,14 @@ public class TagInputFieldWidgetMaker extends AutoCompleteWidgetMaker {
     }
 
     @Override
-    protected AutoCompleteDataSource makeDataSource() {
-        TouchUIDialogElementParameters dataSourceParameters = new TouchUIDialogElementParameters();
+    protected DataSource makeDataSource() {
+        DataSourceParameters dataSourceParameters = new DataSourceParameters();
 
         dataSourceParameters.setResourceType(TagInputFieldWidget.DATA_SOURCE_RESOURCE_TYPE);
-        dataSourceParameters.setFieldName(TagInputFieldWidget.DATA_SOURCE_FIELD_NAME);
-        dataSourceParameters.setPrimaryType("nt:unstructured");
 
         //TODO: Namespace restrictions go in here somewhere
 
-        return new AutoCompleteDataSource(dataSourceParameters);
+        return new DataSource(dataSourceParameters);
     }
 
     @Override

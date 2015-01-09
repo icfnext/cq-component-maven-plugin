@@ -24,7 +24,6 @@ import java.util.List;
 public class AutoCompleteWidget extends AbstractTouchUIWidget {
 
     public static final String RESOURCE_TYPE = "granite/ui/components/foundation/form/autocomplete";
-    public static final String DATA_SOURCE_FIELD_NAME = "datasource";
     public static final String VALUES_FIELD_NAME = "values";
     public static final String OPTIONS_FIELD_NAME = "options";
 

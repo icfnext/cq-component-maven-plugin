@@ -18,12 +18,11 @@ package com.citytechinc.cq.component.touchuidialog.widget.autocomplete;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
-import com.citytechinc.cq.component.touchuidialog.widget.autocomplete.datasource.AutoCompleteDataSource;
+import com.citytechinc.cq.component.touchuidialog.widget.datasource.DataSource;
 import com.citytechinc.cq.component.touchuidialog.widget.autocomplete.options.AutoCompleteOptions;
 import com.citytechinc.cq.component.touchuidialog.widget.autocomplete.values.AutoCompleteValues;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
-import com.citytechinc.cq.component.touchuidialog.widget.textfield.TextFieldWidget;
 
 public abstract class AutoCompleteWidgetMaker extends AbstractTouchUIWidgetMaker {
 
@@ -58,7 +57,7 @@ public abstract class AutoCompleteWidgetMaker extends AbstractTouchUIWidgetMaker
         return new AutoCompleteWidget(widgetParameters);
     }
 
-    protected abstract AutoCompleteDataSource makeDataSource();
+    protected abstract DataSource makeDataSource();
 
     protected abstract AutoCompleteOptions makeOptions();
 

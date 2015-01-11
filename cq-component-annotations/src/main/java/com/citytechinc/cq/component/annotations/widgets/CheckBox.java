@@ -42,4 +42,18 @@ public @interface CheckBox {
 	 * @return boolean
 	 */
 	boolean checked() default false;
+
+	/**
+	 * Used for Touch UI only
+	 *
+	 * @return String
+	 */
+	String text() default "";
+
+	/**
+	 * Used for Touch UI only
+	 *
+	 * @return String
+	 */
+	String title() default "";
 }

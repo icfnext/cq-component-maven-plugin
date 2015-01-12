@@ -45,4 +45,5 @@ public class AutoCompleteWidget extends AbstractTouchUIWidget {
     public String getMode() {
         return mode;
     }
+
 }

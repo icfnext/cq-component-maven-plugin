@@ -15,6 +15,7 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.taginputfield;
 
+import com.citytechinc.cq.component.annotations.TagNameSpace;
 import com.citytechinc.cq.component.annotations.widgets.TagInputField;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
@@ -24,8 +25,12 @@ import com.citytechinc.cq.component.touchuidialog.widget.autocomplete.AutoComple
 import com.citytechinc.cq.component.touchuidialog.widget.autocomplete.options.AutoCompleteOptions;
 import com.citytechinc.cq.component.touchuidialog.widget.autocomplete.values.AutoCompleteValues;
 import com.citytechinc.cq.component.touchuidialog.widget.datasource.DataSource;
-import com.citytechinc.cq.component.touchuidialog.widget.datasource.DataSourceParameters;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
+import com.citytechinc.cq.component.touchuidialog.widget.taginputfield.datasource.TagsDataSource;
+import com.citytechinc.cq.component.touchuidialog.widget.taginputfield.datasource.TagsDataSourceParameters;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TagInputFieldWidgetMaker extends AutoCompleteWidgetMaker {
 
@@ -42,13 +47,19 @@ public class TagInputFieldWidgetMaker extends AutoCompleteWidgetMaker {
 
     @Override
     protected DataSource makeDataSource() {
-        DataSourceParameters dataSourceParameters = new DataSourceParameters();
+        TagsDataSourceParameters dataSourceParameters = new TagsDataSourceParameters();
 
-        dataSourceParameters.setResourceType(TagInputFieldWidget.DATA_SOURCE_RESOURCE_TYPE);
+        dataSourceParameters.setResourceType(TagsDataSource.RESOURCE_TYPE);
 
-        //TODO: Namespace restrictions go in here somewhere
+        List<String> namespaces = new ArrayList<String>();
 
-        return new DataSource(dataSourceParameters);
+        for (TagNameSpace currentNamespace : fieldAnnotation.namespaces()) {
+            namespaces.add(currentNamespace.value());
+        }
+
+        dataSourceParameters.setNamespaces(namespaces);
+
+        return new TagsDataSource(dataSourceParameters);
     }
 
     @Override

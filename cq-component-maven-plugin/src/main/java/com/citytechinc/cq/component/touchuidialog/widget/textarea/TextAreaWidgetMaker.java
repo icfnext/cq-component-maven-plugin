@@ -43,6 +43,7 @@ public class TextAreaWidgetMaker extends AbstractTouchUIWidgetMaker {
         widgetParameters.setDefaultValue(getDefaultValueForField());
         widgetParameters.setResourceType(TextAreaWidget.RESOURCE_TYPE);
         widgetParameters.setValue(getValueForField());
+        widgetParameters.setTitle(getTitleForField());
         widgetParameters.setDisabled(getDisabledForField());
         widgetParameters.setCssClass(getCssClassForField());
 
@@ -58,11 +59,7 @@ public class TextAreaWidgetMaker extends AbstractTouchUIWidgetMaker {
     }
 
     public Integer getColsForField(TextArea annotation) {
-        if (annotation == null) {
-            return null;
-        }
-
-        if (annotation.cols() != -1) {
+        if (annotation != null && annotation.cols() != -1) {
             return annotation.cols();
         }
 
@@ -70,11 +67,7 @@ public class TextAreaWidgetMaker extends AbstractTouchUIWidgetMaker {
     }
 
     public Integer getRowsForField(TextArea annotation) {
-        if (annotation == null) {
-            return null;
-        }
-
-        if (annotation.rows() != -1) {
+        if (annotation != null && annotation.rows() != -1) {
             return annotation.rows();
         }
 
@@ -82,11 +75,7 @@ public class TextAreaWidgetMaker extends AbstractTouchUIWidgetMaker {
     }
 
     public String getResizeForField(TextArea annotation) {
-        if (annotation == null) {
-            return null;
-        }
-
-        if (StringUtils.isNotBlank(annotation.resize())) {
+        if (annotation != null && StringUtils.isNotBlank(annotation.resize())) {
             return annotation.resize();
         }
 

@@ -22,6 +22,7 @@ import org.codehaus.plexus.util.StringUtils;
 public class TouchUIWidgetParameters extends TouchUIDialogElementParameters {
 
     protected String name;
+    protected String title;
     protected String fieldLabel;
     protected String fieldDescription;
     protected boolean required;
@@ -44,6 +45,14 @@ public class TouchUIWidgetParameters extends TouchUIDialogElementParameters {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getPrimaryType() {

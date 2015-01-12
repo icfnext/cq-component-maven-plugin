@@ -37,6 +37,7 @@ public class DialogFieldConfig {
 	private double ranking;
 	private CtMember member;
     private String value;
+	private String title;
     private boolean disabled;
     private String cssClass;
 
@@ -56,6 +57,7 @@ public class DialogFieldConfig {
 		this.ranking = dialogField.ranking();
 		this.member = member;
         this.value = dialogField.value();
+		this.title = dialogField.title();
         this.disabled = dialogField.disabled();
         this.cssClass = dialogField.cssClass();
 	}
@@ -176,7 +178,15 @@ public class DialogFieldConfig {
         this.value = value;
     }
 
-    public boolean isDisabled() {
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public boolean isDisabled() {
         return disabled;
     }
 

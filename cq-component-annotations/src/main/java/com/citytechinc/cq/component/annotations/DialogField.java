@@ -143,11 +143,18 @@ public @interface DialogField {
     /**
      * For Touch-UI Only
      *
-     * I have no idea what this does
+     * Many of the Touch UI widgets react to an underlying value being set for the field.
      *
      * @return String
      */
     public String value() default "";
+
+	/**
+	 * For Touch-UI Only
+	 *
+	 * @return String
+	 */
+	public String title() default "";
 
     /**
      * For Touch-UI Only

@@ -123,6 +123,14 @@ public abstract class AbstractTouchUIWidgetMaker implements TouchUIWidgetMaker {
         return null;
     }
 
+    protected String getTitleForField() {
+        if (StringUtils.isNotBlank(parameters.getDialogFieldConfig().getTitle())) {
+            return parameters.getDialogFieldConfig().getTitle();
+        }
+
+        return null;
+    }
+
     protected boolean getDisabledForField() {
         return parameters.getDialogFieldConfig().isDisabled();
     }

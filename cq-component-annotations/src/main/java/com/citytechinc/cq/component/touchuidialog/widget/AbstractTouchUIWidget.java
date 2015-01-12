@@ -24,6 +24,7 @@ import java.util.Map;
 public class AbstractTouchUIWidget extends AbstractTouchUIDialogElement {
 
     private String name;
+    private final String title;
     private final String fieldLabel;
     private final String fieldDescription;
     private final boolean required;
@@ -35,8 +36,9 @@ public class AbstractTouchUIWidget extends AbstractTouchUIDialogElement {
     public AbstractTouchUIWidget(TouchUIWidgetParameters parameters) {
         super(parameters);
 
-        this.name = parameters.name;
-        this.fieldLabel = parameters.fieldLabel;
+        this.name = parameters.getName();
+        this.title = parameters.getTitle();
+        this.fieldLabel = parameters.getFieldLabel();
         this.fieldDescription = parameters.getFieldDescription();
         this.required = parameters.isRequired();
         this.value = parameters.getValue();
@@ -75,6 +77,10 @@ public class AbstractTouchUIWidget extends AbstractTouchUIDialogElement {
 
     public boolean isDisabled() {
         return disabled;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public Map<String, String> getCssClass() {

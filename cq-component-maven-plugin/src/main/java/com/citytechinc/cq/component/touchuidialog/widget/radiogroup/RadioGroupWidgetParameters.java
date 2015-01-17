@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.touchuidialog.widget.selection;
+package com.citytechinc.cq.component.touchuidialog.widget.radiogroup;
 
 import com.citytechinc.cq.component.touchuidialog.widget.TouchUIWidgetParameters;
 import com.citytechinc.cq.component.touchuidialog.widget.datasource.DataSource;
@@ -25,19 +25,18 @@ import com.citytechinc.cq.component.xml.XmlElement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SelectionFieldWidgetParameters extends TouchUIWidgetParameters {
-
-    private boolean multiple;
+public class RadioGroupWidgetParameters extends TouchUIWidgetParameters {
 
     private List<Option> options;
     private DataSource dataSource;
+    private String text;
 
-    public boolean isMultiple() {
-        return multiple;
+    public String getText() {
+        return text;
     }
 
-    public void setMultiple(boolean multiple) {
-        this.multiple = multiple;
+    public void setText(String text) {
+        this.text = text;
     }
 
     public Options getOptions() {

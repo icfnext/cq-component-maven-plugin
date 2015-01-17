@@ -19,9 +19,18 @@ import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElementParameters
 
 public class OptionParameters extends TouchUIDialogElementParameters {
 
+    private String name;
     private String text;
     private String value;
     private boolean selected;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getText() {
         return text;

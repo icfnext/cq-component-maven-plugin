@@ -13,43 +13,26 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.touchuidialog.widget.selection.options;
+package com.citytechinc.cq.component.touchuidialog.widget.radiogroup;
 
-import com.citytechinc.cq.component.touchuidialog.AbstractTouchUIDialogElement;
-import com.citytechinc.cq.component.touchuidialog.widget.datasource.DataSource;
+import com.citytechinc.cq.component.touchuidialog.widget.AbstractTouchUIWidget;
 
-import java.util.List;
+public class RadioGroupWidget extends AbstractTouchUIWidget {
 
-public class Option extends AbstractTouchUIDialogElement {
+    public static final String RESOURCE_TYPE = "granite/ui/components/foundation/form/radiogroup";
+    public static final String RADIO_RESOURCE_TYPE = "granite/ui/components/foundation/form/radio";
 
-    private final String name;
     private final String text;
-    private final String value;
-    private final boolean selected;
 
-    public Option(OptionParameters parameters) {
+    public RadioGroupWidget(RadioGroupWidgetParameters parameters) {
+
         super(parameters);
 
-        name = parameters.getName();
         text = parameters.getText();
-        value = parameters.getValue();
-        selected = parameters.isSelected();
-    }
 
-    public String getName() {
-        return name;
     }
 
     public String getText() {
         return text;
     }
-
-    public String getValue() {
-        return value;
-    }
-
-    public boolean isSelected() {
-        return selected;
-    }
-
 }

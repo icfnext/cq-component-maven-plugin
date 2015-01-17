@@ -13,52 +13,30 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.touchuidialog.widget.selection;
+package com.citytechinc.cq.component.touchuidialog.widget.radiogroup;
 
 import com.citytechinc.cq.component.annotations.Option;
 import com.citytechinc.cq.component.annotations.widgets.Selection;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
-import com.citytechinc.cq.component.maven.util.LogSingleton;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
 import com.citytechinc.cq.component.touchuidialog.widget.datasource.DataSource;
 import com.citytechinc.cq.component.touchuidialog.widget.datasource.DataSourceParameters;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
-import com.citytechinc.cq.component.touchuidialog.widget.radiogroup.RadioGroupWidgetMaker;
+import com.citytechinc.cq.component.touchuidialog.widget.selection.SelectionFieldWidget;
 import com.citytechinc.cq.component.touchuidialog.widget.selection.options.OptionParameters;
 import org.codehaus.plexus.util.StringUtils;
 
-public class SelectionFieldWidgetMaker extends AbstractTouchUIWidgetMaker {
+public class RadioGroupWidgetMaker extends AbstractTouchUIWidgetMaker {
 
-    public SelectionFieldWidgetMaker(TouchUIWidgetMakerParameters parameters) {
+    public RadioGroupWidgetMaker(TouchUIWidgetMakerParameters parameters) {
         super(parameters);
     }
 
     @Override
     public TouchUIDialogElement make() throws ClassNotFoundException, InvalidComponentFieldException, TouchUIDialogGenerationException {
-
-        Selection selectionField = getAnnotation(Selection.class);
-
-        if (Selection.RADIO.equals(selectionField.type())) {
-            return makeRadioGroup();
-        }
-        else {
-            if (StringUtils.isNotBlank(selectionField.type()) && !Selection.SELECT.equals(selectionField.type())) {
-                LogSingleton.getInstance().warn("Selection field type " + selectionField.type() + " requested for field " + getFieldNameForField() + " however no such presentation is implemented for the Touch UI.  Defaulting to a dropdown selection.");
-            }
-            return makeSelection(selectionField);
-        }
-
-    }
-
-    protected TouchUIDialogElement makeRadioGroup() throws TouchUIDialogGenerationException, InvalidComponentFieldException, ClassNotFoundException {
-        RadioGroupWidgetMaker maker = new RadioGroupWidgetMaker(parameters);
-        return maker.make();
-    }
-
-    protected TouchUIDialogElement makeSelection(Selection selectionField) {
-        SelectionFieldWidgetParameters widgetParameters = new SelectionFieldWidgetParameters();
+        RadioGroupWidgetParameters widgetParameters = new RadioGroupWidgetParameters();
 
         widgetParameters.setFieldName(getFieldNameForField());
         widgetParameters.setName(getNameForField());
@@ -71,13 +49,19 @@ public class SelectionFieldWidgetMaker extends AbstractTouchUIWidgetMaker {
         widgetParameters.setDisabled(getDisabledForField());
         widgetParameters.setCssClass(getCssClassForField());
 
-        widgetParameters.setMultiple(getMultipleForField(selectionField));
+        widgetParameters.setResourceType(RadioGroupWidget.RESOURCE_TYPE);
+
+        Selection selectionField = getAnnotation(Selection.class);
+
+        widgetParameters.setText(getFieldLabelForField());
         widgetParameters.setDataSource(getDataSourceForField(selectionField));
 
         for (int i = 0; i < selectionField.options().length; i++) {
             Option currentOption = selectionField.options()[i];
 
             OptionParameters optionParameters = new OptionParameters();
+            optionParameters.setName(getNameForField());
+            optionParameters.setResourceType(RadioGroupWidget.RADIO_RESOURCE_TYPE);
             optionParameters.setText(currentOption.text());
             optionParameters.setValue(currentOption.value());
             optionParameters.setSelected(currentOption.selected());
@@ -86,15 +70,7 @@ public class SelectionFieldWidgetMaker extends AbstractTouchUIWidgetMaker {
             widgetParameters.addOption(new com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option(optionParameters));
         }
 
-        return new SelectionFieldWidget(widgetParameters);
-    }
-
-    public boolean getMultipleForField(Selection annotation) {
-        if (annotation != null) {
-            return annotation.multiple();
-        }
-
-        return false;
+        return new RadioGroupWidget(widgetParameters);
     }
 
     public DataSource getDataSourceForField(Selection annotation) {

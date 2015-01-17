@@ -34,6 +34,8 @@ public @interface NumberField {
 	public static final String DECIMAL_SEPARATOR_DEFAULT = ".";
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * False to disallow decimal values
 	 * 
 	 * @return boolean
@@ -50,6 +52,8 @@ public @interface NumberField {
 	boolean allowNegative() default ALLOW_NEGATIVE_DEFAULT;
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * The maximum precision to display after the decimal separator
 	 * 
 	 * @return int

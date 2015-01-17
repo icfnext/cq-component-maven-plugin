@@ -16,6 +16,7 @@
 package com.citytechinc.cq.component.touchuidialog.widget.numberfield;
 
 import com.citytechinc.cq.component.annotations.widgets.NumberField;
+import com.citytechinc.cq.component.maven.util.LogSingleton;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
@@ -78,6 +79,11 @@ public class NumberFieldWidgetMaker extends AbstractTouchUIWidgetMaker {
     }
 
     protected Double getStepForField(NumberField annotation) {
+        Double step = annotation.step();
+
+        if (Math.floor(annotation.step()) != annotation.step() && !Double.isInfinite(annotation.step())) {
+            LogSingleton.getInstance().warn("A step of " + annotation.step() + " was defined for field " + getFieldNameForField() + " of class " + parameters.getContainingClass().getName() + ". Non-integer steps will cause the increment and decrement buttons of the number field to misbehave.");
+        }
         return annotation.step();
     }
 

@@ -21,14 +21,17 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Represents a Widget of type CQ.html5.form.SmartFile
+ * Represents a Widget of type CQ.html5.form.SmartFile in Classic UI
  *
+ * Represents a Widget of type granite/ui/components/foundation/form/fileupload in Touch UI
  */
 @Retention(RetentionPolicy.CLASS)
 @Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface Html5SmartFile {
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * The field's HTML name attribute
 	 *
 	 * @return String
@@ -36,6 +39,8 @@ public @interface Html5SmartFile {
 	public String name() default "";
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * True if the name of an uploaded file is editable
 	 *
 	 * @return boolean
@@ -43,6 +48,8 @@ public @interface Html5SmartFile {
 	public boolean allowFileNameEditing() default true;
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * Flag if referencing a file is allowed
 	 *
 	 * @return boolean
@@ -50,6 +57,8 @@ public @interface Html5SmartFile {
 	public boolean allowFileReference() default true;
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * Flag if uploading a file is allowed
 	 *
 	 * @return boolean
@@ -57,6 +66,8 @@ public @interface Html5SmartFile {
 	public boolean allowUpload() default true;
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * MIME type definition of files that are allowed for referencing using drag
 	 * & drop
 	 *
@@ -65,6 +76,8 @@ public @interface Html5SmartFile {
 	public String ddAccept() default "*";
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * Groups involved in drag & drop
 	 *
 	 * @return String[]
@@ -102,6 +115,8 @@ public @interface Html5SmartFile {
 	// support
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * MIME types allowed for uploading (each separated by a semicolon; wildcard
 	 * * is allowed; for example: "*.*" or "*.jpg;*.gif;*.png" (defaults to
 	 * "*.*".) Also support MIME type syntax; for example (image/jpg or image/*)
@@ -122,6 +137,8 @@ public @interface Html5SmartFile {
 	public String[] touchUIMimeTypes() default {};
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * A String that describes the allowed MIME types
 	 *
 	 * @return String

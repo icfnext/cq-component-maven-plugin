@@ -21,8 +21,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Represents a Widget of type CQ.Ext.form.NumberField
- * 
+ * Represents a Widget of type CQ.Ext.form.NumberField in Classic UI
+ *
+ * Represents a Widget of type granite/ui/components/foundation/form/numberfield in Touch UI
  */
 @Retention(RetentionPolicy.CLASS)
 @Target({ ElementType.FIELD, ElementType.METHOD })

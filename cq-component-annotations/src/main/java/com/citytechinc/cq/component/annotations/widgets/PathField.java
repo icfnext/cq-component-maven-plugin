@@ -21,8 +21,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Represents a Widget of type CQ.form.PathField
+ * Represents a Widget of type CQ.form.PathField in Classic UI
  *
+ * Represents a Widget of type granite/ui/components/foundation/form/pathbrowser in Touch UI
  */
 @Retention(RetentionPolicy.CLASS)
 @Target({ ElementType.FIELD, ElementType.METHOD })

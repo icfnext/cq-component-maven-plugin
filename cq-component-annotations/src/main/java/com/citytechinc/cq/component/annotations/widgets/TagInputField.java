@@ -23,8 +23,10 @@ import java.lang.annotation.Target;
 import com.citytechinc.cq.component.annotations.TagNameSpace;
 
 /**
- * Represents a Widget of type CQ.tagging.TagInputField
+ * Represents a Widget of type CQ.tagging.TagInputField in Classic UI
  *
+ * Represents a Widget of type granite/ui/components/foundation/form/autocomplete configured to use the
+ * granite/ui/components/foundation/form/autocomplete/tags values type in Touch UI
  */
 @Retention(RetentionPolicy.CLASS)
 @Target({ ElementType.FIELD, ElementType.METHOD })

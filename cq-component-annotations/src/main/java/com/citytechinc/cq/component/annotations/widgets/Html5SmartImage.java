@@ -21,14 +21,18 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * CQ.html5.form.SmartImage
+ * Represents a Widget of type CQ.html5.form.SmartImage in Classic UI
  *
+ * The Smart Image is not supported in Touch UI and will render as a granite/ui/components/foundation/form/fileupload
+ * Widget
  */
 @Retention(RetentionPolicy.CLASS)
 @Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface Html5SmartImage {
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * True to not render the flush button.
 	 *
 	 * @return boolean
@@ -36,6 +40,8 @@ public @interface Html5SmartImage {
 	public boolean disableFlush() default false;
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * True to hide the "information" tool
 	 *
 	 * @return boolean
@@ -43,6 +49,8 @@ public @interface Html5SmartImage {
 	public boolean disableInfo() default false;
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * True to not render the zoom slider
 	 *
 	 * @return boolean
@@ -50,6 +58,8 @@ public @interface Html5SmartImage {
 	public boolean disableZoom() default false;
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * Name of the form field used for posting the cropping rect; use null or a
 	 * zero-length String if the cropping tool should be disabled; the value
 	 * should always be "./imageCrop" for CQ
@@ -74,6 +84,8 @@ public @interface Html5SmartImage {
 	public String fileNameParameter() default "fileName";
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * Name of the form field used for posting the file reference. Be aware that
 	 * you will have to specify a suitable value here, as there is no sensible
 	 * default value available. Suitable values are dependant on their
@@ -93,7 +105,8 @@ public @interface Html5SmartImage {
 	public String name() default "";
 
 	/**
-	 * 
+	 * Used for Classic UI only
+	 *
 	 * Name of the form field used for posting the image map data; use null or a
 	 * zero-length String if the image mapping tool should be disabled; the
 	 * value deshould always be "./imageMap" for CQ
@@ -106,7 +119,8 @@ public @interface Html5SmartImage {
 	public String mapParameter() default "";
 
 	/**
-	 * 
+	 * Used for Classic UI only
+	 *
 	 * Name of the form field used for posting the rotation angle; use null or a
 	 * zero-length String if the rotate tool should be disabled; The value
 	 * should always be "imageRotate" for CQ
@@ -126,6 +140,8 @@ public @interface Html5SmartImage {
 	public String uploadUrl() default "/tmp/upload/*";
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * Groups involved in drag & drop
 	 *
 	 * @return String[]
@@ -133,6 +149,8 @@ public @interface Html5SmartImage {
 	public String[] ddGroups() default { "media" };
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * Indication of whether the HTML5 Smart Image Widget should be rendered as
 	 * a stand alone tab.
 	 *
@@ -141,6 +159,8 @@ public @interface Html5SmartImage {
 	public boolean tab() default true;
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * Height of the SmartImage component. Note: You must explicitly specify
 	 * height if you intend to render the HTML5 Smart Image Widget outside the
 	 * context of its own tab.
@@ -150,6 +170,8 @@ public @interface Html5SmartImage {
 	public int height() default 0;
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * Flag if uploading a file is allowed
 	 *
 	 * @return boolean
@@ -157,6 +179,8 @@ public @interface Html5SmartImage {
 	public boolean allowUpload() default true;
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * Crop Config Aspect Ratios
 	 * 
 	 * @return AspectRatio[]
@@ -164,6 +188,8 @@ public @interface Html5SmartImage {
 	public AspectRatio[] cropAspectRatios() default {};
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * Method to turn on cropping and automatically set the cropParameter; this
 	 * simplifies {@link #cropParameter()}
 	 * 
@@ -172,6 +198,8 @@ public @interface Html5SmartImage {
 	public boolean allowCrop() default false;
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * Method to turn on rotating and automatically set the rotateParameter;
 	 * this simplifies {@link #rotateParameter()}
 	 * 
@@ -180,6 +208,8 @@ public @interface Html5SmartImage {
 	public boolean allowRotate() default false;
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * Method to turn on mapping and automatically set the mapParameter; this
 	 * simplifies {@link #mapParameter()}
 	 * 

@@ -37,8 +37,9 @@ import com.citytechinc.cq.component.annotations.widgets.rte.Table;
 import com.citytechinc.cq.component.annotations.widgets.rte.Undo;
 
 /**
- * Represents a Widget of type CQ.form.RichText
+ * Represents a Widget of type CQ.form.RichText in Classic UI
  *
+ * This widget is not supported in Touch UI and will render as a textarea
  */
 @Retention(RetentionPolicy.CLASS)
 @Target({ ElementType.FIELD, ElementType.METHOD })

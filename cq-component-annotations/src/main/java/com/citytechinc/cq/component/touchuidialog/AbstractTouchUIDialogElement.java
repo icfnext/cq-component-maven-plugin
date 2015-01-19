@@ -22,11 +22,22 @@ import com.citytechinc.cq.component.xml.NameSpacedAttribute;
 public abstract class AbstractTouchUIDialogElement extends AbstractXmlElement implements TouchUIDialogElement {
 
     private NameSpacedAttribute<String> resourceType;
+    private double ranking;
 
     public AbstractTouchUIDialogElement(TouchUIDialogElementParameters parameters) {
         super(parameters);
 
         resourceType = new NameSpacedAttribute<String>(Constants.SLING_NS_URI, Constants.SLING_NS_PREFIX, parameters.getResourceType());
+    }
+
+    @Override
+    public double getRanking() {
+        return ranking;
+    }
+
+    @Override
+    public void setRanking(double ranking) {
+        this.ranking = ranking;
     }
 
     @Override

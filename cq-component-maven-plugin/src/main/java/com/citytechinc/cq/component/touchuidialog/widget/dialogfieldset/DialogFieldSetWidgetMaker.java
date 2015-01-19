@@ -25,6 +25,7 @@ import com.citytechinc.cq.component.dialog.util.DialogUtil;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 import com.citytechinc.cq.component.touchuidialog.AbstractTouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElementComparator;
 import com.citytechinc.cq.component.touchuidialog.container.ContainerParameters;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
 import com.citytechinc.cq.component.touchuidialog.layout.Layout;
@@ -41,6 +42,7 @@ import javassist.NotFoundException;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DialogFieldSetWidgetMaker extends AbstractTouchUIWidgetMaker {
@@ -60,10 +62,7 @@ public class DialogFieldSetWidgetMaker extends AbstractTouchUIWidgetMaker {
 
         //TODO: The rest of the common properties
 
-        //DialogFieldSet specific properties
-        widgetParameters.setLayoutElement(buildLayoutElement());
-
-        //TODO: Determine if there are any other Well specific properties worth setting here
+        widgetParameters.setResourceType(DialogFieldSetWidget.RESOURCE_TYPE);
         
         try {
             widgetParameters.setItems(buildLayoutItems(dialogFieldSetAnnotation));
@@ -73,11 +72,6 @@ public class DialogFieldSetWidgetMaker extends AbstractTouchUIWidgetMaker {
 
         return new DialogFieldSetWidget(widgetParameters);
 
-    }
-
-    private LayoutElement buildLayoutElement() {
-        WellLayoutElementParameters layoutElementParameters = new WellLayoutElementParameters();
-        return new WellLayoutElement(layoutElementParameters);
     }
 
     private List<TouchUIDialogElement> buildLayoutItems(DialogFieldSet dialogFieldSetAnnotation) throws NotFoundException, InvalidComponentFieldException, ClassNotFoundException, TouchUIDialogGenerationException {
@@ -139,12 +133,13 @@ public class DialogFieldSetWidgetMaker extends AbstractTouchUIWidgetMaker {
                         widget.setName(newName);
                     }
 
-                    //TODO: Deal with Ranking
-
+                    currentDialogElement.setRanking(ranking);
                     elements.add(currentDialogElement);
                 }
             }
         }
+
+        Collections.sort(elements, new TouchUIDialogElementComparator());
 
         return elements;
     }

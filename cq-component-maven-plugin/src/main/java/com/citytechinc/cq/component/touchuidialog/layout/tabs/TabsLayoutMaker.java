@@ -18,6 +18,7 @@ package com.citytechinc.cq.component.touchuidialog.layout.tabs;
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.Tab;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElementComparator;
 import com.citytechinc.cq.component.touchuidialog.container.ContainerParameters;
 import com.citytechinc.cq.component.touchuidialog.container.Section;
 import com.citytechinc.cq.component.touchuidialog.container.SectionParameters;
@@ -38,6 +39,7 @@ import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMake
 import com.citytechinc.cq.component.xml.XmlElement;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class TabsLayoutMaker extends AbstractLayoutMaker {
@@ -128,14 +130,14 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
         }
 
         try {
-
             //Populate the content for each tab
-            //TODO: Rank sorting
             List<TouchUIWidgetMakerParameters> widgetMakerParameters = TouchUIDialogUtil.getWidgetMakerParametersForComponentClass(parameters.getComponentClass(), parameters.getClassLoader(), parameters.getClassPool(), parameters.getWidgetRegistry());
 
             for (TouchUIWidgetMakerParameters currentWidgetMakerParameters : widgetMakerParameters) {
 
                 TouchUIDialogElement currentElement = TouchUIWidgetFactory.make(currentWidgetMakerParameters, -1);
+
+                currentElement.setRanking(currentWidgetMakerParameters.getDialogFieldConfig().getRanking());
 
                 if (currentWidgetMakerParameters.getDialogFieldConfig().getTab() <= tabParametersList.size()) {
                     tabContentParametersList.get(currentWidgetMakerParameters.getDialogFieldConfig().getTab() - 1).addItem(currentElement);
@@ -151,6 +153,7 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
 
         //Add content to all the tabs
         for (int i=0; i<tabParametersList.size(); i++) {
+            Collections.sort(tabContentParametersList.get(i).getItems(), new TouchUIDialogElementComparator());
             tabParametersList.get(i).addItem(new Column(tabContentParametersList.get(i)));
         }
 

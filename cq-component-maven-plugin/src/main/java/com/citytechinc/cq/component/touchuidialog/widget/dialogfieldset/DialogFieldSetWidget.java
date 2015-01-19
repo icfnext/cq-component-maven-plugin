@@ -17,11 +17,12 @@ package com.citytechinc.cq.component.touchuidialog.widget.dialogfieldset;
 
 import com.citytechinc.cq.component.annotations.config.TouchUIWidget;
 import com.citytechinc.cq.component.annotations.widgets.DialogFieldSet;
-import com.citytechinc.cq.component.touchuidialog.layout.well.WellLayout;
+import com.citytechinc.cq.component.touchuidialog.widget.AbstractTouchUIWidget;
 
-//TODO: Potentially change from Well to granite/ui/components/foundation/form/fieldset
 @TouchUIWidget(annotationClass = DialogFieldSet.class, makerClass = DialogFieldSetWidgetMaker.class, resourceType = DialogFieldSetWidget.RESOURCE_TYPE)
-public class DialogFieldSetWidget extends WellLayout {
+public class DialogFieldSetWidget extends AbstractTouchUIWidget {
+
+    public static final String RESOURCE_TYPE = "granite/ui/components/foundation/form/fieldset";
 
     public DialogFieldSetWidget(DialogFieldSetWidgetParameters parameters) {
         super(parameters);

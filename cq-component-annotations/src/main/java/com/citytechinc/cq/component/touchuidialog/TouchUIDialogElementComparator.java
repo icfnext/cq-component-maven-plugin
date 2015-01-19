@@ -15,17 +15,17 @@
  */
 package com.citytechinc.cq.component.touchuidialog;
 
-import com.citytechinc.cq.component.xml.NameSpacedAttribute;
 import com.citytechinc.cq.component.xml.XmlElement;
 
-public interface TouchUIDialogElement extends XmlElement {
+import java.util.Comparator;
 
-    public NameSpacedAttribute<String> getResourceType();
+public class TouchUIDialogElementComparator implements Comparator<XmlElement> {
 
-    public void setFieldName(String fieldName);
+    public int compare(XmlElement xe1, XmlElement xe2) {
+        TouchUIDialogElement dialogElement1 = (TouchUIDialogElement) xe1;
+        TouchUIDialogElement dialogElement2 = (TouchUIDialogElement) xe2;
 
-    public double getRanking();
-
-    public void setRanking(double ranking);
+        return Double.compare(dialogElement1.getRanking(), dialogElement2.getRanking());
+    }
 
 }

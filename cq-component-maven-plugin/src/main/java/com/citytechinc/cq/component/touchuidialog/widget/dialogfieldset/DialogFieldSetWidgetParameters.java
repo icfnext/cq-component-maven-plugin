@@ -16,7 +16,6 @@
 package com.citytechinc.cq.component.touchuidialog.widget.dialogfieldset;
 
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
-import com.citytechinc.cq.component.touchuidialog.container.ContainerParameters;
 import com.citytechinc.cq.component.touchuidialog.container.items.Items;
 import com.citytechinc.cq.component.touchuidialog.container.items.ItemsParameters;
 import com.citytechinc.cq.component.touchuidialog.widget.TouchUIWidgetParameters;
@@ -28,6 +27,16 @@ import java.util.List;
 public class DialogFieldSetWidgetParameters extends TouchUIWidgetParameters {
 
     protected List<TouchUIDialogElement> items;
+
+    protected String text;
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
 
     public void addItem(TouchUIDialogElement item) {
         if (items == null) {

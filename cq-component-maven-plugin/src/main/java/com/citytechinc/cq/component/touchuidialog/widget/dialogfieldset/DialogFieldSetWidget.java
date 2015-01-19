@@ -24,8 +24,15 @@ public class DialogFieldSetWidget extends AbstractTouchUIWidget {
 
     public static final String RESOURCE_TYPE = "granite/ui/components/foundation/form/fieldset";
 
+    private final String text;
+
     public DialogFieldSetWidget(DialogFieldSetWidgetParameters parameters) {
         super(parameters);
+
+        text = parameters.getText();
     }
 
+    public String getText() {
+        return text;
+    }
 }

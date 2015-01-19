@@ -56,8 +56,6 @@ public class TouchUIDialogUtil {
 
         List<TouchUIDialog> dialogList = new ArrayList<TouchUIDialog>();
 
-        LogSingleton.getInstance().info("I was asked to build Touch UI Dialogs");
-
         for(CtClass currentComponentClass : classList) {
             TouchUIDialog currentDialog = TouchUIDialogFactory.make(currentComponentClass, classLoader, classPool, widgetRegistry);
 

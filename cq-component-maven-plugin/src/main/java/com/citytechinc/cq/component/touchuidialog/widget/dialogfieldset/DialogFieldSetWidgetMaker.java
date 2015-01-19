@@ -23,15 +23,9 @@ import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassExcept
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.util.DialogUtil;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
-import com.citytechinc.cq.component.touchuidialog.AbstractTouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElementComparator;
-import com.citytechinc.cq.component.touchuidialog.container.ContainerParameters;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
-import com.citytechinc.cq.component.touchuidialog.layout.Layout;
-import com.citytechinc.cq.component.touchuidialog.layout.LayoutElement;
-import com.citytechinc.cq.component.touchuidialog.layout.well.WellLayoutElement;
-import com.citytechinc.cq.component.touchuidialog.layout.well.WellLayoutElementParameters;
 import com.citytechinc.cq.component.touchuidialog.widget.AbstractTouchUIWidget;
 import com.citytechinc.cq.component.touchuidialog.widget.factory.TouchUIWidgetFactory;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
@@ -59,9 +53,9 @@ public class DialogFieldSetWidgetMaker extends AbstractTouchUIWidgetMaker {
 
         //Common properties
         widgetParameters.setFieldName(getFieldNameForField());
+        widgetParameters.setTitle(getFieldLabelForField());
 
-        //TODO: The rest of the common properties
-
+        widgetParameters.setText(getFieldLabelForField());
         widgetParameters.setResourceType(DialogFieldSetWidget.RESOURCE_TYPE);
         
         try {

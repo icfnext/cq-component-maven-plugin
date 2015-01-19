@@ -112,7 +112,7 @@ public class DialogFieldSetWidgetMaker extends AbstractWidgetMaker {
 					}
 				}
 
-				if (dialogFieldConfig != null) {
+				if (dialogFieldConfig != null && !dialogFieldConfig.isSuppressClassicUI()) {
 					Class<?> fieldClass = parameters.getClassLoader().loadClass(member.getDeclaringClass().getName());
 
 					double ranking = dialogFieldConfig.getRanking();

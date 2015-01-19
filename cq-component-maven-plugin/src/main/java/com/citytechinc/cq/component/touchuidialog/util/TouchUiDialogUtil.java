@@ -22,7 +22,6 @@ import com.citytechinc.cq.component.dialog.DialogFieldConfig;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
 import com.citytechinc.cq.component.dialog.util.DialogUtil;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
-import com.citytechinc.cq.component.maven.util.LogSingleton;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialog;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogWriteException;
@@ -140,7 +139,7 @@ public class TouchUIDialogUtil {
                     }
                 }
 
-                if (dialogFieldConfig != null) {
+                if (dialogFieldConfig != null && !dialogFieldConfig.isSuppressTouchUI()) {
                     TouchUIWidgetMakerParameters touchUIWidgetMakerParameters = new TouchUIWidgetMakerParameters();
                     touchUIWidgetMakerParameters.setClassLoader(classLoader);
                     touchUIWidgetMakerParameters.setContainingClass(trueComponentClass);

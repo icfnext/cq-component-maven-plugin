@@ -133,7 +133,7 @@ public class DialogFactory {
 					}
 				}
 
-				if (dialogFieldConfig != null) {
+				if (dialogFieldConfig != null && !dialogFieldConfig.isSuppressClassicUI()) {
 
 					WidgetMakerParameters parameters = new WidgetMakerParameters(dialogFieldConfig, trueComponentClass,
 						classLoader, classPool, widgetRegistry, null, true);

@@ -311,6 +311,24 @@ public class DialogUtil {
 				}
 				dialogFieldConfig.setListeners(listeners.toArray(new Listener[listeners.size()]));
 			}
+
+			if (StringUtils.isNotBlank(dialogField.title())) {
+				dialogFieldConfig.setTitle(dialogField.title());
+			}
+
+			if (StringUtils.isNotBlank(dialogField.value())) {
+				dialogFieldConfig.setValue(dialogField.value());
+			}
+
+			dialogFieldConfig.setDisabled(dialogField.disabled());
+
+			if (StringUtils.isNotBlank(dialogField.cssClass())) {
+				dialogFieldConfig.setCssClass(dialogField.cssClass());
+			}
+
+			dialogFieldConfig.setSuppressClassicUI(dialogField.suppressClassicUI());
+
+			dialogFieldConfig.setSuppressTouchUI(dialogField.suppressTouchUI());
 		}
 
 	}

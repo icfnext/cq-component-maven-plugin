@@ -173,4 +173,19 @@ public @interface DialogField {
      * @return String
      */
     public String cssClass() default "";
+
+	/**
+	 * Indicates that a Classic UI widget should not be produced for the annotated member
+	 *
+	 * @return boolean
+	 */
+	public boolean suppressClassicUI() default false;
+
+	/**
+	 * Indicates that a Touch UI widget should not be produced for the annotated member
+	 *
+	 * @return boolean
+	 */
+	public boolean suppressTouchUI() default false;
+
 }

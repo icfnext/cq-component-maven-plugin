@@ -94,7 +94,7 @@ public class DialogFieldSetWidgetMaker extends AbstractTouchUIWidgetMaker {
                     }
                 }
 
-                if (dialogFieldConfig != null) {
+                if (dialogFieldConfig != null && !dialogFieldConfig.isSuppressTouchUI()) {
                     Class<?> fieldClass = parameters.getClassLoader().loadClass(member.getDeclaringClass().getName());
 
                     double ranking = dialogFieldConfig.getRanking();

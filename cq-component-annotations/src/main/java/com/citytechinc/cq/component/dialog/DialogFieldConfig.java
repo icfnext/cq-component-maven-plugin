@@ -40,6 +40,8 @@ public class DialogFieldConfig {
 	private String title;
     private boolean disabled;
     private String cssClass;
+	private boolean suppressClassicUI;
+	private boolean suppressTouchUI;
 
 	public DialogFieldConfig(DialogField dialogField, CtMember member) {
 		this.xtype = dialogField.xtype();
@@ -60,6 +62,8 @@ public class DialogFieldConfig {
 		this.title = dialogField.title();
         this.disabled = dialogField.disabled();
         this.cssClass = dialogField.cssClass();
+		this.suppressClassicUI = dialogField.suppressClassicUI();
+		this.suppressTouchUI = dialogField.suppressTouchUI();
 	}
 
 	public String getXtype() {
@@ -201,4 +205,20 @@ public class DialogFieldConfig {
     public void setCssClass(String cssClass) {
         this.cssClass = cssClass;
     }
+
+	public boolean isSuppressClassicUI() {
+		return suppressClassicUI;
+	}
+
+	public void setSuppressClassicUI(boolean suppressClassicUI) {
+		this.suppressClassicUI = suppressClassicUI;
+	}
+
+	public boolean isSuppressTouchUI() {
+		return suppressTouchUI;
+	}
+
+	public void setSuppressTouchUI(boolean suppressTouchUI) {
+		this.suppressTouchUI = suppressTouchUI;
+	}
 }

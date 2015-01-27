@@ -15,14 +15,9 @@
  */
 package com.citytechinc.cq.component.xml;
 
-import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.UUID;
+import org.codehaus.plexus.util.StringUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -33,22 +28,39 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-import org.codehaus.plexus.util.StringUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.UUID;
 
 public class XmlWriter {
 
 	private static final DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 	private static final TransformerFactory transformerFactory = TransformerFactory.newInstance();
-	private static final List<String> DO_NOT_CALL = Arrays.asList(new String[] { "getNameSpace",
-		"getContainedElements", "getFieldName", "getClass", "getRanking" });
+	private static final List<String> DO_NOT_CALL = Arrays.asList("getNameSpace", "getContainedElements", "getFieldName",
+        "getClass", "getRanking");
+
+    /** Widget field types that require special prefixes for correct JCR values. */
+    private static final Set<Class> TYPES_WITH_PREFIXES;
+
+    static {
+        TYPES_WITH_PREFIXES = new HashSet<Class>();
+        TYPES_WITH_PREFIXES.add(Double.class);
+        TYPES_WITH_PREFIXES.add(Long.class);
+        TYPES_WITH_PREFIXES.add(Boolean.class);
+    }
 
 	private XmlWriter() {
+
 	}
 
-	public static final void writeXml(XmlElement rootXmlElement, OutputStream outputStream)
+	public static void writeXml(XmlElement rootXmlElement, OutputStream outputStream)
 		throws ParserConfigurationException, TransformerException, IllegalArgumentException, SecurityException,
 		IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		Document xmlDocument = makeDocument(rootXmlElement);
@@ -72,7 +84,7 @@ public class XmlWriter {
 		Method namespaceMethod = xmlClass.getMethod("getNameSpace", null);
 		String namespace = (String) namespaceMethod.invoke(xmlElement, null);
 		Method fieldNameMethod = xmlClass.getMethod("getFieldName", null);
-		String fieldName = sanatize((String) fieldNameMethod.invoke(xmlElement, null));
+		String fieldName = sanitize((String) fieldNameMethod.invoke(xmlElement, null));
 		Method containedElementsMethod = xmlClass.getMethod("getContainedElements", null);
 		List<XmlElement> containedElementsReturn = (List<XmlElement>) containedElementsMethod.invoke(xmlElement, null);
 		Element createdElement;
@@ -136,7 +148,7 @@ public class XmlWriter {
 		return createdElement;
 	}
 
-	private static final Document makeDocument(XmlElement rootXmlElement) throws ParserConfigurationException,
+	private static Document makeDocument(XmlElement rootXmlElement) throws ParserConfigurationException,
 		IllegalArgumentException, SecurityException, IllegalAccessException, InvocationTargetException,
 		NoSuchMethodException {
 
@@ -151,7 +163,7 @@ public class XmlWriter {
 		return document;
 	}
 
-	private static final String sanatize(String uncleanString) {
+	private static String sanitize(String uncleanString) {
 		uncleanString = uncleanString.replaceAll("[^A-Za-z0-9:_.-]", "");
 		if (uncleanString.matches("^(\\d(.*)|(?i)XML|:(.*)|\\.(.*))")) {
 			uncleanString = UUID.randomUUID().toString().replaceAll("-", "").replaceAll("[0-9]", "") + uncleanString;
@@ -159,7 +171,7 @@ public class XmlWriter {
 		return uncleanString;
 	}
 
-	private static final void setPropertyOnElementForMethod(Element element, String nameSpace, String nameSpacePrefix,
+	private static void setPropertyOnElementForMethod(Element element, String nameSpace, String nameSpacePrefix,
 		String methodName, Object methodReturn) {
 		String propertyName = null;
 		if (methodName.startsWith("get")) {
@@ -170,13 +182,17 @@ public class XmlWriter {
 		setPropertyOnElement(element, nameSpace, nameSpacePrefix, propertyName, methodReturn);
 	}
 
-	private static final void setPropertyOnElement(Element element, String nameSpace, String nameSpacePrefix,
+	private static void setPropertyOnElement(Element element, String nameSpace, String nameSpacePrefix,
 		String name, Object value) {
 		if (value != null) {
 			String propertyValue = value.toString();
-			if (value instanceof Boolean) {
-				propertyValue = "{Boolean}" + propertyValue;
-			}
+
+            Class clazz = value.getClass();
+
+            if (TYPES_WITH_PREFIXES.contains(clazz)) {
+                propertyValue = "{" + clazz.getSimpleName() + "}" + propertyValue;
+            }
+
 			if (StringUtils.isEmpty(nameSpace)) {
 				element.setAttribute(name, propertyValue);
 			} else {

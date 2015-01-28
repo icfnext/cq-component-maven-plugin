@@ -43,8 +43,8 @@ public class XmlWriter {
 
 	private static final DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 	private static final TransformerFactory transformerFactory = TransformerFactory.newInstance();
-	private static final List<String> DO_NOT_CALL = Arrays.asList(new String[] { "getNameSpace",
-		"getContainedElements", "getFieldName", "getClass", "getRanking" });
+	private static final List<String> DO_NOT_CALL = Arrays.asList("getNameSpace", "getContainedElements", "getFieldName",
+        "getClass", "getRanking");
 
     /** Widget field types that require special prefixes for correct JCR values. */
     private static final Set<Class> TYPES_WITH_PREFIXES;

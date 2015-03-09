@@ -55,15 +55,16 @@ public class WidgetFactory {
 
 		parameters.setXtype(widgetMakerContext.getXtype());
 
-		WidgetMaker widgetMaker = widgetMakerContext.getWidgetMaker().getConstructor(WidgetMakerParameters.class)
-			.newInstance(parameters);
+		WidgetMaker widgetMaker =
+			widgetMakerContext.getWidgetMaker().getConstructor(WidgetMakerParameters.class).newInstance(parameters);
 
 		return widgetMaker.make();
 
 	}
 
-	private static final WidgetMakerContext getWidgetMakerForField(WidgetMakerParameters parameters, int rankingCeiling)
-		throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvalidComponentFieldException {
+	private static final WidgetMakerContext
+		getWidgetMakerForField(WidgetMakerParameters parameters, int rankingCeiling) throws ClassNotFoundException,
+			InstantiationException, IllegalAccessException, InvalidComponentFieldException {
 
 		WidgetConfigHolder widget = getWidgetConfig(parameters, rankingCeiling);
 
@@ -156,8 +157,8 @@ public class WidgetFactory {
 		for (Class<?> curRegisteredAnnotation : registeredAnnotations) {
 			LOG.debug("Checking for known annotation " + curRegisteredAnnotation);
 			if (parameters.getCtMember().hasAnnotation(curRegisteredAnnotation)) {
-				WidgetConfigHolder curPotential = parameters.getWidgetRegistry().getWidgetForAnnotation(
-					curRegisteredAnnotation);
+				WidgetConfigHolder curPotential =
+					parameters.getWidgetRegistry().getWidgetForAnnotation(curRegisteredAnnotation);
 				if (rankCeiling < 0 || curPotential.getRanking() < rankCeiling) {
 					LOG.debug("Match found in the registry with ranking " + curPotential.getRanking());
 					if (highestRankedWidget == null || curPotential.getRanking() > highestRankedWidget.getRanking()) {
@@ -185,9 +186,9 @@ public class WidgetFactory {
 
 		for (Class<?> curRegisteredAnnotation : registeredAnnotations) {
 			LOG.debug("Checking for known annotation " + curRegisteredAnnotation);
-			WidgetConfigHolder curPotential = parameters.getWidgetRegistry().getWidgetForAnnotation(
-				curRegisteredAnnotation);
-			if (curPotential.getXtype().equals(xtype) && rankCeiling < 0 || curPotential.getRanking() < rankCeiling) {
+			WidgetConfigHolder curPotential =
+				parameters.getWidgetRegistry().getWidgetForAnnotation(curRegisteredAnnotation);
+			if (curPotential.getXtype().equals(xtype) && rankCeiling < 0 && curPotential.getRanking() < rankCeiling) {
 				LOG.debug("Match found in the registry with ranking " + curPotential.getRanking());
 				if (highestRankedWidget == null || curPotential.getRanking() > highestRankedWidget.getRanking()) {
 					highestRankedWidget = curPotential;

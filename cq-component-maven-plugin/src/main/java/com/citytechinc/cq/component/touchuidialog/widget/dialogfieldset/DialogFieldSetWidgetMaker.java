@@ -41,22 +41,21 @@ import com.citytechinc.cq.component.touchuidialog.widget.factory.TouchUIWidgetFa
 import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 
-public class DialogFieldSetWidgetMaker extends AbstractTouchUIWidgetMaker {
+public class DialogFieldSetWidgetMaker extends AbstractTouchUIWidgetMaker<DialogFieldSetWidgetParameters> {
 
 	public DialogFieldSetWidgetMaker(TouchUIWidgetMakerParameters parameters) {
 		super(parameters);
 	}
 
 	@Override
-	public TouchUIDialogElement make() throws ClassNotFoundException, InvalidComponentFieldException,
-		TouchUIDialogGenerationException {
+	public TouchUIDialogElement make(DialogFieldSetWidgetParameters widgetParameters) throws ClassNotFoundException,
+		InvalidComponentFieldException, TouchUIDialogGenerationException {
 
-		DialogFieldSetWidgetParameters widgetParameters = new DialogFieldSetWidgetParameters();
 		DialogFieldSet dialogFieldSetAnnotation = getAnnotation(DialogFieldSet.class);
 
 		// Common properties
-		widgetParameters.setFieldName(getFieldNameForField());
-		widgetParameters.setTitle(getFieldLabelForField());
+		widgetParameters.setName(null);
+		widgetParameters.setRequired(true);
 
 		widgetParameters.setText(getFieldLabelForField());
 

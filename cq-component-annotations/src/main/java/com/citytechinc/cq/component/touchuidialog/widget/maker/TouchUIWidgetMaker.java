@@ -22,6 +22,6 @@ import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenera
 public interface TouchUIWidgetMaker {
 
 	public TouchUIDialogElement make() throws ClassNotFoundException, InvalidComponentFieldException,
-		TouchUIDialogGenerationException;
+		TouchUIDialogGenerationException, IllegalAccessException, InstantiationException;
 
 }

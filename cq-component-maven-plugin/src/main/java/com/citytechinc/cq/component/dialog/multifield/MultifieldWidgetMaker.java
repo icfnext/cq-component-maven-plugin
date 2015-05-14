@@ -29,28 +29,19 @@ import com.citytechinc.cq.component.dialog.factory.WidgetFactory;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 
-public class MultifieldWidgetMaker extends AbstractWidgetMaker {
+public class MultifieldWidgetMaker extends AbstractWidgetMaker<MultiFieldWidgetParameters> {
 
 	public MultifieldWidgetMaker(WidgetMakerParameters parameters) {
 		super(parameters);
 	}
 
-	public DialogElement make() throws ClassNotFoundException, SecurityException, InvalidComponentFieldException,
-		CannotCompileException, NotFoundException, NoSuchFieldException, InstantiationException,
-		IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
+	@Override
+	public DialogElement make(MultiFieldWidgetParameters widgetParameters) throws ClassNotFoundException,
+		SecurityException, InvalidComponentFieldException, CannotCompileException, NotFoundException,
+		NoSuchFieldException, InstantiationException, IllegalAccessException, IllegalArgumentException,
+		InvocationTargetException, NoSuchMethodException {
 
 		MultiField multiFieldAnnotation = getAnnotation(MultiField.class);
-
-		MultiFieldWidgetParameters widgetParameters = new MultiFieldWidgetParameters();
-
-		widgetParameters.setName(getNameForField());
-		widgetParameters.setFieldName(getFieldNameForField());
-		widgetParameters.setFieldLabel(getFieldLabelForField());
-		widgetParameters.setFieldDescription(getFieldDescriptionForField());
-		widgetParameters.setAllowBlank(!getIsRequiredForField());
-		widgetParameters.setDefaultValue(getDefaultValueForField());
-		widgetParameters.setHideLabel(getHideLabelForField());
-		widgetParameters.setListeners(getListeners());
 
 		widgetParameters.setOrderable(getOrderableForField(multiFieldAnnotation));
 		widgetParameters.setAddItemLabel(getAddItemLabelForField(multiFieldAnnotation));

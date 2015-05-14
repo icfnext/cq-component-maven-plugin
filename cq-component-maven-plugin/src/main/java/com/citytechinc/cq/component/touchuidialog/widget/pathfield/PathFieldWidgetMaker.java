@@ -24,28 +24,15 @@ import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenera
 import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 
-public class PathFieldWidgetMaker extends AbstractTouchUIWidgetMaker {
+public class PathFieldWidgetMaker extends AbstractTouchUIWidgetMaker<PathFieldWidgetParameters> {
 
 	public PathFieldWidgetMaker(TouchUIWidgetMakerParameters parameters) {
 		super(parameters);
 	}
 
 	@Override
-	public TouchUIDialogElement make() throws ClassNotFoundException, InvalidComponentFieldException,
-		TouchUIDialogGenerationException {
-
-		PathFieldWidgetParameters widgetParameters = new PathFieldWidgetParameters();
-
-		widgetParameters.setFieldName(getFieldNameForField());
-		widgetParameters.setName(getNameForField());
-		widgetParameters.setFieldLabel(getFieldLabelForField());
-		widgetParameters.setFieldDescription(getFieldDescriptionForField());
-		widgetParameters.setRequired(getRequiredForField());
-		widgetParameters.setDefaultValue(getDefaultValueForField());
-		widgetParameters.setValue(getValueForField());
-		widgetParameters.setDisabled(getDisabledForField());
-		widgetParameters.setCssClass(getCssClassForField());
-
+	public TouchUIDialogElement make(PathFieldWidgetParameters widgetParameters) throws ClassNotFoundException,
+		InvalidComponentFieldException, TouchUIDialogGenerationException {
 		PathField pathFieldAnnotation = getAnnotation(PathField.class);
 
 		widgetParameters.setRootPath(getRootPathForField(pathFieldAnnotation));

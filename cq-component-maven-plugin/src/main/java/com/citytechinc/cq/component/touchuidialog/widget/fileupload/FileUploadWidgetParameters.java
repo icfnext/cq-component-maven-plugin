@@ -17,9 +17,9 @@ package com.citytechinc.cq.component.touchuidialog.widget.fileupload;
 
 import java.util.List;
 
-import com.citytechinc.cq.component.touchuidialog.widget.TouchUIWidgetParameters;
+import com.citytechinc.cq.component.touchuidialog.widget.DefaultTouchUIWidgetParameters;
 
-public class FileUploadWidgetParameters extends TouchUIWidgetParameters {
+public class FileUploadWidgetParameters extends DefaultTouchUIWidgetParameters {
 
 	private String title;
 	private String text;

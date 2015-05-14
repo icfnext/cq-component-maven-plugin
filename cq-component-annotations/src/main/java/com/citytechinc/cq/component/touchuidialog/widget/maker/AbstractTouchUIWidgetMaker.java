@@ -15,6 +15,8 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.maker;
 
+import java.lang.reflect.ParameterizedType;
+
 import javassist.CtClass;
 import javassist.CtField;
 import javassist.NotFoundException;
@@ -22,15 +24,47 @@ import javassist.NotFoundException;
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
+import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
+import com.citytechinc.cq.component.touchuidialog.widget.TouchUIWidgetParameters;
 import com.citytechinc.cq.component.util.ComponentUtil;
 
-public abstract class AbstractTouchUIWidgetMaker implements TouchUIWidgetMaker {
+public abstract class AbstractTouchUIWidgetMaker<T extends TouchUIWidgetParameters> implements TouchUIWidgetMaker {
 
 	protected final TouchUIWidgetMakerParameters parameters;
 
 	public AbstractTouchUIWidgetMaker(TouchUIWidgetMakerParameters parameters) {
 		this.parameters = parameters;
 	}
+
+	@SuppressWarnings("unchecked")
+	public final TouchUIDialogElement make() throws ClassNotFoundException, InvalidComponentFieldException,
+		TouchUIDialogGenerationException, IllegalAccessException, InstantiationException {
+		Class<?> clazz = getClass();
+		while (clazz != null && !AbstractTouchUIWidgetMaker.class.equals(clazz.getSuperclass())) {
+			clazz = clazz.getSuperclass();
+		}
+		Class<T> parameterClass =
+			(Class<T>) ((ParameterizedType) clazz.getGenericSuperclass()).getActualTypeArguments()[0];
+		T parameters = parameterClass.newInstance();
+
+		parameters.setFieldName(getFieldNameForField());
+		parameters.setName(getNameForField());
+		parameters.setFieldLabel(getFieldLabelForField());
+		parameters.setFieldDescription(getFieldDescriptionForField());
+		parameters.setRequired(getRequiredForField());
+		parameters.setDefaultValue(getDefaultValueForField());
+		parameters.setValue(getValueForField());
+		parameters.setDisabled(getDisabledForField());
+		parameters.setCssClass(getCssClassForField());
+
+		return make(parameters);
+
+	}
+
+	protected abstract TouchUIDialogElement make(T parameters) throws ClassNotFoundException,
+		InvalidComponentFieldException, TouchUIDialogGenerationException, IllegalAccessException,
+		InstantiationException;
 
 	/**
 	 * <p>
@@ -191,9 +225,9 @@ public abstract class AbstractTouchUIWidgetMaker implements TouchUIWidgetMaker {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T getAnnotation(Class<T> annotationClass) throws ClassNotFoundException {
+	public <E> E getAnnotation(Class<E> annotationClass) throws ClassNotFoundException {
 		if (parameters.getCtMember().hasAnnotation(annotationClass)) {
-			return (T) parameters.getCtMember().getAnnotation(annotationClass);
+			return (E) parameters.getCtMember().getAnnotation(annotationClass);
 		}
 		return null;
 	}

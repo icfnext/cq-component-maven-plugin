@@ -202,6 +202,6 @@ public class ComponentMojo extends AbstractMojo {
 	}
 
 	private boolean isGenerateTouchUiDialogs() {
-		return "true".equals(generateTouchUiDialogs);
+		return generateTouchUiDialogs;
 	}
 }

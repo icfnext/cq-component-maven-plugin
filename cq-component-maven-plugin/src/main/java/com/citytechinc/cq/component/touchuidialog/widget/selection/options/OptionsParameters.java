@@ -18,10 +18,10 @@ package com.citytechinc.cq.component.touchuidialog.widget.selection.options;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElementParameters;
+import com.citytechinc.cq.component.touchuidialog.DefaultTouchUIDialogElementParameters;
 import com.citytechinc.cq.component.xml.XmlElement;
 
-public class OptionsParameters extends TouchUIDialogElementParameters {
+public class OptionsParameters extends DefaultTouchUIDialogElementParameters {
 
 	private List<Option> options;
 

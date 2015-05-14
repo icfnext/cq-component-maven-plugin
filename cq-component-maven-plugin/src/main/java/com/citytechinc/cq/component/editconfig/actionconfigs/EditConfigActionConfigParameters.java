@@ -16,9 +16,9 @@
 package com.citytechinc.cq.component.editconfig.actionconfigs;
 
 import com.citytechinc.cq.component.util.Constants;
-import com.citytechinc.cq.component.xml.XmlElementParameters;
+import com.citytechinc.cq.component.xml.DefaultXmlElementParameters;
 
-public class EditConfigActionConfigParameters extends XmlElementParameters {
+public class EditConfigActionConfigParameters extends DefaultXmlElementParameters {
 	private String text;
 	private String handler;
 	private String xtype;

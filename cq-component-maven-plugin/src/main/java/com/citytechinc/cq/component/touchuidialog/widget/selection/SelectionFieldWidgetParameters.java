@@ -18,14 +18,14 @@ package com.citytechinc.cq.component.touchuidialog.widget.selection;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.citytechinc.cq.component.touchuidialog.widget.TouchUIWidgetParameters;
+import com.citytechinc.cq.component.touchuidialog.widget.DefaultTouchUIWidgetParameters;
 import com.citytechinc.cq.component.touchuidialog.widget.datasource.DataSource;
 import com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option;
 import com.citytechinc.cq.component.touchuidialog.widget.selection.options.Options;
 import com.citytechinc.cq.component.touchuidialog.widget.selection.options.OptionsParameters;
 import com.citytechinc.cq.component.xml.XmlElement;
 
-public class SelectionFieldWidgetParameters extends TouchUIWidgetParameters {
+public class SelectionFieldWidgetParameters extends DefaultTouchUIWidgetParameters {
 
 	private boolean multiple;
 

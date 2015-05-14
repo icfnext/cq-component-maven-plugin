@@ -45,7 +45,7 @@ import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollection;
 import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollectionParameters;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 
-public class DialogFieldSetWidgetMaker extends AbstractWidgetMaker {
+public class DialogFieldSetWidgetMaker extends AbstractWidgetMaker<DialogFieldSetWidgetParameters> {
 
 	public DialogFieldSetWidgetMaker(WidgetMakerParameters parameters) {
 		super(parameters);
@@ -54,20 +54,14 @@ public class DialogFieldSetWidgetMaker extends AbstractWidgetMaker {
 	private static final String ITEMS = "items";
 
 	@Override
-	public DialogElement make() throws ClassNotFoundException, SecurityException, InvalidComponentFieldException,
-		NotFoundException, CannotCompileException, NoSuchFieldException, InstantiationException,
-		IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
+	public DialogElement make(DialogFieldSetWidgetParameters widgetParameters) throws ClassNotFoundException,
+		SecurityException, InvalidComponentFieldException, NotFoundException, CannotCompileException,
+		NoSuchFieldException, InstantiationException, IllegalAccessException, IllegalArgumentException,
+		InvocationTargetException, NoSuchMethodException {
 
 		DialogFieldSet dialogFieldSetAnnotation = getAnnotation(DialogFieldSet.class);
-
-		DialogFieldSetWidgetParameters widgetParameters = new DialogFieldSetWidgetParameters();
-
-		widgetParameters.setFieldName(getFieldNameForField());
-		widgetParameters.setFieldLabel(getFieldLabelForField());
-		widgetParameters.setFieldDescription(getFieldDescriptionForField());
-		widgetParameters.setAdditionalProperties(getAdditionalPropertiesForField());
-		widgetParameters.setHideLabel(getHideLabelForField());
-
+		widgetParameters.setName(null);
+		widgetParameters.setAllowBlank(false);
 		widgetParameters.setCollapseFirst(dialogFieldSetAnnotation.collapseFirst());
 		widgetParameters.setCollapsible(dialogFieldSetAnnotation.collapsible());
 		widgetParameters.setCollapsed(dialogFieldSetAnnotation.collapsed());
@@ -77,7 +71,6 @@ public class DialogFieldSetWidgetMaker extends AbstractWidgetMaker {
 			title = dialogFieldSetAnnotation.title();
 		}
 		widgetParameters.setTitle(title);
-		widgetParameters.setListeners(getListeners());
 		widgetParameters.setContainedElements(buildWidgetCollection(dialogFieldSetAnnotation));
 
 		return new DialogFieldSetWidget(widgetParameters);

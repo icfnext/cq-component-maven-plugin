@@ -20,10 +20,8 @@ import java.util.List;
 
 import com.citytechinc.cq.component.annotations.TagNameSpace;
 import com.citytechinc.cq.component.annotations.widgets.TagInputField;
-import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
-import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
+import com.citytechinc.cq.component.touchuidialog.DefaultTouchUIDialogElementParameters;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElementParameters;
-import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
 import com.citytechinc.cq.component.touchuidialog.widget.autocomplete.AutoCompleteWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.autocomplete.options.AutoCompleteOptions;
 import com.citytechinc.cq.component.touchuidialog.widget.autocomplete.values.AutoCompleteValues;
@@ -38,12 +36,11 @@ public class TagInputFieldWidgetMaker extends AutoCompleteWidgetMaker {
 
 	public TagInputFieldWidgetMaker(TouchUIWidgetMakerParameters parameters) {
 		super(parameters);
-	}
-
-	public TouchUIDialogElement make() throws ClassNotFoundException, InvalidComponentFieldException,
-		TouchUIDialogGenerationException {
-		fieldAnnotation = getAnnotation(TagInputField.class);
-		return super.make();
+		try {
+			fieldAnnotation = getAnnotation(TagInputField.class);
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
@@ -65,7 +62,7 @@ public class TagInputFieldWidgetMaker extends AutoCompleteWidgetMaker {
 
 	@Override
 	protected AutoCompleteOptions makeOptions() {
-		TouchUIDialogElementParameters optionsParameters = new TouchUIDialogElementParameters();
+		TouchUIDialogElementParameters optionsParameters = new DefaultTouchUIDialogElementParameters();
 
 		optionsParameters.setResourceType(TagInputFieldWidget.OPTIONS_RESOURCE_TYPE);
 		optionsParameters.setFieldName(TagInputFieldWidget.OPTIONS_FIELD_NAME);
@@ -76,7 +73,7 @@ public class TagInputFieldWidgetMaker extends AutoCompleteWidgetMaker {
 
 	@Override
 	protected AutoCompleteValues makeValues() {
-		TouchUIDialogElementParameters valuesParameters = new TouchUIDialogElementParameters();
+		TouchUIDialogElementParameters valuesParameters = new DefaultTouchUIDialogElementParameters();
 
 		valuesParameters.setResourceType(TagInputFieldWidget.VALUES_RESOURCE_TYPE);
 		valuesParameters.setFieldName(TagInputFieldWidget.VALUES_FIELD_NAME);

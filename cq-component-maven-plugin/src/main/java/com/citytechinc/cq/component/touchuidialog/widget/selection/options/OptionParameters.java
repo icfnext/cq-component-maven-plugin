@@ -15,9 +15,9 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.selection.options;
 
-import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElementParameters;
+import com.citytechinc.cq.component.touchuidialog.DefaultTouchUIDialogElementParameters;
 
-public class OptionParameters extends TouchUIDialogElementParameters {
+public class OptionParameters extends DefaultTouchUIDialogElementParameters {
 
 	private String name;
 	private String text;

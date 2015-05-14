@@ -15,101 +15,46 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget;
 
-import org.codehaus.plexus.util.StringUtils;
-
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElementParameters;
-import com.citytechinc.cq.component.util.Constants;
 
-public class TouchUIWidgetParameters extends TouchUIDialogElementParameters {
+public interface TouchUIWidgetParameters extends TouchUIDialogElementParameters {
 
-	protected String name;
-	protected String title;
-	protected String fieldLabel;
-	protected String fieldDescription;
-	protected boolean required;
-	protected String value;
-	protected String defaultValue;
-	protected boolean disabled;
-	protected String cssClass;
+	public String getFieldLabel();
 
-	public String getFieldLabel() {
-		return fieldLabel;
-	}
+	public void setFieldLabel(String fieldLabel);
 
-	public void setFieldLabel(String fieldLabel) {
-		this.fieldLabel = fieldLabel;
-	}
+	public String getName();
 
-	public String getName() {
-		return name;
-	}
+	public void setName(String name);
 
-	public void setName(String name) {
-		this.name = name;
-	}
+	public String getTitle();
 
-	public String getTitle() {
-		return title;
-	}
+	public void setTitle(String title);
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+	public String getPrimaryType();
 
-	public String getPrimaryType() {
-		if (StringUtils.isBlank(super.getPrimaryType())) {
-			return Constants.NT_UNSTRUCTURED;
-		}
+	public String getFieldDescription();
 
-		return super.getPrimaryType();
-	}
+	public void setFieldDescription(String fieldDescription);
 
-	public String getFieldDescription() {
-		return fieldDescription;
-	}
+	public boolean isRequired();
 
-	public void setFieldDescription(String fieldDescription) {
-		this.fieldDescription = fieldDescription;
-	}
+	public void setRequired(boolean required);
 
-	public boolean isRequired() {
-		return required;
-	}
+	public String getValue();
 
-	public void setRequired(boolean required) {
-		this.required = required;
-	}
+	public void setValue(String value);
 
-	public String getValue() {
-		return value;
-	}
+	public String getDefaultValue();
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+	public void setDefaultValue(String defaultValue);
 
-	public String getDefaultValue() {
-		return defaultValue;
-	}
+	public boolean isDisabled();
 
-	public void setDefaultValue(String defaultValue) {
-		this.defaultValue = defaultValue;
-	}
+	public void setDisabled(boolean disabled);
 
-	public boolean isDisabled() {
-		return disabled;
-	}
+	public String getCssClass();
 
-	public void setDisabled(boolean disabled) {
-		this.disabled = disabled;
-	}
-
-	public String getCssClass() {
-		return cssClass;
-	}
-
-	public void setCssClass(String cssClass) {
-		this.cssClass = cssClass;
-	}
+	public void setCssClass(String cssClass);
 
 }

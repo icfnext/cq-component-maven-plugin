@@ -24,28 +24,15 @@ import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenera
 import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 
-public class TextAreaWidgetMaker extends AbstractTouchUIWidgetMaker {
+public class TextAreaWidgetMaker extends AbstractTouchUIWidgetMaker<TextAreaWidgetParameters> {
 
 	public TextAreaWidgetMaker(TouchUIWidgetMakerParameters parameters) {
 		super(parameters);
 	}
 
 	@Override
-	public TouchUIDialogElement make() throws ClassNotFoundException, InvalidComponentFieldException,
-		TouchUIDialogGenerationException {
-
-		TextAreaWidgetParameters widgetParameters = new TextAreaWidgetParameters();
-
-		widgetParameters.setFieldName(getFieldNameForField());
-		widgetParameters.setName(getNameForField());
-		widgetParameters.setFieldLabel(getFieldLabelForField());
-		widgetParameters.setFieldDescription(getFieldDescriptionForField());
-		widgetParameters.setRequired(getRequiredForField());
-		widgetParameters.setDefaultValue(getDefaultValueForField());
-		widgetParameters.setValue(getValueForField());
-		widgetParameters.setTitle(getTitleForField());
-		widgetParameters.setDisabled(getDisabledForField());
-		widgetParameters.setCssClass(getCssClassForField());
+	public TouchUIDialogElement make(TextAreaWidgetParameters widgetParameters) throws ClassNotFoundException,
+		InvalidComponentFieldException, TouchUIDialogGenerationException {
 
 		TextArea widgetAnnotation = getAnnotation(TextArea.class);
 

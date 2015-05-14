@@ -34,7 +34,7 @@ public class AbstractTouchUIWidget extends AbstractTouchUIDialogElement {
 	private final boolean disabled;
 	private final String cssClass;
 
-	public AbstractTouchUIWidget(TouchUIWidgetParameters parameters) {
+	public AbstractTouchUIWidget(DefaultTouchUIWidgetParameters parameters) {
 		super(parameters);
 
 		this.name = parameters.getName();

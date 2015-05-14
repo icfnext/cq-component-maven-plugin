@@ -15,9 +15,9 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.datasource;
 
-import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElementParameters;
+import com.citytechinc.cq.component.touchuidialog.DefaultTouchUIDialogElementParameters;
 
-public class DataSourceParameters extends TouchUIDialogElementParameters {
+public class DataSourceParameters extends DefaultTouchUIDialogElementParameters {
 
 	public static final String FIELD_NAME = "datasource";
 

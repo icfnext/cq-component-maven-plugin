@@ -15,7 +15,7 @@
  */
 package com.citytechinc.cq.component.dialog;
 
-import com.citytechinc.cq.component.dialog.widget.WidgetParameters;
+import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 
 /**
  * Abstract class representing a Widget in the context of a Dialog. Concrete
@@ -30,6 +30,7 @@ public abstract class AbstractWidget extends AbstractDialogElement {
 	private final String defaultValue;
 	private String name;
 	private final boolean hideLabel;
+	private boolean disabled;
 
 	/**
 	 * The constructor for the abstract Widget sets a number of properties
@@ -37,7 +38,7 @@ public abstract class AbstractWidget extends AbstractDialogElement {
 	 * 
 	 * @param parameters
 	 */
-	public AbstractWidget(WidgetParameters parameters) {
+	public AbstractWidget(DefaultWidgetParameters parameters) {
 		super(parameters);
 		this.xtype = parameters.getXtype();
 		this.fieldLabel = parameters.getFieldLabel();
@@ -46,6 +47,7 @@ public abstract class AbstractWidget extends AbstractDialogElement {
 		this.defaultValue = parameters.getDefaultValue();
 		this.name = parameters.getName();
 		this.hideLabel = parameters.isHideLabel();
+		this.disabled = parameters.isDisabled();
 	}
 
 	/**
@@ -87,6 +89,14 @@ public abstract class AbstractWidget extends AbstractDialogElement {
 	 */
 	public boolean isAllowBlank() {
 		return allowBlank;
+	}
+
+	/**
+	 * 
+	 * @return Indication of whether the Widget is disabled by default
+	 */
+	public boolean isDisabled() {
+		return disabled;
 	}
 
 	/**

@@ -15,81 +15,43 @@
  */
 package com.citytechinc.cq.component.dialog.widget;
 
-import org.codehaus.plexus.util.StringUtils;
-
 import com.citytechinc.cq.component.dialog.DialogElementParameters;
-import com.citytechinc.cq.component.util.Constants;
+import com.citytechinc.cq.component.xml.XmlElementParameters;
 
-public class WidgetParameters extends DialogElementParameters {
-	protected String xtype;
-	protected String fieldLabel;
-	protected String fieldDescription;
-	protected boolean allowBlank;
-	protected String defaultValue;
-	protected String name;
-	protected boolean hideLabel;
+public interface WidgetParameters extends DialogElementParameters, XmlElementParameters {
 
-	public String getXtype() {
-		return xtype;
-	}
+	public abstract String getXtype();
 
-	public void setXtype(String xtype) {
-		this.xtype = xtype;
-	}
+	public abstract void setXtype(String xtype);
 
-	public String getFieldLabel() {
-		return fieldLabel;
-	}
+	public abstract String getFieldLabel();
 
-	public void setFieldLabel(String fieldLabel) {
-		this.fieldLabel = fieldLabel;
-	}
+	public abstract void setFieldLabel(String fieldLabel);
 
-	public String getFieldDescription() {
-		return fieldDescription;
-	}
+	public abstract String getFieldDescription();
 
-	public void setFieldDescription(String fieldDescription) {
-		this.fieldDescription = fieldDescription;
-	}
+	public abstract void setFieldDescription(String fieldDescription);
 
-	public boolean isAllowBlank() {
-		return allowBlank;
-	}
+	public abstract boolean isAllowBlank();
 
-	public void setAllowBlank(boolean allowBlank) {
-		this.allowBlank = allowBlank;
-	}
+	public abstract void setAllowBlank(boolean allowBlank);
 
-	public String getDefaultValue() {
-		return defaultValue;
-	}
+	public abstract String getDefaultValue();
 
-	public void setDefaultValue(String defaultValue) {
-		this.defaultValue = defaultValue;
-	}
+	public abstract void setDefaultValue(String defaultValue);
 
-	public String getName() {
-		return name;
-	}
+	public abstract String getName();
 
-	public void setName(String name) {
-		this.name = name;
-	}
+	public abstract void setName(String name);
 
-	public boolean isHideLabel() {
-		return hideLabel;
-	}
+	public abstract boolean isHideLabel();
 
-	public void setHideLabel(boolean hideLabel) {
-		this.hideLabel = hideLabel;
-	}
+	public abstract void setHideLabel(boolean hideLabel);
 
-	@Override
-	public String getPrimaryType() {
-		if (StringUtils.isEmpty(primaryType)) {
-			return Constants.CQ_WIDGET;
-		}
-		return primaryType;
-	}
+	public abstract boolean isDisabled();
+
+	public abstract void setDisabled(boolean disabled);
+
+	public abstract String getPrimaryType();
+
 }

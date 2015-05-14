@@ -17,16 +17,10 @@ package com.citytechinc.cq.component.touchuidialog;
 
 import com.citytechinc.cq.component.xml.XmlElementParameters;
 
-public class TouchUIDialogElementParameters extends XmlElementParameters {
+public interface TouchUIDialogElementParameters extends XmlElementParameters {
 
-	protected String resourceType;
+	public abstract String getResourceType();
 
-	public String getResourceType() {
-		return resourceType;
-	}
-
-	public void setResourceType(String resourceType) {
-		this.resourceType = resourceType;
-	}
+	public abstract void setResourceType(String resourceType);
 
 }

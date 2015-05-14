@@ -19,10 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
-import com.citytechinc.cq.component.touchuidialog.widget.TouchUIWidgetParameters;
+import com.citytechinc.cq.component.touchuidialog.widget.DefaultTouchUIWidgetParameters;
 import com.citytechinc.cq.component.xml.XmlElement;
 
-public class AutoCompleteWidgetParameters extends TouchUIWidgetParameters {
+public class AutoCompleteWidgetParameters extends DefaultTouchUIWidgetParameters {
 
 	private boolean multiple;
 	private String mode;

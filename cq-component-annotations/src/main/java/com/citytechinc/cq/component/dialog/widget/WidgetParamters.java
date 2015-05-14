@@ -13,21 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.dialog.datetime;
+package com.citytechinc.cq.component.dialog.widget;
 
-import com.citytechinc.cq.component.dialog.DialogElement;
-import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
-import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
-
-public class DateTimeWidgetMaker extends AbstractWidgetMaker<DateTimeWidgetParameters> {
-
-	public DateTimeWidgetMaker(WidgetMakerParameters parameters) {
-		super(parameters);
-	}
-
-	@Override
-	public DialogElement make(DateTimeWidgetParameters parameters) {
-		return new DateTimeWidget(parameters);
-	}
+public interface WidgetParamters {
 
 }

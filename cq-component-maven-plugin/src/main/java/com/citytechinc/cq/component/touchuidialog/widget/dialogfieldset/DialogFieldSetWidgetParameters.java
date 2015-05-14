@@ -21,10 +21,10 @@ import java.util.List;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.container.items.Items;
 import com.citytechinc.cq.component.touchuidialog.container.items.ItemsParameters;
-import com.citytechinc.cq.component.touchuidialog.widget.TouchUIWidgetParameters;
+import com.citytechinc.cq.component.touchuidialog.widget.DefaultTouchUIWidgetParameters;
 import com.citytechinc.cq.component.xml.XmlElement;
 
-public class DialogFieldSetWidgetParameters extends TouchUIWidgetParameters {
+public class DialogFieldSetWidgetParameters extends DefaultTouchUIWidgetParameters {
 
 	protected List<TouchUIDialogElement> items;
 

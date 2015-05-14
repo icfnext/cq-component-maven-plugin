@@ -15,10 +15,10 @@
  */
 package com.citytechinc.cq.component.dialog.dialogfieldset;
 
-import com.citytechinc.cq.component.dialog.widget.WidgetParameters;
+import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 import com.citytechinc.cq.component.util.Constants;
 
-public class DialogFieldSetWidgetParameters extends WidgetParameters {
+public class DialogFieldSetWidgetParameters extends DefaultWidgetParameters {
 	private boolean collapseFirst;
 	private boolean collapsible;
 	private boolean collapsed;

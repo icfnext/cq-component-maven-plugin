@@ -15,9 +15,9 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.datefield;
 
-import com.citytechinc.cq.component.touchuidialog.widget.TouchUIWidgetParameters;
+import com.citytechinc.cq.component.touchuidialog.widget.DefaultTouchUIWidgetParameters;
 
-public class DateFieldWidgetParameters extends TouchUIWidgetParameters {
+public class DateFieldWidgetParameters extends DefaultTouchUIWidgetParameters {
 
 	protected String minDate;
 	protected String maxDate;

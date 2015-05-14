@@ -25,26 +25,15 @@ import com.citytechinc.cq.component.touchuidialog.widget.factory.TouchUIWidgetFa
 import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 
-public class MultiFieldWidgetMaker extends AbstractTouchUIWidgetMaker {
+public class MultiFieldWidgetMaker extends AbstractTouchUIWidgetMaker<MultiFieldWidgetParameters> {
 
 	public MultiFieldWidgetMaker(TouchUIWidgetMakerParameters parameters) {
 		super(parameters);
 	}
 
 	@Override
-	public TouchUIDialogElement make() throws ClassNotFoundException, InvalidComponentFieldException,
-		TouchUIDialogGenerationException {
-
-		MultiFieldWidgetParameters widgetParameters = new MultiFieldWidgetParameters();
-
-		widgetParameters.setFieldName(getFieldNameForField());
-		widgetParameters.setName(getNameForField());
-		widgetParameters.setFieldLabel(getFieldLabelForField());
-		widgetParameters.setFieldDescription(getFieldDescriptionForField());
-		widgetParameters.setRequired(getRequiredForField());
-		widgetParameters.setValue(getValueForField());
-		widgetParameters.setDisabled(getDisabledForField());
-		widgetParameters.setCssClass(getCssClassForField());
+	public TouchUIDialogElement make(MultiFieldWidgetParameters widgetParameters) throws ClassNotFoundException,
+		InvalidComponentFieldException, TouchUIDialogGenerationException {
 
 		TouchUIDialogElement field = TouchUIWidgetFactory.make(parameters, MultiFieldWidget.RANKING);
 		field.setFieldName("field");

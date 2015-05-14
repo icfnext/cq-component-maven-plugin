@@ -17,9 +17,9 @@ package com.citytechinc.cq.component.dialog;
 
 import org.codehaus.plexus.util.StringUtils;
 
-import com.citytechinc.cq.component.dialog.widget.WidgetParameters;
+import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 
-public class DialogParameters extends WidgetParameters {
+public class DialogParameters extends DefaultWidgetParameters {
 	private static final String DEFAULT_TITLE = "Dialog";
 	private static final String DEFAULT_FILE_NAME = "dialog";
 	private static final String XTYPE = "dialog";

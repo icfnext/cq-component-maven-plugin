@@ -22,26 +22,14 @@ import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 
-public class DateFieldWidgetMaker extends AbstractTouchUIWidgetMaker {
+public class DateFieldWidgetMaker extends AbstractTouchUIWidgetMaker<DateFieldWidgetParameters> {
 
 	public DateFieldWidgetMaker(TouchUIWidgetMakerParameters parameters) {
 		super(parameters);
 	}
 
 	@Override
-	public TouchUIDialogElement make() throws ClassNotFoundException {
-		DateFieldWidgetParameters widgetParameters = new DateFieldWidgetParameters();
-
-		widgetParameters.setFieldName(getFieldNameForField());
-		widgetParameters.setName(getNameForField());
-		widgetParameters.setFieldLabel(getFieldLabelForField());
-		widgetParameters.setFieldDescription(getFieldDescriptionForField());
-		widgetParameters.setRequired(getRequiredForField());
-		widgetParameters.setDefaultValue(getDefaultValueForField());
-		widgetParameters.setValue(getValueForField());
-		widgetParameters.setDisabled(getDisabledForField());
-		widgetParameters.setCssClass(getCssClassForField());
-
+	public TouchUIDialogElement make(DateFieldWidgetParameters widgetParameters) throws ClassNotFoundException {
 		// Date field specific stuff
 		DateField annotation = getAnnotation(DateField.class);
 

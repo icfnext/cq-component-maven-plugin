@@ -13,21 +13,27 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.dialog.datetime;
+package com.citytechinc.cq.component.dialog;
 
-import com.citytechinc.cq.component.dialog.DialogElement;
-import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
-import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
+import com.citytechinc.cq.component.xml.DefaultXmlElementParameters;
 
-public class DateTimeWidgetMaker extends AbstractWidgetMaker<DateTimeWidgetParameters> {
+public class DefaultDialogElementParameters extends DefaultXmlElementParameters implements DialogElementParameters {
+	protected double ranking;
+	protected Listeners listeners;
 
-	public DateTimeWidgetMaker(WidgetMakerParameters parameters) {
-		super(parameters);
+	public double getRanking() {
+		return ranking;
 	}
 
-	@Override
-	public DialogElement make(DateTimeWidgetParameters parameters) {
-		return new DateTimeWidget(parameters);
+	public void setRanking(double ranking) {
+		this.ranking = ranking;
 	}
 
+	public Listeners getListeners() {
+		return listeners;
+	}
+
+	public void setListeners(Listeners listeners) {
+		this.listeners = listeners;
+	}
 }

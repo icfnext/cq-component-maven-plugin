@@ -22,27 +22,16 @@ import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 
-public class SizeFieldWidgetMaker extends AbstractWidgetMaker {
+public class SizeFieldWidgetMaker extends AbstractWidgetMaker<SizeFieldWidgetParameters> {
 
 	public SizeFieldWidgetMaker(WidgetMakerParameters parameters) {
 		super(parameters);
 	}
 
-	public DialogElement make() throws ClassNotFoundException {
+	@Override
+	public DialogElement make(SizeFieldWidgetParameters parameters) throws ClassNotFoundException {
 
 		SizeField sizeFieldAnnotation = getAnnotation(SizeField.class);
-
-		SizeFieldWidgetParameters parameters = new SizeFieldWidgetParameters();
-
-		parameters.setName(getNameForField());
-		parameters.setFieldName(getFieldNameForField());
-		parameters.setFieldLabel(getFieldLabelForField());
-		parameters.setFieldDescription(getFieldDescriptionForField());
-		parameters.setAllowBlank(!getIsRequiredForField());
-		parameters.setDefaultValue(getDefaultValueForField());
-		parameters.setHideLabel(getHideLabelForField());
-		parameters.setListeners(getListeners());
-		parameters.setAdditionalProperties(getAdditionalPropertiesForField());
 
 		parameters.setHeightParameter(getHeightParameterForField(sizeFieldAnnotation));
 		parameters.setHeightPrefix(getHeightPrefixForField(sizeFieldAnnotation));

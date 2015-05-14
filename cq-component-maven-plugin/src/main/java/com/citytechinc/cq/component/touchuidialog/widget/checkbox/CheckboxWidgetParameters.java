@@ -15,9 +15,9 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.checkbox;
 
-import com.citytechinc.cq.component.touchuidialog.widget.TouchUIWidgetParameters;
+import com.citytechinc.cq.component.touchuidialog.widget.DefaultTouchUIWidgetParameters;
 
-public class CheckboxWidgetParameters extends TouchUIWidgetParameters {
+public class CheckboxWidgetParameters extends DefaultTouchUIWidgetParameters {
 
 	private String text;
 	private String title;

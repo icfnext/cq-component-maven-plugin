@@ -15,9 +15,9 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.multifield;
 
-import com.citytechinc.cq.component.touchuidialog.widget.TouchUIWidgetParameters;
+import com.citytechinc.cq.component.touchuidialog.widget.DefaultTouchUIWidgetParameters;
 
-public class MultiFieldWidgetParameters extends TouchUIWidgetParameters {
+public class MultiFieldWidgetParameters extends DefaultTouchUIWidgetParameters {
 	@Override
 	public String getResourceType() {
 		return MultiFieldWidget.RESOURCE_TYPE;

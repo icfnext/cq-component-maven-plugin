@@ -20,26 +20,16 @@ import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 
-public class PathFieldWidgetMaker extends AbstractWidgetMaker {
+public class PathFieldWidgetMaker extends AbstractWidgetMaker<PathFieldWidgetParameters> {
 
 	public PathFieldWidgetMaker(WidgetMakerParameters parameters) {
 		super(parameters);
 	}
 
-	public DialogElement make() throws ClassNotFoundException {
+	@Override
+	public DialogElement make(PathFieldWidgetParameters parameters) throws ClassNotFoundException {
 
 		PathField pathFieldAnnotation = getAnnotation(PathField.class);
-		PathFieldWidgetParameters parameters = new PathFieldWidgetParameters();
-
-		parameters.setName(getNameForField());
-		parameters.setFieldName(getFieldNameForField());
-		parameters.setFieldLabel(getFieldLabelForField());
-		parameters.setFieldDescription(getFieldDescriptionForField());
-		parameters.setAllowBlank(!getIsRequiredForField());
-		parameters.setDefaultValue(getDefaultValueForField());
-		parameters.setHideLabel(getHideLabelForField());
-		parameters.setListeners(getListeners());
-		parameters.setAdditionalProperties(getAdditionalPropertiesForField());
 
 		parameters.setEscapeAmp(getEscapeAmpForField(pathFieldAnnotation));
 		parameters.setHideTrigger(getHideTriggerForField(pathFieldAnnotation));

@@ -15,9 +15,9 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.pathfield;
 
-import com.citytechinc.cq.component.touchuidialog.widget.TouchUIWidgetParameters;
+import com.citytechinc.cq.component.touchuidialog.widget.DefaultTouchUIWidgetParameters;
 
-public class PathFieldWidgetParameters extends TouchUIWidgetParameters {
+public class PathFieldWidgetParameters extends DefaultTouchUIWidgetParameters {
 
 	private String rootPath;
 	private String optionLoader;

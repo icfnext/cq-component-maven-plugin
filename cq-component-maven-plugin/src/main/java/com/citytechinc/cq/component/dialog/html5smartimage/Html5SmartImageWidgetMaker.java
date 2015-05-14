@@ -27,7 +27,7 @@ import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 
-public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
+public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker<Html5SmartImageWidgetParameters> {
 	private static final String ASPECT_RATIO_PREFIX = "aspectRatio";
 	private static final String DEFAULT_CROP_PARAMETER = "imageCrop";
 	private static final String DEFAULT_ROTATE_PARAMETER = "imageRotate";
@@ -37,22 +37,12 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
 		super(parameters);
 	}
 
-	public DialogElement make() throws ClassNotFoundException {
+	@Override
+	public DialogElement make(Html5SmartImageWidgetParameters parameters) throws ClassNotFoundException {
 
 		Html5SmartImage smartImageAnnotation = getAnnotation(Html5SmartImage.class);
 
-		Html5SmartImageWidgetParameters parameters = new Html5SmartImageWidgetParameters();
-
 		parameters.setName(getNameForField(smartImageAnnotation));
-		parameters.setFieldName(getFieldNameForField());
-		parameters.setFieldLabel(getFieldLabelForField());
-		parameters.setFieldDescription(getFieldDescriptionForField());
-		parameters.setAllowBlank(!getIsRequiredForField());
-		parameters.setDefaultValue(getDefaultValueForField());
-		parameters.setHideLabel(getHideLabelForField());
-		parameters.setListeners(getListeners());
-		parameters.setAdditionalProperties(getAdditionalPropertiesForField());
-
 		parameters.setDisableFlush(getDisableFlushForField(smartImageAnnotation));
 		parameters.setDisableInfo(getDisableInfoForField(smartImageAnnotation));
 		parameters.setDisableZoom(getDisableZoomForField(smartImageAnnotation));

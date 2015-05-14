@@ -17,7 +17,7 @@ package com.citytechinc.cq.component.touchuidialog;
 
 import org.codehaus.plexus.util.StringUtils;
 
-public class TouchUIDialogParameters extends TouchUIDialogElementParameters {
+public class TouchUIDialogParameters extends DefaultTouchUIDialogElementParameters {
 
 	private static final String DEFAULT_FILE_NAME = "_cq_dialog";
 	private static final String FIELD_NAME = "jcr:root";

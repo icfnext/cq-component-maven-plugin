@@ -17,9 +17,9 @@ package com.citytechinc.cq.component.content;
 
 import java.util.List;
 
-import com.citytechinc.cq.component.xml.XmlElementParameters;
+import com.citytechinc.cq.component.xml.DefaultXmlElementParameters;
 
-public class ContentParameters extends XmlElementParameters {
+public class ContentParameters extends DefaultXmlElementParameters {
 
 	private static final String CONTENT_PRIMARY_TYPE = "cq:Component";
 

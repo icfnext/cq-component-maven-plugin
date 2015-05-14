@@ -25,38 +25,23 @@ import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldExcept
 import com.citytechinc.cq.component.maven.util.LogSingleton;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
-import com.citytechinc.cq.component.touchuidialog.widget.fileupload.FileUploadWidget;
 import com.citytechinc.cq.component.touchuidialog.widget.fileupload.FileUploadWidgetParameters;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 
-public class SmartImageWidgetMaker extends AbstractTouchUIWidgetMaker {
+public class SmartImageWidgetMaker extends AbstractTouchUIWidgetMaker<FileUploadWidgetParameters> {
 
 	public SmartImageWidgetMaker(TouchUIWidgetMakerParameters parameters) {
 		super(parameters);
 	}
 
 	@Override
-	public TouchUIDialogElement make() throws ClassNotFoundException, InvalidComponentFieldException,
-		TouchUIDialogGenerationException {
+	public TouchUIDialogElement make(FileUploadWidgetParameters widgetParameters) throws ClassNotFoundException,
+		InvalidComponentFieldException, TouchUIDialogGenerationException {
 		LogSingleton
 			.getInstance()
 			.warn(
 				"There is no HTML5 Smart Image analog in the Touch UI. This field is being rendered as a fileupload however this is most likely not what you want. Use the image inline editor instead for this field.");
-
-		FileUploadWidgetParameters widgetParameters = new FileUploadWidgetParameters();
-
-		widgetParameters.setFieldName(getFieldNameForField());
-		widgetParameters.setName(getNameForField());
-		widgetParameters.setFieldLabel(getFieldLabelForField());
-		widgetParameters.setFieldDescription(getFieldDescriptionForField());
-		widgetParameters.setRequired(getRequiredForField());
-		widgetParameters.setDefaultValue(getDefaultValueForField());
-		widgetParameters.setValue(getValueForField());
-		widgetParameters.setDisabled(getDisabledForField());
-		widgetParameters.setCssClass(getCssClassForField());
-
-		widgetParameters.setResourceType(FileUploadWidget.RESOURCE_TYPE);
 
 		Html5SmartImage smartFileAnnotation = getAnnotation(Html5SmartImage.class);
 

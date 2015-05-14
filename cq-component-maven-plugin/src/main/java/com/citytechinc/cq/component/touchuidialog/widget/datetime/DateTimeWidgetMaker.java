@@ -19,28 +19,17 @@ import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.widgets.DateTime;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
-import com.citytechinc.cq.component.touchuidialog.widget.datefield.DateFieldWidgetMaker;
+import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 
-public class DateTimeWidgetMaker extends DateFieldWidgetMaker {
+public class DateTimeWidgetMaker extends AbstractTouchUIWidgetMaker<DateTimeWidgetParameters> {
 
 	public DateTimeWidgetMaker(TouchUIWidgetMakerParameters parameters) throws ClassNotFoundException {
 		super(parameters);
 	}
 
 	@Override
-	public TouchUIDialogElement make() throws ClassNotFoundException {
-		DateTimeWidgetParameters widgetParameters = new DateTimeWidgetParameters();
-
-		widgetParameters.setFieldName(getFieldNameForField());
-		widgetParameters.setName(getNameForField());
-		widgetParameters.setFieldLabel(getFieldLabelForField());
-		widgetParameters.setFieldDescription(getFieldDescriptionForField());
-		widgetParameters.setRequired(getRequiredForField());
-		widgetParameters.setDefaultValue(getDefaultValueForField());
-		widgetParameters.setValue(getValueForField());
-		widgetParameters.setDisabled(getDisabledForField());
-		widgetParameters.setCssClass(getCssClassForField());
+	public TouchUIDialogElement make(DateTimeWidgetParameters widgetParameters) throws ClassNotFoundException {
 
 		// Date field specific stuff
 		DateTime annotation = getAnnotation(DateTime.class);

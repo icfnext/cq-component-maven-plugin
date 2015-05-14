@@ -15,10 +15,10 @@
  */
 package com.citytechinc.cq.component.dialog.tab;
 
-import com.citytechinc.cq.component.dialog.DialogElementParameters;
+import com.citytechinc.cq.component.dialog.DefaultDialogElementParameters;
 import com.citytechinc.cq.component.util.Constants;
 
-public class TabParameters extends DialogElementParameters {
+public class TabParameters extends DefaultDialogElementParameters {
 	private String title;
 
 	public String getTitle() {

@@ -15,10 +15,10 @@
  */
 package com.citytechinc.cq.component.dialog.checkbox;
 
-import com.citytechinc.cq.component.dialog.widget.WidgetParameters;
+import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 import com.citytechinc.cq.component.util.Constants;
 
-public class CheckBoxWidgetParameters extends WidgetParameters {
+public class CheckBoxWidgetParameters extends DefaultWidgetParameters {
 	private String inputValue;
 	private boolean checked;
 

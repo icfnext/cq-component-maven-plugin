@@ -15,10 +15,7 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.richtexteditor;
 
-import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.maven.util.LogSingleton;
-import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
-import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 import com.citytechinc.cq.component.touchuidialog.widget.textarea.TextAreaWidgetMaker;
 
@@ -26,15 +23,10 @@ public class RichTextEditorWidgetMaker extends TextAreaWidgetMaker {
 
 	public RichTextEditorWidgetMaker(TouchUIWidgetMakerParameters parameters) {
 		super(parameters);
-	}
-
-	public TouchUIDialogElement make() throws TouchUIDialogGenerationException, InvalidComponentFieldException,
-		ClassNotFoundException {
 		LogSingleton
 			.getInstance()
 			.warn(
 				"There is no RichTextEditor dialog widget currently for Touch UI. This widget maker will render the widget as a Text Area but that is likely not what is intended.  To provide rich text editing capabilities in a component authorable via the Touch UI, expose these capabilities via a 'text' inline editor.");
-		return super.make();
 	}
 
 }

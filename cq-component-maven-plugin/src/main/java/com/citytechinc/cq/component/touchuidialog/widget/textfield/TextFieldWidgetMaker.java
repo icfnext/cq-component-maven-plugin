@@ -16,35 +16,19 @@
 package com.citytechinc.cq.component.touchuidialog.widget.textfield;
 
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
-import com.citytechinc.cq.component.touchuidialog.widget.TouchUIWidgetParameters;
+import com.citytechinc.cq.component.touchuidialog.widget.DefaultTouchUIWidgetParameters;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 
-public class TextFieldWidgetMaker extends AbstractTouchUIWidgetMaker {
+public class TextFieldWidgetMaker extends AbstractTouchUIWidgetMaker<DefaultTouchUIWidgetParameters> {
 
 	public TextFieldWidgetMaker(TouchUIWidgetMakerParameters parameters) {
 		super(parameters);
 	}
 
 	@Override
-	public TouchUIDialogElement make() {
-
-		TouchUIWidgetParameters widgetParameters = new TouchUIWidgetParameters();
-
-		widgetParameters.setFieldName(getFieldNameForField());
-		widgetParameters.setName(getNameForField());
-		widgetParameters.setFieldLabel(getFieldLabelForField());
-		widgetParameters.setFieldDescription(getFieldDescriptionForField());
-		widgetParameters.setRequired(getRequiredForField());
-		widgetParameters.setDefaultValue(getDefaultValueForField());
-		widgetParameters.setResourceType(TextFieldWidget.RESOURCE_TYPE);
-		widgetParameters.setValue(getValueForField());
-		widgetParameters.setTitle(getTitleForField());
-		widgetParameters.setDisabled(getDisabledForField());
-		widgetParameters.setCssClass(getCssClassForField());
-
+	public TouchUIDialogElement make(DefaultTouchUIWidgetParameters widgetParameters) {
 		return new TextFieldWidget(widgetParameters);
-
 	}
 
 }

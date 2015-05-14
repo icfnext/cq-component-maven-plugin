@@ -15,9 +15,9 @@
  */
 package com.citytechinc.cq.component.touchuidialog.layout;
 
-import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElementParameters;
+import com.citytechinc.cq.component.touchuidialog.DefaultTouchUIDialogElementParameters;
 
-public class LayoutElementParameters extends TouchUIDialogElementParameters {
+public class LayoutElementParameters extends DefaultTouchUIDialogElementParameters {
 
 	@Override
 	public String getFieldName() {

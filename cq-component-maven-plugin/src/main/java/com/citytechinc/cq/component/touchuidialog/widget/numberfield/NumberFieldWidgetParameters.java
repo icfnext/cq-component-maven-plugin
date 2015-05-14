@@ -15,9 +15,9 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.numberfield;
 
-import com.citytechinc.cq.component.touchuidialog.widget.TouchUIWidgetParameters;
+import com.citytechinc.cq.component.touchuidialog.widget.DefaultTouchUIWidgetParameters;
 
-public class NumberFieldWidgetParameters extends TouchUIWidgetParameters {
+public class NumberFieldWidgetParameters extends DefaultTouchUIWidgetParameters {
 
 	private Double min;
 	private Double max;

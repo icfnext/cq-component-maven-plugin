@@ -26,31 +26,17 @@ import com.citytechinc.cq.component.touchuidialog.widget.datasource.DataSource;
 import com.citytechinc.cq.component.touchuidialog.widget.datasource.DataSourceParameters;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
-import com.citytechinc.cq.component.touchuidialog.widget.selection.SelectionFieldWidget;
 import com.citytechinc.cq.component.touchuidialog.widget.selection.options.OptionParameters;
 
-public class RadioGroupWidgetMaker extends AbstractTouchUIWidgetMaker {
+public class RadioGroupWidgetMaker extends AbstractTouchUIWidgetMaker<RadioGroupWidgetParameters> {
 
 	public RadioGroupWidgetMaker(TouchUIWidgetMakerParameters parameters) {
 		super(parameters);
 	}
 
 	@Override
-	public TouchUIDialogElement make() throws ClassNotFoundException, InvalidComponentFieldException,
-		TouchUIDialogGenerationException {
-		RadioGroupWidgetParameters widgetParameters = new RadioGroupWidgetParameters();
-
-		widgetParameters.setFieldName(getFieldNameForField());
-		widgetParameters.setName(getNameForField());
-		widgetParameters.setFieldLabel(getFieldLabelForField());
-		widgetParameters.setFieldDescription(getFieldDescriptionForField());
-		widgetParameters.setRequired(getRequiredForField());
-		widgetParameters.setDefaultValue(getDefaultValueForField());
-		widgetParameters.setResourceType(SelectionFieldWidget.RESOURCE_TYPE);
-		widgetParameters.setValue(getValueForField());
-		widgetParameters.setDisabled(getDisabledForField());
-		widgetParameters.setCssClass(getCssClassForField());
-
+	public TouchUIDialogElement make(RadioGroupWidgetParameters widgetParameters) throws ClassNotFoundException,
+		InvalidComponentFieldException, TouchUIDialogGenerationException {
 		Selection selectionField = getAnnotation(Selection.class);
 
 		widgetParameters.setText(getFieldLabelForField());
@@ -61,7 +47,6 @@ public class RadioGroupWidgetMaker extends AbstractTouchUIWidgetMaker {
 
 			OptionParameters optionParameters = new OptionParameters();
 			optionParameters.setName(getNameForField());
-			optionParameters.setResourceType(RadioGroupWidget.RADIO_RESOURCE_TYPE);
 			optionParameters.setText(currentOption.text());
 			optionParameters.setValue(currentOption.value());
 			optionParameters.setSelected(currentOption.selected());

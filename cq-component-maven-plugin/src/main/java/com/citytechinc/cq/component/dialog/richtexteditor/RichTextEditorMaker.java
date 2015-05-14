@@ -49,27 +49,18 @@ import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollectionPara
  * configuring_rich_text_editor.html
  *
  */
-public class RichTextEditorMaker extends AbstractWidgetMaker {
+public class RichTextEditorMaker extends AbstractWidgetMaker<RichTextEditorWidgetParameters> {
 	private static final String ALL_FEATURES = "*";
 
 	public RichTextEditorMaker(WidgetMakerParameters parameters) {
 		super(parameters);
 	}
 
-	public DialogElement make() throws ClassNotFoundException {
+	@Override
+	public DialogElement make(RichTextEditorWidgetParameters widgetParameters) throws ClassNotFoundException {
 
 		RichTextEditor rteAnnotation = getAnnotation(RichTextEditor.class);
 
-		RichTextEditorWidgetParameters widgetParameters = new RichTextEditorWidgetParameters();
-		widgetParameters.setName(getNameForField());
-		widgetParameters.setFieldName(getFieldNameForField());
-		widgetParameters.setFieldLabel(getFieldLabelForField());
-		widgetParameters.setFieldDescription(getFieldDescriptionForField());
-		widgetParameters.setAllowBlank(!getIsRequiredForField());
-		widgetParameters.setAdditionalProperties(getAdditionalPropertiesForField());
-		widgetParameters.setDefaultValue(getDefaultValueForField());
-		widgetParameters.setHideLabel(getHideLabelForField());
-		widgetParameters.setListeners(getListeners());
 		widgetParameters.setContainedElements(Arrays.asList(new DialogElement[] { buildRtePlugins(rteAnnotation) }));
 
 		return new RichTextEditorWidget(widgetParameters);

@@ -24,28 +24,15 @@ import com.citytechinc.cq.component.touchuidialog.widget.datasource.DataSource;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 
-public abstract class AutoCompleteWidgetMaker extends AbstractTouchUIWidgetMaker {
+public abstract class AutoCompleteWidgetMaker extends AbstractTouchUIWidgetMaker<AutoCompleteWidgetParameters> {
 
 	public AutoCompleteWidgetMaker(TouchUIWidgetMakerParameters parameters) {
 		super(parameters);
 	}
 
 	@Override
-	public TouchUIDialogElement make() throws ClassNotFoundException, InvalidComponentFieldException,
-		TouchUIDialogGenerationException {
-
-		AutoCompleteWidgetParameters widgetParameters = new AutoCompleteWidgetParameters();
-
-		// Common parameters
-		widgetParameters.setFieldName(getFieldNameForField());
-		widgetParameters.setName(getNameForField());
-		widgetParameters.setFieldLabel(getFieldLabelForField());
-		widgetParameters.setFieldDescription(getFieldDescriptionForField());
-		widgetParameters.setRequired(getRequiredForField());
-		widgetParameters.setDefaultValue(getDefaultValueForField());
-		widgetParameters.setValue(getValueForField());
-		widgetParameters.setDisabled(getDisabledForField());
-		widgetParameters.setCssClass(getCssClassForField());
+	public TouchUIDialogElement make(AutoCompleteWidgetParameters widgetParameters) throws ClassNotFoundException,
+		InvalidComponentFieldException, TouchUIDialogGenerationException {
 
 		// Autocomplete specific parameters
 		widgetParameters.setMultiple(getMultipleForField());

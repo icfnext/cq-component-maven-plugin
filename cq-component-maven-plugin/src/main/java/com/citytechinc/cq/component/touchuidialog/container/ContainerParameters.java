@@ -19,13 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
-import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElementParameters;
+import com.citytechinc.cq.component.touchuidialog.DefaultTouchUIDialogElementParameters;
 import com.citytechinc.cq.component.touchuidialog.container.items.Items;
 import com.citytechinc.cq.component.touchuidialog.container.items.ItemsParameters;
 import com.citytechinc.cq.component.touchuidialog.layout.LayoutElement;
 import com.citytechinc.cq.component.xml.XmlElement;
 
-public class ContainerParameters extends TouchUIDialogElementParameters {
+public class ContainerParameters extends DefaultTouchUIDialogElementParameters {
 
 	private LayoutElement layoutElement;
 

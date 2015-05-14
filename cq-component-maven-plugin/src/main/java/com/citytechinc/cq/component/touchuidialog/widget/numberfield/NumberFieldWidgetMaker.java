@@ -23,26 +23,14 @@ import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 
-public class NumberFieldWidgetMaker extends AbstractTouchUIWidgetMaker {
+public class NumberFieldWidgetMaker extends AbstractTouchUIWidgetMaker<NumberFieldWidgetParameters> {
 
 	public NumberFieldWidgetMaker(TouchUIWidgetMakerParameters parameters) {
 		super(parameters);
 	}
 
 	@Override
-	public TouchUIDialogElement make() throws ClassNotFoundException {
-		NumberFieldWidgetParameters widgetParameters = new NumberFieldWidgetParameters();
-
-		widgetParameters.setFieldName(getFieldNameForField());
-		widgetParameters.setName(getNameForField());
-		widgetParameters.setFieldLabel(getFieldLabelForField());
-		widgetParameters.setFieldDescription(getFieldDescriptionForField());
-		widgetParameters.setRequired(getRequiredForField());
-		widgetParameters.setDefaultValue(getDefaultValueForField());
-		widgetParameters.setValue(getValueForField());
-		widgetParameters.setDisabled(getDisabledForField());
-		widgetParameters.setCssClass(getCssClassForField());
-
+	public TouchUIDialogElement make(NumberFieldWidgetParameters widgetParameters) throws ClassNotFoundException {
 		// Number field specific stuff
 		NumberField numberField = getAnnotation(NumberField.class);
 

@@ -15,10 +15,10 @@
  */
 package com.citytechinc.cq.component.dialog.multifield;
 
-import com.citytechinc.cq.component.dialog.widget.WidgetParameters;
+import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 import com.citytechinc.cq.component.util.Constants;
 
-public class MultiFieldWidgetParameters extends WidgetParameters {
+public class MultiFieldWidgetParameters extends DefaultWidgetParameters {
 	private boolean orderable;
 	private String addItemLabel;
 

@@ -15,9 +15,9 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.textarea;
 
-import com.citytechinc.cq.component.touchuidialog.widget.TouchUIWidgetParameters;
+import com.citytechinc.cq.component.touchuidialog.widget.DefaultTouchUIWidgetParameters;
 
-public class TextAreaWidgetParameters extends TouchUIWidgetParameters {
+public class TextAreaWidgetParameters extends DefaultTouchUIWidgetParameters {
 
 	private Integer cols;
 	private Integer rows;

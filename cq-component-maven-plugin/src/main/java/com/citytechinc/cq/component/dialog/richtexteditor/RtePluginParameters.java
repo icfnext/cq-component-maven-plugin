@@ -15,9 +15,9 @@
  */
 package com.citytechinc.cq.component.dialog.richtexteditor;
 
-import com.citytechinc.cq.component.dialog.DialogElementParameters;
+import com.citytechinc.cq.component.dialog.DefaultDialogElementParameters;
 
-public class RtePluginParameters extends DialogElementParameters {
+public class RtePluginParameters extends DefaultDialogElementParameters {
 	private String features;
 
 	public String getFeatures() {

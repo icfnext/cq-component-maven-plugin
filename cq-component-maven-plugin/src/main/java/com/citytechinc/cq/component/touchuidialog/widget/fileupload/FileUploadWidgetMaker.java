@@ -27,27 +27,15 @@ import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenera
 import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 
-public class FileUploadWidgetMaker extends AbstractTouchUIWidgetMaker {
+public class FileUploadWidgetMaker extends AbstractTouchUIWidgetMaker<FileUploadWidgetParameters> {
 
 	public FileUploadWidgetMaker(TouchUIWidgetMakerParameters parameters) {
 		super(parameters);
 	}
 
 	@Override
-	public TouchUIDialogElement make() throws ClassNotFoundException, InvalidComponentFieldException,
-		TouchUIDialogGenerationException {
-		FileUploadWidgetParameters widgetParameters = new FileUploadWidgetParameters();
-
-		widgetParameters.setFieldName(getFieldNameForField());
-		widgetParameters.setName(getNameForField());
-		widgetParameters.setFieldLabel(getFieldLabelForField());
-		widgetParameters.setFieldDescription(getFieldDescriptionForField());
-		widgetParameters.setRequired(getRequiredForField());
-		widgetParameters.setDefaultValue(getDefaultValueForField());
-		widgetParameters.setValue(getValueForField());
-		widgetParameters.setDisabled(getDisabledForField());
-		widgetParameters.setCssClass(getCssClassForField());
-
+	public TouchUIDialogElement make(FileUploadWidgetParameters widgetParameters) throws ClassNotFoundException,
+		InvalidComponentFieldException, TouchUIDialogGenerationException {
 		Html5SmartFile smartFileAnnotation = getAnnotation(Html5SmartFile.class);
 
 		widgetParameters.setTitle(getTitleForField(smartFileAnnotation));

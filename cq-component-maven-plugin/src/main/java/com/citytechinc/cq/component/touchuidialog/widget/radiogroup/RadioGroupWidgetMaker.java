@@ -15,6 +15,8 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.radiogroup;
 
+import org.codehaus.plexus.util.StringUtils;
+
 import com.citytechinc.cq.component.annotations.Option;
 import com.citytechinc.cq.component.annotations.widgets.Selection;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
@@ -26,61 +28,60 @@ import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWi
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 import com.citytechinc.cq.component.touchuidialog.widget.selection.SelectionFieldWidget;
 import com.citytechinc.cq.component.touchuidialog.widget.selection.options.OptionParameters;
-import org.codehaus.plexus.util.StringUtils;
 
 public class RadioGroupWidgetMaker extends AbstractTouchUIWidgetMaker {
 
-    public RadioGroupWidgetMaker(TouchUIWidgetMakerParameters parameters) {
-        super(parameters);
-    }
+	public RadioGroupWidgetMaker(TouchUIWidgetMakerParameters parameters) {
+		super(parameters);
+	}
 
-    @Override
-    public TouchUIDialogElement make() throws ClassNotFoundException, InvalidComponentFieldException, TouchUIDialogGenerationException {
-        RadioGroupWidgetParameters widgetParameters = new RadioGroupWidgetParameters();
+	@Override
+	public TouchUIDialogElement make() throws ClassNotFoundException, InvalidComponentFieldException,
+		TouchUIDialogGenerationException {
+		RadioGroupWidgetParameters widgetParameters = new RadioGroupWidgetParameters();
 
-        widgetParameters.setFieldName(getFieldNameForField());
-        widgetParameters.setName(getNameForField());
-        widgetParameters.setFieldLabel(getFieldLabelForField());
-        widgetParameters.setFieldDescription(getFieldDescriptionForField());
-        widgetParameters.setRequired(getRequiredForField());
-        widgetParameters.setDefaultValue(getDefaultValueForField());
-        widgetParameters.setResourceType(SelectionFieldWidget.RESOURCE_TYPE);
-        widgetParameters.setValue(getValueForField());
-        widgetParameters.setDisabled(getDisabledForField());
-        widgetParameters.setCssClass(getCssClassForField());
+		widgetParameters.setFieldName(getFieldNameForField());
+		widgetParameters.setName(getNameForField());
+		widgetParameters.setFieldLabel(getFieldLabelForField());
+		widgetParameters.setFieldDescription(getFieldDescriptionForField());
+		widgetParameters.setRequired(getRequiredForField());
+		widgetParameters.setDefaultValue(getDefaultValueForField());
+		widgetParameters.setResourceType(SelectionFieldWidget.RESOURCE_TYPE);
+		widgetParameters.setValue(getValueForField());
+		widgetParameters.setDisabled(getDisabledForField());
+		widgetParameters.setCssClass(getCssClassForField());
 
-        widgetParameters.setResourceType(RadioGroupWidget.RESOURCE_TYPE);
+		Selection selectionField = getAnnotation(Selection.class);
 
-        Selection selectionField = getAnnotation(Selection.class);
+		widgetParameters.setText(getFieldLabelForField());
+		widgetParameters.setDataSource(getDataSourceForField(selectionField));
 
-        widgetParameters.setText(getFieldLabelForField());
-        widgetParameters.setDataSource(getDataSourceForField(selectionField));
+		for (int i = 0; i < selectionField.options().length; i++) {
+			Option currentOption = selectionField.options()[i];
 
-        for (int i = 0; i < selectionField.options().length; i++) {
-            Option currentOption = selectionField.options()[i];
+			OptionParameters optionParameters = new OptionParameters();
+			optionParameters.setName(getNameForField());
+			optionParameters.setResourceType(RadioGroupWidget.RADIO_RESOURCE_TYPE);
+			optionParameters.setText(currentOption.text());
+			optionParameters.setValue(currentOption.value());
+			optionParameters.setSelected(currentOption.selected());
+			optionParameters.setFieldName("option" + i);
 
-            OptionParameters optionParameters = new OptionParameters();
-            optionParameters.setName(getNameForField());
-            optionParameters.setResourceType(RadioGroupWidget.RADIO_RESOURCE_TYPE);
-            optionParameters.setText(currentOption.text());
-            optionParameters.setValue(currentOption.value());
-            optionParameters.setSelected(currentOption.selected());
-            optionParameters.setFieldName("option" + i);
+			widgetParameters.addOption(new com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option(
+				optionParameters));
+		}
 
-            widgetParameters.addOption(new com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option(optionParameters));
-        }
+		return new RadioGroupWidget(widgetParameters);
+	}
 
-        return new RadioGroupWidget(widgetParameters);
-    }
+	public DataSource getDataSourceForField(Selection annotation) {
+		if (annotation != null && StringUtils.isNotBlank(annotation.dataSource())) {
+			DataSourceParameters dataSourceParameters = new DataSourceParameters();
+			dataSourceParameters.setResourceType(annotation.dataSource());
+			return new DataSource(dataSourceParameters);
+		}
 
-    public DataSource getDataSourceForField(Selection annotation) {
-        if (annotation != null && StringUtils.isNotBlank(annotation.dataSource())) {
-            DataSourceParameters dataSourceParameters = new DataSourceParameters();
-            dataSourceParameters.setResourceType(annotation.dataSource());
-            return new DataSource(dataSourceParameters);
-        }
-
-        return null;
-    }
+		return null;
+	}
 
 }

@@ -15,6 +15,9 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.radiogroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.citytechinc.cq.component.touchuidialog.widget.TouchUIWidgetParameters;
 import com.citytechinc.cq.component.touchuidialog.widget.datasource.DataSource;
 import com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option;
@@ -22,65 +25,72 @@ import com.citytechinc.cq.component.touchuidialog.widget.selection.options.Optio
 import com.citytechinc.cq.component.touchuidialog.widget.selection.options.OptionsParameters;
 import com.citytechinc.cq.component.xml.XmlElement;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class RadioGroupWidgetParameters extends TouchUIWidgetParameters {
 
-    private List<Option> options;
-    private DataSource dataSource;
-    private String text;
+	private List<Option> options;
+	private DataSource dataSource;
+	private String text;
 
-    public String getText() {
-        return text;
-    }
+	public String getText() {
+		return text;
+	}
 
-    public void setText(String text) {
-        this.text = text;
-    }
+	public void setText(String text) {
+		this.text = text;
+	}
 
-    public Options getOptions() {
-        if (options != null) {
-            OptionsParameters optionsParameters = new OptionsParameters();
-            optionsParameters.setOptions(options);
-            return new Options(optionsParameters);
-        }
+	public Options getOptions() {
+		if (options != null) {
+			OptionsParameters optionsParameters = new OptionsParameters();
+			optionsParameters.setOptions(options);
+			return new Options(optionsParameters);
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    public void addOption(Option option) {
-        if (options == null) {
-            options = new ArrayList<Option>();
-        }
+	public void addOption(Option option) {
+		if (options == null) {
+			options = new ArrayList<Option>();
+		}
 
-        options.add(option);
-    }
+		options.add(option);
+	}
 
-    public DataSource getDataSource() {
-        return dataSource;
-    }
+	public DataSource getDataSource() {
+		return dataSource;
+	}
 
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
+	}
 
-    @Override
-    public List<? extends XmlElement> getContainedElements() {
-        List<XmlElement> allContainedElements = new ArrayList<XmlElement>();
+	@Override
+	public List<? extends XmlElement> getContainedElements() {
+		List<XmlElement> allContainedElements = new ArrayList<XmlElement>();
 
-        if (getOptions() != null) {
-            allContainedElements.add(getOptions());
-        }
+		if (getOptions() != null) {
+			allContainedElements.add(getOptions());
+		}
 
-        if (getDataSource() != null) {
-            allContainedElements.add(getDataSource());
-        }
+		if (getDataSource() != null) {
+			allContainedElements.add(getDataSource());
+		}
 
-        if (containedElements != null) {
-            allContainedElements.addAll(containedElements);
-        }
+		if (containedElements != null) {
+			allContainedElements.addAll(containedElements);
+		}
 
-        return allContainedElements;
-    }
+		return allContainedElements;
+	}
+
+	@Override
+	public String getResourceType() {
+		return RadioGroupWidget.RESOURCE_TYPE;
+	}
+
+	@Override
+	public void setResourceType(String resourceType) {
+		throw new UnsupportedOperationException("resourceType is Static for RadioGroupWidget");
+	}
 }

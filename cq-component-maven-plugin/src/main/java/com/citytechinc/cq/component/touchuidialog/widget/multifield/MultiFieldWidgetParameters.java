@@ -18,4 +18,13 @@ package com.citytechinc.cq.component.touchuidialog.widget.multifield;
 import com.citytechinc.cq.component.touchuidialog.widget.TouchUIWidgetParameters;
 
 public class MultiFieldWidgetParameters extends TouchUIWidgetParameters {
+	@Override
+	public String getResourceType() {
+		return MultiFieldWidget.RESOURCE_TYPE;
+	}
+
+	@Override
+	public void setResourceType(String resourceType) {
+		throw new UnsupportedOperationException("resourceType is Static for MultiFieldWidget");
+	}
 }

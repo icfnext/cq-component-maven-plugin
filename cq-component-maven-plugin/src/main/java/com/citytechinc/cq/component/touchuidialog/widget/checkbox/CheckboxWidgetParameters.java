@@ -19,32 +19,44 @@ import com.citytechinc.cq.component.touchuidialog.widget.TouchUIWidgetParameters
 
 public class CheckboxWidgetParameters extends TouchUIWidgetParameters {
 
-    private String text;
-    private String title;
-    private boolean checked;
+	private String text;
+	private String title;
+	private boolean checked;
 
-    public String getText() {
-        return text;
-    }
+	public String getText() {
+		return text;
+	}
 
-    public void setText(String text) {
-        this.text = text;
-    }
+	public void setText(String text) {
+		this.text = text;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	@Override
+	public String getTitle() {
+		return title;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	@Override
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    public boolean isChecked() {
-        return checked;
-    }
+	public boolean isChecked() {
+		return checked;
+	}
 
-    public void setChecked(boolean checked) {
-        this.checked = checked;
-    }
+	public void setChecked(boolean checked) {
+		this.checked = checked;
+	}
+
+	@Override
+	public String getResourceType() {
+		return CheckboxWidget.RESOURCE_TYPE;
+	}
+
+	@Override
+	public void setResourceType(String resourceType) {
+		throw new UnsupportedOperationException("resourceType is Static for CheckboxWidget");
+	}
 
 }

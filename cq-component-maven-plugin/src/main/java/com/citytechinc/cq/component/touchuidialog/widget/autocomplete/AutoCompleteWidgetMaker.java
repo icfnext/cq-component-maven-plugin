@@ -18,53 +18,53 @@ package com.citytechinc.cq.component.touchuidialog.widget.autocomplete;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
-import com.citytechinc.cq.component.touchuidialog.widget.datasource.DataSource;
 import com.citytechinc.cq.component.touchuidialog.widget.autocomplete.options.AutoCompleteOptions;
 import com.citytechinc.cq.component.touchuidialog.widget.autocomplete.values.AutoCompleteValues;
+import com.citytechinc.cq.component.touchuidialog.widget.datasource.DataSource;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 
 public abstract class AutoCompleteWidgetMaker extends AbstractTouchUIWidgetMaker {
 
-    public AutoCompleteWidgetMaker(TouchUIWidgetMakerParameters parameters) {
-        super(parameters);
-    }
+	public AutoCompleteWidgetMaker(TouchUIWidgetMakerParameters parameters) {
+		super(parameters);
+	}
 
-    @Override
-    public TouchUIDialogElement make() throws ClassNotFoundException, InvalidComponentFieldException, TouchUIDialogGenerationException {
+	@Override
+	public TouchUIDialogElement make() throws ClassNotFoundException, InvalidComponentFieldException,
+		TouchUIDialogGenerationException {
 
-        AutoCompleteWidgetParameters widgetParameters = new AutoCompleteWidgetParameters();
+		AutoCompleteWidgetParameters widgetParameters = new AutoCompleteWidgetParameters();
 
-        //Common parameters
-        widgetParameters.setFieldName(getFieldNameForField());
-        widgetParameters.setName(getNameForField());
-        widgetParameters.setFieldLabel(getFieldLabelForField());
-        widgetParameters.setFieldDescription(getFieldDescriptionForField());
-        widgetParameters.setRequired(getRequiredForField());
-        widgetParameters.setDefaultValue(getDefaultValueForField());
-        widgetParameters.setResourceType(AutoCompleteWidget.RESOURCE_TYPE);
-        widgetParameters.setValue(getValueForField());
-        widgetParameters.setDisabled(getDisabledForField());
-        widgetParameters.setCssClass(getCssClassForField());
+		// Common parameters
+		widgetParameters.setFieldName(getFieldNameForField());
+		widgetParameters.setName(getNameForField());
+		widgetParameters.setFieldLabel(getFieldLabelForField());
+		widgetParameters.setFieldDescription(getFieldDescriptionForField());
+		widgetParameters.setRequired(getRequiredForField());
+		widgetParameters.setDefaultValue(getDefaultValueForField());
+		widgetParameters.setValue(getValueForField());
+		widgetParameters.setDisabled(getDisabledForField());
+		widgetParameters.setCssClass(getCssClassForField());
 
-        //Autocomplete specific parameters
-        widgetParameters.setMultiple(getMultipleForField());
-        widgetParameters.setMode(getModeForField());
-        widgetParameters.setDatasource(makeDataSource());
-        widgetParameters.setOptions(makeOptions());
-        widgetParameters.setValues(makeValues());
+		// Autocomplete specific parameters
+		widgetParameters.setMultiple(getMultipleForField());
+		widgetParameters.setMode(getModeForField());
+		widgetParameters.setDatasource(makeDataSource());
+		widgetParameters.setOptions(makeOptions());
+		widgetParameters.setValues(makeValues());
 
-        return new AutoCompleteWidget(widgetParameters);
-    }
+		return new AutoCompleteWidget(widgetParameters);
+	}
 
-    protected abstract DataSource makeDataSource();
+	protected abstract DataSource makeDataSource();
 
-    protected abstract AutoCompleteOptions makeOptions();
+	protected abstract AutoCompleteOptions makeOptions();
 
-    protected abstract AutoCompleteValues makeValues();
+	protected abstract AutoCompleteValues makeValues();
 
-    protected abstract boolean getMultipleForField();
+	protected abstract boolean getMultipleForField();
 
-    protected abstract String getModeForField();
+	protected abstract String getModeForField();
 
 }

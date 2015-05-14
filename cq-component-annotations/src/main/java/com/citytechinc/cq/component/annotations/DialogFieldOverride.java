@@ -134,7 +134,8 @@ public @interface DialogFieldOverride {
 	/**
 	 * For Touch-UI Only
 	 *
-	 * Many of the Touch UI widgets react to an underlying value being set for the field.
+	 * Many of the Touch UI widgets react to an underlying value being set for
+	 * the field.
 	 *
 	 * @return String
 	 */
@@ -150,7 +151,8 @@ public @interface DialogFieldOverride {
 	/**
 	 * For Touch-UI Only
 	 *
-	 * Indicates that the particular field should be rendered in a disabled state
+	 * Indicates that the particular field should be rendered in a disabled
+	 * state
 	 *
 	 * @return boolean
 	 */
@@ -166,14 +168,8 @@ public @interface DialogFieldOverride {
 	public String cssClass() default "";
 
 	/**
-	 * Indicates that a Classic UI widget should not be produced for the annotated member
-	 *
-	 * @return boolean
-	 */
-	public boolean suppressClassicUI() default false;
-
-	/**
-	 * Indicates that a Touch UI widget should not be produced for the annotated member
+	 * Indicates that a Touch UI widget should not be produced for the annotated
+	 * member
 	 *
 	 * @return boolean
 	 */

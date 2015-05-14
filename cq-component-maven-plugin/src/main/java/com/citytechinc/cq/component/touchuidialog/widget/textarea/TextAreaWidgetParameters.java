@@ -19,31 +19,41 @@ import com.citytechinc.cq.component.touchuidialog.widget.TouchUIWidgetParameters
 
 public class TextAreaWidgetParameters extends TouchUIWidgetParameters {
 
-    private Integer cols;
-    private Integer rows;
-    private String resize;
+	private Integer cols;
+	private Integer rows;
+	private String resize;
 
-    public Integer getCols() {
-        return cols;
-    }
+	public Integer getCols() {
+		return cols;
+	}
 
-    public void setCols(Integer cols) {
-        this.cols = cols;
-    }
+	public void setCols(Integer cols) {
+		this.cols = cols;
+	}
 
-    public Integer getRows() {
-        return rows;
-    }
+	public Integer getRows() {
+		return rows;
+	}
 
-    public void setRows(Integer rows) {
-        this.rows = rows;
-    }
+	public void setRows(Integer rows) {
+		this.rows = rows;
+	}
 
-    public String getResize() {
-        return resize;
-    }
+	public String getResize() {
+		return resize;
+	}
 
-    public void setResize(String resize) {
-        this.resize = resize;
-    }
+	public void setResize(String resize) {
+		this.resize = resize;
+	}
+
+	@Override
+	public String getResourceType() {
+		return TextAreaWidget.RESOURCE_TYPE;
+	}
+
+	@Override
+	public void setResourceType(String resourceType) {
+		throw new UnsupportedOperationException("resourceType is Static for TextAreaWidget");
+	}
 }

@@ -15,71 +15,71 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.textarea;
 
+import org.codehaus.plexus.util.StringUtils;
+
 import com.citytechinc.cq.component.annotations.widgets.TextArea;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
-import com.citytechinc.cq.component.touchuidialog.widget.textfield.TextFieldWidget;
-import org.codehaus.plexus.util.StringUtils;
 
 public class TextAreaWidgetMaker extends AbstractTouchUIWidgetMaker {
 
-    public TextAreaWidgetMaker(TouchUIWidgetMakerParameters parameters) {
-        super(parameters);
-    }
+	public TextAreaWidgetMaker(TouchUIWidgetMakerParameters parameters) {
+		super(parameters);
+	}
 
-    @Override
-    public TouchUIDialogElement make() throws ClassNotFoundException, InvalidComponentFieldException, TouchUIDialogGenerationException {
+	@Override
+	public TouchUIDialogElement make() throws ClassNotFoundException, InvalidComponentFieldException,
+		TouchUIDialogGenerationException {
 
-        TextAreaWidgetParameters widgetParameters = new TextAreaWidgetParameters();
+		TextAreaWidgetParameters widgetParameters = new TextAreaWidgetParameters();
 
-        widgetParameters.setFieldName(getFieldNameForField());
-        widgetParameters.setName(getNameForField());
-        widgetParameters.setFieldLabel(getFieldLabelForField());
-        widgetParameters.setFieldDescription(getFieldDescriptionForField());
-        widgetParameters.setRequired(getRequiredForField());
-        widgetParameters.setDefaultValue(getDefaultValueForField());
-        widgetParameters.setResourceType(TextAreaWidget.RESOURCE_TYPE);
-        widgetParameters.setValue(getValueForField());
-        widgetParameters.setTitle(getTitleForField());
-        widgetParameters.setDisabled(getDisabledForField());
-        widgetParameters.setCssClass(getCssClassForField());
+		widgetParameters.setFieldName(getFieldNameForField());
+		widgetParameters.setName(getNameForField());
+		widgetParameters.setFieldLabel(getFieldLabelForField());
+		widgetParameters.setFieldDescription(getFieldDescriptionForField());
+		widgetParameters.setRequired(getRequiredForField());
+		widgetParameters.setDefaultValue(getDefaultValueForField());
+		widgetParameters.setValue(getValueForField());
+		widgetParameters.setTitle(getTitleForField());
+		widgetParameters.setDisabled(getDisabledForField());
+		widgetParameters.setCssClass(getCssClassForField());
 
-        TextArea widgetAnnotation = getAnnotation(TextArea.class);
+		TextArea widgetAnnotation = getAnnotation(TextArea.class);
 
-        //Text Area specific properties
-        widgetParameters.setCols(getColsForField(widgetAnnotation));
-        widgetParameters.setRows(getRowsForField(widgetAnnotation));
-        widgetParameters.setResize(getResizeForField(widgetAnnotation));
+		// Text Area specific properties
+		widgetParameters.setCols(getColsForField(widgetAnnotation));
+		widgetParameters.setRows(getRowsForField(widgetAnnotation));
+		widgetParameters.setResize(getResizeForField(widgetAnnotation));
 
-        return new TextAreaWidget(widgetParameters);
+		return new TextAreaWidget(widgetParameters);
 
-    }
+	}
 
-    public Integer getColsForField(TextArea annotation) {
-        if (annotation != null && annotation.cols() != -1) {
-            return annotation.cols();
-        }
+	public Integer getColsForField(TextArea annotation) {
+		if (annotation != null && annotation.cols() != -1) {
+			return annotation.cols();
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    public Integer getRowsForField(TextArea annotation) {
-        if (annotation != null && annotation.rows() != -1) {
-            return annotation.rows();
-        }
+	public Integer getRowsForField(TextArea annotation) {
+		if (annotation != null && annotation.rows() != -1) {
+			return annotation.rows();
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    public String getResizeForField(TextArea annotation) {
-        if (annotation != null && StringUtils.isNotBlank(annotation.resize())) {
-            return annotation.resize();
-        }
+	public String getResizeForField(TextArea annotation) {
+		if (annotation != null && StringUtils.isNotBlank(annotation.resize())) {
+			return annotation.resize();
+		}
 
-        return null;
-    }
+		return null;
+	}
 
 }

@@ -15,35 +15,31 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.autocomplete;
 
-import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.widget.AbstractTouchUIWidget;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class AutoCompleteWidget extends AbstractTouchUIWidget {
 
-    public static final String RESOURCE_TYPE = "granite/ui/components/foundation/form/autocomplete";
-    public static final String VALUES_FIELD_NAME = "values";
-    public static final String OPTIONS_FIELD_NAME = "options";
+	public static final String RESOURCE_TYPE = "granite/ui/components/foundation/form/autocomplete";
+	public static final String VALUES_FIELD_NAME = "values";
+	public static final String OPTIONS_FIELD_NAME = "options";
 
-    protected final boolean multiple;
-    protected final String mode;
+	protected final boolean multiple;
+	protected final String mode;
 
-    public AutoCompleteWidget(AutoCompleteWidgetParameters parameters) {
-        super(parameters);
+	public AutoCompleteWidget(AutoCompleteWidgetParameters parameters) {
+		super(parameters);
 
-        multiple = parameters.isMultiple();
-        mode = parameters.getMode();
+		multiple = parameters.isMultiple();
+		mode = parameters.getMode();
 
-    }
+	}
 
-    public boolean isMultiple() {
-        return multiple;
-    }
+	public boolean isMultiple() {
+		return multiple;
+	}
 
-    public String getMode() {
-        return mode;
-    }
+	public String getMode() {
+		return mode;
+	}
 
 }

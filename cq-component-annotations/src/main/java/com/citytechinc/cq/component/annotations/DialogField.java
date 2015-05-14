@@ -38,14 +38,14 @@ public @interface DialogField {
 	 */
 	public String xtype() default "";
 
-    /**
-     * Applicable to Touch-UI only
-     *
-     * Allows for explicit definition of a dialog field's sling:resourceType.
-     *
-     * @return String
-     */
-    public String resourceType() default "";
+	/**
+	 * Applicable to Touch-UI only
+	 *
+	 * Allows for explicit definition of a dialog field's sling:resourceType.
+	 *
+	 * @return String
+	 */
+	public String resourceType() default "";
 
 	/**
 	 * The path to which the value for the authorable element will be saved
@@ -140,14 +140,15 @@ public @interface DialogField {
 	 */
 	public double ranking() default 0;
 
-    /**
-     * For Touch-UI Only
-     *
-     * Many of the Touch UI widgets react to an underlying value being set for the field.
-     *
-     * @return String
-     */
-    public String value() default "";
+	/**
+	 * For Touch-UI Only
+	 *
+	 * Many of the Touch UI widgets react to an underlying value being set for
+	 * the field.
+	 *
+	 * @return String
+	 */
+	public String value() default "";
 
 	/**
 	 * For Touch-UI Only
@@ -156,33 +157,26 @@ public @interface DialogField {
 	 */
 	public String title() default "";
 
-    /**
-     * For Touch-UI Only
-     *
-     * Indicates that the particular field should be rendered in a disabled state
-     *
-     * @return boolean
-     */
-    public boolean disabled() default false;
-
-    /**
-     * For Touch-UI Only
-     *
-     * Additional css classes to attribute to the rendered field
-     *
-     * @return String
-     */
-    public String cssClass() default "";
-
 	/**
-	 * Indicates that a Classic UI widget should not be produced for the annotated member
+	 * Indicates that the particular field should be rendered in a disabled
+	 * state
 	 *
 	 * @return boolean
 	 */
-	public boolean suppressClassicUI() default false;
+	public boolean disabled() default false;
 
 	/**
-	 * Indicates that a Touch UI widget should not be produced for the annotated member
+	 * For Touch-UI Only
+	 *
+	 * Additional css classes to attribute to the rendered field
+	 *
+	 * @return String
+	 */
+	public String cssClass() default "";
+
+	/**
+	 * Indicates that a Touch UI widget should not be produced for the annotated
+	 * member
 	 *
 	 * @return boolean
 	 */

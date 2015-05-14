@@ -371,28 +371,20 @@ public @interface Component {
 	 */
 	HtmlTag[] htmlTag() default {};
 
-    /**
-     * Indicates whether writing of the cq:dialog.xml appropriate to the Touch UI
-     * AEM interface should be skipped for this component.
-     *
-     * @return boolean
-     */
-    boolean suppressTouchUIDialog() default false;
+	/**
+	 * Indicates whether writing of the cq:dialog.xml appropriate to the Touch
+	 * UI AEM interface should be skipped for this component.
+	 *
+	 * @return boolean
+	 */
+	boolean suppressTouchUIDialog() default false;
 
-    /**
-     * Indicates whether writing of the dialog.xml appropriate to the Classic UI
-     * AEM interface should be skipped for this component.
-     *
-     * @return boolean
-     */
-    boolean suppressExtJSDialog() default false;
-
-    /**
-     * A path to be followed when a user clicks the help button in the Touch UI
-     * Authoring interface.
-     *
-     * @return String
-     */
-    String helpPath() default "";
+	/**
+	 * A path to be followed when a user clicks the help button in the Touch UI
+	 * Authoring interface.
+	 *
+	 * @return String
+	 */
+	String helpPath() default "";
 
 }

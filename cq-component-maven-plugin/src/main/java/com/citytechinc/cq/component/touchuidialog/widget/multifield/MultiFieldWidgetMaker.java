@@ -15,47 +15,46 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.multifield;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
 import com.citytechinc.cq.component.touchuidialog.widget.factory.TouchUIWidgetFactory;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
-import com.citytechinc.cq.component.touchuidialog.widget.textfield.TextFieldWidget;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MultiFieldWidgetMaker extends AbstractTouchUIWidgetMaker {
 
-    public MultiFieldWidgetMaker(TouchUIWidgetMakerParameters parameters) {
-        super(parameters);
-    }
+	public MultiFieldWidgetMaker(TouchUIWidgetMakerParameters parameters) {
+		super(parameters);
+	}
 
-    @Override
-    public TouchUIDialogElement make() throws ClassNotFoundException, InvalidComponentFieldException, TouchUIDialogGenerationException {
+	@Override
+	public TouchUIDialogElement make() throws ClassNotFoundException, InvalidComponentFieldException,
+		TouchUIDialogGenerationException {
 
-        MultiFieldWidgetParameters widgetParameters = new MultiFieldWidgetParameters();
+		MultiFieldWidgetParameters widgetParameters = new MultiFieldWidgetParameters();
 
-        widgetParameters.setFieldName(getFieldNameForField());
-        widgetParameters.setName(getNameForField());
-        widgetParameters.setFieldLabel(getFieldLabelForField());
-        widgetParameters.setFieldDescription(getFieldDescriptionForField());
-        widgetParameters.setRequired(getRequiredForField());
-        widgetParameters.setResourceType(MultiFieldWidget.RESOURCE_TYPE);
-        widgetParameters.setValue(getValueForField());
-        widgetParameters.setDisabled(getDisabledForField());
-        widgetParameters.setCssClass(getCssClassForField());
+		widgetParameters.setFieldName(getFieldNameForField());
+		widgetParameters.setName(getNameForField());
+		widgetParameters.setFieldLabel(getFieldLabelForField());
+		widgetParameters.setFieldDescription(getFieldDescriptionForField());
+		widgetParameters.setRequired(getRequiredForField());
+		widgetParameters.setValue(getValueForField());
+		widgetParameters.setDisabled(getDisabledForField());
+		widgetParameters.setCssClass(getCssClassForField());
 
-        TouchUIDialogElement field = TouchUIWidgetFactory.make(parameters, MultiFieldWidget.RANKING);
-        field.setFieldName("field");
+		TouchUIDialogElement field = TouchUIWidgetFactory.make(parameters, MultiFieldWidget.RANKING);
+		field.setFieldName("field");
 
-        List<TouchUIDialogElement> containedElements = new ArrayList<TouchUIDialogElement>();
-        containedElements.add(field);
+		List<TouchUIDialogElement> containedElements = new ArrayList<TouchUIDialogElement>();
+		containedElements.add(field);
 
-        widgetParameters.setContainedElements(containedElements);
+		widgetParameters.setContainedElements(containedElements);
 
-        return new MultiFieldWidget(widgetParameters);
-    }
+		return new MultiFieldWidget(widgetParameters);
+	}
 
 }

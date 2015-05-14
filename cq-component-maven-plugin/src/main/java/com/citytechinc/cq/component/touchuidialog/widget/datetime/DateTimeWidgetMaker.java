@@ -15,74 +15,74 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.datetime;
 
+import org.codehaus.plexus.util.StringUtils;
+
 import com.citytechinc.cq.component.annotations.widgets.DateTime;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
-import com.citytechinc.cq.component.touchuidialog.widget.datefield.DateFieldWidget;
 import com.citytechinc.cq.component.touchuidialog.widget.datefield.DateFieldWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
-import org.codehaus.plexus.util.StringUtils;
 
 public class DateTimeWidgetMaker extends DateFieldWidgetMaker {
 
-    public DateTimeWidgetMaker(TouchUIWidgetMakerParameters parameters) throws ClassNotFoundException {
-        super(parameters);
-    }
+	public DateTimeWidgetMaker(TouchUIWidgetMakerParameters parameters) throws ClassNotFoundException {
+		super(parameters);
+	}
 
-    public TouchUIDialogElement make() throws ClassNotFoundException {
-        DateTimeWidgetParameters widgetParameters = new DateTimeWidgetParameters();
+	@Override
+	public TouchUIDialogElement make() throws ClassNotFoundException {
+		DateTimeWidgetParameters widgetParameters = new DateTimeWidgetParameters();
 
-        widgetParameters.setFieldName(getFieldNameForField());
-        widgetParameters.setName(getNameForField());
-        widgetParameters.setFieldLabel(getFieldLabelForField());
-        widgetParameters.setFieldDescription(getFieldDescriptionForField());
-        widgetParameters.setRequired(getRequiredForField());
-        widgetParameters.setDefaultValue(getDefaultValueForField());
-        widgetParameters.setResourceType(DateFieldWidget.RESOURCE_TYPE);
-        widgetParameters.setValue(getValueForField());
-        widgetParameters.setDisabled(getDisabledForField());
-        widgetParameters.setCssClass(getCssClassForField());
+		widgetParameters.setFieldName(getFieldNameForField());
+		widgetParameters.setName(getNameForField());
+		widgetParameters.setFieldLabel(getFieldLabelForField());
+		widgetParameters.setFieldDescription(getFieldDescriptionForField());
+		widgetParameters.setRequired(getRequiredForField());
+		widgetParameters.setDefaultValue(getDefaultValueForField());
+		widgetParameters.setValue(getValueForField());
+		widgetParameters.setDisabled(getDisabledForField());
+		widgetParameters.setCssClass(getCssClassForField());
 
-        //Date field specific stuff
-        DateTime annotation = getAnnotation(DateTime.class);
+		// Date field specific stuff
+		DateTime annotation = getAnnotation(DateTime.class);
 
-        widgetParameters.setDisplayedFormat(getDisplayedFormatForField(annotation));
-        widgetParameters.setStoredFormat(getStoredFormatForField(annotation));
-        widgetParameters.setMinDate(getMinDateForField(annotation));
-        widgetParameters.setMaxDate(getMaxDateForField(annotation));
+		widgetParameters.setDisplayedFormat(getDisplayedFormatForField(annotation));
+		widgetParameters.setStoredFormat(getStoredFormatForField(annotation));
+		widgetParameters.setMinDate(getMinDateForField(annotation));
+		widgetParameters.setMaxDate(getMaxDateForField(annotation));
 
-        return new DateTimeWidget(widgetParameters);
-    }
+		return new DateTimeWidget(widgetParameters);
+	}
 
-    protected String getMinDateForField(DateTime annotation) {
-        if (StringUtils.isNotBlank(annotation.minDate())) {
-            return annotation.minDate();
-        }
+	protected String getMinDateForField(DateTime annotation) {
+		if (StringUtils.isNotBlank(annotation.minDate())) {
+			return annotation.minDate();
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    protected String getMaxDateForField(DateTime annotation) {
-        if (StringUtils.isNotBlank(annotation.maxDate())) {
-            return annotation.maxDate();
-        }
+	protected String getMaxDateForField(DateTime annotation) {
+		if (StringUtils.isNotBlank(annotation.maxDate())) {
+			return annotation.maxDate();
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    protected String getDisplayedFormatForField(DateTime annotation) {
-        if (StringUtils.isNotBlank(annotation.displayedFormat())) {
-            return annotation.displayedFormat();
-        }
+	protected String getDisplayedFormatForField(DateTime annotation) {
+		if (StringUtils.isNotBlank(annotation.displayedFormat())) {
+			return annotation.displayedFormat();
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    protected String getStoredFormatForField(DateTime annotation) {
-        if (StringUtils.isNotBlank(annotation.storedFormat())) {
-            return annotation.storedFormat();
-        }
+	protected String getStoredFormatForField(DateTime annotation) {
+		if (StringUtils.isNotBlank(annotation.storedFormat())) {
+			return annotation.storedFormat();
+		}
 
-        return null;
-    }
+		return null;
+	}
 
 }

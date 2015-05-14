@@ -163,6 +163,10 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 		return null;
 	}
 
+	protected boolean getDisabledForField() {
+		return parameters.getDialogFieldConfig().isDisabled();
+	}
+
 	/**
 	 *
 	 * @return The hideLabel property of the DialogField annotation.

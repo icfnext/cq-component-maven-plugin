@@ -15,28 +15,30 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.maker;
 
+import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
+import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
 import com.citytechinc.cq.component.touchuidialog.widget.SimpleTouchUIWidget;
 import com.citytechinc.cq.component.touchuidialog.widget.TouchUIWidgetParameters;
 
 public class DefaultTouchUIWidgetMaker extends AbstractTouchUIWidgetMaker {
 
-    public DefaultTouchUIWidgetMaker(TouchUIWidgetMakerParameters parameters) {
-        super(parameters);
-    }
+	public DefaultTouchUIWidgetMaker(TouchUIWidgetMakerParameters parameters) {
+		super(parameters);
+	}
 
-    @Override
-    public TouchUIDialogElement make() {
+	public TouchUIDialogElement make() throws ClassNotFoundException, InvalidComponentFieldException,
+		TouchUIDialogGenerationException {
 
-        TouchUIWidgetParameters widgetParameters = new TouchUIWidgetParameters();
+		TouchUIWidgetParameters widgetParameters = new TouchUIWidgetParameters();
 
-        widgetParameters.setFieldName(getFieldNameForField());
-        widgetParameters.setName(getNameForField());
-        widgetParameters.setFieldLabel(getFieldLabelForField());
-        widgetParameters.setResourceType(parameters.getResourceType());
+		widgetParameters.setFieldName(getFieldNameForField());
+		widgetParameters.setName(getNameForField());
+		widgetParameters.setFieldLabel(getFieldLabelForField());
+		widgetParameters.setResourceType(parameters.getResourceType());
 
-        return new SimpleTouchUIWidget(widgetParameters);
+		return new SimpleTouchUIWidget(widgetParameters);
 
-    }
+	}
 
 }

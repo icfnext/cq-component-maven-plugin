@@ -107,19 +107,19 @@ public class DialogFieldSetWidgetMaker extends AbstractWidgetMaker {
 					}
 				} else {
 					if (member.hasAnnotation(DialogField.class)) {
-						dialogFieldConfig = new DialogFieldConfig(
-							(DialogField) member.getAnnotation(DialogField.class), member);
+						dialogFieldConfig =
+							new DialogFieldConfig((DialogField) member.getAnnotation(DialogField.class), member);
 					}
 				}
 
-				if (dialogFieldConfig != null && !dialogFieldConfig.isSuppressClassicUI()) {
+				if (dialogFieldConfig != null) {
 					Class<?> fieldClass = parameters.getClassLoader().loadClass(member.getDeclaringClass().getName());
 
 					double ranking = dialogFieldConfig.getRanking();
 
-					WidgetMakerParameters curFieldMember = new WidgetMakerParameters(dialogFieldConfig, fieldClass,
-						parameters.getClassLoader(), parameters.getClassPool(), parameters.getWidgetRegistry(), null,
-						true);
+					WidgetMakerParameters curFieldMember =
+						new WidgetMakerParameters(dialogFieldConfig, fieldClass, parameters.getClassLoader(),
+							parameters.getClassPool(), parameters.getWidgetRegistry(), null, true);
 
 					DialogElement builtFieldWidget = WidgetFactory.make(curFieldMember, -1);
 					if (builtFieldWidget instanceof AbstractWidget

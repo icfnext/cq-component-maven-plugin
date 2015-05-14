@@ -15,6 +15,16 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.dialogfieldset;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javassist.CtMember;
+import javassist.CtMethod;
+import javassist.NotFoundException;
+
+import org.codehaus.plexus.util.StringUtils;
+
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.IgnoreDialogField;
 import com.citytechinc.cq.component.annotations.widgets.DialogFieldSet;
@@ -30,112 +40,109 @@ import com.citytechinc.cq.component.touchuidialog.widget.AbstractTouchUIWidget;
 import com.citytechinc.cq.component.touchuidialog.widget.factory.TouchUIWidgetFactory;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
-import javassist.CtMember;
-import javassist.CtMethod;
-import javassist.NotFoundException;
-import org.codehaus.plexus.util.StringUtils;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class DialogFieldSetWidgetMaker extends AbstractTouchUIWidgetMaker {
 
-    public DialogFieldSetWidgetMaker(TouchUIWidgetMakerParameters parameters) {
-        super(parameters);
-    }
+	public DialogFieldSetWidgetMaker(TouchUIWidgetMakerParameters parameters) {
+		super(parameters);
+	}
 
-    @Override
-    public TouchUIDialogElement make() throws ClassNotFoundException, InvalidComponentFieldException, TouchUIDialogGenerationException {
+	@Override
+	public TouchUIDialogElement make() throws ClassNotFoundException, InvalidComponentFieldException,
+		TouchUIDialogGenerationException {
 
-        DialogFieldSetWidgetParameters widgetParameters = new DialogFieldSetWidgetParameters();
-        DialogFieldSet dialogFieldSetAnnotation = getAnnotation(DialogFieldSet.class);
+		DialogFieldSetWidgetParameters widgetParameters = new DialogFieldSetWidgetParameters();
+		DialogFieldSet dialogFieldSetAnnotation = getAnnotation(DialogFieldSet.class);
 
-        //Common properties
-        widgetParameters.setFieldName(getFieldNameForField());
-        widgetParameters.setTitle(getFieldLabelForField());
+		// Common properties
+		widgetParameters.setFieldName(getFieldNameForField());
+		widgetParameters.setTitle(getFieldLabelForField());
 
-        widgetParameters.setText(getFieldLabelForField());
-        widgetParameters.setResourceType(DialogFieldSetWidget.RESOURCE_TYPE);
-        
-        try {
-            widgetParameters.setItems(buildLayoutItems(dialogFieldSetAnnotation));
-        } catch (NotFoundException e) {
-            throw new TouchUIDialogGenerationException("Exception encountered while constructing contained elements for the DialogFieldSet " + parameters.getDialogFieldConfig().getFieldName() + " of class " + parameters.getContainingClass().getName(), e);
-        }
+		widgetParameters.setText(getFieldLabelForField());
 
-        return new DialogFieldSetWidget(widgetParameters);
+		try {
+			widgetParameters.setItems(buildLayoutItems(dialogFieldSetAnnotation));
+		} catch (NotFoundException e) {
+			throw new TouchUIDialogGenerationException(
+				"Exception encountered while constructing contained elements for the DialogFieldSet "
+					+ parameters.getDialogFieldConfig().getFieldName() + " of class "
+					+ parameters.getContainingClass().getName(), e);
+		}
 
-    }
+		return new DialogFieldSetWidget(widgetParameters);
 
-    private List<TouchUIDialogElement> buildLayoutItems(DialogFieldSet dialogFieldSetAnnotation) throws NotFoundException, InvalidComponentFieldException, ClassNotFoundException, TouchUIDialogGenerationException {
+	}
 
-        List<CtMember> fieldsAndMethods = new ArrayList<CtMember>();
+	private List<TouchUIDialogElement> buildLayoutItems(DialogFieldSet dialogFieldSetAnnotation)
+		throws NotFoundException, InvalidComponentFieldException, ClassNotFoundException,
+		TouchUIDialogGenerationException {
 
-        fieldsAndMethods.addAll(ComponentMojoUtil.collectFields(getCtType()));
-        fieldsAndMethods.addAll(ComponentMojoUtil.collectMethods(getCtType()));
+		List<CtMember> fieldsAndMethods = new ArrayList<CtMember>();
 
-        List<TouchUIDialogElement> elements = new ArrayList<TouchUIDialogElement>();
+		fieldsAndMethods.addAll(ComponentMojoUtil.collectFields(getCtType()));
+		fieldsAndMethods.addAll(ComponentMojoUtil.collectMethods(getCtType()));
 
-        for (CtMember member : fieldsAndMethods) {
-            if (!member.hasAnnotation(IgnoreDialogField.class)) {
+		List<TouchUIDialogElement> elements = new ArrayList<TouchUIDialogElement>();
 
-                DialogFieldConfig dialogFieldConfig = null;
-                if (member instanceof CtMethod) {
-                    try {
-                        dialogFieldConfig = DialogUtil.getDialogFieldFromSuperClasses((CtMethod) member);
-                    } catch (InvalidComponentClassException e) {
-                        throw new InvalidComponentFieldException(e.getMessage(), e);
-                    }
-                } else {
-                    if (member.hasAnnotation(DialogField.class)) {
-                        dialogFieldConfig = new DialogFieldConfig(
-                                (DialogField) member.getAnnotation(DialogField.class), member);
-                    }
-                }
+		for (CtMember member : fieldsAndMethods) {
+			if (!member.hasAnnotation(IgnoreDialogField.class)) {
 
-                if (dialogFieldConfig != null && !dialogFieldConfig.isSuppressTouchUI()) {
-                    Class<?> fieldClass = parameters.getClassLoader().loadClass(member.getDeclaringClass().getName());
+				DialogFieldConfig dialogFieldConfig = null;
+				if (member instanceof CtMethod) {
+					try {
+						dialogFieldConfig = DialogUtil.getDialogFieldFromSuperClasses((CtMethod) member);
+					} catch (InvalidComponentClassException e) {
+						throw new InvalidComponentFieldException(e.getMessage(), e);
+					}
+				} else {
+					if (member.hasAnnotation(DialogField.class)) {
+						dialogFieldConfig =
+							new DialogFieldConfig((DialogField) member.getAnnotation(DialogField.class), member);
+					}
+				}
 
-                    double ranking = dialogFieldConfig.getRanking();
+				if (dialogFieldConfig != null && !dialogFieldConfig.isSuppressTouchUI()) {
+					Class<?> fieldClass = parameters.getClassLoader().loadClass(member.getDeclaringClass().getName());
 
-                    TouchUIWidgetMakerParameters curFieldMember = new TouchUIWidgetMakerParameters();
-                    curFieldMember.setDialogFieldConfig(dialogFieldConfig);
-                    curFieldMember.setContainingClass(fieldClass);
-                    curFieldMember.setClassLoader(parameters.getClassLoader());
-                    curFieldMember.setClassPool(parameters.getClassPool());
-                    curFieldMember.setWidgetRegistry(parameters.getWidgetRegistry());
-                    curFieldMember.setUseDotSlashInName(true);
+					double ranking = dialogFieldConfig.getRanking();
 
-                    TouchUIDialogElement currentDialogElement = TouchUIWidgetFactory.make(curFieldMember, -1);
+					TouchUIWidgetMakerParameters curFieldMember = new TouchUIWidgetMakerParameters();
+					curFieldMember.setDialogFieldConfig(dialogFieldConfig);
+					curFieldMember.setContainingClass(fieldClass);
+					curFieldMember.setClassLoader(parameters.getClassLoader());
+					curFieldMember.setClassPool(parameters.getClassPool());
+					curFieldMember.setWidgetRegistry(parameters.getWidgetRegistry());
+					curFieldMember.setUseDotSlashInName(true);
 
-                    if (    currentDialogElement instanceof AbstractTouchUIWidget &&
-                            StringUtils.isNotBlank(dialogFieldSetAnnotation.namePrefix())) {
+					TouchUIDialogElement currentDialogElement = TouchUIWidgetFactory.make(curFieldMember, -1);
 
-                        AbstractTouchUIWidget widget = (AbstractTouchUIWidget) currentDialogElement;
-                        String name = widget.getName();
-                        String newName;
-                        if (name.startsWith("./")) {
-                            newName = name.substring(2);
-                        } else {
-                            newName = name;
-                        }
-                        newName = dialogFieldSetAnnotation.namePrefix() + newName;
-                        if (name.startsWith("./")) {
-                            newName = "./" + newName;
-                        }
-                        widget.setName(newName);
-                    }
+					if (currentDialogElement instanceof AbstractTouchUIWidget
+						&& StringUtils.isNotBlank(dialogFieldSetAnnotation.namePrefix())) {
 
-                    currentDialogElement.setRanking(ranking);
-                    elements.add(currentDialogElement);
-                }
-            }
-        }
+						AbstractTouchUIWidget widget = (AbstractTouchUIWidget) currentDialogElement;
+						String name = widget.getName();
+						String newName;
+						if (name.startsWith("./")) {
+							newName = name.substring(2);
+						} else {
+							newName = name;
+						}
+						newName = dialogFieldSetAnnotation.namePrefix() + newName;
+						if (name.startsWith("./")) {
+							newName = "./" + newName;
+						}
+						widget.setName(newName);
+					}
 
-        Collections.sort(elements, new TouchUIDialogElementComparator());
+					currentDialogElement.setRanking(ranking);
+					elements.add(currentDialogElement);
+				}
+			}
+		}
 
-        return elements;
-    }
+		Collections.sort(elements, new TouchUIDialogElementComparator());
+
+		return elements;
+	}
 
 }

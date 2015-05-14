@@ -139,17 +139,10 @@ public class DialogUtil {
 	 * @throws NoSuchMethodException
 	 * @throws InstantiationException
 	 */
-	public static List<Dialog> buildDialogsFromClassList(
-            ComponentNameTransformer transformer,
-            List<CtClass> classList,
-		    ZipArchiveOutputStream zipOutputStream,
-            Set<String> reservedNames,
-            WidgetRegistry widgetRegistry,
-		    ClassLoader classLoader,
-            ClassPool classPool,
-            File buildDirectory,
-            String componentPathBase,
-		    String defaultComponentPathSuffix) throws InvalidComponentClassException, InvalidComponentFieldException,
+	public static List<Dialog> buildDialogsFromClassList(ComponentNameTransformer transformer, List<CtClass> classList,
+		ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames, WidgetRegistry widgetRegistry,
+		ClassLoader classLoader, ClassPool classPool, File buildDirectory, String componentPathBase,
+		String defaultComponentPathSuffix) throws InvalidComponentClassException, InvalidComponentFieldException,
 		OutputFailureException, IOException, ParserConfigurationException, TransformerException,
 		ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException,
 		IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException,
@@ -160,45 +153,45 @@ public class DialogUtil {
 		for (CtClass curClass : classList) {
 			ComponentMojoUtil.getLog().debug("Checking class for Component annotation " + curClass);
 
-            Component componentAnnotation = (Component) curClass.getAnnotation(Component.class);
+			Component componentAnnotation = (Component) curClass.getAnnotation(Component.class);
 
-            //If the ExtJS dialog was explicitly suppressed for this Component, skip it
-            if (!componentAnnotation.suppressExtJSDialog()) {
+			// If the ExtJS dialog was explicitly suppressed for this Component,
+			// skip it
 
-                boolean hasDialogFieldOrCQIncludeTab = false;
-                for (CtField curField : ComponentMojoUtil.collectFields(curClass)) {
-                    if (curField.hasAnnotation(DialogField.class)) {
-                        hasDialogFieldOrCQIncludeTab = true;
-                        break;
-                    }
-                }
-                if (!hasDialogFieldOrCQIncludeTab) {
-                    for (CtMethod curMethod : ComponentMojoUtil.collectMethods(curClass)) {
-                        if (curMethod.hasAnnotation(DialogField.class)) {
-                            hasDialogFieldOrCQIncludeTab = true;
-                            break;
-                        }
-                    }
-                }
-                if (!hasDialogFieldOrCQIncludeTab) {
-                    for (Tab tab : componentAnnotation.tabs()) {
-                        if (StringUtils.isNotEmpty(tab.path())) {
-                            hasDialogFieldOrCQIncludeTab = true;
-                            break;
-                        }
-                    }
-                }
-                if (hasDialogFieldOrCQIncludeTab) {
-                    ComponentMojoUtil.getLog().debug("Processing Component Class " + curClass);
-                    Dialog builtDialog = DialogFactory.make(curClass, widgetRegistry, classLoader, classPool);
-                    dialogList.add(builtDialog);
-                    File dialogFile = writeDialogToFile(transformer, builtDialog, curClass, buildDirectory,
-                            componentPathBase, defaultComponentPathSuffix);
-                    writeDialogToArchiveFile(transformer, dialogFile, curClass, zipOutputStream, reservedNames,
-                            componentPathBase, defaultComponentPathSuffix);
-                }
+			boolean hasDialogFieldOrCQIncludeTab = false;
+			for (CtField curField : ComponentMojoUtil.collectFields(curClass)) {
+				if (curField.hasAnnotation(DialogField.class)) {
+					hasDialogFieldOrCQIncludeTab = true;
+					break;
+				}
+			}
+			if (!hasDialogFieldOrCQIncludeTab) {
+				for (CtMethod curMethod : ComponentMojoUtil.collectMethods(curClass)) {
+					if (curMethod.hasAnnotation(DialogField.class)) {
+						hasDialogFieldOrCQIncludeTab = true;
+						break;
+					}
+				}
+			}
+			if (!hasDialogFieldOrCQIncludeTab) {
+				for (Tab tab : componentAnnotation.tabs()) {
+					if (StringUtils.isNotEmpty(tab.path())) {
+						hasDialogFieldOrCQIncludeTab = true;
+						break;
+					}
+				}
+			}
+			if (hasDialogFieldOrCQIncludeTab) {
+				ComponentMojoUtil.getLog().debug("Processing Component Class " + curClass);
+				Dialog builtDialog = DialogFactory.make(curClass, widgetRegistry, classLoader, classPool);
+				dialogList.add(builtDialog);
+				File dialogFile =
+					writeDialogToFile(transformer, builtDialog, curClass, buildDirectory, componentPathBase,
+						defaultComponentPathSuffix);
+				writeDialogToArchiveFile(transformer, dialogFile, curClass, zipOutputStream, reservedNames,
+					componentPathBase, defaultComponentPathSuffix);
+			}
 
-            }
 		}
 
 		return dialogList;
@@ -248,15 +241,16 @@ public class DialogUtil {
 		Collections.reverse(classes);
 		CtMember interfaceMember = getMemberForAnnotatedInterfaceMethod(method);
 		if (interfaceMember != null) {
-			dialogFieldConfig = new DialogFieldConfig((DialogField) interfaceMember.getAnnotation(DialogField.class),
-				interfaceMember);
+			dialogFieldConfig =
+				new DialogFieldConfig((DialogField) interfaceMember.getAnnotation(DialogField.class), interfaceMember);
 		}
 		for (CtClass ctclass : classes) {
 			try {
 				CtMethod superClassMethod = ctclass.getDeclaredMethod(method.getName(), method.getParameterTypes());
 				if (superClassMethod.hasAnnotation(DialogField.class)) {
-					dialogFieldConfig = new DialogFieldConfig(
-						(DialogField) superClassMethod.getAnnotation(DialogField.class), superClassMethod);
+					dialogFieldConfig =
+						new DialogFieldConfig((DialogField) superClassMethod.getAnnotation(DialogField.class),
+							superClassMethod);
 				} else if (superClassMethod.hasAnnotation(DialogFieldOverride.class)) {
 					mergeDialogFields(dialogFieldConfig, superClassMethod);
 				}
@@ -325,8 +319,6 @@ public class DialogUtil {
 			if (StringUtils.isNotBlank(dialogField.cssClass())) {
 				dialogFieldConfig.setCssClass(dialogField.cssClass());
 			}
-
-			dialogFieldConfig.setSuppressClassicUI(dialogField.suppressClassicUI());
 
 			dialogFieldConfig.setSuppressTouchUI(dialogField.suppressTouchUI());
 		}

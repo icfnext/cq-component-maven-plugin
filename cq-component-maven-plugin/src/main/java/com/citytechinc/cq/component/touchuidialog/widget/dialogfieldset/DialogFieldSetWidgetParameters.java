@@ -15,76 +15,86 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.dialogfieldset;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.container.items.Items;
 import com.citytechinc.cq.component.touchuidialog.container.items.ItemsParameters;
 import com.citytechinc.cq.component.touchuidialog.widget.TouchUIWidgetParameters;
 import com.citytechinc.cq.component.xml.XmlElement;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class DialogFieldSetWidgetParameters extends TouchUIWidgetParameters {
 
-    protected List<TouchUIDialogElement> items;
+	protected List<TouchUIDialogElement> items;
 
-    protected String text;
+	protected String text;
 
-    public String getText() {
-        return text;
-    }
+	public String getText() {
+		return text;
+	}
 
-    public void setText(String text) {
-        this.text = text;
-    }
+	public void setText(String text) {
+		this.text = text;
+	}
 
-    public void addItem(TouchUIDialogElement item) {
-        if (items == null) {
-            items = new ArrayList<TouchUIDialogElement>();
-        }
+	public void addItem(TouchUIDialogElement item) {
+		if (items == null) {
+			items = new ArrayList<TouchUIDialogElement>();
+		}
 
-        items.add(item);
-    }
+		items.add(item);
+	}
 
-    public List<TouchUIDialogElement> getItems() {
-        return items;
-    }
+	public List<TouchUIDialogElement> getItems() {
+		return items;
+	}
 
-    public void setItems(List<TouchUIDialogElement> items) {
-        this.items = items;
-    }
+	public void setItems(List<TouchUIDialogElement> items) {
+		this.items = items;
+	}
 
-    public Items getItemsElement() {
-        ItemsParameters itemsParameters = new ItemsParameters();
+	public Items getItemsElement() {
+		ItemsParameters itemsParameters = new ItemsParameters();
 
-        itemsParameters.setFieldName("items");
+		itemsParameters.setFieldName("items");
 
-        List<XmlElement> elements = new ArrayList<XmlElement>();
+		List<XmlElement> elements = new ArrayList<XmlElement>();
 
-        if (!getItems().isEmpty()) {
-            elements.addAll(getItems());
-            itemsParameters.setContainedElements(elements);
-            return new Items(itemsParameters);
-        }
+		if (!getItems().isEmpty()) {
+			elements.addAll(getItems());
+			itemsParameters.setContainedElements(elements);
+			return new Items(itemsParameters);
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    @Override
-    public List<? extends XmlElement> getContainedElements() {
-        List<XmlElement> allContainedElements = new ArrayList<XmlElement>();
+	@Override
+	public List<? extends XmlElement> getContainedElements() {
+		List<XmlElement> allContainedElements = new ArrayList<XmlElement>();
 
-        Items items = getItemsElement();
+		Items items = getItemsElement();
 
-        if (items != null) {
-            allContainedElements.add(items);
-        }
+		if (items != null) {
+			allContainedElements.add(items);
+		}
 
-        if (containedElements != null) {
-            allContainedElements.addAll(containedElements);
-        }
+		if (containedElements != null) {
+			allContainedElements.addAll(containedElements);
+		}
 
-        return allContainedElements;
-    }
+		return allContainedElements;
+	}
+
+	@Override
+	public String getResourceType() {
+		return DialogFieldSetWidget.RESOURCE_TYPE;
+	}
+
+	@Override
+	public void setResourceType(String resourceType) {
+		throw new UnsupportedOperationException("resourceType is Static for DialogFieldSetWidget");
+	}
 
 }

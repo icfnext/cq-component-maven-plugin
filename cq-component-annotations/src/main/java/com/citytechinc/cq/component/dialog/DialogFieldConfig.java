@@ -23,7 +23,7 @@ import com.citytechinc.cq.component.annotations.Listener;
 
 public class DialogFieldConfig {
 	private String xtype;
-    private String resourceType;
+	private String resourceType;
 	private String name;
 	private String fieldLabel;
 	private String fieldName;
@@ -36,16 +36,15 @@ public class DialogFieldConfig {
 	private Listener[] listeners;
 	private double ranking;
 	private CtMember member;
-    private String value;
+	private String value;
 	private String title;
-    private boolean disabled;
-    private String cssClass;
-	private boolean suppressClassicUI;
+	private boolean disabled;
+	private String cssClass;
 	private boolean suppressTouchUI;
 
 	public DialogFieldConfig(DialogField dialogField, CtMember member) {
 		this.xtype = dialogField.xtype();
-        this.resourceType = dialogField.resourceType();
+		this.resourceType = dialogField.resourceType();
 		this.name = dialogField.name();
 		this.fieldLabel = dialogField.fieldLabel();
 		this.fieldName = dialogField.fieldName();
@@ -58,11 +57,10 @@ public class DialogFieldConfig {
 		this.listeners = dialogField.listeners();
 		this.ranking = dialogField.ranking();
 		this.member = member;
-        this.value = dialogField.value();
+		this.value = dialogField.value();
 		this.title = dialogField.title();
-        this.disabled = dialogField.disabled();
-        this.cssClass = dialogField.cssClass();
-		this.suppressClassicUI = dialogField.suppressClassicUI();
+		this.disabled = dialogField.disabled();
+		this.cssClass = dialogField.cssClass();
 		this.suppressTouchUI = dialogField.suppressTouchUI();
 	}
 
@@ -170,17 +168,17 @@ public class DialogFieldConfig {
 		this.member = member;
 	}
 
-    public String getResourceType() {
-        return resourceType;
-    }
+	public String getResourceType() {
+		return resourceType;
+	}
 
-    public String getValue() {
-        return value;
-    }
+	public String getValue() {
+		return value;
+	}
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+	public void setValue(String value) {
+		this.value = value;
+	}
 
 	public String getTitle() {
 		return title;
@@ -191,27 +189,19 @@ public class DialogFieldConfig {
 	}
 
 	public boolean isDisabled() {
-        return disabled;
-    }
-
-    public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
-    }
-
-    public String getCssClass() {
-        return cssClass;
-    }
-
-    public void setCssClass(String cssClass) {
-        this.cssClass = cssClass;
-    }
-
-	public boolean isSuppressClassicUI() {
-		return suppressClassicUI;
+		return disabled;
 	}
 
-	public void setSuppressClassicUI(boolean suppressClassicUI) {
-		this.suppressClassicUI = suppressClassicUI;
+	public void setDisabled(boolean disabled) {
+		this.disabled = disabled;
+	}
+
+	public String getCssClass() {
+		return cssClass;
+	}
+
+	public void setCssClass(String cssClass) {
+		this.cssClass = cssClass;
 	}
 
 	public boolean isSuppressTouchUI() {

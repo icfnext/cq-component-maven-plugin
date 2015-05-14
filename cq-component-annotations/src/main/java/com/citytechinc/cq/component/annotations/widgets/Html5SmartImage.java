@@ -23,8 +23,8 @@ import java.lang.annotation.Target;
 /**
  * Represents a Widget of type CQ.html5.form.SmartImage in Classic UI
  *
- * The Smart Image is not supported in Touch UI and will render as a granite/ui/components/foundation/form/fileupload
- * Widget
+ * The Smart Image is not supported in Touch UI and will render as a
+ * granite/ui/components/foundation/form/fileupload Widget
  */
 @Retention(RetentionPolicy.CLASS)
 @Target({ ElementType.FIELD, ElementType.METHOD })
@@ -220,9 +220,9 @@ public @interface Html5SmartImage {
 	/**
 	 * Used for Touch UI only
 	 *
-	 * The list of mime types allowed for upload.  This must be defined uniquely for
-	 * Touch UI as the ExtJS allows different extension and wild card semantics than
-	 * the Touch UI variant.
+	 * The list of mime types allowed for upload. This must be defined uniquely
+	 * for Touch UI as the ExtJS allows different extension and wild card
+	 * semantics than the Touch UI variant.
 	 *
 	 * @return String[]
 	 */
@@ -240,8 +240,9 @@ public @interface Html5SmartImage {
 	/**
 	 * Used for Touch UI Only
 	 *
-	 * URL where to upload the file, you can use <code>${suffix.path}</code>.  Upload semantics are different
-	 * between the legacy ExtJS API and the new Touch UI API.
+	 * URL where to upload the file, you can use <code>${suffix.path}</code>.
+	 * Upload semantics are different between the legacy ExtJS API and the new
+	 * Touch UI API.
 	 *
 	 * @return String
 	 */
@@ -259,7 +260,8 @@ public @interface Html5SmartImage {
 	/**
 	 * Used for Touch UI Only
 	 *
-	 * If <code>true</code>, upload starts automatically once the file is selected
+	 * If <code>true</code>, upload starts automatically once the file is
+	 * selected
 	 *
 	 * @return boolean
 	 */
@@ -277,7 +279,8 @@ public @interface Html5SmartImage {
 	/**
 	 * Used for Touch UI Only
 	 *
-	 * Drop zone selector to upload files from file system directly (if browser allows it)
+	 * Drop zone selector to upload files from file system directly (if browser
+	 * allows it)
 	 *
 	 * @return String
 	 */

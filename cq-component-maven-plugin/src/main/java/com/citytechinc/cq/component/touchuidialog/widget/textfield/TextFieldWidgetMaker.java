@@ -22,29 +22,29 @@ import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMake
 
 public class TextFieldWidgetMaker extends AbstractTouchUIWidgetMaker {
 
-    public TextFieldWidgetMaker(TouchUIWidgetMakerParameters parameters) {
-        super(parameters);
-    }
+	public TextFieldWidgetMaker(TouchUIWidgetMakerParameters parameters) {
+		super(parameters);
+	}
 
-    @Override
-    public TouchUIDialogElement make() {
+	@Override
+	public TouchUIDialogElement make() {
 
-        TouchUIWidgetParameters widgetParameters = new TouchUIWidgetParameters();
+		TouchUIWidgetParameters widgetParameters = new TouchUIWidgetParameters();
 
-        widgetParameters.setFieldName(getFieldNameForField());
-        widgetParameters.setName(getNameForField());
-        widgetParameters.setFieldLabel(getFieldLabelForField());
-        widgetParameters.setFieldDescription(getFieldDescriptionForField());
-        widgetParameters.setRequired(getRequiredForField());
-        widgetParameters.setDefaultValue(getDefaultValueForField());
-        widgetParameters.setResourceType(TextFieldWidget.RESOURCE_TYPE);
-        widgetParameters.setValue(getValueForField());
-        widgetParameters.setTitle(getTitleForField());
-        widgetParameters.setDisabled(getDisabledForField());
-        widgetParameters.setCssClass(getCssClassForField());
+		widgetParameters.setFieldName(getFieldNameForField());
+		widgetParameters.setName(getNameForField());
+		widgetParameters.setFieldLabel(getFieldLabelForField());
+		widgetParameters.setFieldDescription(getFieldDescriptionForField());
+		widgetParameters.setRequired(getRequiredForField());
+		widgetParameters.setDefaultValue(getDefaultValueForField());
+		widgetParameters.setResourceType(TextFieldWidget.RESOURCE_TYPE);
+		widgetParameters.setValue(getValueForField());
+		widgetParameters.setTitle(getTitleForField());
+		widgetParameters.setDisabled(getDisabledForField());
+		widgetParameters.setCssClass(getCssClassForField());
 
-        return new TextFieldWidget(widgetParameters);
+		return new TextFieldWidget(widgetParameters);
 
-    }
+	}
 
 }

@@ -34,8 +34,9 @@ import com.citytechinc.cq.component.annotations.Option;
  *
  * Represents a Widget of type CQ.form.Selection in Classic UI
  *
- * Represents a Widget of type granite/ui/components/foundation/form/select when using the select type and
- * granite/ui/components/foundation/form/radiogroup when using the radio type in Touch UI
+ * Represents a Widget of type granite/ui/components/foundation/form/select when
+ * using the select type and granite/ui/components/foundation/form/radiogroup
+ * when using the radio type in Touch UI
  *
  * Checkbox and combobox are not currently supported in Touch UI rendering
  *
@@ -113,8 +114,11 @@ public @interface Selection {
 	/**
 	 * Used for Touch UI only
 	 *
-	 * Indicates the sling:resourceType of the data source provider.  For more information
-	 * on DataSources, see <a href="http://docs.adobe.com/docs/en/cq/current/touch-ui/granite-reference.html#Datasource">http://docs.adobe.com/docs/en/cq/current/touch-ui/granite-reference.html#Datasource</a>
+	 * Indicates the sling:resourceType of the data source provider. For more
+	 * information on DataSources, see <a href=
+	 * "http://docs.adobe.com/docs/en/cq/current/touch-ui/granite-reference.html#Datasource"
+	 * >http://docs.adobe.com/docs/en/cq/current/touch-ui/granite-reference.html
+	 * #Datasource</a>
 	 *
 	 * @return String
 	 */

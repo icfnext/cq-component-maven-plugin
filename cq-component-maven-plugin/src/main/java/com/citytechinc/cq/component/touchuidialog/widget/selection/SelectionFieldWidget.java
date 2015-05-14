@@ -19,13 +19,14 @@ import com.citytechinc.cq.component.annotations.config.TouchUIWidget;
 import com.citytechinc.cq.component.annotations.widgets.Selection;
 import com.citytechinc.cq.component.touchuidialog.widget.AbstractTouchUIWidget;
 
-@TouchUIWidget(annotationClass = Selection.class, makerClass = SelectionFieldWidgetMaker.class, resourceType = SelectionFieldWidget.RESOURCE_TYPE)
+@TouchUIWidget(annotationClass = Selection.class, makerClass = SelectionFieldWidgetMaker.class,
+	resourceType = SelectionFieldWidget.RESOURCE_TYPE)
 public class SelectionFieldWidget extends AbstractTouchUIWidget {
 
-    public static final String RESOURCE_TYPE = "granite/ui/components/foundation/form/select";
+	public static final String RESOURCE_TYPE = "granite/ui/components/foundation/form/select";
 
-    public SelectionFieldWidget(SelectionFieldWidgetParameters parameters) {
-        super(parameters);
-    }
+	public SelectionFieldWidget(SelectionFieldWidgetParameters parameters) {
+		super(parameters);
+	}
 
 }

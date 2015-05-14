@@ -19,7 +19,7 @@ import com.citytechinc.cq.component.touchuidialog.AbstractTouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElementParameters;
 
 public class AutoCompleteValues extends AbstractTouchUIDialogElement {
-    public AutoCompleteValues(TouchUIDialogElementParameters parameters) {
-        super(parameters);
-    }
+	public AutoCompleteValues(TouchUIDialogElementParameters parameters) {
+		super(parameters);
+	}
 }

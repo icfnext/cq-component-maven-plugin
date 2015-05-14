@@ -15,41 +15,46 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.registry;
 
-import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
-import com.citytechinc.cq.component.util.TouchUIWidgetConfigHolder;
-import javassist.ClassPool;
-import javassist.NotFoundException;
-import org.reflections.Reflections;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javassist.ClassPool;
+import javassist.NotFoundException;
+
+import org.reflections.Reflections;
+
+import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
+import com.citytechinc.cq.component.util.TouchUIWidgetConfigHolder;
+
 public class DefaultTouchUIWidgetRegistry implements TouchUIWidgetRegistry {
 
-    private final Map<Class<?>, TouchUIWidgetConfigHolder> annotationToWidgetConfigMap;
+	private final Map<Class<?>, TouchUIWidgetConfigHolder> annotationToWidgetConfigMap;
 
-    public DefaultTouchUIWidgetRegistry(ClassPool classPool, ClassLoader classLoader, Reflections reflections) throws NotFoundException, ClassNotFoundException {
-        annotationToWidgetConfigMap = new HashMap<Class<?>, TouchUIWidgetConfigHolder>();
+	public DefaultTouchUIWidgetRegistry(ClassPool classPool, ClassLoader classLoader, Reflections reflections)
+		throws NotFoundException, ClassNotFoundException {
+		annotationToWidgetConfigMap = new HashMap<Class<?>, TouchUIWidgetConfigHolder>();
 
-        List<TouchUIWidgetConfigHolder> widgetConfigurations = ComponentMojoUtil.getAllTouchUIWidgetAnnotations(classPool, classLoader, reflections);
+		List<TouchUIWidgetConfigHolder> widgetConfigurations =
+			ComponentMojoUtil.getAllTouchUIWidgetAnnotations(classPool, classLoader, reflections);
 
-        for (TouchUIWidgetConfigHolder currentWidgetConfiguration : widgetConfigurations) {
-            if (currentWidgetConfiguration.getAnnotationClass() != null) {
-                annotationToWidgetConfigMap.put(currentWidgetConfiguration.getAnnotationClass(), currentWidgetConfiguration);
-            }
-        }
-    }
+		for (TouchUIWidgetConfigHolder currentWidgetConfiguration : widgetConfigurations) {
+			if (currentWidgetConfiguration.getAnnotationClass() != null) {
+				annotationToWidgetConfigMap.put(currentWidgetConfiguration.getAnnotationClass(),
+					currentWidgetConfiguration);
+			}
+		}
+	}
 
-    @Override
-    public TouchUIWidgetConfigHolder getWidgetForAnnotation(Class<?> annotation) {
-        return annotationToWidgetConfigMap.get(annotation);
-    }
+	@Override
+	public TouchUIWidgetConfigHolder getWidgetForAnnotation(Class<?> annotation) {
+		return annotationToWidgetConfigMap.get(annotation);
+	}
 
-    @Override
-    public Set<Class<?>> getRegisteredAnnotations() {
-        return annotationToWidgetConfigMap.keySet();
-    }
+	@Override
+	public Set<Class<?>> getRegisteredAnnotations() {
+		return annotationToWidgetConfigMap.keySet();
+	}
 
 }

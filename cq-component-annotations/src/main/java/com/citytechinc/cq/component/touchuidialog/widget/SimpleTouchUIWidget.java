@@ -17,8 +17,8 @@ package com.citytechinc.cq.component.touchuidialog.widget;
 
 public class SimpleTouchUIWidget extends AbstractTouchUIWidget {
 
-    public SimpleTouchUIWidget(TouchUIWidgetParameters parameters) {
-        super(parameters);
-    }
+	public SimpleTouchUIWidget(TouchUIWidgetParameters parameters) {
+		super(parameters);
+	}
 
 }

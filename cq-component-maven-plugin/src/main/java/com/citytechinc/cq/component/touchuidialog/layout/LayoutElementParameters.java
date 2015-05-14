@@ -19,24 +19,24 @@ import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElementParameters
 
 public class LayoutElementParameters extends TouchUIDialogElementParameters {
 
-    @Override
-    public String getFieldName() {
-        return AbstractLayoutElement.ELEMENT_NAME;
-    }
+	@Override
+	public String getFieldName() {
+		return AbstractLayoutElement.ELEMENT_NAME;
+	}
 
-    @Override
-    public void setFieldName(String fieldName) {
-        throw new UnsupportedOperationException("field name is Static for Layout Element");
-    }
+	@Override
+	public void setFieldName(String fieldName) {
+		throw new UnsupportedOperationException("field name is Static for Layout Element");
+	}
 
-    @Override
-    public String getPrimaryType() {
-        return AbstractLayoutElement.PRIMARY_TYPE;
-    }
+	@Override
+	public String getPrimaryType() {
+		return AbstractLayoutElement.PRIMARY_TYPE;
+	}
 
-    @Override
-    public void setPrimaryType(String fieldName) {
-        throw new UnsupportedOperationException("primary type is Static for Layout Element");
-    }
+	@Override
+	public void setPrimaryType(String fieldName) {
+		throw new UnsupportedOperationException("primary type is Static for Layout Element");
+	}
 
 }

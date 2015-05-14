@@ -15,6 +15,9 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.taginputfield;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.citytechinc.cq.component.annotations.TagNameSpace;
 import com.citytechinc.cq.component.annotations.widgets.TagInputField;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
@@ -29,70 +32,67 @@ import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMake
 import com.citytechinc.cq.component.touchuidialog.widget.taginputfield.datasource.TagsDataSource;
 import com.citytechinc.cq.component.touchuidialog.widget.taginputfield.datasource.TagsDataSourceParameters;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class TagInputFieldWidgetMaker extends AutoCompleteWidgetMaker {
 
-    private TagInputField fieldAnnotation;
+	private TagInputField fieldAnnotation;
 
-    public TagInputFieldWidgetMaker(TouchUIWidgetMakerParameters parameters) {
-        super(parameters);
-    }
+	public TagInputFieldWidgetMaker(TouchUIWidgetMakerParameters parameters) {
+		super(parameters);
+	}
 
-    public TouchUIDialogElement make() throws ClassNotFoundException, InvalidComponentFieldException, TouchUIDialogGenerationException {
-        fieldAnnotation = getAnnotation(TagInputField.class);
-        return super.make();
-    }
+	public TouchUIDialogElement make() throws ClassNotFoundException, InvalidComponentFieldException,
+		TouchUIDialogGenerationException {
+		fieldAnnotation = getAnnotation(TagInputField.class);
+		return super.make();
+	}
 
-    @Override
-    protected DataSource makeDataSource() {
-        TagsDataSourceParameters dataSourceParameters = new TagsDataSourceParameters();
+	@Override
+	protected DataSource makeDataSource() {
+		TagsDataSourceParameters dataSourceParameters = new TagsDataSourceParameters();
 
-        dataSourceParameters.setResourceType(TagsDataSource.RESOURCE_TYPE);
+		dataSourceParameters.setResourceType(TagsDataSource.RESOURCE_TYPE);
 
-        List<String> namespaces = new ArrayList<String>();
+		List<String> namespaces = new ArrayList<String>();
 
-        for (TagNameSpace currentNamespace : fieldAnnotation.namespaces()) {
-            namespaces.add(currentNamespace.value());
-        }
+		for (TagNameSpace currentNamespace : fieldAnnotation.namespaces()) {
+			namespaces.add(currentNamespace.value());
+		}
 
-        dataSourceParameters.setNamespaces(namespaces);
+		dataSourceParameters.setNamespaces(namespaces);
 
-        return new TagsDataSource(dataSourceParameters);
-    }
+		return new TagsDataSource(dataSourceParameters);
+	}
 
-    @Override
-    protected AutoCompleteOptions makeOptions() {
-        TouchUIDialogElementParameters optionsParameters = new TouchUIDialogElementParameters();
+	@Override
+	protected AutoCompleteOptions makeOptions() {
+		TouchUIDialogElementParameters optionsParameters = new TouchUIDialogElementParameters();
 
-        optionsParameters.setResourceType(TagInputFieldWidget.OPTIONS_RESOURCE_TYPE);
-        optionsParameters.setFieldName(TagInputFieldWidget.OPTIONS_FIELD_NAME);
-        optionsParameters.setPrimaryType("nt:unstructured");
+		optionsParameters.setResourceType(TagInputFieldWidget.OPTIONS_RESOURCE_TYPE);
+		optionsParameters.setFieldName(TagInputFieldWidget.OPTIONS_FIELD_NAME);
+		optionsParameters.setPrimaryType("nt:unstructured");
 
-        return new AutoCompleteOptions(optionsParameters);
-    }
+		return new AutoCompleteOptions(optionsParameters);
+	}
 
-    @Override
-    protected AutoCompleteValues makeValues() {
-        TouchUIDialogElementParameters valuesParameters = new TouchUIDialogElementParameters();
+	@Override
+	protected AutoCompleteValues makeValues() {
+		TouchUIDialogElementParameters valuesParameters = new TouchUIDialogElementParameters();
 
-        valuesParameters.setResourceType(TagInputFieldWidget.VALUES_RESOURCE_TYPE);
-        valuesParameters.setFieldName(TagInputFieldWidget.VALUES_FIELD_NAME);
-        valuesParameters.setPrimaryType("nt:unstructured");
+		valuesParameters.setResourceType(TagInputFieldWidget.VALUES_RESOURCE_TYPE);
+		valuesParameters.setFieldName(TagInputFieldWidget.VALUES_FIELD_NAME);
+		valuesParameters.setPrimaryType("nt:unstructured");
 
-        return new AutoCompleteValues(valuesParameters);
-    }
+		return new AutoCompleteValues(valuesParameters);
+	}
 
+	@Override
+	protected boolean getMultipleForField() {
+		return fieldAnnotation.multiple();
+	}
 
-    @Override
-    protected boolean getMultipleForField() {
-        return fieldAnnotation.multiple();
-    }
-
-    @Override
-    protected String getModeForField() {
-        //TODO: Determine whether this should be dynamic at all
-        return "contains";
-    }
+	@Override
+	protected String getModeForField() {
+		// TODO: Determine whether this should be dynamic at all
+		return "contains";
+	}
 }

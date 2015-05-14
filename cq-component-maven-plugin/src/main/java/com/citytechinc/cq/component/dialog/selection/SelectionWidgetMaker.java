@@ -176,8 +176,9 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 
 		CtClass annotatedEnumClass = classPool.getCtClass(optionEnum.getDeclaringClass().getName());
 		CtMember annotatedEnumField = annotatedEnumClass.getField(optionEnum.name());
-		com.citytechinc.cq.component.annotations.Option optionAnnotation = (com.citytechinc.cq.component.annotations.Option) annotatedEnumField
-			.getAnnotation(com.citytechinc.cq.component.annotations.Option.class);
+		com.citytechinc.cq.component.annotations.Option optionAnnotation =
+			(com.citytechinc.cq.component.annotations.Option) annotatedEnumField
+				.getAnnotation(com.citytechinc.cq.component.annotations.Option.class);
 
 		if (optionAnnotation != null) {
 			if (StringUtils.isNotEmpty(optionAnnotation.text())) {

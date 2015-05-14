@@ -19,14 +19,14 @@ import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElementParameters
 
 public class ItemsParameters extends TouchUIDialogElementParameters {
 
-    @Override
-    public String getPrimaryType() {
-        return Items.PRIMARY_TYPE;
-    }
+	@Override
+	public String getPrimaryType() {
+		return Items.PRIMARY_TYPE;
+	}
 
-    @Override
-    public void setPrimaryType(String primaryType) {
-        throw new UnsupportedOperationException("primary type is Static for Items");
-    }
+	@Override
+	public void setPrimaryType(String primaryType) {
+		throw new UnsupportedOperationException("primary type is Static for Items");
+	}
 
 }

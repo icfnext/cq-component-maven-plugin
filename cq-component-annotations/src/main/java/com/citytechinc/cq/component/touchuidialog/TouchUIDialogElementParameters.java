@@ -19,14 +19,14 @@ import com.citytechinc.cq.component.xml.XmlElementParameters;
 
 public class TouchUIDialogElementParameters extends XmlElementParameters {
 
-    protected String resourceType;
+	protected String resourceType;
 
-    public String getResourceType() {
-        return resourceType;
-    }
+	public String getResourceType() {
+		return resourceType;
+	}
 
-    public void setResourceType(String resourceType) {
-        this.resourceType = resourceType;
-    }
+	public void setResourceType(String resourceType) {
+		this.resourceType = resourceType;
+	}
 
 }

@@ -23,7 +23,8 @@ import java.lang.annotation.Target;
 /**
  * Represents a Widget of type CQ.form.PathField in Classic UI
  *
- * Represents a Widget of type granite/ui/components/foundation/form/pathbrowser in Touch UI
+ * Represents a Widget of type granite/ui/components/foundation/form/pathbrowser
+ * in Touch UI
  */
 @Retention(RetentionPolicy.CLASS)
 @Target({ ElementType.FIELD, ElementType.METHOD })
@@ -95,11 +96,13 @@ public @interface PathField {
 	/**
 	 * Used for Touch UI only
 	 *
-	 * Javascript source code for an option loader callback function. Takes two arguments: (path, callback).
-	 * See the default option loader implementation for more details on how to use this. If not given, a
-	 * default option loader will be used that just returns paths from the current repository.
+	 * Javascript source code for an option loader callback function. Takes two
+	 * arguments: (path, callback). See the default option loader implementation
+	 * for more details on how to use this. If not given, a default option
+	 * loader will be used that just returns paths from the current repository.
 	 *
-	 * The default option loader can be found in /libs/granite/ui/components/foundation/form/pathbrowser/render.jsp
+	 * The default option loader can be found in
+	 * /libs/granite/ui/components/foundation/form/pathbrowser/render.jsp
 	 *
 	 * @return String
 	 */
@@ -108,8 +111,9 @@ public @interface PathField {
 	/**
 	 * Used for Touch UI only
 	 *
-	 * Javascript source code for callback function that gets an option value object as parameter and
-	 * should return a stringified value for this option.
+	 * Javascript source code for callback function that gets an option value
+	 * object as parameter and should return a stringified value for this
+	 * option.
 	 *
 	 * @return String
 	 */
@@ -118,8 +122,9 @@ public @interface PathField {
 	/**
 	 * Used for Touch UI only
 	 *
-	 * Javascript source code for callback function that gets an option value object as parameter and should
-	 * return a stringified title for this option.
+	 * Javascript source code for callback function that gets an option value
+	 * object as parameter and should return a stringified title for this
+	 * option.
 	 *
 	 * @return String
 	 */

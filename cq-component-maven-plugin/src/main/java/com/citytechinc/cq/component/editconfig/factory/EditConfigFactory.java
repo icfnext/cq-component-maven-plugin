@@ -56,8 +56,7 @@ public class EditConfigFactory {
 	private EditConfigFactory() {
 	}
 
-	public static EditConfig make(CtClass componentClass) throws InvalidComponentClassException,
-		ClassNotFoundException {
+	public static EditConfig make(CtClass componentClass) throws InvalidComponentClassException, ClassNotFoundException {
 
 		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
@@ -180,7 +179,7 @@ public class EditConfigFactory {
 	}
 
 	private static EditConfigInPlaceEditing getInPlaceEditingForEditConfig(Component componentAnnotation) {
-		if ( !StringUtils.isEmpty(componentAnnotation.inPlaceEditingConfigPath())
+		if (!StringUtils.isEmpty(componentAnnotation.inPlaceEditingConfigPath())
 			|| !StringUtils.isEmpty(componentAnnotation.inPlaceEditingEditorType())) {
 			EditConfigInPlaceEditingParameters parameters = new EditConfigInPlaceEditingParameters();
 			if (!StringUtils.isEmpty(componentAnnotation.inPlaceEditingConfigPath())) {

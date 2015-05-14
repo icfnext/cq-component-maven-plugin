@@ -19,13 +19,14 @@ import com.citytechinc.cq.component.annotations.config.TouchUIWidget;
 import com.citytechinc.cq.component.annotations.widgets.DateTime;
 import com.citytechinc.cq.component.touchuidialog.widget.datefield.DateFieldWidget;
 
-@TouchUIWidget(annotationClass = DateTime.class, makerClass = DateTimeWidgetMaker.class, resourceType = DateTimeWidget.RESOURCE_TYPE)
+@TouchUIWidget(annotationClass = DateTime.class, makerClass = DateTimeWidgetMaker.class,
+	resourceType = DateTimeWidget.RESOURCE_TYPE)
 public class DateTimeWidget extends DateFieldWidget {
 
-    public static final String RESOURCE_TYPE = DateFieldWidget.RESOURCE_TYPE;
+	public static final String RESOURCE_TYPE = DateFieldWidget.RESOURCE_TYPE;
 
-    public DateTimeWidget(DateTimeWidgetParameters parameters) {
-        super(parameters);
-    }
+	public DateTimeWidget(DateTimeWidgetParameters parameters) {
+		super(parameters);
+	}
 
 }

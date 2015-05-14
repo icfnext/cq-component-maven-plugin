@@ -19,20 +19,21 @@ import com.citytechinc.cq.component.annotations.config.TouchUIWidget;
 import com.citytechinc.cq.component.annotations.widgets.DialogFieldSet;
 import com.citytechinc.cq.component.touchuidialog.widget.AbstractTouchUIWidget;
 
-@TouchUIWidget(annotationClass = DialogFieldSet.class, makerClass = DialogFieldSetWidgetMaker.class, resourceType = DialogFieldSetWidget.RESOURCE_TYPE)
+@TouchUIWidget(annotationClass = DialogFieldSet.class, makerClass = DialogFieldSetWidgetMaker.class,
+	resourceType = DialogFieldSetWidget.RESOURCE_TYPE)
 public class DialogFieldSetWidget extends AbstractTouchUIWidget {
 
-    public static final String RESOURCE_TYPE = "granite/ui/components/foundation/form/fieldset";
+	public static final String RESOURCE_TYPE = "granite/ui/components/foundation/form/fieldset";
 
-    private final String text;
+	private final String text;
 
-    public DialogFieldSetWidget(DialogFieldSetWidgetParameters parameters) {
-        super(parameters);
+	public DialogFieldSetWidget(DialogFieldSetWidgetParameters parameters) {
+		super(parameters);
 
-        text = parameters.getText();
-    }
+		text = parameters.getText();
+	}
 
-    public String getText() {
-        return text;
-    }
+	public String getText() {
+		return text;
+	}
 }

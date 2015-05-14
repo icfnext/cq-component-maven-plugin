@@ -19,34 +19,35 @@ import com.citytechinc.cq.component.annotations.config.TouchUIWidget;
 import com.citytechinc.cq.component.annotations.widgets.CheckBox;
 import com.citytechinc.cq.component.touchuidialog.widget.AbstractTouchUIWidget;
 
-@TouchUIWidget(annotationClass = CheckBox.class, makerClass = CheckboxWidgetMaker.class, resourceType = CheckboxWidget.RESOURCE_TYPE)
+@TouchUIWidget(annotationClass = CheckBox.class, makerClass = CheckboxWidgetMaker.class,
+	resourceType = CheckboxWidget.RESOURCE_TYPE)
 public class CheckboxWidget extends AbstractTouchUIWidget {
 
-    public static final String RESOURCE_TYPE = "granite/ui/components/foundation/form/checkbox";
+	public static final String RESOURCE_TYPE = "granite/ui/components/foundation/form/checkbox";
 
-    private final String text;
-    private final String title;
-    private final boolean checked;
+	private final String text;
+	private final String title;
+	private final boolean checked;
 
-    public CheckboxWidget(CheckboxWidgetParameters parameters) {
-        super(parameters);
+	public CheckboxWidget(CheckboxWidgetParameters parameters) {
+		super(parameters);
 
-        text = parameters.getText();
-        title = parameters.getTitle();
-        checked = parameters.isChecked();
+		text = parameters.getText();
+		title = parameters.getTitle();
+		checked = parameters.isChecked();
 
-    }
+	}
 
-    public String getText() {
-        return text;
-    }
+	public String getText() {
+		return text;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public boolean isChecked() {
-        return checked;
-    }
+	public boolean isChecked() {
+		return checked;
+	}
 
 }

@@ -15,83 +15,84 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget;
 
-import com.citytechinc.cq.component.touchuidialog.AbstractTouchUIDialogElement;
-import org.codehaus.plexus.util.StringUtils;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import org.codehaus.plexus.util.StringUtils;
+
+import com.citytechinc.cq.component.touchuidialog.AbstractTouchUIDialogElement;
+
 public class AbstractTouchUIWidget extends AbstractTouchUIDialogElement {
 
-    private String name;
-    private final String title;
-    private final String fieldLabel;
-    private final String fieldDescription;
-    private final boolean required;
-    private final String value;
-    private final String defaultValue;
-    private final boolean disabled;
-    private final String cssClass;
+	private String name;
+	private final String title;
+	private final String fieldLabel;
+	private final String fieldDescription;
+	private final boolean required;
+	private final String value;
+	private final String defaultValue;
+	private final boolean disabled;
+	private final String cssClass;
 
-    public AbstractTouchUIWidget(TouchUIWidgetParameters parameters) {
-        super(parameters);
+	public AbstractTouchUIWidget(TouchUIWidgetParameters parameters) {
+		super(parameters);
 
-        this.name = parameters.getName();
-        this.title = parameters.getTitle();
-        this.fieldLabel = parameters.getFieldLabel();
-        this.fieldDescription = parameters.getFieldDescription();
-        this.required = parameters.isRequired();
-        this.value = parameters.getValue();
-        this.defaultValue = parameters.getDefaultValue();
-        this.disabled = parameters.isDisabled();
-        this.cssClass = parameters.getCssClass();
-    }
+		this.name = parameters.getName();
+		this.title = parameters.getTitle();
+		this.fieldLabel = parameters.getFieldLabel();
+		this.fieldDescription = parameters.getFieldDescription();
+		this.required = parameters.isRequired();
+		this.value = parameters.getValue();
+		this.defaultValue = parameters.getDefaultValue();
+		this.disabled = parameters.isDisabled();
+		this.cssClass = parameters.getCssClass();
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getFieldLabel() {
-        return fieldLabel;
-    }
+	public String getFieldLabel() {
+		return fieldLabel;
+	}
 
-    public String getFieldDescription() {
-        return fieldDescription;
-    }
+	public String getFieldDescription() {
+		return fieldDescription;
+	}
 
-    public boolean isRequired() {
-        return required;
-    }
+	public boolean isRequired() {
+		return required;
+	}
 
-    public String getValue() {
-        return value;
-    }
+	public String getValue() {
+		return value;
+	}
 
-    public String getDefaultValue() {
-        return defaultValue;
-    }
+	public String getDefaultValue() {
+		return defaultValue;
+	}
 
-    public boolean isDisabled() {
-        return disabled;
-    }
+	public boolean isDisabled() {
+		return disabled;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public Map<String, String> getCssClass() {
+	public Map<String, String> getCssClass() {
 
-        Map<String, String> retMap = new HashMap<String, String>();
+		Map<String, String> retMap = new HashMap<String, String>();
 
-        if (StringUtils.isNotBlank(cssClass)) {
-            retMap.put("class", cssClass);
-        }
+		if (StringUtils.isNotBlank(cssClass)) {
+			retMap.put("class", cssClass);
+		}
 
-        return retMap;
+		return retMap;
 
-    }
+	}
 }

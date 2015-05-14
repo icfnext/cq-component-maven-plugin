@@ -20,31 +20,32 @@ import com.citytechinc.cq.component.xml.NameSpacedAttribute;
 
 public class TouchUIDialog extends AbstractTouchUIDialogElement {
 
-    public static final String RESOURCE_TYPE = "cq/gui/components/authoring/dialog";
-    public static final String PRIMARY_TYPE = "nt:unstructured";
+	public static final String RESOURCE_TYPE = "cq/gui/components/authoring/dialog";
+	public static final String PRIMARY_TYPE = "nt:unstructured";
 
-    private String fileName;
-    private NameSpacedAttribute<String> title;
-    private String helpPath;
+	private String fileName;
+	private NameSpacedAttribute<String> title;
+	private String helpPath;
 
-    public TouchUIDialog(TouchUIDialogParameters parameters) {
-        super(parameters);
+	public TouchUIDialog(TouchUIDialogParameters parameters) {
+		super(parameters);
 
-        this.fileName = parameters.getFileName();
-        this.title = new NameSpacedAttribute<String>(Constants.JCR_NS_URI, Constants.JCR_NS_PREFIX, parameters.getTitle());
-        this.helpPath = parameters.getHelpPath();
-    }
+		this.fileName = parameters.getFileName();
+		this.title =
+			new NameSpacedAttribute<String>(Constants.JCR_NS_URI, Constants.JCR_NS_PREFIX, parameters.getTitle());
+		this.helpPath = parameters.getHelpPath();
+	}
 
-    public String getFileName() {
-        return fileName + ".xml";
-    }
+	public String getFileName() {
+		return fileName + ".xml";
+	}
 
-    public NameSpacedAttribute<String> getTitle() {
-        return title;
-    }
+	public NameSpacedAttribute<String> getTitle() {
+		return title;
+	}
 
-    public String getHelpPath() {
-        return helpPath;
-    }
+	public String getHelpPath() {
+		return helpPath;
+	}
 
 }

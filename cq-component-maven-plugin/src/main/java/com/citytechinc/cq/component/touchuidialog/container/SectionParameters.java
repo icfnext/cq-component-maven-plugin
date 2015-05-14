@@ -17,19 +17,19 @@ package com.citytechinc.cq.component.touchuidialog.container;
 
 public class SectionParameters extends ContainerParameters {
 
-    private String title;
+	private String title;
 
-    @Override
-    public String getResourceType() {
-        return Section.RESOURCE_TYPE;
-    }
+	@Override
+	public String getResourceType() {
+		return Section.RESOURCE_TYPE;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
 }

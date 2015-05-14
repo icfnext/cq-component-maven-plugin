@@ -92,21 +92,21 @@ public class LogSingleton {
 		}
 	}
 
-    public void warn(CharSequence content) {
-        if (logger != null) {
-            logger.warn(content);
-        }
-    }
+	public void warn(CharSequence content) {
+		if (logger != null) {
+			logger.warn(content);
+		}
+	}
 
-    public void warn(CharSequence content, Throwable error) {
-        if (logger != null) {
-            logger.warn(content, error);
-        }
-    }
+	public void warn(CharSequence content, Throwable error) {
+		if (logger != null) {
+			logger.warn(content, error);
+		}
+	}
 
-    public void warn(Throwable error) {
-        if (logger != null) {
-            logger.warn(error);
-        }
-    }
+	public void warn(Throwable error) {
+		if (logger != null) {
+			logger.warn(error);
+		}
+	}
 }

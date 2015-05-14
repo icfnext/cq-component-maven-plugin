@@ -20,11 +20,12 @@ import com.citytechinc.cq.component.annotations.widgets.RichTextEditor;
 import com.citytechinc.cq.component.touchuidialog.widget.textarea.TextAreaWidget;
 import com.citytechinc.cq.component.touchuidialog.widget.textarea.TextAreaWidgetParameters;
 
-@TouchUIWidget(annotationClass = RichTextEditor.class, makerClass = RichTextEditorWidgetMaker.class, resourceType = RichTextEditorWidget.RESOURCE_TYPE)
+@TouchUIWidget(annotationClass = RichTextEditor.class, makerClass = RichTextEditorWidgetMaker.class,
+	resourceType = RichTextEditorWidget.RESOURCE_TYPE)
 public class RichTextEditorWidget extends TextAreaWidget {
 
-    public RichTextEditorWidget(TextAreaWidgetParameters parameters) {
-        super(parameters);
-    }
+	public RichTextEditorWidget(TextAreaWidgetParameters parameters) {
+		super(parameters);
+	}
 
 }

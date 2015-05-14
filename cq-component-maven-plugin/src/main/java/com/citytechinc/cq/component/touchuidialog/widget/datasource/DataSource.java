@@ -16,10 +16,9 @@
 package com.citytechinc.cq.component.touchuidialog.widget.datasource;
 
 import com.citytechinc.cq.component.touchuidialog.AbstractTouchUIDialogElement;
-import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElementParameters;
 
 public class DataSource extends AbstractTouchUIDialogElement {
-    public DataSource(DataSourceParameters parameters) {
-        super(parameters);
-    }
+	public DataSource(DataSourceParameters parameters) {
+		super(parameters);
+	}
 }

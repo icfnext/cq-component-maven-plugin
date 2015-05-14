@@ -199,7 +199,8 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
 	}
 
 	protected CropConfig buildCropConfig(AspectRatio[] cropAspectRatios) {
-		List<com.citytechinc.cq.component.dialog.html5smartimage.AspectRatio> aspectRatioList = new ArrayList<com.citytechinc.cq.component.dialog.html5smartimage.AspectRatio>();
+		List<com.citytechinc.cq.component.dialog.html5smartimage.AspectRatio> aspectRatioList =
+			new ArrayList<com.citytechinc.cq.component.dialog.html5smartimage.AspectRatio>();
 		int count = 0;
 		for (AspectRatio cropAspectRatio : cropAspectRatios) {
 			AspectRatioParameters arp = new AspectRatioParameters();
@@ -207,8 +208,8 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
 			arp.setWidth(cropAspectRatio.width());
 			arp.setHeight(cropAspectRatio.height());
 			arp.setFieldName(ASPECT_RATIO_PREFIX + count++);
-			com.citytechinc.cq.component.dialog.html5smartimage.AspectRatio aspectRatio = new com.citytechinc.cq.component.dialog.html5smartimage.AspectRatio(
-				arp);
+			com.citytechinc.cq.component.dialog.html5smartimage.AspectRatio aspectRatio =
+				new com.citytechinc.cq.component.dialog.html5smartimage.AspectRatio(arp);
 			aspectRatioList.add(aspectRatio);
 		}
 

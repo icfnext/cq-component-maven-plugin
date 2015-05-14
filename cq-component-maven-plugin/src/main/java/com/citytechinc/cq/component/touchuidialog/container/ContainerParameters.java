@@ -15,6 +15,9 @@
  */
 package com.citytechinc.cq.component.touchuidialog.container;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElementParameters;
 import com.citytechinc.cq.component.touchuidialog.container.items.Items;
@@ -22,90 +25,87 @@ import com.citytechinc.cq.component.touchuidialog.container.items.ItemsParameter
 import com.citytechinc.cq.component.touchuidialog.layout.LayoutElement;
 import com.citytechinc.cq.component.xml.XmlElement;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ContainerParameters extends TouchUIDialogElementParameters {
 
-    private LayoutElement layoutElement;
+	private LayoutElement layoutElement;
 
-    protected List<TouchUIDialogElement> items;
+	protected List<TouchUIDialogElement> items;
 
-    public ContainerParameters() {
-        items = new ArrayList<TouchUIDialogElement>();
-    }
+	public ContainerParameters() {
+		items = new ArrayList<TouchUIDialogElement>();
+	}
 
-    @Override
-    public String getResourceType() {
-        return Container.RESOURCE_TYPE;
-    }
+	@Override
+	public String getResourceType() {
+		return Container.RESOURCE_TYPE;
+	}
 
-    @Override
-    public void setResourceType(String resourceType) {
-        throw new UnsupportedOperationException("resource type is Static for Container");
-    }
+	@Override
+	public void setResourceType(String resourceType) {
+		throw new UnsupportedOperationException("resource type is Static for Container");
+	}
 
-    @Override
-    public String getPrimaryType() {
-        return Container.PRIMARY_TYPE;
-    }
+	@Override
+	public String getPrimaryType() {
+		return Container.PRIMARY_TYPE;
+	}
 
-    @Override
-    public void setPrimaryType(String primaryType) {
-        throw new UnsupportedOperationException("primary type is Static for Container");
-    }
+	@Override
+	public void setPrimaryType(String primaryType) {
+		throw new UnsupportedOperationException("primary type is Static for Container");
+	}
 
-    public LayoutElement getLayoutElement() {
-        return layoutElement;
-    }
+	public LayoutElement getLayoutElement() {
+		return layoutElement;
+	}
 
-    public void setLayoutElement(LayoutElement layoutElement) {
-        this.layoutElement = layoutElement;
-    }
+	public void setLayoutElement(LayoutElement layoutElement) {
+		this.layoutElement = layoutElement;
+	}
 
-    public List<TouchUIDialogElement> getItems() {
-        return items;
-    }
+	public List<TouchUIDialogElement> getItems() {
+		return items;
+	}
 
-    public Items getItemsElement() {
-        ItemsParameters itemsParameters = new ItemsParameters();
+	public Items getItemsElement() {
+		ItemsParameters itemsParameters = new ItemsParameters();
 
-        itemsParameters.setFieldName("items");
+		itemsParameters.setFieldName("items");
 
-        List<XmlElement> elements = new ArrayList<XmlElement>();
+		List<XmlElement> elements = new ArrayList<XmlElement>();
 
-        if (!items.isEmpty()) {
-            elements.addAll(items);
-            itemsParameters.setContainedElements(elements);
-            return new Items(itemsParameters);
-        }
+		if (!items.isEmpty()) {
+			elements.addAll(items);
+			itemsParameters.setContainedElements(elements);
+			return new Items(itemsParameters);
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    public void addItem(TouchUIDialogElement element) {
-        items.add(element);
-    }
+	public void addItem(TouchUIDialogElement element) {
+		items.add(element);
+	}
 
-    @Override
-    public List<? extends XmlElement> getContainedElements() {
+	@Override
+	public List<? extends XmlElement> getContainedElements() {
 
-        List<XmlElement> elements = new ArrayList<XmlElement>();
+		List<XmlElement> elements = new ArrayList<XmlElement>();
 
-        if (layoutElement != null) {
-            elements.add(layoutElement);
-        }
+		if (layoutElement != null) {
+			elements.add(layoutElement);
+		}
 
-        Items items = getItemsElement();
+		Items items = getItemsElement();
 
-        if (items != null) {
-            elements.add(items);
-        }
-        if (super.getContainedElements() != null) {
-            elements.addAll(super.getContainedElements());
-        }
+		if (items != null) {
+			elements.add(items);
+		}
+		if (super.getContainedElements() != null) {
+			elements.addAll(super.getContainedElements());
+		}
 
-        return elements;
-    }
+		return elements;
+	}
 
 }

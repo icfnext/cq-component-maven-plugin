@@ -24,13 +24,17 @@ import com.citytechinc.cq.component.touchuidialog.widget.textarea.TextAreaWidget
 
 public class RichTextEditorWidgetMaker extends TextAreaWidgetMaker {
 
-    public RichTextEditorWidgetMaker(TouchUIWidgetMakerParameters parameters) {
-        super(parameters);
-    }
+	public RichTextEditorWidgetMaker(TouchUIWidgetMakerParameters parameters) {
+		super(parameters);
+	}
 
-    public TouchUIDialogElement make() throws TouchUIDialogGenerationException, InvalidComponentFieldException, ClassNotFoundException {
-        LogSingleton.getInstance().warn("There is no RichTextEditor dialog widget currently for Touch UI. This widget maker will render the widget as a Text Area but that is likely not what is intended.  To provide rich text editing capabilities in a component authorable via the Touch UI, expose these capabilities via a 'text' inline editor.");
-        return super.make();
-    }
+	public TouchUIDialogElement make() throws TouchUIDialogGenerationException, InvalidComponentFieldException,
+		ClassNotFoundException {
+		LogSingleton
+			.getInstance()
+			.warn(
+				"There is no RichTextEditor dialog widget currently for Touch UI. This widget maker will render the widget as a Text Area but that is likely not what is intended.  To provide rich text editing capabilities in a component authorable via the Touch UI, expose these capabilities via a 'text' inline editor.");
+		return super.make();
+	}
 
 }

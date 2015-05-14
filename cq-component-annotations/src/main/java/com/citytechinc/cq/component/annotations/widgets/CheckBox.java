@@ -23,7 +23,8 @@ import java.lang.annotation.Target;
 /**
  * Represents a Widget of type CQ.Ext.form.Checkbox in Classic UI
  *
- * Represents a Widget of type granite/ui/components/foundation/form/checkbox in Touch UI
+ * Represents a Widget of type granite/ui/components/foundation/form/checkbox in
+ * Touch UI
  */
 @Retention(RetentionPolicy.CLASS)
 @Target({ ElementType.FIELD, ElementType.METHOD })

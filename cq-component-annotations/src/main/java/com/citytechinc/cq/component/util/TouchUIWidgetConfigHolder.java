@@ -16,42 +16,42 @@
 package com.citytechinc.cq.component.util;
 
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
-import com.citytechinc.cq.component.touchuidialog.widget.AbstractTouchUIWidget;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMaker;
 
 public class TouchUIWidgetConfigHolder {
 
-    private final Class<?> annotationClass;
-    private final Class<? extends TouchUIDialogElement> widgetClass;
-    private final Class<? extends TouchUIWidgetMaker> makerClass;
-    private final String resourceType;
-    private final int ranking;
+	private final Class<?> annotationClass;
+	private final Class<? extends TouchUIDialogElement> widgetClass;
+	private final Class<? extends TouchUIWidgetMaker> makerClass;
+	private final String resourceType;
+	private final int ranking;
 
-    public TouchUIWidgetConfigHolder(Class<?> annotationClass, Class<? extends TouchUIDialogElement> widgetClass, Class<? extends TouchUIWidgetMaker> makerClass, String resourceType, int ranking) {
-        this.annotationClass = annotationClass;
-        this.widgetClass = widgetClass;
-        this.makerClass = makerClass;
-        this.resourceType = resourceType;
-        this.ranking = ranking;
-    }
+	public TouchUIWidgetConfigHolder(Class<?> annotationClass, Class<? extends TouchUIDialogElement> widgetClass,
+		Class<? extends TouchUIWidgetMaker> makerClass, String resourceType, int ranking) {
+		this.annotationClass = annotationClass;
+		this.widgetClass = widgetClass;
+		this.makerClass = makerClass;
+		this.resourceType = resourceType;
+		this.ranking = ranking;
+	}
 
-    public Class<?> getAnnotationClass() {
-        return annotationClass;
-    }
+	public Class<?> getAnnotationClass() {
+		return annotationClass;
+	}
 
-    public Class<? extends TouchUIDialogElement> getWidgetClass() {
-        return widgetClass;
-    }
+	public Class<? extends TouchUIDialogElement> getWidgetClass() {
+		return widgetClass;
+	}
 
-    public Class<? extends TouchUIWidgetMaker> getMakerClass() {
-        return makerClass;
-    }
+	public Class<? extends TouchUIWidgetMaker> getMakerClass() {
+		return makerClass;
+	}
 
-    public String getResourceType() {
-        return resourceType;
-    }
+	public String getResourceType() {
+		return resourceType;
+	}
 
-    public int getRanking() {
-        return ranking;
-    }
+	public int getRanking() {
+		return ranking;
+	}
 }

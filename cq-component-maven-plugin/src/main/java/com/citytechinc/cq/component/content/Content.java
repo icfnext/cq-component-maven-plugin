@@ -46,22 +46,23 @@ public class Content extends AbstractXmlElement {
 		allowedChildren = parameters.getAllowedChildren();
 		allowedParents = parameters.getAllowedParents();
 		componentGroup = parameters.getComponentGroup();
-		cellName = new NameSpacedAttribute<String>(Constants.CQ_NS_URI, Constants.CQ_NS_PREFIX,
-			parameters.getCellName());
-		isContainer = new NameSpacedAttribute<Boolean>(Constants.CQ_NS_URI, Constants.CQ_NS_PREFIX,
-			parameters.getIsContainer());
-		noDecoration = new NameSpacedAttribute<Boolean>(Constants.CQ_NS_URI, Constants.CQ_NS_PREFIX,
-			parameters.getNoDecoration());
-		templatePath = new NameSpacedAttribute<String>(Constants.CQ_NS_URI, Constants.CQ_NS_PREFIX,
-			parameters.getTemplatePath());
+		cellName =
+			new NameSpacedAttribute<String>(Constants.CQ_NS_URI, Constants.CQ_NS_PREFIX, parameters.getCellName());
+		isContainer =
+			new NameSpacedAttribute<Boolean>(Constants.CQ_NS_URI, Constants.CQ_NS_PREFIX, parameters.getIsContainer());
+		noDecoration =
+			new NameSpacedAttribute<Boolean>(Constants.CQ_NS_URI, Constants.CQ_NS_PREFIX, parameters.getNoDecoration());
+		templatePath =
+			new NameSpacedAttribute<String>(Constants.CQ_NS_URI, Constants.CQ_NS_PREFIX, parameters.getTemplatePath());
 		dialogPath = parameters.getDialogPath();
-		created = new NameSpacedAttribute<String>(Constants.JCR_NS_URI, Constants.JCR_NS_PREFIX,
-			parameters.getCreated());
-		description = new NameSpacedAttribute<String>(Constants.JCR_NS_URI, Constants.JCR_NS_PREFIX,
-			parameters.getDescription());
+		created =
+			new NameSpacedAttribute<String>(Constants.JCR_NS_URI, Constants.JCR_NS_PREFIX, parameters.getCreated());
+		description =
+			new NameSpacedAttribute<String>(Constants.JCR_NS_URI, Constants.JCR_NS_PREFIX, parameters.getDescription());
 		title = new NameSpacedAttribute<String>(Constants.JCR_NS_URI, Constants.JCR_NS_PREFIX, parameters.getTitle());
-		resourceSuperType = new NameSpacedAttribute<String>(Constants.SLING_NS_URI, Constants.SLING_NS_PREFIX,
-			parameters.getResourceSuperType());
+		resourceSuperType =
+			new NameSpacedAttribute<String>(Constants.SLING_NS_URI, Constants.SLING_NS_PREFIX,
+				parameters.getResourceSuperType());
 		className = parameters.getClassName();
 	}
 

@@ -15,6 +15,8 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.selection;
 
+import org.codehaus.plexus.util.StringUtils;
+
 import com.citytechinc.cq.component.annotations.Option;
 import com.citytechinc.cq.component.annotations.widgets.Selection;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
@@ -27,84 +29,92 @@ import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWi
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 import com.citytechinc.cq.component.touchuidialog.widget.radiogroup.RadioGroupWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.selection.options.OptionParameters;
-import org.codehaus.plexus.util.StringUtils;
 
 public class SelectionFieldWidgetMaker extends AbstractTouchUIWidgetMaker {
 
-    public SelectionFieldWidgetMaker(TouchUIWidgetMakerParameters parameters) {
-        super(parameters);
-    }
+	public SelectionFieldWidgetMaker(TouchUIWidgetMakerParameters parameters) {
+		super(parameters);
+	}
 
-    @Override
-    public TouchUIDialogElement make() throws ClassNotFoundException, InvalidComponentFieldException, TouchUIDialogGenerationException {
+	@Override
+	public TouchUIDialogElement make() throws ClassNotFoundException, InvalidComponentFieldException,
+		TouchUIDialogGenerationException {
 
-        Selection selectionField = getAnnotation(Selection.class);
+		Selection selectionField = getAnnotation(Selection.class);
 
-        if (Selection.RADIO.equals(selectionField.type())) {
-            return makeRadioGroup();
-        }
-        else {
-            if (StringUtils.isNotBlank(selectionField.type()) && !Selection.SELECT.equals(selectionField.type())) {
-                LogSingleton.getInstance().warn("Selection field type " + selectionField.type() + " requested for field " + getFieldNameForField() + " however no such presentation is implemented for the Touch UI.  Defaulting to a dropdown selection.");
-            }
-            return makeSelection(selectionField);
-        }
+		if (Selection.RADIO.equals(selectionField.type())) {
+			return makeRadioGroup();
+		} else {
+			if (StringUtils.isNotBlank(selectionField.type()) && !Selection.SELECT.equals(selectionField.type())) {
+				LogSingleton
+					.getInstance()
+					.warn(
+						"Selection field type "
+							+ selectionField.type()
+							+ " requested for field "
+							+ getFieldNameForField()
+							+ " however no such presentation is implemented for the Touch UI.  Defaulting to a dropdown selection.");
+			}
+			return makeSelection(selectionField);
+		}
 
-    }
+	}
 
-    protected TouchUIDialogElement makeRadioGroup() throws TouchUIDialogGenerationException, InvalidComponentFieldException, ClassNotFoundException {
-        RadioGroupWidgetMaker maker = new RadioGroupWidgetMaker(parameters);
-        return maker.make();
-    }
+	protected TouchUIDialogElement makeRadioGroup() throws TouchUIDialogGenerationException,
+		InvalidComponentFieldException, ClassNotFoundException {
+		RadioGroupWidgetMaker maker = new RadioGroupWidgetMaker(parameters);
+		return maker.make();
+	}
 
-    protected TouchUIDialogElement makeSelection(Selection selectionField) {
-        SelectionFieldWidgetParameters widgetParameters = new SelectionFieldWidgetParameters();
+	protected TouchUIDialogElement makeSelection(Selection selectionField) {
+		SelectionFieldWidgetParameters widgetParameters = new SelectionFieldWidgetParameters();
 
-        widgetParameters.setFieldName(getFieldNameForField());
-        widgetParameters.setName(getNameForField());
-        widgetParameters.setFieldLabel(getFieldLabelForField());
-        widgetParameters.setFieldDescription(getFieldDescriptionForField());
-        widgetParameters.setRequired(getRequiredForField());
-        widgetParameters.setDefaultValue(getDefaultValueForField());
-        widgetParameters.setResourceType(SelectionFieldWidget.RESOURCE_TYPE);
-        widgetParameters.setValue(getValueForField());
-        widgetParameters.setDisabled(getDisabledForField());
-        widgetParameters.setCssClass(getCssClassForField());
+		widgetParameters.setFieldName(getFieldNameForField());
+		widgetParameters.setName(getNameForField());
+		widgetParameters.setFieldLabel(getFieldLabelForField());
+		widgetParameters.setFieldDescription(getFieldDescriptionForField());
+		widgetParameters.setRequired(getRequiredForField());
+		widgetParameters.setDefaultValue(getDefaultValueForField());
+		widgetParameters.setResourceType(SelectionFieldWidget.RESOURCE_TYPE);
+		widgetParameters.setValue(getValueForField());
+		widgetParameters.setDisabled(getDisabledForField());
+		widgetParameters.setCssClass(getCssClassForField());
 
-        widgetParameters.setMultiple(getMultipleForField(selectionField));
-        widgetParameters.setDataSource(getDataSourceForField(selectionField));
+		widgetParameters.setMultiple(getMultipleForField(selectionField));
+		widgetParameters.setDataSource(getDataSourceForField(selectionField));
 
-        for (int i = 0; i < selectionField.options().length; i++) {
-            Option currentOption = selectionField.options()[i];
+		for (int i = 0; i < selectionField.options().length; i++) {
+			Option currentOption = selectionField.options()[i];
 
-            OptionParameters optionParameters = new OptionParameters();
-            optionParameters.setText(currentOption.text());
-            optionParameters.setValue(currentOption.value());
-            optionParameters.setSelected(currentOption.selected());
-            optionParameters.setFieldName("option" + i);
+			OptionParameters optionParameters = new OptionParameters();
+			optionParameters.setText(currentOption.text());
+			optionParameters.setValue(currentOption.value());
+			optionParameters.setSelected(currentOption.selected());
+			optionParameters.setFieldName("option" + i);
 
-            widgetParameters.addOption(new com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option(optionParameters));
-        }
+			widgetParameters.addOption(new com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option(
+				optionParameters));
+		}
 
-        return new SelectionFieldWidget(widgetParameters);
-    }
+		return new SelectionFieldWidget(widgetParameters);
+	}
 
-    public boolean getMultipleForField(Selection annotation) {
-        if (annotation != null) {
-            return annotation.multiple();
-        }
+	public boolean getMultipleForField(Selection annotation) {
+		if (annotation != null) {
+			return annotation.multiple();
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    public DataSource getDataSourceForField(Selection annotation) {
-        if (annotation != null && StringUtils.isNotBlank(annotation.dataSource())) {
-            DataSourceParameters dataSourceParameters = new DataSourceParameters();
-            dataSourceParameters.setResourceType(annotation.dataSource());
-            return new DataSource(dataSourceParameters);
-        }
+	public DataSource getDataSourceForField(Selection annotation) {
+		if (annotation != null && StringUtils.isNotBlank(annotation.dataSource())) {
+			DataSourceParameters dataSourceParameters = new DataSourceParameters();
+			dataSourceParameters.setResourceType(annotation.dataSource());
+			return new DataSource(dataSourceParameters);
+		}
 
-        return null;
-    }
+		return null;
+	}
 
 }

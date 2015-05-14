@@ -20,6 +20,6 @@ import com.citytechinc.cq.component.touchuidialog.layout.maker.exceptions.Layout
 
 public interface LayoutMaker {
 
-    public Layout make() throws LayoutMakerException;
+	public Layout make() throws LayoutMakerException;
 
 }

@@ -20,12 +20,12 @@ import com.citytechinc.cq.component.xml.XmlElement;
 
 public interface TouchUIDialogElement extends XmlElement {
 
-    public NameSpacedAttribute<String> getResourceType();
+	public NameSpacedAttribute<String> getResourceType();
 
-    public void setFieldName(String fieldName);
+	public void setFieldName(String fieldName);
 
-    public double getRanking();
+	public double getRanking();
 
-    public void setRanking(double ranking);
+	public void setRanking(double ranking);
 
 }

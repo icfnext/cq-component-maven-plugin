@@ -15,6 +15,16 @@
  */
 package com.citytechinc.cq.component.touchuidialog.factory;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javassist.ClassPool;
+import javassist.CtClass;
+
+import javax.annotation.Nullable;
+
+import org.codehaus.plexus.util.StringUtils;
+
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialog;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogParameters;
@@ -26,68 +36,60 @@ import com.citytechinc.cq.component.touchuidialog.layout.maker.exceptions.Layout
 import com.citytechinc.cq.component.touchuidialog.layout.tabs.TabsLayoutMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.registry.TouchUIWidgetRegistry;
 import com.citytechinc.cq.component.xml.XmlElement;
-import javassist.ClassPool;
-import org.codehaus.plexus.util.StringUtils;
-import javassist.CtClass;
-
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class TouchUIDialogFactory {
 
-    private TouchUIDialogFactory() {}
+	private TouchUIDialogFactory() {
+	}
 
-    @Nullable
-    public static TouchUIDialog make(
-            CtClass componentClass,
-            ClassLoader classLoader,
-            ClassPool classPool,
-            TouchUIWidgetRegistry widgetRegistry
-    ) throws TouchUIDialogGenerationException {
-        try {
+	@Nullable
+	public static TouchUIDialog make(CtClass componentClass, ClassLoader classLoader, ClassPool classPool,
+		TouchUIWidgetRegistry widgetRegistry) throws TouchUIDialogGenerationException {
+		try {
 
-            Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
+			Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
-            //If output of the Touch UI dialog is disabled, return null
-            if (componentAnnotation.suppressTouchUIDialog()) {
-                return null;
-            }
+			// If output of the Touch UI dialog is disabled, return null
+			if (componentAnnotation.suppressTouchUIDialog()) {
+				return null;
+			}
 
-            TouchUIDialogParameters parameters = new TouchUIDialogParameters();
+			TouchUIDialogParameters parameters = new TouchUIDialogParameters();
 
-            parameters.setTitle(componentAnnotation.value());
+			parameters.setTitle(componentAnnotation.value());
 
-            if (StringUtils.isNotBlank(componentAnnotation.helpPath())) {
-                parameters.setHelpPath(componentAnnotation.helpPath());
-            }
+			if (StringUtils.isNotBlank(componentAnnotation.helpPath())) {
+				parameters.setHelpPath(componentAnnotation.helpPath());
+			}
 
-            //Determine the LayoutMaker to use
-            //TODO: Make dynamic - currently we always use the tabs layout maker
-            LayoutMakerParameters layoutMakerParameters = new LayoutMakerParameters();
+			// Determine the LayoutMaker to use
+			// TODO: Make dynamic - currently we always use the tabs layout
+			// maker
+			LayoutMakerParameters layoutMakerParameters = new LayoutMakerParameters();
 
-            layoutMakerParameters.setComponentClass(componentClass);
-            layoutMakerParameters.setClassLoader(classLoader);
-            layoutMakerParameters.setClassPool(classPool);
-            layoutMakerParameters.setWidgetRegistry(widgetRegistry);
-            LayoutMaker layoutMaker = new TabsLayoutMaker(layoutMakerParameters);
+			layoutMakerParameters.setComponentClass(componentClass);
+			layoutMakerParameters.setClassLoader(classLoader);
+			layoutMakerParameters.setClassPool(classPool);
+			layoutMakerParameters.setWidgetRegistry(widgetRegistry);
+			LayoutMaker layoutMaker = new TabsLayoutMaker(layoutMakerParameters);
 
-            //Delegate the rest of the production to the LayoutMaker
-            Layout layout = layoutMaker.make();
+			// Delegate the rest of the production to the LayoutMaker
+			Layout layout = layoutMaker.make();
 
-            //Add the generated Layout to the Dialog's contained elements
-            List<XmlElement> containedElements = new ArrayList<XmlElement>();
-            containedElements.add(layout);
+			// Add the generated Layout to the Dialog's contained elements
+			List<XmlElement> containedElements = new ArrayList<XmlElement>();
+			containedElements.add(layout);
 
-            parameters.setContainedElements(containedElements);
+			parameters.setContainedElements(containedElements);
 
-            return new TouchUIDialog(parameters);
+			return new TouchUIDialog(parameters);
 
-        } catch (ClassNotFoundException e) {
-            throw new TouchUIDialogGenerationException("ClassNotFound exception encountered generating Touch UI Dialog", e);
-        } catch (LayoutMakerException e) {
-            throw new TouchUIDialogGenerationException("Layout Maker Exception encountered producing Dialog Layout", e);
-        }
-    }
+		} catch (ClassNotFoundException e) {
+			throw new TouchUIDialogGenerationException(
+				"ClassNotFound exception encountered generating Touch UI Dialog", e);
+		} catch (LayoutMakerException e) {
+			throw new TouchUIDialogGenerationException("Layout Maker Exception encountered producing Dialog Layout", e);
+		}
+	}
 
 }

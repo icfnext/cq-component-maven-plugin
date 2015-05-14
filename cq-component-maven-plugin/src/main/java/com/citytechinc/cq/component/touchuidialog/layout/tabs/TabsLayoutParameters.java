@@ -19,14 +19,14 @@ import com.citytechinc.cq.component.touchuidialog.container.ContainerParameters;
 
 public class TabsLayoutParameters extends ContainerParameters {
 
-    private String type;
+	private String type;
 
-    public String getType() {
-        return type;
-    }
+	public String getType() {
+		return type;
+	}
 
-    public void setType(String type) {
-        this.type = type;
-    }
+	public void setType(String type) {
+		this.type = type;
+	}
 
 }

@@ -15,18 +15,18 @@
  */
 package com.citytechinc.cq.component.annotations.config;
 
-import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
-
 import java.lang.annotation.Annotation;
+
+import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
 
 public @interface TouchUIWidget {
 
-    Class<? extends Annotation> annotationClass();
+	Class<? extends Annotation> annotationClass();
 
-    Class<? extends AbstractTouchUIWidgetMaker> makerClass();
+	Class<? extends AbstractTouchUIWidgetMaker> makerClass();
 
-    String resourceType();
+	String resourceType();
 
-    int ranking() default -1;
+	int ranking() default -1;
 
 }

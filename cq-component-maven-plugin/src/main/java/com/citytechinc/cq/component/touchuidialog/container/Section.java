@@ -20,18 +20,19 @@ import com.citytechinc.cq.component.xml.NameSpacedAttribute;
 
 public class Section extends Container {
 
-    public static final String RESOURCE_TYPE = "granite/ui/components/foundation/section";
+	public static final String RESOURCE_TYPE = "granite/ui/components/foundation/section";
 
-    private NameSpacedAttribute<String> title;
+	private NameSpacedAttribute<String> title;
 
-    public Section(SectionParameters parameters) {
-        super(parameters);
+	public Section(SectionParameters parameters) {
+		super(parameters);
 
-        this.title = new NameSpacedAttribute<String>(Constants.JCR_NS_URI, Constants.JCR_NS_PREFIX, parameters.getTitle());
-    }
+		this.title =
+			new NameSpacedAttribute<String>(Constants.JCR_NS_URI, Constants.JCR_NS_PREFIX, parameters.getTitle());
+	}
 
-    public NameSpacedAttribute<String> getTitle() {
-        return title;
-    }
+	public NameSpacedAttribute<String> getTitle() {
+		return title;
+	}
 
 }

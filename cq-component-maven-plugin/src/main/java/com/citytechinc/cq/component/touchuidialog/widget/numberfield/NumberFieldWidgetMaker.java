@@ -68,7 +68,7 @@ public class NumberFieldWidgetMaker extends AbstractTouchUIWidgetMaker<NumberFie
 	protected Double getStepForField(NumberField annotation) {
 		Double step = annotation.step();
 
-		if (Math.floor(annotation.step()) != annotation.step() && !Double.isInfinite(annotation.step())) {
+		if (Math.floor(step) != step && !Double.isInfinite(step)) {
 			LogSingleton
 				.getInstance()
 				.warn(
@@ -80,7 +80,6 @@ public class NumberFieldWidgetMaker extends AbstractTouchUIWidgetMaker<NumberFie
 						+ parameters.getContainingClass().getName()
 						+ ". Non-integer steps will cause the increment and decrement buttons of the number field to misbehave.");
 		}
-		return annotation.step();
+		return step;
 	}
-
 }

@@ -144,5 +144,12 @@ $symbol_pound$symbol_pound Configurable Properties
                 <b>Currently unavailable in the Gradle Plugin.</b>
             </td>
         </tr>
+        <tr>
+            <td>generateTouchUiDialogs</td>
+            <td>Boolean</td>
+            <td>true</td>
+            <td>Enabled the generation of dialogs for Touch UI</b>
+            </td>
+        </tr>
 	</tbody>
 </table>

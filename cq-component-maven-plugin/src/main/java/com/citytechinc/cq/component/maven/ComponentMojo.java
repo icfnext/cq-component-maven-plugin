@@ -110,7 +110,7 @@ public class ComponentMojo extends AbstractMojo {
 			ComponentMojoUtil.buildArchiveFileForProjectAndClassList(classList, widgetRegistry, touchUIWidgetRegistry,
 				classLoader, classPool, new File(project.getBuild().getDirectory()), componentPathBase,
 				componentPathSuffix, defaultComponentGroup, getArchiveFileForProject(), getTempArchiveFileForProject(),
-				transformer, isGenerateTouchUiDialogs());
+				transformer, generateTouchUiDialogs);
 
 		} catch (Exception e) {
 			getLog().error(e.getMessage(), e);
@@ -199,9 +199,5 @@ public class ComponentMojo extends AbstractMojo {
 		getLog().debug("Temp archive file name " + zipFileName);
 
 		return new File(buildDirectory, zipFileName);
-	}
-
-	private boolean isGenerateTouchUiDialogs() {
-		return generateTouchUiDialogs;
 	}
 }

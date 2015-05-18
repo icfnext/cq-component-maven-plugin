@@ -115,24 +115,26 @@ public class DialogFieldSetWidgetMaker extends AbstractWidgetMaker<DialogFieldSe
 							parameters.getClassPool(), parameters.getWidgetRegistry(), null, true);
 
 					DialogElement builtFieldWidget = WidgetFactory.make(curFieldMember, -1);
-					if (builtFieldWidget instanceof AbstractWidget
-						&& StringUtils.isNotEmpty(dialogFieldSetAnnotation.namePrefix())) {
-						AbstractWidget widget = (AbstractWidget) builtFieldWidget;
-						String name = widget.getName();
-						String newName;
-						if (name.startsWith("./")) {
-							newName = name.substring(2);
-						} else {
-							newName = name;
+					if (builtFieldWidget != null) {
+						if (builtFieldWidget instanceof AbstractWidget
+							&& StringUtils.isNotEmpty(dialogFieldSetAnnotation.namePrefix())) {
+							AbstractWidget widget = (AbstractWidget) builtFieldWidget;
+							String name = widget.getName();
+							String newName;
+							if (name.startsWith("./")) {
+								newName = name.substring(2);
+							} else {
+								newName = name;
+							}
+							newName = dialogFieldSetAnnotation.namePrefix() + newName;
+							if (name.startsWith("./")) {
+								newName = "./" + newName;
+							}
+							widget.setName(newName);
 						}
-						newName = dialogFieldSetAnnotation.namePrefix() + newName;
-						if (name.startsWith("./")) {
-							newName = "./" + newName;
-						}
-						widget.setName(newName);
+						builtFieldWidget.setRanking(ranking);
+						elements.add(builtFieldWidget);
 					}
-					builtFieldWidget.setRanking(ranking);
-					elements.add(builtFieldWidget);
 				}
 			}
 		}

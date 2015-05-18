@@ -31,42 +31,6 @@ Determination of the xtype to be rendered for an authorable element is based on 
 
 1. If the `xtype` property of the `@DialogField` annotation is populated, its value is used.
 2. If a stacked Widget annotation is also associated with the element the xtype associated with the stacked annotation is used.
-3. A guess is made as to the intended xtype based on the type of the field or return type of the method.  The following table denotes the xtypes which the plugin is able to determine via this mechanism.
-
-<table class="table table-striped break-words-table">
-    <thead>
-        <tr>
-            <th>Class/Primitive Type</th>
-            <th>Default xtype</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>? Extends java.lang.Number</td>
-            <td>numberfield</td>
-        </tr>
-        <tr>
-            <td>int</td>
-            <td>numberfield</td>
-        </tr>
-        <tr>
-            <td>double</td>
-            <td>numberfield</td>
-        </tr>
-        <tr>
-            <td>java.lang.String</td>
-            <td>textfield</td>
-        </tr>
-        <tr>
-            <td>java.net.URI</td>
-            <td>pathfield</td>
-        </tr>
-        <tr>
-            <td>java.net.URL</td>
-            <td>pathfield</td>
-        </tr>
-    </tbody>
-</table>
 
 The name used will be based off the field name or the method name using Java bean standards and can be overridden using the `name` property of the annotation.
 

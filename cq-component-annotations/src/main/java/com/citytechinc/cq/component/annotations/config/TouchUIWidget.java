@@ -23,7 +23,7 @@ public @interface TouchUIWidget {
 
 	Class<? extends Annotation> annotationClass();
 
-	Class<? extends AbstractTouchUIWidgetMaker> makerClass();
+	Class<? extends AbstractTouchUIWidgetMaker<?>> makerClass();
 
 	String resourceType();
 

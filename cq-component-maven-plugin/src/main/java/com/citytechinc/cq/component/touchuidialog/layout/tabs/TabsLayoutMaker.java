@@ -146,17 +146,18 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
 			for (TouchUIWidgetMakerParameters currentWidgetMakerParameters : widgetMakerParameters) {
 
 				TouchUIDialogElement currentElement = TouchUIWidgetFactory.make(currentWidgetMakerParameters, -1);
+				if (currentElement != null) {
+					currentElement.setRanking(currentWidgetMakerParameters.getDialogFieldConfig().getRanking());
 
-				currentElement.setRanking(currentWidgetMakerParameters.getDialogFieldConfig().getRanking());
-
-				if (currentWidgetMakerParameters.getDialogFieldConfig().getTab() <= tabParametersList.size()) {
-					tabContentParametersList.get(currentWidgetMakerParameters.getDialogFieldConfig().getTab() - 1)
-						.addItem(currentElement);
-				} else {
-					throw new LayoutMakerException("Field "
-						+ currentWidgetMakerParameters.getDialogFieldConfig().getName() + " of class "
-						+ currentWidgetMakerParameters.getClass().getName() + " placed in non-existant tab "
-						+ currentWidgetMakerParameters.getDialogFieldConfig().getTab());
+					if (currentWidgetMakerParameters.getDialogFieldConfig().getTab() <= tabParametersList.size()) {
+						tabContentParametersList.get(currentWidgetMakerParameters.getDialogFieldConfig().getTab() - 1)
+							.addItem(currentElement);
+					} else {
+						throw new LayoutMakerException("Field "
+							+ currentWidgetMakerParameters.getDialogFieldConfig().getName() + " of class "
+							+ currentWidgetMakerParameters.getClass().getName() + " placed in non-existant tab "
+							+ currentWidgetMakerParameters.getDialogFieldConfig().getTab());
+					}
 				}
 
 			}

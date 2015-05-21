@@ -58,44 +58,11 @@ public @interface Html5SmartImage {
 	public boolean disableZoom() default false;
 
 	/**
-	 * Used for Classic UI only
-	 *
-	 * Name of the form field used for posting the cropping rect; use null or a
-	 * zero-length String if the cropping tool should be disabled; the value
-	 * should always be "./imageCrop" for CQ
-	 ** 
-	 * @deprecated use {@link #allowCrop()} to automatically to set the value to
-	 *             what CQ expects
-	 * @return String
-	 */
-	@Deprecated
-	public String cropParameter() default "";
-
-	/**
-	 * Name of the form field used for posting the file name. Be aware that you
-	 * will have to specify a suitable value here, as there is no sensible
-	 * default value available. Suitable values are dependant on their
-	 * serverside counterpart and must be "./fileName" for CQ foundation's image
-	 * and download components; use "./image/fileName" for the textimage
-	 * component.
+	 * Name of the form field used for posting the file name.
 	 *
 	 * @return String
 	 */
 	public String fileNameParameter() default "fileName";
-
-	/**
-	 * Used for Classic UI only
-	 *
-	 * Name of the form field used for posting the file reference. Be aware that
-	 * you will have to specify a suitable value here, as there is no sensible
-	 * default value available. Suitable values are dependant on their
-	 * serverside counterpart and must be "./fileReference" for CQ foundation's
-	 * image and download components; use "./image/fileReference" for the
-	 * textimage component.
-	 *
-	 * @return String
-	 */
-	public String fileReferenceParameter() default "fileReference";
 
 	/**
 	 * The field's HTML name attribute
@@ -103,34 +70,6 @@ public @interface Html5SmartImage {
 	 * @return String
 	 */
 	public String name() default "";
-
-	/**
-	 * Used for Classic UI only
-	 *
-	 * Name of the form field used for posting the image map data; use null or a
-	 * zero-length String if the image mapping tool should be disabled; the
-	 * value deshould always be "./imageMap" for CQ
-	 *
-	 * @deprecated use {@link #allowMap()} to automatically to set the value to
-	 *             what CQ expects
-	 * @return String
-	 */
-	@Deprecated
-	public String mapParameter() default "";
-
-	/**
-	 * Used for Classic UI only
-	 *
-	 * Name of the form field used for posting the rotation angle; use null or a
-	 * zero-length String if the rotate tool should be disabled; The value
-	 * should always be "imageRotate" for CQ
-	 *
-	 * @deprecated use {@link #allowRotate()} to automatically to set the value
-	 *             to what CQ expects
-	 * @return String
-	 */
-	@Deprecated
-	public String rotateParameter() default "";
 
 	/**
 	 * Path to which files will be uploaded.
@@ -216,17 +155,6 @@ public @interface Html5SmartImage {
 	 * @return boolean
 	 */
 	public boolean allowMap() default false;
-
-	/**
-	 * Used for Touch UI only
-	 *
-	 * The list of mime types allowed for upload. This must be defined uniquely
-	 * for Touch UI as the ExtJS allows different extension and wild card
-	 * semantics than the Touch UI variant.
-	 *
-	 * @return String[]
-	 */
-	public String[] touchUIMimeTypes() default {};
 
 	/**
 	 * Used for Touch UI Only

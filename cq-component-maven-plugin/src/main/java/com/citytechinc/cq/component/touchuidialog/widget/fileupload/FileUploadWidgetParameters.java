@@ -34,6 +34,7 @@ public class FileUploadWidgetParameters extends DefaultTouchUIWidgetParameters {
 	private String dropZone;
 	// TODO: Event handling
 	private List<String> mimeTypes;
+	private String filereferenceparameter;
 
 	@Override
 	public String getTitle() {
@@ -141,6 +142,14 @@ public class FileUploadWidgetParameters extends DefaultTouchUIWidgetParameters {
 	@Override
 	public void setResourceType(String resourceType) {
 		throw new UnsupportedOperationException("resourceType is Static for FileUploadWidget");
+	}
+
+	public String getFilereferenceparameter() {
+		return filereferenceparameter;
+	}
+
+	public void setFilereferenceparameter(String filereferenceparameter) {
+		this.filereferenceparameter = filereferenceparameter;
 	}
 
 }

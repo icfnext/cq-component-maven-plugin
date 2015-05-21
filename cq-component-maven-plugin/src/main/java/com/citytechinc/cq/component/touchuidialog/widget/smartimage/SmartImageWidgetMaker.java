@@ -16,12 +16,12 @@
 package com.citytechinc.cq.component.touchuidialog.widget.smartimage;
 
 import java.util.Arrays;
-import java.util.List;
 
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.widgets.Html5SmartImage;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
+import com.citytechinc.cq.component.dialog.html5smartimage.Html5SmartImageWidgetMaker;
 import com.citytechinc.cq.component.maven.util.LogSingleton;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
@@ -30,6 +30,7 @@ import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWi
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 
 public class SmartImageWidgetMaker extends AbstractTouchUIWidgetMaker<FileUploadWidgetParameters> {
+	private static final String[] MIME_TYPES = { "image" };
 
 	public SmartImageWidgetMaker(TouchUIWidgetMakerParameters parameters) {
 		super(parameters);
@@ -56,7 +57,9 @@ public class SmartImageWidgetMaker extends AbstractTouchUIWidgetMaker<FileUpload
 		widgetParameters.setAutoStart(getAutoStartForField(smartFileAnnotation));
 		widgetParameters.setUseHTML5(getUseHTML5ForField(smartFileAnnotation));
 		widgetParameters.setDropZone(getDropZoneForField(smartFileAnnotation));
-		widgetParameters.setMimeTypes(getMimeTypesForField(smartFileAnnotation));
+		widgetParameters.setMimeTypes(Arrays.asList(MIME_TYPES));
+		widgetParameters.setFilereferenceparameter(getNameAsPrefix(smartFileAnnotation)
+			+ Html5SmartImageWidgetMaker.FILE_REFERENCE_PARAMETER);
 
 		return new SmartImageWidget(widgetParameters);
 	}
@@ -149,12 +152,12 @@ public class SmartImageWidgetMaker extends AbstractTouchUIWidgetMaker<FileUpload
 		return null;
 	}
 
-	public List<String> getMimeTypesForField(Html5SmartImage annotation) {
-		if (annotation != null && annotation.touchUIMimeTypes().length > 0) {
-			return Arrays.asList(annotation.touchUIMimeTypes());
+	private static String getNameAsPrefix(Html5SmartImage annotation) {
+		if (StringUtils.isEmpty(annotation.name())) {
+			return "./";
+		} else {
+			return "./" + annotation.name() + "/";
 		}
-
-		return null;
 	}
 
 }

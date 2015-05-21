@@ -50,8 +50,17 @@ public class FileUploadWidgetMaker extends AbstractTouchUIWidgetMaker<FileUpload
 		widgetParameters.setUseHTML5(getUseHTML5ForField(smartFileAnnotation));
 		widgetParameters.setDropZone(getDropZoneForField(smartFileAnnotation));
 		widgetParameters.setMimeTypes(getMimeTypesForField(smartFileAnnotation));
+		widgetParameters.setFilereferenceparameter(getFileReferenceForField(smartFileAnnotation));
 
 		return new FileUploadWidget(widgetParameters);
+	}
+
+	private String getFileReferenceForField(Html5SmartFile annotation) {
+		if (annotation != null && StringUtils.isNotBlank(annotation.fileReferenceParameter())) {
+			return annotation.fileReferenceParameter();
+		}
+
+		return null;
 	}
 
 	public String getTitleForField(Html5SmartFile annotation) {

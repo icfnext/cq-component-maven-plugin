@@ -17,9 +17,9 @@ package com.citytechinc.cq.component.editconfig;
 
 import java.util.List;
 
-import com.citytechinc.cq.component.xml.XmlElementParameters;
+import com.citytechinc.cq.component.xml.DefaultXmlElementParameters;
 
-public class EditConfigParameters extends XmlElementParameters {
+public class EditConfigParameters extends DefaultXmlElementParameters {
 	private static final String EDIT_CONFIG_PRIMARY_TYPE = "cq:EditConfig";
 	private List<String> actions;
 	private String dialogMode;

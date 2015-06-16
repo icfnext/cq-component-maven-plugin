@@ -119,7 +119,6 @@ public class DialogUtil {
 	 * @param classList
 	 * @param zipOutputStream
 	 * @param reservedNames
-	 * @param xtypeMap
 	 * @param classLoader
 	 * @param classPool
 	 * @return A list of constructed Dialog objects
@@ -154,6 +153,11 @@ public class DialogUtil {
 		for (CtClass curClass : classList) {
 			ComponentMojoUtil.getLog().debug("Checking class for Component annotation " + curClass);
 
+			Component componentAnnotation = (Component) curClass.getAnnotation(Component.class);
+
+			// If the ExtJS dialog was explicitly suppressed for this Component,
+			// skip it
+
 			boolean hasDialogFieldOrCQIncludeTab = false;
 			for (CtField curField : ComponentMojoUtil.collectFields(curClass)) {
 				if (curField.hasAnnotation(DialogField.class)) {
@@ -170,7 +174,6 @@ public class DialogUtil {
 				}
 			}
 			if (!hasDialogFieldOrCQIncludeTab) {
-				Component componentAnnotation = (Component) curClass.getAnnotation(Component.class);
 				for (Tab tab : componentAnnotation.tabs()) {
 					if (StringUtils.isNotEmpty(tab.path())) {
 						hasDialogFieldOrCQIncludeTab = true;
@@ -182,11 +185,13 @@ public class DialogUtil {
 				ComponentMojoUtil.getLog().debug("Processing Component Class " + curClass);
 				Dialog builtDialog = DialogFactory.make(curClass, widgetRegistry, classLoader, classPool);
 				dialogList.add(builtDialog);
-				File dialogFile = writeDialogToFile(transformer, builtDialog, curClass, buildDirectory,
-					componentPathBase, defaultComponentPathSuffix);
+				File dialogFile =
+					writeDialogToFile(transformer, builtDialog, curClass, buildDirectory, componentPathBase,
+						defaultComponentPathSuffix);
 				writeDialogToArchiveFile(transformer, dialogFile, curClass, zipOutputStream, reservedNames,
 					componentPathBase, defaultComponentPathSuffix);
 			}
+
 		}
 
 		return dialogList;
@@ -236,15 +241,16 @@ public class DialogUtil {
 		Collections.reverse(classes);
 		CtMember interfaceMember = getMemberForAnnotatedInterfaceMethod(method);
 		if (interfaceMember != null) {
-			dialogFieldConfig = new DialogFieldConfig((DialogField) interfaceMember.getAnnotation(DialogField.class),
-				interfaceMember);
+			dialogFieldConfig =
+				new DialogFieldConfig((DialogField) interfaceMember.getAnnotation(DialogField.class), interfaceMember);
 		}
 		for (CtClass ctclass : classes) {
 			try {
 				CtMethod superClassMethod = ctclass.getDeclaredMethod(method.getName(), method.getParameterTypes());
 				if (superClassMethod.hasAnnotation(DialogField.class)) {
-					dialogFieldConfig = new DialogFieldConfig(
-						(DialogField) superClassMethod.getAnnotation(DialogField.class), superClassMethod);
+					dialogFieldConfig =
+						new DialogFieldConfig((DialogField) superClassMethod.getAnnotation(DialogField.class),
+							superClassMethod);
 				} else if (superClassMethod.hasAnnotation(DialogFieldOverride.class)) {
 					mergeDialogFields(dialogFieldConfig, superClassMethod);
 				}
@@ -299,6 +305,22 @@ public class DialogUtil {
 				}
 				dialogFieldConfig.setListeners(listeners.toArray(new Listener[listeners.size()]));
 			}
+
+			if (StringUtils.isNotBlank(dialogField.title())) {
+				dialogFieldConfig.setTitle(dialogField.title());
+			}
+
+			if (StringUtils.isNotBlank(dialogField.value())) {
+				dialogFieldConfig.setValue(dialogField.value());
+			}
+
+			dialogFieldConfig.setDisabled(dialogField.disabled());
+
+			if (StringUtils.isNotBlank(dialogField.cssClass())) {
+				dialogFieldConfig.setCssClass(dialogField.cssClass());
+			}
+
+			dialogFieldConfig.setSuppressTouchUI(dialogField.suppressTouchUI());
 		}
 
 	}

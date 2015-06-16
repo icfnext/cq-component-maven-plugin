@@ -15,9 +15,9 @@
  */
 package com.citytechinc.cq.component.dialog.selection;
 
-import com.citytechinc.cq.component.dialog.DialogElementParameters;
+import com.citytechinc.cq.component.dialog.DefaultDialogElementParameters;
 
-public class OptionParameters extends DialogElementParameters {
+public class OptionParameters extends DefaultDialogElementParameters {
 	private String text;
 	private String value;
 	private String qtip;

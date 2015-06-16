@@ -46,6 +46,8 @@ import com.citytechinc.cq.component.dialog.widget.WidgetRegistry;
 import com.citytechinc.cq.component.dialog.widget.impl.DefaultWidgetRegistry;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 import com.citytechinc.cq.component.maven.util.LogSingleton;
+import com.citytechinc.cq.component.touchuidialog.widget.registry.DefaultTouchUIWidgetRegistry;
+import com.citytechinc.cq.component.touchuidialog.widget.registry.TouchUIWidgetRegistry;
 
 @Mojo(name = "component", defaultPhase = LifecyclePhase.PACKAGE, requiresDependencyResolution = ResolutionScope.COMPILE)
 public class ComponentMojo extends AbstractMojo {
@@ -68,6 +70,10 @@ public class ComponentMojo extends AbstractMojo {
 	@Parameter(required = false)
 	private List<Dependency> excludeDependencies;
 
+	@Parameter(defaultValue = "true")
+	private boolean generateTouchUiDialogs;
+
+	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
 
 		LogSingleton.getInstance().setLogger(getLog());
@@ -77,20 +83,23 @@ public class ComponentMojo extends AbstractMojo {
 			@SuppressWarnings("unchecked")
 			List<String> classpathElements = project.getCompileClasspathElements();
 
-			ClassLoader classLoader = ComponentMojoUtil.getClassLoader(classpathElements, this.getClass()
-				.getClassLoader());
+			ClassLoader classLoader =
+				ComponentMojoUtil.getClassLoader(classpathElements, this.getClass().getClassLoader());
 
 			ClassPool classPool = ComponentMojoUtil.getClassPool(classLoader);
 
 			Reflections reflections = ComponentMojoUtil.getReflections(classLoader);
 
-			List<CtClass> classList = ComponentMojoUtil.getAllComponentAnnotations(classPool, reflections,
-				getExcludedClasses());
+			List<CtClass> classList =
+				ComponentMojoUtil.getAllComponentAnnotations(classPool, reflections, getExcludedClasses());
 
 			WidgetRegistry widgetRegistry = new DefaultWidgetRegistry(classPool, classLoader, reflections);
 
-			Map<String, ComponentNameTransformer> transformers = ComponentMojoUtil.getAllTransformers(classPool,
-				reflections);
+			TouchUIWidgetRegistry touchUIWidgetRegistry =
+				new DefaultTouchUIWidgetRegistry(classPool, classLoader, reflections);
+
+			Map<String, ComponentNameTransformer> transformers =
+				ComponentMojoUtil.getAllTransformers(classPool, reflections);
 
 			ComponentNameTransformer transformer = transformers.get(transformerName);
 
@@ -98,9 +107,10 @@ public class ComponentMojo extends AbstractMojo {
 				throw new ConfigurationException("The configured transformer wasn't found");
 			}
 
-			ComponentMojoUtil.buildArchiveFileForProjectAndClassList(classList, widgetRegistry, classLoader, classPool,
-				new File(project.getBuild().getDirectory()), componentPathBase, componentPathSuffix,
-				defaultComponentGroup, getArchiveFileForProject(), getTempArchiveFileForProject(), transformer);
+			ComponentMojoUtil.buildArchiveFileForProjectAndClassList(classList, widgetRegistry, touchUIWidgetRegistry,
+				classLoader, classPool, new File(project.getBuild().getDirectory()), componentPathBase,
+				componentPathSuffix, defaultComponentGroup, getArchiveFileForProject(), getTempArchiveFileForProject(),
+				transformer, generateTouchUiDialogs);
 
 		} catch (Exception e) {
 			getLog().error(e.getMessage(), e);
@@ -116,8 +126,8 @@ public class ComponentMojo extends AbstractMojo {
 		List<String> excludedDependencyPaths = getExcludedDependencyPaths();
 
 		if (excludedDependencyPaths != null) {
-			ClassLoader exclusionClassLoader = ComponentMojoUtil.getClassLoader(excludedDependencyPaths, this
-				.getClass().getClassLoader());
+			ClassLoader exclusionClassLoader =
+				ComponentMojoUtil.getClassLoader(excludedDependencyPaths, this.getClass().getClassLoader());
 
 			Reflections reflections = ComponentMojoUtil.getReflections(exclusionClassLoader);
 
@@ -148,8 +158,8 @@ public class ComponentMojo extends AbstractMojo {
 				String referenceIdentifier = curArtifact.getGroupId() + ":" + curArtifact.getArtifactId();
 
 				if (excludedArtifactIdentifiers.contains(referenceIdentifier)) {
-					MavenProject identifiedProject = (MavenProject) project.getProjectReferences().get(
-						referenceIdentifier);
+					MavenProject identifiedProject =
+						(MavenProject) project.getProjectReferences().get(referenceIdentifier);
 					if (identifiedProject != null) {
 						excludedClasspathElements.add(identifiedProject.getBuild().getOutputDirectory());
 						getLog().debug("Excluding " + identifiedProject.getBuild().getOutputDirectory());
@@ -190,5 +200,4 @@ public class ComponentMojo extends AbstractMojo {
 
 		return new File(buildDirectory, zipFileName);
 	}
-
 }

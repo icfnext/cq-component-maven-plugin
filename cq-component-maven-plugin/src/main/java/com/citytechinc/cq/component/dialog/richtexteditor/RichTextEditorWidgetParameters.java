@@ -15,10 +15,10 @@
  */
 package com.citytechinc.cq.component.dialog.richtexteditor;
 
-import com.citytechinc.cq.component.dialog.widget.WidgetParameters;
+import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 import com.citytechinc.cq.component.util.Constants;
 
-public class RichTextEditorWidgetParameters extends WidgetParameters {
+public class RichTextEditorWidgetParameters extends DefaultWidgetParameters {
 
 	@Override
 	public String getPrimaryType() {

@@ -15,10 +15,10 @@
  */
 package com.citytechinc.cq.component.dialog.html5smartimage;
 
-import com.citytechinc.cq.component.dialog.widget.WidgetParameters;
+import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 import com.citytechinc.cq.component.util.Constants;
 
-public class Html5SmartImageWidgetParameters extends WidgetParameters {
+public class Html5SmartImageWidgetParameters extends DefaultWidgetParameters {
 	private String originalName;
 	private boolean disableFlush;
 	private boolean disableInfo;

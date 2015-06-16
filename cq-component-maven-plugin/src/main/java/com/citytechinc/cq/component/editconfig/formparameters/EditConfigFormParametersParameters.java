@@ -16,9 +16,9 @@
 package com.citytechinc.cq.component.editconfig.formparameters;
 
 import com.citytechinc.cq.component.util.Constants;
-import com.citytechinc.cq.component.xml.XmlElementParameters;
+import com.citytechinc.cq.component.xml.DefaultXmlElementParameters;
 
-public class EditConfigFormParametersParameters extends XmlElementParameters {
+public class EditConfigFormParametersParameters extends DefaultXmlElementParameters {
 	@Override
 	public String getNameSpace() {
 		return Constants.CQ_NS_URI;

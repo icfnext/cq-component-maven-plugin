@@ -84,8 +84,8 @@ public class ContentFactory {
 				if (contentProp.namespace().isEmpty()) {
 					additionalProperties.put(contentProp.name(), contentProp.value());
 				} else {
-					NameSpacedAttribute<String> nsa = new NameSpacedAttribute<String>(contentProp.namespace(), null,
-						contentProp.value());
+					NameSpacedAttribute<String> nsa =
+						new NameSpacedAttribute<String>(contentProp.namespace(), null, contentProp.value());
 					additionalProperties.put(contentProp.name(), nsa);
 				}
 			}

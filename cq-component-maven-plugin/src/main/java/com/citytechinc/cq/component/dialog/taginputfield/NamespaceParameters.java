@@ -15,9 +15,9 @@
  */
 package com.citytechinc.cq.component.dialog.taginputfield;
 
-import com.citytechinc.cq.component.dialog.DialogElementParameters;
+import com.citytechinc.cq.component.dialog.DefaultDialogElementParameters;
 
-public class NamespaceParameters extends DialogElementParameters {
+public class NamespaceParameters extends DefaultDialogElementParameters {
 	private String name;
 	private String maximum;
 

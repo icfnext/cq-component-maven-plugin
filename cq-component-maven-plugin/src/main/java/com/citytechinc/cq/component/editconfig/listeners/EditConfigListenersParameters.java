@@ -18,9 +18,9 @@ package com.citytechinc.cq.component.editconfig.listeners;
 import java.util.Map;
 
 import com.citytechinc.cq.component.util.Constants;
-import com.citytechinc.cq.component.xml.XmlElementParameters;
+import com.citytechinc.cq.component.xml.DefaultXmlElementParameters;
 
-public class EditConfigListenersParameters extends XmlElementParameters {
+public class EditConfigListenersParameters extends DefaultXmlElementParameters {
 	private static final String EDIT_CONFIG_LISENERS_PRIMARY_TYPE = "cq:EditListenersConfig";
 	private Map<String, String> listeners;
 

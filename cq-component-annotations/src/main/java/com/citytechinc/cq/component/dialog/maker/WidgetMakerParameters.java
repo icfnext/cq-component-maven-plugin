@@ -24,8 +24,7 @@ import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldExcept
 import com.citytechinc.cq.component.dialog.widget.WidgetRegistry;
 
 /**
- * Base parameters which all Widgets use during their creation. This class may
- * be extended to support additional parameters needed for custom widget types.
+ * Base parameters which all Widgets use during their creation.
  *
  */
 public class WidgetMakerParameters {

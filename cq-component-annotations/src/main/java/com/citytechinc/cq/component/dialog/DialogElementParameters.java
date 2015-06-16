@@ -15,25 +15,14 @@
  */
 package com.citytechinc.cq.component.dialog;
 
-import com.citytechinc.cq.component.xml.XmlElementParameters;
+public interface DialogElementParameters {
 
-public class DialogElementParameters extends XmlElementParameters {
-	protected double ranking;
-	protected Listeners listeners;
+	public abstract double getRanking();
 
-	public double getRanking() {
-		return ranking;
-	}
+	public abstract void setRanking(double ranking);
 
-	public void setRanking(double ranking) {
-		this.ranking = ranking;
-	}
+	public abstract Listeners getListeners();
 
-	public Listeners getListeners() {
-		return listeners;
-	}
+	public abstract void setListeners(Listeners listeners);
 
-	public void setListeners(Listeners listeners) {
-		this.listeners = listeners;
-	}
 }

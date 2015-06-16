@@ -40,8 +40,8 @@ public class DefaultWidgetRegistry implements WidgetRegistry {
 
 		LogSingleton LOG = LogSingleton.getInstance();
 
-		List<WidgetConfigHolder> widgetConfigs = ComponentMojoUtil.getAllWidgetAnnotations(classPool, classLoader,
-			reflections);
+		List<WidgetConfigHolder> widgetConfigs =
+			ComponentMojoUtil.getAllWidgetAnnotations(classPool, classLoader, reflections);
 
 		LOG.debug(widgetConfigs.size() + " Widget Configurations found");
 

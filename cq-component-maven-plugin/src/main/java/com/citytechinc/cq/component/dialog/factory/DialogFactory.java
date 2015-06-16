@@ -128,29 +128,29 @@ public class DialogFactory {
 					dialogFieldConfig = DialogUtil.getDialogFieldFromSuperClasses((CtMethod) member);
 				} else {
 					if (member.hasAnnotation(DialogField.class)) {
-						dialogFieldConfig = new DialogFieldConfig(
-							(DialogField) member.getAnnotation(DialogField.class), member);
+						dialogFieldConfig =
+							new DialogFieldConfig((DialogField) member.getAnnotation(DialogField.class), member);
 					}
 				}
 
 				if (dialogFieldConfig != null) {
-
-					WidgetMakerParameters parameters = new WidgetMakerParameters(dialogFieldConfig, trueComponentClass,
-						classLoader, classPool, widgetRegistry, null, true);
+					WidgetMakerParameters parameters =
+						new WidgetMakerParameters(dialogFieldConfig, trueComponentClass, classLoader, classPool,
+							widgetRegistry, null, true);
 
 					DialogElement builtFieldWidget = WidgetFactory.make(parameters, -1);
+					if (builtFieldWidget != null) {
+						builtFieldWidget.setRanking(dialogFieldConfig.getRanking());
 
-					builtFieldWidget.setRanking(dialogFieldConfig.getRanking());
+						int tabIndex = dialogFieldConfig.getTab();
 
-					int tabIndex = dialogFieldConfig.getTab();
+						if (tabIndex < 1 || tabIndex > tabsList.size()) {
+							throw new InvalidComponentFieldException("Invalid tab index " + tabIndex + " for field "
+								+ dialogFieldConfig.getFieldName());
+						}
 
-					if (tabIndex < 1 || tabIndex > tabsList.size()) {
-						throw new InvalidComponentFieldException("Invalid tab index " + tabIndex + " for field "
-							+ dialogFieldConfig.getFieldName());
+						tabsList.get(tabIndex - 1).addElement(builtFieldWidget);
 					}
-
-					tabsList.get(tabIndex - 1).addElement(builtFieldWidget);
-
 				}
 			}
 		}

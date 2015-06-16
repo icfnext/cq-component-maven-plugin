@@ -58,7 +58,7 @@ class GenerateComponentsTask extends DefaultTask{
 
 		ComponentMojoUtil.buildArchiveFileForProjectAndClassList(classList, widgetRegistry, classLoader, classPool,
 				project.buildDir, project.componentPlugin.componentPathBase, project.componentPlugin.componentPathSuffix,
-				project.componentPlugin.defaultComponentGroup, getArchiveFileForProject(), getTempArchiveFileForProject(), transformer)
+				project.componentPlugin.defaultComponentGroup, getArchiveFileForProject(), getTempArchiveFileForProject(), transformer, componentPlugin.generateTouchUiDialogs)
 	}
 
 	def File getArchiveFileForProject() {

@@ -21,14 +21,18 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Represents a Widget of type CQ.html5.form.SmartFile
+ * Represents a Widget of type CQ.html5.form.SmartFile in Classic UI
  *
+ * Represents a Widget of type granite/ui/components/foundation/form/fileupload
+ * in Touch UI
  */
 @Retention(RetentionPolicy.CLASS)
 @Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface Html5SmartFile {
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * The field's HTML name attribute
 	 *
 	 * @return String
@@ -36,6 +40,8 @@ public @interface Html5SmartFile {
 	public String name() default "";
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * True if the name of an uploaded file is editable
 	 *
 	 * @return boolean
@@ -43,6 +49,8 @@ public @interface Html5SmartFile {
 	public boolean allowFileNameEditing() default true;
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * Flag if referencing a file is allowed
 	 *
 	 * @return boolean
@@ -50,6 +58,8 @@ public @interface Html5SmartFile {
 	public boolean allowFileReference() default true;
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * Flag if uploading a file is allowed
 	 *
 	 * @return boolean
@@ -57,6 +67,8 @@ public @interface Html5SmartFile {
 	public boolean allowUpload() default true;
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * MIME type definition of files that are allowed for referencing using drag
 	 * & drop
 	 *
@@ -65,6 +77,8 @@ public @interface Html5SmartFile {
 	public String ddAccept() default "*";
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * Groups involved in drag & drop
 	 *
 	 * @return String[]
@@ -102,6 +116,8 @@ public @interface Html5SmartFile {
 	// support
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * MIME types allowed for uploading (each separated by a semicolon; wildcard
 	 * * is allowed; for example: "*.*" or "*.jpg;*.gif;*.png" (defaults to
 	 * "*.*".) Also support MIME type syntax; for example (image/jpg or image/*)
@@ -111,6 +127,19 @@ public @interface Html5SmartFile {
 	public String mimeTypes() default "*.*";
 
 	/**
+	 * Used for Touch UI only
+	 *
+	 * The list of mime types allowed for upload. This must be defined uniquely
+	 * for Touch UI as the ExtJS allows different extension and wild card
+	 * semantics than the Touch UI variant.
+	 *
+	 * @return String[]
+	 */
+	public String[] touchUIMimeTypes() default {};
+
+	/**
+	 * Used for Classic UI only
+	 *
 	 * A String that describes the allowed MIME types
 	 *
 	 * @return String
@@ -123,4 +152,87 @@ public @interface Html5SmartFile {
 	 * @return int
 	 */
 	public int sizeLimit() default 0;
+
+	/**
+	 * Used for Touch UI Only
+	 *
+	 * Indicates that multiple files may be uploaded
+	 *
+	 * @return boolean
+	 */
+	public boolean multiple() default false;
+
+	/**
+	 * Used for Touch UI Only
+	 *
+	 * URL where to upload the file, you can use <code>${suffix.path}</code>
+	 *
+	 * @return String
+	 */
+	public String uploadUrl() default "${suffix.path}";
+
+	/**
+	 * Used for Touch UI Only
+	 *
+	 * The AEM documentation indicates that this should be an upload URL builder
+	 *
+	 * @return String
+	 */
+	public String uploadUrlBuilder() default "";
+
+	/**
+	 * Used for Touch UI Only
+	 *
+	 * If <code>true</code>, upload starts automatically once the file is
+	 * selected
+	 *
+	 * @return boolean
+	 */
+	public boolean autoStart() default false;
+
+	/**
+	 * Used for Touch UI Only
+	 *
+	 * Prefer HTML5 to upload files (if browser allows it)
+	 *
+	 * @return boolean
+	 */
+	public boolean useHtml5() default true;
+
+	/**
+	 * Used for Touch UI Only
+	 *
+	 * Drop zone selector to upload files from file system directly (if browser
+	 * allows it)
+	 *
+	 * @return String
+	 */
+	public String dropZone() default "";
+
+	/**
+	 * Used for Touch UI Only
+	 *
+	 * The title associated with the upload button
+	 *
+	 * @return String
+	 */
+	public String title() default "";
+
+	/**
+	 * Used for Touch UI Only
+	 *
+	 * The text of the button
+	 *
+	 * @return String
+	 */
+	public String text() default "";
+
+	/**
+	 * Used for Touch UI Only
+	 *
+	 * The icon of the button
+	 *
+	 * @return String
+	 */
+	public String icon() default "";
 }

@@ -21,14 +21,18 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Represents a Widget of type CQ.Ext.form.Checkbox
+ * Represents a Widget of type CQ.Ext.form.Checkbox in Classic UI
  *
+ * Represents a Widget of type granite/ui/components/foundation/form/checkbox in
+ * Touch UI
  */
 @Retention(RetentionPolicy.CLASS)
 @Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface CheckBox {
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * The value that should go into the generated input element's value
 	 * attribute
 	 *
@@ -42,4 +46,18 @@ public @interface CheckBox {
 	 * @return boolean
 	 */
 	boolean checked() default false;
+
+	/**
+	 * Used for Touch UI only
+	 *
+	 * @return String
+	 */
+	String text() default "";
+
+	/**
+	 * Used for Touch UI only
+	 *
+	 * @return String
+	 */
+	String title() default "";
 }

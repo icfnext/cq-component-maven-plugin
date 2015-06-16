@@ -17,9 +17,9 @@ package com.citytechinc.cq.component.dialog.widgetcollection;
 
 import org.codehaus.plexus.util.StringUtils;
 
-import com.citytechinc.cq.component.dialog.DialogElementParameters;
+import com.citytechinc.cq.component.dialog.DefaultDialogElementParameters;
 
-public class WidgetCollectionParameters extends DialogElementParameters {
+public class WidgetCollectionParameters extends DefaultDialogElementParameters {
 	private static final String PRIMARY_TYPE = "cq:WidgetCollection";
 	private static final String DEFAULT_FIELD_NAME = "items";
 

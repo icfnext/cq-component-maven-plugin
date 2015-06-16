@@ -131,8 +131,9 @@ public class EditConfigUtil {
 
 				builtEditConfigs.add(builtEditConfig);
 
-				File editConfigFile = writeEditConfigToFile(transformer, builtEditConfig, curClass, buildDirectory,
-					componentPathBase, defaultComponentPathSuffix);
+				File editConfigFile =
+					writeEditConfigToFile(transformer, builtEditConfig, curClass, buildDirectory, componentPathBase,
+						defaultComponentPathSuffix);
 				writeEditConfigToArchiveFile(transformer, editConfigFile, curClass, zipOutputStream, reservedNames,
 					componentPathBase, defaultComponentPathSuffix);
 			}

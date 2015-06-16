@@ -19,7 +19,8 @@ import com.citytechinc.cq.component.annotations.config.Widget;
 import com.citytechinc.cq.component.annotations.widgets.Html5SmartFile;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
 
-@Widget(annotationClass = Html5SmartFile.class, makerClass = Html5SmartFileWidgetMaker.class, xtype = Html5SmartFileWidget.XTYPE)
+@Widget(annotationClass = Html5SmartFile.class, makerClass = Html5SmartFileWidgetMaker.class,
+	xtype = Html5SmartFileWidget.XTYPE)
 public class Html5SmartFileWidget extends AbstractWidget {
 
 	public static final String XTYPE = "html5smartfile";

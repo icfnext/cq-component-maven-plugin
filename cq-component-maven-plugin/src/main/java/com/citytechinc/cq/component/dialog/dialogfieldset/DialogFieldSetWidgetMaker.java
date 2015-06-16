@@ -45,7 +45,7 @@ import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollection;
 import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollectionParameters;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 
-public class DialogFieldSetWidgetMaker extends AbstractWidgetMaker {
+public class DialogFieldSetWidgetMaker extends AbstractWidgetMaker<DialogFieldSetWidgetParameters> {
 
 	public DialogFieldSetWidgetMaker(WidgetMakerParameters parameters) {
 		super(parameters);
@@ -54,20 +54,14 @@ public class DialogFieldSetWidgetMaker extends AbstractWidgetMaker {
 	private static final String ITEMS = "items";
 
 	@Override
-	public DialogElement make() throws ClassNotFoundException, SecurityException, InvalidComponentFieldException,
-		NotFoundException, CannotCompileException, NoSuchFieldException, InstantiationException,
-		IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
+	public DialogElement make(DialogFieldSetWidgetParameters widgetParameters) throws ClassNotFoundException,
+		SecurityException, InvalidComponentFieldException, NotFoundException, CannotCompileException,
+		NoSuchFieldException, InstantiationException, IllegalAccessException, IllegalArgumentException,
+		InvocationTargetException, NoSuchMethodException {
 
 		DialogFieldSet dialogFieldSetAnnotation = getAnnotation(DialogFieldSet.class);
-
-		DialogFieldSetWidgetParameters widgetParameters = new DialogFieldSetWidgetParameters();
-
-		widgetParameters.setFieldName(getFieldNameForField());
-		widgetParameters.setFieldLabel(getFieldLabelForField());
-		widgetParameters.setFieldDescription(getFieldDescriptionForField());
-		widgetParameters.setAdditionalProperties(getAdditionalPropertiesForField());
-		widgetParameters.setHideLabel(getHideLabelForField());
-
+		widgetParameters.setName(null);
+		widgetParameters.setAllowBlank(false);
 		widgetParameters.setCollapseFirst(dialogFieldSetAnnotation.collapseFirst());
 		widgetParameters.setCollapsible(dialogFieldSetAnnotation.collapsible());
 		widgetParameters.setCollapsed(dialogFieldSetAnnotation.collapsed());
@@ -77,7 +71,6 @@ public class DialogFieldSetWidgetMaker extends AbstractWidgetMaker {
 			title = dialogFieldSetAnnotation.title();
 		}
 		widgetParameters.setTitle(title);
-		widgetParameters.setListeners(getListeners());
 		widgetParameters.setContainedElements(buildWidgetCollection(dialogFieldSetAnnotation));
 
 		return new DialogFieldSetWidget(widgetParameters);
@@ -107,8 +100,8 @@ public class DialogFieldSetWidgetMaker extends AbstractWidgetMaker {
 					}
 				} else {
 					if (member.hasAnnotation(DialogField.class)) {
-						dialogFieldConfig = new DialogFieldConfig(
-							(DialogField) member.getAnnotation(DialogField.class), member);
+						dialogFieldConfig =
+							new DialogFieldConfig((DialogField) member.getAnnotation(DialogField.class), member);
 					}
 				}
 
@@ -117,29 +110,31 @@ public class DialogFieldSetWidgetMaker extends AbstractWidgetMaker {
 
 					double ranking = dialogFieldConfig.getRanking();
 
-					WidgetMakerParameters curFieldMember = new WidgetMakerParameters(dialogFieldConfig, fieldClass,
-						parameters.getClassLoader(), parameters.getClassPool(), parameters.getWidgetRegistry(), null,
-						true);
+					WidgetMakerParameters curFieldMember =
+						new WidgetMakerParameters(dialogFieldConfig, fieldClass, parameters.getClassLoader(),
+							parameters.getClassPool(), parameters.getWidgetRegistry(), null, true);
 
 					DialogElement builtFieldWidget = WidgetFactory.make(curFieldMember, -1);
-					if (builtFieldWidget instanceof AbstractWidget
-						&& StringUtils.isNotEmpty(dialogFieldSetAnnotation.namePrefix())) {
-						AbstractWidget widget = (AbstractWidget) builtFieldWidget;
-						String name = widget.getName();
-						String newName;
-						if (name.startsWith("./")) {
-							newName = name.substring(2);
-						} else {
-							newName = name;
+					if (builtFieldWidget != null) {
+						if (builtFieldWidget instanceof AbstractWidget
+							&& StringUtils.isNotEmpty(dialogFieldSetAnnotation.namePrefix())) {
+							AbstractWidget widget = (AbstractWidget) builtFieldWidget;
+							String name = widget.getName();
+							String newName;
+							if (name.startsWith("./")) {
+								newName = name.substring(2);
+							} else {
+								newName = name;
+							}
+							newName = dialogFieldSetAnnotation.namePrefix() + newName;
+							if (name.startsWith("./")) {
+								newName = "./" + newName;
+							}
+							widget.setName(newName);
 						}
-						newName = dialogFieldSetAnnotation.namePrefix() + newName;
-						if (name.startsWith("./")) {
-							newName = "./" + newName;
-						}
-						widget.setName(newName);
+						builtFieldWidget.setRanking(ranking);
+						elements.add(builtFieldWidget);
 					}
-					builtFieldWidget.setRanking(ranking);
-					elements.add(builtFieldWidget);
 				}
 			}
 		}

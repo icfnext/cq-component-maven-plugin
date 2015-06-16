@@ -16,9 +16,9 @@
 package com.citytechinc.cq.component.editconfig.droptargets;
 
 import com.citytechinc.cq.component.util.Constants;
-import com.citytechinc.cq.component.xml.XmlElementParameters;
+import com.citytechinc.cq.component.xml.DefaultXmlElementParameters;
 
-public class EditConfigDropTargetsParameters extends XmlElementParameters {
+public class EditConfigDropTargetsParameters extends DefaultXmlElementParameters {
 	@Override
 	public String getNameSpace() {
 		return Constants.CQ_NS_URI;

@@ -15,10 +15,10 @@
  */
 package com.citytechinc.cq.component.dialog.numberfield;
 
-import com.citytechinc.cq.component.dialog.widget.WidgetParameters;
+import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 import com.citytechinc.cq.component.util.Constants;
 
-public class NumberFieldWidgetParameters extends WidgetParameters {
+public class NumberFieldWidgetParameters extends DefaultWidgetParameters {
 	private boolean allowDecimals;
 	private boolean allowNegative;
 	private int decimalPrecision;

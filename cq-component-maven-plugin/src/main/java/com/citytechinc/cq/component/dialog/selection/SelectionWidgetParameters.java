@@ -15,10 +15,10 @@
  */
 package com.citytechinc.cq.component.dialog.selection;
 
-import com.citytechinc.cq.component.dialog.widget.WidgetParameters;
+import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 import com.citytechinc.cq.component.util.Constants;
 
-public class SelectionWidgetParameters extends WidgetParameters {
+public class SelectionWidgetParameters extends DefaultWidgetParameters {
 	private String type;
 	private String options;
 	private String optionsProvider;

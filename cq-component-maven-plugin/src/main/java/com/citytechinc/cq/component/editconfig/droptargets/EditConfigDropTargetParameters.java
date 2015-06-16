@@ -15,9 +15,9 @@
  */
 package com.citytechinc.cq.component.editconfig.droptargets;
 
-import com.citytechinc.cq.component.xml.XmlElementParameters;
+import com.citytechinc.cq.component.xml.DefaultXmlElementParameters;
 
-public class EditConfigDropTargetParameters extends XmlElementParameters {
+public class EditConfigDropTargetParameters extends DefaultXmlElementParameters {
 	private String[] accept;
 	private String[] groups;
 	private String propertyName;

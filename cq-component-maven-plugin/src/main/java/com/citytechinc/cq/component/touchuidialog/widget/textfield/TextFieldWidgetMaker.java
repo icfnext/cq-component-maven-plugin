@@ -28,6 +28,7 @@ public class TextFieldWidgetMaker extends AbstractTouchUIWidgetMaker<DefaultTouc
 
 	@Override
 	public TouchUIDialogElement make(DefaultTouchUIWidgetParameters widgetParameters) {
+		widgetParameters.setResourceType(TextFieldWidget.RESOURCE_TYPE);
 		return new TextFieldWidget(widgetParameters);
 	}
 

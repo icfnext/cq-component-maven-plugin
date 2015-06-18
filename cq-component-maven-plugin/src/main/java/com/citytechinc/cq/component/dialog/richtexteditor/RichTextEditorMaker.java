@@ -538,7 +538,11 @@ public class RichTextEditorMaker extends AbstractWidgetMaker<RichTextEditorWidge
 	}
 
 	private String convertFeatures(List<String> features) {
-		return "[" + StringUtils.join(features.iterator(), ",") + "]";
+		if (features.size() > 0) {
+			return "[" + StringUtils.join(features.iterator(), ",") + "]";
+		} else {
+			return "-";
+		}
 	}
 
 	private RtePlugin buildLinksPlugin(RichTextEditor rteAnnotation) {

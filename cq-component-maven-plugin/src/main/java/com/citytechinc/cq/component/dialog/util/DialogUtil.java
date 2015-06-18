@@ -27,7 +27,6 @@ import java.util.Set;
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
-import javassist.CtField;
 import javassist.CtMember;
 import javassist.CtMethod;
 import javassist.NotFoundException;
@@ -38,12 +37,10 @@ import javax.xml.transform.TransformerException;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.codehaus.plexus.util.StringUtils;
 
-import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.DialogFieldOverride;
 import com.citytechinc.cq.component.annotations.FieldProperty;
 import com.citytechinc.cq.component.annotations.Listener;
-import com.citytechinc.cq.component.annotations.Tab;
 import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
 import com.citytechinc.cq.component.dialog.Dialog;
 import com.citytechinc.cq.component.dialog.DialogFieldConfig;
@@ -151,47 +148,16 @@ public class DialogUtil {
 		final List<Dialog> dialogList = new ArrayList<Dialog>();
 
 		for (CtClass curClass : classList) {
-			ComponentMojoUtil.getLog().debug("Checking class for Component annotation " + curClass);
 
-			Component componentAnnotation = (Component) curClass.getAnnotation(Component.class);
-
-			// If the ExtJS dialog was explicitly suppressed for this Component,
-			// skip it
-
-			boolean hasDialogFieldOrCQIncludeTab = false;
-			for (CtField curField : ComponentMojoUtil.collectFields(curClass)) {
-				if (curField.hasAnnotation(DialogField.class)) {
-					hasDialogFieldOrCQIncludeTab = true;
-					break;
-				}
-			}
-			if (!hasDialogFieldOrCQIncludeTab) {
-				for (CtMethod curMethod : ComponentMojoUtil.collectMethods(curClass)) {
-					if (curMethod.hasAnnotation(DialogField.class)) {
-						hasDialogFieldOrCQIncludeTab = true;
-						break;
-					}
-				}
-			}
-			if (!hasDialogFieldOrCQIncludeTab) {
-				for (Tab tab : componentAnnotation.tabs()) {
-					if (StringUtils.isNotEmpty(tab.path())) {
-						hasDialogFieldOrCQIncludeTab = true;
-						break;
-					}
-				}
-			}
-			if (hasDialogFieldOrCQIncludeTab) {
-				ComponentMojoUtil.getLog().debug("Processing Component Class " + curClass);
-				Dialog builtDialog = DialogFactory.make(curClass, widgetRegistry, classLoader, classPool);
-				dialogList.add(builtDialog);
-				File dialogFile =
-					writeDialogToFile(transformer, builtDialog, curClass, buildDirectory, componentPathBase,
-						defaultComponentPathSuffix);
-				writeDialogToArchiveFile(transformer, dialogFile, curClass, zipOutputStream, reservedNames,
-					componentPathBase, defaultComponentPathSuffix);
-			}
-
+			ComponentMojoUtil.getLog().debug("Processing Component Class " + curClass);
+			Dialog builtDialog = DialogFactory.make(curClass, widgetRegistry, classLoader, classPool);
+			dialogList.add(builtDialog);
+			File dialogFile =
+				writeDialogToFile(transformer, builtDialog, curClass, buildDirectory, componentPathBase,
+					defaultComponentPathSuffix);
+			writeDialogToArchiveFile(transformer, dialogFile, curClass, zipOutputStream, reservedNames,
+				componentPathBase, defaultComponentPathSuffix);
+			dialogList.add(builtDialog);
 		}
 
 		return dialogList;

@@ -28,13 +28,25 @@ public @interface Tab {
 	String title() default "";
 
 	/**
+	 * Applicable to Classic-UI only
+	 * 
 	 * Defines the path to the Tab definition in the content repository. This
 	 * property may be used when the Tab is to be populated in the rendered
 	 * dialog using an existing definition in the repository.
 	 *
 	 * @return String
 	 */
-	String path() default "";
+	String classicUIPath() default "";
+
+	/**
+	 * Applicable to Touch-UI only
+	 * 
+	 * Defines the path to the Tab definition in the content repository. This
+	 * property may be used when the Tab is to be populated in the rendered
+	 * dialog using an existing definition in the repository.
+	 * 
+	 */
+	String touchUIPath() default "";
 
 	/**
 	 * The set of listeners which will be attributed to the tab. Listeners are

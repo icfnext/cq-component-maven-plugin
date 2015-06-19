@@ -20,7 +20,7 @@ import com.citytechinc.cq.component.xml.XmlElement;
 
 public interface TouchUIDialogElement extends XmlElement {
 
-	public NameSpacedAttribute<String> getResourceType();
+	public NameSpacedAttribute<String> getSlingResourceType();
 
 	public void setFieldName(String fieldName);
 

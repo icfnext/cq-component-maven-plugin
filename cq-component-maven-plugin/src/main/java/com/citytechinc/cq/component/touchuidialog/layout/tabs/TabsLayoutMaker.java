@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.codehaus.plexus.util.StringUtils;
+
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.Tab;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
@@ -92,27 +94,32 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
 		List<ColumnParameters> tabContentParametersList = new ArrayList<ColumnParameters>();
 		if (componentAnnotation.tabs().length > 0) {
 			for (Tab currentTabAnnotation : componentAnnotation.tabs()) {
-				SectionParameters currentTabParameters = new SectionParameters();
+				if (StringUtils.isNotEmpty(currentTabAnnotation.title())
+					&& StringUtils.isNotEmpty(currentTabAnnotation.touchUIPath())) {
+					throw new LayoutMakerException("Tabs can have only a path or a title");
+				}
+				if (StringUtils.isNotEmpty(currentTabAnnotation.title())
+					|| StringUtils.isNotEmpty(currentTabAnnotation.touchUIPath())) {
+					SectionParameters currentTabParameters = new SectionParameters();
+					if (StringUtils.isNotEmpty(currentTabAnnotation.title())) {
+						currentTabParameters.setTitle(currentTabAnnotation.title());
+						LayoutElement currentTabLayoutElement =
+							new FixedColumnsLayoutElement(new FixedColumnsLayoutElementParameters());
+						currentTabParameters.setLayoutElement(currentTabLayoutElement);
+						ColumnParameters tabContentParameters = new ColumnParameters();
+						tabContentParameters.setFieldName("column");
+						tabContentParametersList.add(tabContentParameters);
+					}
 
-				currentTabParameters.setTitle(currentTabAnnotation.title());
-
-				// Determine the layout to use for the Tab
-				// TODO: This probably needs to allow for dynamic in tab layout
-				// at some point
-				LayoutElement currentTabLayoutElement =
-					new FixedColumnsLayoutElement(new FixedColumnsLayoutElementParameters());
-				currentTabParameters.setLayoutElement(currentTabLayoutElement);
-
-				// Based on the layout set up container parameters to match the
-				// tab parameters
-				// TODO: This probably needs to allow for dynamic in tab layout
-				// at some point
-				ColumnParameters tabContentParameters = new ColumnParameters();
-				tabContentParameters.setFieldName("column");
-
-				tabContentParametersList.add(tabContentParameters);
-				tabParametersList.add(currentTabParameters);
-
+					if (StringUtils.isNotEmpty(currentTabAnnotation.touchUIPath())) {
+						currentTabParameters.setPath(currentTabAnnotation.touchUIPath());
+						tabContentParametersList.add(null);
+					}
+					tabParametersList.add(currentTabParameters);
+				} else {
+					tabContentParametersList.add(null);
+					tabParametersList.add(null);
+				}
 			}
 		} else {
 			SectionParameters currentTabParameters = new SectionParameters();
@@ -167,18 +174,22 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
 
 		// Add content to all the tabs
 		for (int i = 0; i < tabParametersList.size(); i++) {
-			Collections.sort(tabContentParametersList.get(i).getItems(), new TouchUIDialogElementComparator());
-			tabParametersList.get(i).addItem(new Column(tabContentParametersList.get(i)));
+			if (tabContentParametersList.get(i) != null) {
+				Collections.sort(tabContentParametersList.get(i).getItems(), new TouchUIDialogElementComparator());
+				tabParametersList.get(i).addItem(new Column(tabContentParametersList.get(i)));
+			}
 		}
 
 		// Create all the Tabs
 		List<Section> tabs = new ArrayList<Section>();
 		for (int i = 0; i < tabParametersList.size(); i++) {
-			SectionParameters currentSectionParameters = tabParametersList.get(i);
+			if (tabParametersList.get(i) != null) {
+				SectionParameters currentSectionParameters = tabParametersList.get(i);
 
-			currentSectionParameters.setFieldName("tab_" + i);
+				currentSectionParameters.setFieldName("tab_" + i);
 
-			tabs.add(new Section(currentSectionParameters));
+				tabs.add(new Section(currentSectionParameters));
+			}
 		}
 
 		itemsParameters.setContainedElements(tabs);

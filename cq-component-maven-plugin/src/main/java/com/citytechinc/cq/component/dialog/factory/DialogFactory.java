@@ -85,30 +85,34 @@ public class DialogFactory {
 			tabsList.add(tabHolder);
 		} else {
 			for (com.citytechinc.cq.component.annotations.Tab tab : componentAnnotation.tabs()) {
-				if (StringUtils.isNotEmpty(tab.title()) && StringUtils.isNotEmpty(tab.path())) {
+				if (StringUtils.isNotEmpty(tab.title()) && StringUtils.isNotEmpty(tab.classicUIPath())) {
 					throw new InvalidComponentClassException("Tabs can have only a path or a title");
 				}
-				TabHolder tabHolder = new TabHolder();
-				if (StringUtils.isNotEmpty(tab.title())) {
-					tabHolder.setTitle(tab.title());
-				}
+				if (StringUtils.isNotEmpty(tab.title()) || StringUtils.isNotEmpty(tab.classicUIPath())) {
+					TabHolder tabHolder = new TabHolder();
+					if (StringUtils.isNotEmpty(tab.title())) {
+						tabHolder.setTitle(tab.title());
+					}
 
-				Listener[] listeners = tab.listeners();
+					Listener[] listeners = tab.listeners();
 
-				if (listeners.length > 0) {
-					ListenersParameters parameters = new ListenersParameters();
-					parameters.setListenerAnnotations(listeners);
-					tabHolder.setListeners(new Listeners(parameters));
-				}
+					if (listeners.length > 0) {
+						ListenersParameters parameters = new ListenersParameters();
+						parameters.setListenerAnnotations(listeners);
+						tabHolder.setListeners(new Listeners(parameters));
+					}
 
-				if (StringUtils.isNotEmpty(tab.path())) {
-					CQIncludeParameters params = new CQIncludeParameters();
-					params.setFieldName(DEFAULT_TAB_FIELD_NAME + tabsList.size());
-					params.setPath(tab.path());
-					CQInclude cqincludes = new CQInclude(params);
-					tabHolder.addElement(cqincludes);
+					if (StringUtils.isNotEmpty(tab.classicUIPath())) {
+						CQIncludeParameters params = new CQIncludeParameters();
+						params.setFieldName(DEFAULT_TAB_FIELD_NAME + tabsList.size());
+						params.setPath(tab.classicUIPath());
+						CQInclude cqincludes = new CQInclude(params);
+						tabHolder.addElement(cqincludes);
+					}
+					tabsList.add(tabHolder);
+				} else {
+					tabsList.add(null);
 				}
-				tabsList.add(tabHolder);
 			}
 		}
 		List<CtMember> fieldsAndMethods = new ArrayList<CtMember>();
@@ -158,7 +162,9 @@ public class DialogFactory {
 		List<DialogElement> tabList = new ArrayList<DialogElement>();
 
 		for (TabHolder tab : tabsList) {
-			tabList.add(buildTabForDialogElementSet(tab));
+			if (tab != null) {
+				tabList.add(buildTabForDialogElementSet(tab));
+			}
 		}
 
 		Integer width = null;

@@ -28,7 +28,7 @@ public abstract class AbstractTouchUIDialogElement extends AbstractXmlElement im
 		super(parameters);
 
 		resourceType =
-			new NameSpacedAttribute<String>(Constants.SLING_NS_URI, Constants.SLING_NS_PREFIX,
+			new NameSpacedAttribute<String>(Constants.SLING_NS_URI, Constants.SLING_NS_PREFIX, "resourceType",
 				parameters.getResourceType());
 	}
 
@@ -40,7 +40,7 @@ public abstract class AbstractTouchUIDialogElement extends AbstractXmlElement im
 		this.ranking = ranking;
 	}
 
-	public NameSpacedAttribute<String> getResourceType() {
+	public NameSpacedAttribute<String> getSlingResourceType() {
 		return resourceType;
 	}
 

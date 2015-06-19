@@ -105,8 +105,8 @@ public class XmlWriter {
 							Object value = entry.getValue();
 							if (value instanceof NameSpacedAttribute<?>) {
 								NameSpacedAttribute<?> nsa = (NameSpacedAttribute<?>) value;
-								setPropertyOnElement(createdElement, nsa.getNameSpace(), nsa.getNameSpacePrefix(), key,
-									nsa.getValue());
+								setPropertyOnElement(createdElement, nsa.getNameSpace(), nsa.getNameSpacePrefix(),
+									StringUtils.isNotEmpty(nsa.getName()) ? nsa.getName() : key, nsa.getValue());
 							} else {
 								setPropertyOnElement(createdElement, null, null, key, value);
 							}
@@ -123,7 +123,7 @@ public class XmlWriter {
 								nsaObject = generateStringFromArray(arrayReturn);
 							}
 							setPropertyOnElementForMethod(createdElement, nsa.getNameSpace(), nsa.getNameSpacePrefix(),
-								methodName, nsaObject);
+								StringUtils.isNotEmpty(nsa.getName()) ? nsa.getName() : methodName, nsaObject);
 						}
 					} else if (methodReturn instanceof List<?>) {
 						List<?> listReturn = (List<?>) methodReturn;
@@ -177,6 +177,8 @@ public class XmlWriter {
 			propertyName = StringUtils.lowercaseFirstLetter(methodName.substring(3));
 		} else if (methodName.startsWith("is")) {
 			propertyName = StringUtils.lowercaseFirstLetter(methodName.substring(2));
+		} else {
+			propertyName = methodName;
 		}
 		setPropertyOnElement(element, nameSpace, nameSpacePrefix, propertyName, methodReturn);
 	}

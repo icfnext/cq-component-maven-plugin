@@ -15,24 +15,44 @@
  */
 package com.citytechinc.cq.component.touchuidialog.container;
 
+import org.codehaus.plexus.util.StringUtils;
+
 import com.citytechinc.cq.component.util.Constants;
 import com.citytechinc.cq.component.xml.NameSpacedAttribute;
 
 public class Section extends Container {
 
 	public static final String RESOURCE_TYPE = "granite/ui/components/foundation/section";
+	public static final String INCLUDE_RESOURCE_TYPE = "granite/ui/components/foundation/include";
 
 	private NameSpacedAttribute<String> title;
+	private String path;
+	private String resourceType;
 
 	public Section(SectionParameters parameters) {
 		super(parameters);
 
-		this.title =
-			new NameSpacedAttribute<String>(Constants.JCR_NS_URI, Constants.JCR_NS_PREFIX, parameters.getTitle());
+		if (StringUtils.isNotEmpty(parameters.getTitle())) {
+			this.title =
+				new NameSpacedAttribute<String>(Constants.JCR_NS_URI, Constants.JCR_NS_PREFIX, parameters.getTitle());
+		}
+
+		if (StringUtils.isNotEmpty(parameters.getPath())) {
+			this.resourceType = RESOURCE_TYPE;
+			this.path = parameters.getPath();
+		}
 	}
 
 	public NameSpacedAttribute<String> getTitle() {
 		return title;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public String getResourceType() {
+		return resourceType;
 	}
 
 }

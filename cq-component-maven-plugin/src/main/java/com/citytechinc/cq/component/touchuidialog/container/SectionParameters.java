@@ -15,13 +15,20 @@
  */
 package com.citytechinc.cq.component.touchuidialog.container;
 
+import org.codehaus.plexus.util.StringUtils;
+
 public class SectionParameters extends ContainerParameters {
 
 	private String title;
+	private String path;
 
 	@Override
 	public String getResourceType() {
-		return Section.RESOURCE_TYPE;
+		if (StringUtils.isNotEmpty(path)) {
+			return Section.INCLUDE_RESOURCE_TYPE;
+		} else {
+			return Section.RESOURCE_TYPE;
+		}
 	}
 
 	public String getTitle() {
@@ -30,6 +37,14 @@ public class SectionParameters extends ContainerParameters {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 }

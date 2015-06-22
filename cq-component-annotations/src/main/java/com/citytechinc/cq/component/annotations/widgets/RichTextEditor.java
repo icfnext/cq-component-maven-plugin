@@ -31,7 +31,7 @@ import com.citytechinc.cq.component.annotations.widgets.rte.Lists;
 import com.citytechinc.cq.component.annotations.widgets.rte.MiscTools;
 import com.citytechinc.cq.component.annotations.widgets.rte.ParaFormat;
 import com.citytechinc.cq.component.annotations.widgets.rte.SpellCheck;
-import com.citytechinc.cq.component.annotations.widgets.rte.Styles;
+import com.citytechinc.cq.component.annotations.widgets.rte.Style;
 import com.citytechinc.cq.component.annotations.widgets.rte.SubSuperscript;
 import com.citytechinc.cq.component.annotations.widgets.rte.Table;
 import com.citytechinc.cq.component.annotations.widgets.rte.Undo;
@@ -163,7 +163,7 @@ public @interface RichTextEditor {
 	 *
 	 * @return Styles[]
 	 */
-	public Styles[] styles() default {};
+	public Style[] styles() default {};
 
 	/**
 	 * SubSuperscript RTE Plugin configuration. For more information on

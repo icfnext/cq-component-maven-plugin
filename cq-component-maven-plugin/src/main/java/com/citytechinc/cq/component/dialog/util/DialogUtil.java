@@ -39,7 +39,7 @@ import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.DialogFieldOverride;
-import com.citytechinc.cq.component.annotations.FieldProperty;
+import com.citytechinc.cq.component.annotations.Property;
 import com.citytechinc.cq.component.annotations.Listener;
 import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
 import com.citytechinc.cq.component.dialog.Dialog;
@@ -255,12 +255,12 @@ public class DialogUtil {
 			dialogFieldConfig.setRanking(dialogField.ranking());
 
 			if (dialogField.additionalProperties().length > 0) {
-				List<FieldProperty> properties = new ArrayList<FieldProperty>();
+				List<Property> properties = new ArrayList<Property>();
 				properties.addAll(Arrays.asList(dialogField.additionalProperties()));
 				if (dialogField.mergeAdditionalProperties()) {
 					properties.addAll(Arrays.asList(dialogFieldConfig.getAdditionalProperties()));
 				}
-				dialogFieldConfig.setAdditionalProperties(properties.toArray(new FieldProperty[properties.size()]));
+				dialogFieldConfig.setAdditionalProperties(properties.toArray(new Property[properties.size()]));
 			}
 
 			if (dialogField.listeners().length > 0) {

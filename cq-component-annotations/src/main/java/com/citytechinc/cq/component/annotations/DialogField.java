@@ -118,7 +118,7 @@ public @interface DialogField {
 	 *
 	 * @return FieldProperty[]
 	 */
-	public FieldProperty[] additionalProperties() default {};
+	public Property[] additionalProperties() default {};
 
 	/**
 	 * The set of listeners which will be attributed to the dialog widget

@@ -18,7 +18,7 @@ package com.citytechinc.cq.component.dialog;
 import javassist.CtMember;
 
 import com.citytechinc.cq.component.annotations.DialogField;
-import com.citytechinc.cq.component.annotations.FieldProperty;
+import com.citytechinc.cq.component.annotations.Property;
 import com.citytechinc.cq.component.annotations.Listener;
 
 public class DialogFieldConfig {
@@ -32,7 +32,7 @@ public class DialogFieldConfig {
 	private boolean hideLabel;
 	private String defaultValue;
 	private int tab;
-	private FieldProperty[] additionalProperties;
+	private Property[] additionalProperties;
 	private Listener[] listeners;
 	private double ranking;
 	private CtMember member;
@@ -138,11 +138,11 @@ public class DialogFieldConfig {
 		this.tab = tab;
 	}
 
-	public FieldProperty[] getAdditionalProperties() {
+	public Property[] getAdditionalProperties() {
 		return additionalProperties;
 	}
 
-	public void setAdditionalProperties(FieldProperty[] additionalProperties) {
+	public void setAdditionalProperties(Property[] additionalProperties) {
 		this.additionalProperties = additionalProperties;
 	}
 

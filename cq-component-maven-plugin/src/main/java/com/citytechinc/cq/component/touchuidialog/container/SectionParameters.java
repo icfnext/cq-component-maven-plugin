@@ -15,12 +15,19 @@
  */
 package com.citytechinc.cq.component.touchuidialog.container;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.codehaus.plexus.util.StringUtils;
+
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
+import com.citytechinc.cq.component.xml.XmlElement;
 
 public class SectionParameters extends ContainerParameters {
 
 	private String title;
 	private String path;
+	private TouchUIDialogElement renderCondition;
 
 	@Override
 	public String getResourceType() {
@@ -45,6 +52,30 @@ public class SectionParameters extends ContainerParameters {
 
 	public void setPath(String path) {
 		this.path = path;
+	}
+
+	public TouchUIDialogElement getRenderCondition() {
+		return renderCondition;
+	}
+
+	public void setRenderCondition(TouchUIDialogElement renderCondition) {
+		this.renderCondition = renderCondition;
+	}
+
+	@Override
+	public List<? extends XmlElement> getContainedElements() {
+
+		List<XmlElement> elements = new ArrayList<XmlElement>();
+
+		if (renderCondition != null) {
+			elements.add(renderCondition);
+		}
+
+		if (super.getContainedElements() != null) {
+			elements.addAll(super.getContainedElements());
+		}
+
+		return elements;
 	}
 
 }

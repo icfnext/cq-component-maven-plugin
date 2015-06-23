@@ -49,6 +49,8 @@ public @interface Tab {
 	String touchUIPath() default "";
 
 	/**
+	 * Applicable to Classic-UI only
+	 * 
 	 * The set of listeners which will be attributed to the tab. Listeners are
 	 * output as properties in the listeners XML node which is a child of the
 	 * XML node representing the dialog tab..
@@ -56,4 +58,22 @@ public @interface Tab {
 	 * @return Listener[]
 	 */
 	public Listener[] listeners() default {};
+
+	/**
+	 * Applicable to Touch-UI only
+	 * 
+	 * Defines the sling:resourceType for the renderCondition node for this tab
+	 * 
+	 */
+	public String renderConditionResourceType() default "";
+
+	/**
+	 * Applicable to Touch-UI only
+	 * 
+	 * Defines additional properties to be added to the renderCondition node
+	 * 
+	 * These will only be added if renderConditionResourceType is not empty
+	 * 
+	 */
+	public Property[] renderConditionProperties() default {};
 }

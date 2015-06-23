@@ -95,7 +95,7 @@ public @interface DialogFieldOverride {
 	 *
 	 * @return FieldProperty[]
 	 */
-	public FieldProperty[] additionalProperties() default {};
+	public Property[] additionalProperties() default {};
 
 	/**
 	 * If this is set to true, the instead of overriding the additional

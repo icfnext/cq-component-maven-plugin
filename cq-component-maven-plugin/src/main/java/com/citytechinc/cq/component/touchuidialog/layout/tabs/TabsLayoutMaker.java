@@ -17,14 +17,20 @@ package com.citytechinc.cq.component.touchuidialog.layout.tabs;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.Component;
+import com.citytechinc.cq.component.annotations.Property;
 import com.citytechinc.cq.component.annotations.Tab;
+import com.citytechinc.cq.component.touchuidialog.DefaultTouchUIDialogElement;
+import com.citytechinc.cq.component.touchuidialog.DefaultTouchUIDialogElementParameters;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElementComparator;
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElementParameters;
 import com.citytechinc.cq.component.touchuidialog.container.Section;
 import com.citytechinc.cq.component.touchuidialog.container.SectionParameters;
 import com.citytechinc.cq.component.touchuidialog.container.items.Items;
@@ -41,6 +47,7 @@ import com.citytechinc.cq.component.touchuidialog.layout.maker.exceptions.Layout
 import com.citytechinc.cq.component.touchuidialog.util.TouchUIDialogUtil;
 import com.citytechinc.cq.component.touchuidialog.widget.factory.TouchUIWidgetFactory;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
+import com.citytechinc.cq.component.util.Constants;
 import com.citytechinc.cq.component.xml.XmlElement;
 
 public class TabsLayoutMaker extends AbstractLayoutMaker {
@@ -114,6 +121,20 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
 					if (StringUtils.isNotEmpty(currentTabAnnotation.touchUIPath())) {
 						currentTabParameters.setPath(currentTabAnnotation.touchUIPath());
 						tabContentParametersList.add(null);
+					}
+					if (StringUtils.isNotEmpty(currentTabAnnotation.renderConditionResourceType())) {
+						TouchUIDialogElementParameters renderParameters = new DefaultTouchUIDialogElementParameters();
+						renderParameters.setFieldName("rendercondition");
+						renderParameters.setPrimaryType(Constants.NT_UNSTRUCTURED);
+						renderParameters.setResourceType(currentTabAnnotation.renderConditionResourceType());
+						Map<String, String> additionalPropertiesMap = new HashMap<String, String>();
+						for (Property property : currentTabAnnotation.renderConditionProperties()) {
+							additionalPropertiesMap.put(property.name(), property.value());
+						}
+						renderParameters.setAdditionalProperties(additionalPropertiesMap);
+						DefaultTouchUIDialogElement renderConditionElement =
+							new DefaultTouchUIDialogElement(renderParameters);
+						currentTabParameters.setRenderCondition(renderConditionElement);
 					}
 					tabParametersList.add(currentTabParameters);
 				} else {
@@ -197,5 +218,4 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
 		return new Items(itemsParameters);
 
 	}
-
 }

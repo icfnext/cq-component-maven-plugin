@@ -48,4 +48,8 @@ public class TouchUIDialog extends AbstractTouchUIDialogElement {
 		return helpPath;
 	}
 
+	public String getMode() {
+		return "edit";
+	}
+
 }

@@ -94,5 +94,4 @@ public class TouchUIWidgetMakerParameters {
 	public void setWidgetRegistry(TouchUIWidgetRegistry widgetRegistry) {
 		this.widgetRegistry = widgetRegistry;
 	}
-
 }

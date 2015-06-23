@@ -20,7 +20,8 @@ import org.codehaus.plexus.util.StringUtils;
 import com.citytechinc.cq.component.touchuidialog.DefaultTouchUIDialogElementParameters;
 import com.citytechinc.cq.component.util.Constants;
 
-public class DefaultTouchUIWidgetParameters extends DefaultTouchUIDialogElementParameters implements TouchUIWidgetParameters {
+public class DefaultTouchUIWidgetParameters extends DefaultTouchUIDialogElementParameters implements
+	TouchUIWidgetParameters {
 
 	protected String name;
 	protected String title;
@@ -31,6 +32,7 @@ public class DefaultTouchUIWidgetParameters extends DefaultTouchUIDialogElementP
 	protected String defaultValue;
 	protected boolean disabled;
 	protected String cssClass;
+	protected boolean renderReadOnly;
 
 	public String getFieldLabel() {
 		return fieldLabel;
@@ -56,6 +58,7 @@ public class DefaultTouchUIWidgetParameters extends DefaultTouchUIDialogElementP
 		this.title = title;
 	}
 
+	@Override
 	public String getPrimaryType() {
 		if (StringUtils.isBlank(super.getPrimaryType())) {
 			return Constants.NT_UNSTRUCTURED;
@@ -110,6 +113,14 @@ public class DefaultTouchUIWidgetParameters extends DefaultTouchUIDialogElementP
 
 	public void setCssClass(String cssClass) {
 		this.cssClass = cssClass;
+	}
+
+	public boolean isRenderReadOnly() {
+		return renderReadOnly;
+	}
+
+	public void setRenderReadOnly(boolean renderReadOnly) {
+		this.renderReadOnly = renderReadOnly;
 	}
 
 }

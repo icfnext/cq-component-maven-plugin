@@ -41,6 +41,7 @@ public class DialogFieldConfig {
 	private boolean disabled;
 	private String cssClass;
 	private boolean suppressTouchUI;
+	private boolean renderReadOnly;
 
 	public DialogFieldConfig(DialogField dialogField, CtMember member) {
 		this.xtype = dialogField.xtype();
@@ -62,6 +63,7 @@ public class DialogFieldConfig {
 		this.disabled = dialogField.disabled();
 		this.cssClass = dialogField.cssClass();
 		this.suppressTouchUI = dialogField.suppressTouchUI();
+		this.setRenderReadOnly(dialogField.renderReadOnly());
 	}
 
 	public String getXtype() {
@@ -210,5 +212,13 @@ public class DialogFieldConfig {
 
 	public void setSuppressTouchUI(boolean suppressTouchUI) {
 		this.suppressTouchUI = suppressTouchUI;
+	}
+
+	public boolean isRenderReadOnly() {
+		return renderReadOnly;
+	}
+
+	public void setRenderReadOnly(boolean renderReadOnly) {
+		this.renderReadOnly = renderReadOnly;
 	}
 }

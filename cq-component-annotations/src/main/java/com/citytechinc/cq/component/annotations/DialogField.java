@@ -182,4 +182,11 @@ public @interface DialogField {
 	 */
 	public boolean suppressTouchUI() default false;
 
+	/**
+	 * Indicates that a Touch UI widget should also render as read only
+	 *
+	 * @return boolean
+	 */
+	public boolean renderReadOnly() default true;
+
 }

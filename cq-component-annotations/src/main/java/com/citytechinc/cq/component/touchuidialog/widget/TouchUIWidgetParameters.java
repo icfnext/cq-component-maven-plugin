@@ -57,4 +57,7 @@ public interface TouchUIWidgetParameters extends TouchUIDialogElementParameters 
 
 	public void setCssClass(String cssClass);
 
+	public boolean isRenderReadOnly();
+
+	public void setRenderReadOnly(boolean renderReadOnly);
 }

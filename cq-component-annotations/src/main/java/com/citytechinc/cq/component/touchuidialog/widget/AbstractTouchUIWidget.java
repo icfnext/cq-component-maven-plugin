@@ -33,6 +33,7 @@ public class AbstractTouchUIWidget extends AbstractTouchUIDialogElement {
 	private final String defaultValue;
 	private final boolean disabled;
 	private final String cssClass;
+	private final boolean renderReadOnly;
 
 	public AbstractTouchUIWidget(DefaultTouchUIWidgetParameters parameters) {
 		super(parameters);
@@ -46,6 +47,7 @@ public class AbstractTouchUIWidget extends AbstractTouchUIDialogElement {
 		this.defaultValue = parameters.getDefaultValue();
 		this.disabled = parameters.isDisabled();
 		this.cssClass = parameters.getCssClass();
+		this.renderReadOnly = parameters.isRenderReadOnly();
 	}
 
 	public String getName() {
@@ -94,5 +96,9 @@ public class AbstractTouchUIWidget extends AbstractTouchUIDialogElement {
 
 		return retMap;
 
+	}
+
+	public boolean isRenderReadOnly() {
+		return renderReadOnly;
 	}
 }

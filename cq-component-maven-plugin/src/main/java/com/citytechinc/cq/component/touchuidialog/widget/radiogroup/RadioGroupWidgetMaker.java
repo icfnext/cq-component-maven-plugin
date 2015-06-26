@@ -17,16 +17,15 @@ package com.citytechinc.cq.component.touchuidialog.widget.radiogroup;
 
 import org.codehaus.plexus.util.StringUtils;
 
-import com.citytechinc.cq.component.annotations.Option;
 import com.citytechinc.cq.component.annotations.widgets.Selection;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
+import com.citytechinc.cq.component.touchuidialog.util.TouchUIDialogUtil;
 import com.citytechinc.cq.component.touchuidialog.widget.datasource.DataSource;
 import com.citytechinc.cq.component.touchuidialog.widget.datasource.DataSourceParameters;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
-import com.citytechinc.cq.component.touchuidialog.widget.selection.options.OptionParameters;
 
 public class RadioGroupWidgetMaker extends AbstractTouchUIWidgetMaker<RadioGroupWidgetParameters> {
 
@@ -42,19 +41,8 @@ public class RadioGroupWidgetMaker extends AbstractTouchUIWidgetMaker<RadioGroup
 		widgetParameters.setText(getFieldLabelForField());
 		widgetParameters.setDataSource(getDataSourceForField(selectionField));
 
-		for (int i = 0; i < selectionField.options().length; i++) {
-			Option currentOption = selectionField.options()[i];
-
-			OptionParameters optionParameters = new OptionParameters();
-			optionParameters.setName(getNameForField());
-			optionParameters.setText(currentOption.text());
-			optionParameters.setValue(currentOption.value());
-			optionParameters.setSelected(currentOption.selected());
-			optionParameters.setFieldName("option" + i);
-
-			widgetParameters.addOption(new com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option(
-				optionParameters));
-		}
+		widgetParameters.setOptions(TouchUIDialogUtil.getOptionsForSelection(selectionField, getType(),
+			parameters.getClassLoader(), parameters.getClassPool()));
 
 		return new RadioGroupWidget(widgetParameters);
 	}

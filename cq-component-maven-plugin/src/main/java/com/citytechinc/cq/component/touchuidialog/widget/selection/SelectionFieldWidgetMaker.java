@@ -17,18 +17,17 @@ package com.citytechinc.cq.component.touchuidialog.widget.selection;
 
 import org.codehaus.plexus.util.StringUtils;
 
-import com.citytechinc.cq.component.annotations.Option;
 import com.citytechinc.cq.component.annotations.widgets.Selection;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.maven.util.LogSingleton;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
+import com.citytechinc.cq.component.touchuidialog.util.TouchUIDialogUtil;
 import com.citytechinc.cq.component.touchuidialog.widget.datasource.DataSource;
 import com.citytechinc.cq.component.touchuidialog.widget.datasource.DataSourceParameters;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 import com.citytechinc.cq.component.touchuidialog.widget.radiogroup.RadioGroupWidgetMaker;
-import com.citytechinc.cq.component.touchuidialog.widget.selection.options.OptionParameters;
 
 public class SelectionFieldWidgetMaker extends AbstractTouchUIWidgetMaker<SelectionFieldWidgetParameters> {
 
@@ -68,23 +67,13 @@ public class SelectionFieldWidgetMaker extends AbstractTouchUIWidgetMaker<Select
 	}
 
 	protected TouchUIDialogElement makeSelection(Selection selectionField,
-		SelectionFieldWidgetParameters widgetParameters) {
+		SelectionFieldWidgetParameters widgetParameters) throws InvalidComponentFieldException {
 
 		widgetParameters.setMultiple(getMultipleForField(selectionField));
 		widgetParameters.setDataSource(getDataSourceForField(selectionField));
 
-		for (int i = 0; i < selectionField.options().length; i++) {
-			Option currentOption = selectionField.options()[i];
-
-			OptionParameters optionParameters = new OptionParameters();
-			optionParameters.setText(currentOption.text());
-			optionParameters.setValue(currentOption.value());
-			optionParameters.setSelected(currentOption.selected());
-			optionParameters.setFieldName("option" + i);
-
-			widgetParameters.addOption(new com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option(
-				optionParameters));
-		}
+		widgetParameters.setOptions(TouchUIDialogUtil.getOptionsForSelection(selectionField, getType(),
+			parameters.getClassLoader(), parameters.getClassPool()));
 
 		return new SelectionFieldWidget(widgetParameters);
 	}

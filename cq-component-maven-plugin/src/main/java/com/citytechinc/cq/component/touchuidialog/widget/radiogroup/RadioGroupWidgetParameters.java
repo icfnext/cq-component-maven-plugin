@@ -57,6 +57,10 @@ public class RadioGroupWidgetParameters extends DefaultTouchUIWidgetParameters {
 		options.add(option);
 	}
 
+	public void setOptions(List<Option> options) {
+		this.options = options;
+	}
+
 	public DataSource getDataSource() {
 		return dataSource;
 	}

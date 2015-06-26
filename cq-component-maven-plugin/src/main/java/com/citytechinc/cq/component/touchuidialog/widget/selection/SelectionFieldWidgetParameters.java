@@ -58,6 +58,10 @@ public class SelectionFieldWidgetParameters extends DefaultTouchUIWidgetParamete
 		options.add(option);
 	}
 
+	public void setOptions(List<Option> options) {
+		this.options = options;
+	}
+
 	public DataSource getDataSource() {
 		return dataSource;
 	}

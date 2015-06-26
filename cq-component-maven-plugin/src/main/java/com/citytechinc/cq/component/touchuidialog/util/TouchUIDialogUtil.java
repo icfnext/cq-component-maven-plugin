@@ -27,12 +27,15 @@ import javassist.CtMethod;
 import javassist.NotFoundException;
 
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
+import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.IgnoreDialogField;
+import com.citytechinc.cq.component.annotations.widgets.Selection;
 import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
 import com.citytechinc.cq.component.dialog.DialogFieldConfig;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
+import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.util.DialogUtil;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialog;
@@ -41,8 +44,10 @@ import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogWriteE
 import com.citytechinc.cq.component.touchuidialog.factory.TouchUIDialogFactory;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 import com.citytechinc.cq.component.touchuidialog.widget.registry.TouchUIWidgetRegistry;
+import com.citytechinc.cq.component.touchuidialog.widget.selection.options.OptionParameters;
 
 public class TouchUIDialogUtil {
+	private static final String OPTION_FIELD_NAME_PREFIX = "option";
 
 	private TouchUIDialogUtil() {
 	}
@@ -137,6 +142,83 @@ public class TouchUIDialogUtil {
 		}
 
 		return widgetMakerParametersList;
+
+	}
+
+	public static final List<com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option>
+		getOptionsForSelection(Selection selectionAnnotation, Class<?> type, ClassLoader classLoader,
+			ClassPool classPool) throws InvalidComponentFieldException {
+		List<com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option> options =
+			new ArrayList<com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option>();
+
+		/*
+		 * Options specified in the annotation take precedence
+		 */
+		if (selectionAnnotation != null && selectionAnnotation.options().length > 0) {
+			int i = 0;
+			for (com.citytechinc.cq.component.annotations.Option curOptionAnnotation : selectionAnnotation.options()) {
+				if (StringUtils.isEmpty(curOptionAnnotation.value())) {
+					throw new InvalidComponentFieldException(
+						"Selection Options specified in the selectionOptions Annotation property must include a non-empty text and value attribute");
+				}
+				OptionParameters optionParameters = new OptionParameters();
+				optionParameters.setText(curOptionAnnotation.text());
+				optionParameters.setValue(curOptionAnnotation.value());
+				optionParameters.setSelected(curOptionAnnotation.selected());
+				optionParameters.setFieldName(OPTION_FIELD_NAME_PREFIX + (i++));
+
+				options.add(new com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option(
+					optionParameters));
+			}
+		}
+
+		/*
+		 * If options were not specified by the annotation then we check to see
+		 * if the field is an Enum and if so, the options are pulled from the
+		 * Enum definition
+		 */
+		else if (type.isEnum()) {
+			int i = 0;
+			try {
+				for (Object curEnumObject : classLoader.loadClass(type.getName()).getEnumConstants()) {
+					Enum<?> curEnum = (Enum<?>) curEnumObject;
+					options.add(buildSelectionOptionForEnum(curEnum, classPool, OPTION_FIELD_NAME_PREFIX + (i++)));
+				}
+			} catch (Exception e) {
+				throw new InvalidComponentFieldException("Error generating selection from enum", e);
+			}
+		}
+
+		return options;
+	}
+
+	protected static final com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option
+		buildSelectionOptionForEnum(Enum<?> optionEnum, ClassPool classPool, String fieldName)
+			throws SecurityException, NoSuchFieldException, NotFoundException, ClassNotFoundException {
+
+		String text = optionEnum.name();
+		String value = optionEnum.name();
+
+		CtClass annotatedEnumClass = classPool.getCtClass(optionEnum.getDeclaringClass().getName());
+		CtMember annotatedEnumField = annotatedEnumClass.getField(optionEnum.name());
+		com.citytechinc.cq.component.annotations.Option optionAnnotation =
+			(com.citytechinc.cq.component.annotations.Option) annotatedEnumField
+				.getAnnotation(com.citytechinc.cq.component.annotations.Option.class);
+
+		OptionParameters parameters = new OptionParameters();
+		if (optionAnnotation != null) {
+			if (StringUtils.isNotEmpty(optionAnnotation.text())) {
+				text = optionAnnotation.text();
+			}
+			if (StringUtils.isNotEmpty(optionAnnotation.value())) {
+				value = optionAnnotation.value();
+			}
+			parameters.setSelected(optionAnnotation.selected());
+		}
+		parameters.setFieldName(fieldName);
+		parameters.setText(text);
+		parameters.setValue(value);
+		return new com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option(parameters);
 
 	}
 

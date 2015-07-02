@@ -133,17 +133,7 @@ public class EditConfigFactory {
 			return actions;
 		}
 
-		actions = new ArrayList<String>();
-
-		actions.add("text:" + title);
-		actions.add("-");
-		actions.add("edit");
-		actions.add("copymove");
-		actions.add("delete");
-		actions.add("-");
-		actions.add("insert");
-
-		return actions;
+		return null;
 	}
 
 	private static String getDialogModeForEditConfig(Component componentAnnotation) {

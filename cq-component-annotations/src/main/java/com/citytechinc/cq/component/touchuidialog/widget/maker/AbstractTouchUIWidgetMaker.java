@@ -16,6 +16,8 @@
 package com.citytechinc.cq.component.touchuidialog.widget.maker;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.HashMap;
+import java.util.Map;
 
 import javassist.CtClass;
 import javassist.CtField;
@@ -23,6 +25,7 @@ import javassist.NotFoundException;
 
 import org.codehaus.plexus.util.StringUtils;
 
+import com.citytechinc.cq.component.annotations.Property;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
@@ -58,6 +61,7 @@ public abstract class AbstractTouchUIWidgetMaker<T extends TouchUIWidgetParamete
 		parameters.setDisabled(getDisabledForField());
 		parameters.setCssClass(getCssClassForField());
 		parameters.setRenderReadOnly(getRenderReadOnlyForField());
+		parameters.setAdditionalProperties(getAdditionalPropertiesForField());
 
 		return make(parameters);
 
@@ -254,6 +258,26 @@ public abstract class AbstractTouchUIWidgetMaker<T extends TouchUIWidgetParamete
 	 */
 	public Class<?> getType() throws InvalidComponentFieldException {
 		return ComponentUtil.getTypeForMember(parameters.getCtMember(), parameters.getContainingClass());
+	}
+
+	/**
+	 *
+	 * @return Name Value pairs represented by the additional properties tied to
+	 *         the DialogField annotation, or null if no such properties are
+	 *         defined.
+	 */
+	protected Map<String, String> getAdditionalPropertiesForField() {
+		if (parameters.getDialogFieldConfig().getAdditionalProperties().length > 0) {
+			Map<String, String> properties = new HashMap<String, String>();
+
+			for (Property curProperty : parameters.getDialogFieldConfig().getAdditionalProperties()) {
+				properties.put(curProperty.name(), curProperty.value());
+			}
+
+			return properties;
+		}
+
+		return null;
 	}
 
 }

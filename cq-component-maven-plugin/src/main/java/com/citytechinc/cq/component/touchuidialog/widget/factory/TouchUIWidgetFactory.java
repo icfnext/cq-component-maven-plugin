@@ -17,6 +17,8 @@ package com.citytechinc.cq.component.touchuidialog.widget.factory;
 
 import javax.annotation.Nullable;
 
+import org.codehaus.plexus.util.StringUtils;
+
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
@@ -62,6 +64,16 @@ public class TouchUIWidgetFactory {
 		// with it, use the default class
 		if (widgetConfig != null && widgetConfig.getResourceType() != null) {
 			return new TouchUIWidgetMakerContext(DefaultTouchUIWidgetMaker.class, widgetConfig.getResourceType());
+		}
+
+		String resourceType = parameters.getDialogFieldConfig().getResourceType();
+
+		if (StringUtils.isNotEmpty(resourceType)) {
+			TouchUIWidgetConfigHolder widget = getWidgetConfigForResourceType(resourceType, parameters, rankingCeiling);
+			if (widget != null && widget.getMakerClass() != null) {
+				return new TouchUIWidgetMakerContext(widget.getMakerClass(), widget.getResourceType());
+			}
+			return new TouchUIWidgetMakerContext(DefaultTouchUIWidgetMaker.class, resourceType);
 		}
 
 		return null;

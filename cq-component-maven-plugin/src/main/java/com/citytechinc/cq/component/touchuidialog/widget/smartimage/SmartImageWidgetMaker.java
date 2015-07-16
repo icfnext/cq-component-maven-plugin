@@ -31,9 +31,11 @@ import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMake
 
 public class SmartImageWidgetMaker extends AbstractTouchUIWidgetMaker<FileUploadWidgetParameters> {
 	private static final String[] MIME_TYPES = { "image" };
+	private final TouchUIWidgetMakerParameters parameters;
 
 	public SmartImageWidgetMaker(TouchUIWidgetMakerParameters parameters) {
 		super(parameters);
+		this.parameters = parameters;
 	}
 
 	@Override
@@ -152,12 +154,15 @@ public class SmartImageWidgetMaker extends AbstractTouchUIWidgetMaker<FileUpload
 		return null;
 	}
 
-	private static String getNameAsPrefix(Html5SmartImage annotation) {
-		if (StringUtils.isEmpty(annotation.name())) {
-			return "./";
-		} else {
-			return "./" + annotation.name() + "/";
+	private String getNameAsPrefix(Html5SmartImage annotation) {
+		StringBuilder sb = new StringBuilder();
+		if (parameters.isUseDotSlashInName()) {
+			sb.append("./");
 		}
+		if (StringUtils.isNotEmpty(annotation.name())) {
+			sb.append(annotation.name()).append("/");
+		}
+		return sb.toString();
 	}
 
 }

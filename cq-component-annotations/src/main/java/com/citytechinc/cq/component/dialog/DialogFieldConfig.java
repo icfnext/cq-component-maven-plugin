@@ -42,6 +42,7 @@ public class DialogFieldConfig {
 	private String cssClass;
 	private boolean suppressTouchUI;
 	private boolean renderReadOnly;
+	private boolean showOnCreate;
 
 	public DialogFieldConfig(DialogField dialogField, CtMember member) {
 		this.xtype = dialogField.xtype();
@@ -64,6 +65,7 @@ public class DialogFieldConfig {
 		this.cssClass = dialogField.cssClass();
 		this.suppressTouchUI = dialogField.suppressTouchUI();
 		this.setRenderReadOnly(dialogField.renderReadOnly());
+		this.setShowOnCreate(dialogField.showOnCreate());
 	}
 
 	public String getXtype() {
@@ -220,5 +222,13 @@ public class DialogFieldConfig {
 
 	public void setRenderReadOnly(boolean renderReadOnly) {
 		this.renderReadOnly = renderReadOnly;
+	}
+
+	public boolean isShowOnCreate() {
+		return showOnCreate;
+	}
+
+	public void setShowOnCreate(boolean showOnCreate) {
+		this.showOnCreate = showOnCreate;
 	}
 }

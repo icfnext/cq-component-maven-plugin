@@ -21,6 +21,8 @@ import java.util.Map;
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.touchuidialog.AbstractTouchUIDialogElement;
+import com.citytechinc.cq.component.util.Constants;
+import com.citytechinc.cq.component.xml.NameSpacedAttribute;
 
 public class AbstractTouchUIWidget extends AbstractTouchUIDialogElement {
 
@@ -34,6 +36,7 @@ public class AbstractTouchUIWidget extends AbstractTouchUIDialogElement {
 	private final boolean disabled;
 	private final String cssClass;
 	private final boolean renderReadOnly;
+	private final NameSpacedAttribute<Boolean> showOnCreate;
 
 	public AbstractTouchUIWidget(DefaultTouchUIWidgetParameters parameters) {
 		super(parameters);
@@ -48,6 +51,8 @@ public class AbstractTouchUIWidget extends AbstractTouchUIDialogElement {
 		this.disabled = parameters.isDisabled();
 		this.cssClass = parameters.getCssClass();
 		this.renderReadOnly = parameters.isRenderReadOnly();
+		this.showOnCreate =
+			new NameSpacedAttribute<Boolean>(Constants.CQ_NS_URI, Constants.CQ_NS_PREFIX, parameters.isShowOnCreate());
 	}
 
 	public String getName() {
@@ -100,5 +105,9 @@ public class AbstractTouchUIWidget extends AbstractTouchUIDialogElement {
 
 	public boolean isRenderReadOnly() {
 		return renderReadOnly;
+	}
+
+	public NameSpacedAttribute<Boolean> getShowOnCreate() {
+		return showOnCreate;
 	}
 }

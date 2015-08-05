@@ -76,4 +76,12 @@ public @interface Tab {
 	 * 
 	 */
 	public Property[] renderConditionProperties() default {};
+
+	/**
+	 * Applicable to Touch-UI only
+	 * 
+	 * Controls whether or not the tab is shown in the create page dialog
+	 * 
+	 */
+	public boolean showOnCreate() default true;
 }

@@ -189,4 +189,11 @@ public @interface DialogField {
 	 */
 	public boolean renderReadOnly() default true;
 
+	/**
+	 * Indicates that a Touch UI widget should show on page creation
+	 *
+	 * @return boolean
+	 */
+	public boolean showOnCreate() default true;
+
 }

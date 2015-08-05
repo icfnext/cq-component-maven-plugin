@@ -62,6 +62,7 @@ public abstract class AbstractTouchUIWidgetMaker<T extends TouchUIWidgetParamete
 		parameters.setCssClass(getCssClassForField());
 		parameters.setRenderReadOnly(getRenderReadOnlyForField());
 		parameters.setAdditionalProperties(getAdditionalPropertiesForField());
+		parameters.setShowOnCreate(getShowOnCreateForField());
 
 		return make(parameters);
 
@@ -186,6 +187,10 @@ public abstract class AbstractTouchUIWidgetMaker<T extends TouchUIWidgetParamete
 
 	private boolean getRenderReadOnlyForField() {
 		return parameters.getDialogFieldConfig().isRenderReadOnly();
+	}
+
+	private boolean getShowOnCreateForField() {
+		return parameters.getDialogFieldConfig().isShowOnCreate();
 	}
 
 	/**

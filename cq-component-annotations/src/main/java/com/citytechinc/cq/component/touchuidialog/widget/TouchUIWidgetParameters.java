@@ -60,4 +60,8 @@ public interface TouchUIWidgetParameters extends TouchUIDialogElementParameters 
 	public boolean isRenderReadOnly();
 
 	public void setRenderReadOnly(boolean renderReadOnly);
+
+	public boolean isShowOnCreate();
+
+	public void setShowOnCreate(boolean showOnCreate);
 }

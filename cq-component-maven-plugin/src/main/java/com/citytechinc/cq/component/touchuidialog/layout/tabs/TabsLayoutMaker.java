@@ -136,6 +136,7 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
 							new DefaultTouchUIDialogElement(renderParameters);
 						currentTabParameters.setRenderCondition(renderConditionElement);
 					}
+					currentTabParameters.setShowOnCreate(currentTabAnnotation.showOnCreate());
 					tabParametersList.add(currentTabParameters);
 				} else {
 					tabContentParametersList.add(null);
@@ -206,9 +207,11 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
 		for (int i = 0; i < tabParametersList.size(); i++) {
 			if (tabParametersList.get(i) != null) {
 				SectionParameters currentSectionParameters = tabParametersList.get(i);
-
-				currentSectionParameters.setFieldName("tab_" + i);
-
+				if (StringUtils.isNotEmpty(tabParametersList.get(i).getTitle())) {
+					currentSectionParameters.setFieldName(tabParametersList.get(i).getTitle());
+				} else {
+					currentSectionParameters.setFieldName("tab_" + i);
+				}
 				tabs.add(new Section(currentSectionParameters));
 			}
 		}

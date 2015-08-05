@@ -28,6 +28,7 @@ public class SectionParameters extends ContainerParameters {
 	private String title;
 	private String path;
 	private TouchUIDialogElement renderCondition;
+	private boolean showOnCreate;
 
 	@Override
 	public String getResourceType() {
@@ -76,6 +77,14 @@ public class SectionParameters extends ContainerParameters {
 		}
 
 		return elements;
+	}
+
+	public boolean isShowOnCreate() {
+		return showOnCreate;
+	}
+
+	public void setShowOnCreate(boolean showOnCreate) {
+		this.showOnCreate = showOnCreate;
 	}
 
 }

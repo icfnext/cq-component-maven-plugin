@@ -25,11 +25,10 @@ import com.citytechinc.cq.component.dialog.html5smartimage.Html5SmartImageWidget
 import com.citytechinc.cq.component.maven.util.LogSingleton;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
-import com.citytechinc.cq.component.touchuidialog.widget.fileupload.FileUploadWidgetParameters;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 
-public class SmartImageWidgetMaker extends AbstractTouchUIWidgetMaker<FileUploadWidgetParameters> {
+public class SmartImageWidgetMaker extends AbstractTouchUIWidgetMaker<SmartImageWidgetParameters> {
 	private static final String[] MIME_TYPES = { "image" };
 	private final TouchUIWidgetMakerParameters parameters;
 
@@ -39,7 +38,7 @@ public class SmartImageWidgetMaker extends AbstractTouchUIWidgetMaker<FileUpload
 	}
 
 	@Override
-	public TouchUIDialogElement make(FileUploadWidgetParameters widgetParameters) throws ClassNotFoundException,
+	public TouchUIDialogElement make(SmartImageWidgetParameters widgetParameters) throws ClassNotFoundException,
 		InvalidComponentFieldException, TouchUIDialogGenerationException {
 		LogSingleton
 			.getInstance()
@@ -48,6 +47,8 @@ public class SmartImageWidgetMaker extends AbstractTouchUIWidgetMaker<FileUpload
 
 		Html5SmartImage smartFileAnnotation = getAnnotation(Html5SmartImage.class);
 
+        widgetParameters.setName(getNameForField());
+        widgetParameters.setFileName(getFileNameForField(smartFileAnnotation));
 		widgetParameters.setTitle(getTitleForField(smartFileAnnotation));
 		widgetParameters.setText(getTextForField(smartFileAnnotation));
 		widgetParameters.setIcon(getIconForField(smartFileAnnotation));
@@ -60,11 +61,30 @@ public class SmartImageWidgetMaker extends AbstractTouchUIWidgetMaker<FileUpload
 		widgetParameters.setUseHTML5(getUseHTML5ForField(smartFileAnnotation));
 		widgetParameters.setDropZone(getDropZoneForField(smartFileAnnotation));
 		widgetParameters.setMimeTypes(Arrays.asList(MIME_TYPES));
-		widgetParameters.setFilereferenceparameter(getNameAsPrefix(smartFileAnnotation)
-			+ Html5SmartImageWidgetMaker.FILE_REFERENCE_PARAMETER);
+		widgetParameters.setFilereferenceparameter(Html5SmartImageWidgetMaker.FILE_REFERENCE_PARAMETER);
 
 		return new SmartImageWidget(widgetParameters);
 	}
+
+    @Override
+    protected String getNameForField() {
+        String originalName = getName();
+
+        if (originalName.startsWith("./")) {
+            return originalName.substring(2);
+        }
+
+        return originalName;
+    }
+
+
+    public String getFileNameForField(Html5SmartImage annotation) {
+        if (annotation != null & StringUtils.isNotBlank(annotation.fileName())) {
+            return annotation.fileName();
+        }
+
+        return null;
+    }
 
 	public String getTitleForField(Html5SmartImage annotation) {
 		if (annotation != null && StringUtils.isNotBlank(annotation.title())) {
@@ -152,17 +172,6 @@ public class SmartImageWidgetMaker extends AbstractTouchUIWidgetMaker<FileUpload
 		}
 
 		return null;
-	}
-
-	private String getNameAsPrefix(Html5SmartImage annotation) {
-		StringBuilder sb = new StringBuilder();
-		if (parameters.isUseDotSlashInName()) {
-			sb.append("./");
-		}
-		if (StringUtils.isNotEmpty(annotation.name())) {
-			sb.append(annotation.name()).append("/");
-		}
-		return sb.toString();
 	}
 
 }

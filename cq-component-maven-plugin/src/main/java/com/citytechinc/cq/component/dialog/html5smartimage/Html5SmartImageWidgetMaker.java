@@ -43,7 +43,9 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker<Html5SmartIm
 
 		Html5SmartImage smartImageAnnotation = getAnnotation(Html5SmartImage.class);
 
-		parameters.setName(getNameForField(smartImageAnnotation));
+		parameters.setName(getNameForField());
+		parameters.setFileName(getFileNameForField(smartImageAnnotation));
+		parameters.setIsSelf(getIsSelfForField(smartImageAnnotation));
 		parameters.setDisableFlush(getDisableFlushForField(smartImageAnnotation));
 		parameters.setDisableInfo(getDisableInfoForField(smartImageAnnotation));
 		parameters.setDisableZoom(getDisableZoomForField(smartImageAnnotation));
@@ -70,15 +72,26 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker<Html5SmartIm
 
 	}
 
-	protected String getNameForField(Html5SmartImage smartImageAnnotation) {
-		String name = smartImageAnnotation.name();
+    @Override
+    protected String getNameForField() {
+        String originalName = getName();
 
-		if (StringUtils.isNotEmpty(name)) {
-			return name;
-		}
+        if (originalName.startsWith("./")) {
+            return originalName.substring(2);
+        }
 
-		return null;
-	}
+        return originalName;
+    }
+
+    protected String getFileNameForField(Html5SmartImage smartImageAnnotation) {
+        String fileName = smartImageAnnotation.fileName();
+
+        if (StringUtils.isNotEmpty(fileName)) {
+            return fileName;
+        }
+
+        return null;
+    }
 
 	protected String getCropParameterForField(Html5SmartImage smartImageAnnotation) {
 		if (smartImageAnnotation.allowCrop()) {
@@ -141,6 +154,10 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker<Html5SmartIm
 		}
 
 		return null;
+	}
+
+	protected boolean getIsSelfForField(Html5SmartImage smartImageAnnotation) {
+		return smartImageAnnotation.isSelf();
 	}
 
 	protected boolean getDisableFlushForField(Html5SmartImage smartImageAnnotation) {

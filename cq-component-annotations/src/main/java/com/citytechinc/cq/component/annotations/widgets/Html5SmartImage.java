@@ -57,6 +57,12 @@ public @interface Html5SmartImage {
 	 */
 	public boolean disableZoom() default false;
 
+    /**
+     * Indicates that this component represents the image itself and as such the image properties
+     * and file assets should be stored on the component's resource instead of a child resource
+     */
+    public boolean isSelf() default false;
+
 	/**
 	 * Name of the form field used for posting the file name.
 	 *
@@ -64,12 +70,14 @@ public @interface Html5SmartImage {
 	 */
 	public String fileNameParameter() default "fileName";
 
-	/**
-	 * The field's HTML name attribute
-	 *
-	 * @return String
-	 */
-	public String name() default "";
+    /**
+     * The name of the child node under which the image itself will be stored in cases where the image is uploaded
+     * via the widget.  Defaults to "file" in keeping with the default of the com.day.cq.commons.DownloadResource
+     * class.
+     *
+     * @return String
+     */
+    public String fileName() default "file";
 
 	/**
 	 * Path to which files will be uploaded.

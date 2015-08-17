@@ -27,6 +27,9 @@ import com.citytechinc.cq.component.dialog.TabbableDialogElement;
 public class Html5SmartImageWidget extends AbstractWidget implements TabbableDialogElement {
 	public static final String XTYPE = "html5smartimage";
 	private String originalName;
+    private String namePrefix;
+    private final String fileName;
+	private final boolean isSelf;
 	private final boolean disableFlush;
 	private final boolean disableInfo;
 	private final boolean disableZoom;
@@ -45,6 +48,9 @@ public class Html5SmartImageWidget extends AbstractWidget implements TabbableDia
 	public Html5SmartImageWidget(Html5SmartImageWidgetParameters parameters) {
 		super(parameters);
 		originalName = parameters.getName();
+        this.namePrefix = "";
+        this.fileName = parameters.getFileName();
+        this.isSelf = parameters.isSelf();
 		this.disableFlush = parameters.isDisableFlush();
 		this.disableInfo = parameters.isDisableInfo();
 		this.disableZoom = parameters.isDisableZoom();
@@ -60,13 +66,21 @@ public class Html5SmartImageWidget extends AbstractWidget implements TabbableDia
 		this.tab = parameters.isTab();
 	}
 
-	private static String getNameAsPrefix(String name) {
-		if (StringUtils.isEmpty(name)) {
-			return "./";
+	private String getNamePrefix() {
+		if (StringUtils.isEmpty(originalName) || isSelf) {
+			return "./" + namePrefix;
 		} else {
-			return "./" + name + "/";
+			return "./" + namePrefix + originalName + "/";
 		}
 	}
+
+	private String getFileName() {
+        if (fileName == null) {
+            return "";
+        }
+
+        return fileName;
+    }
 
 	public String getTitle() {
 		return title;
@@ -90,35 +104,35 @@ public class Html5SmartImageWidget extends AbstractWidget implements TabbableDia
 
 	public String getCropParameter() {
 		if (!StringUtils.isEmpty(cropParameter)) {
-			return getNameAsPrefix(originalName) + cropParameter;
+			return getNamePrefix() + cropParameter;
 		}
 		return cropParameter;
 	}
 
 	public String getFileNameParameter() {
 		if (!StringUtils.isEmpty(fileNameParameter)) {
-			return getNameAsPrefix(originalName) + fileNameParameter;
+			return getNamePrefix() + fileNameParameter;
 		}
 		return fileNameParameter;
 	}
 
 	public String getFileReferenceParameter() {
 		if (!StringUtils.isEmpty(fileReferenceParameter)) {
-			return getNameAsPrefix(originalName) + fileReferenceParameter;
+			return getNamePrefix() + fileReferenceParameter;
 		}
 		return fileReferenceParameter;
 	}
 
 	public String getMapParameter() {
 		if (!StringUtils.isEmpty(mapParameter)) {
-			return getNameAsPrefix(originalName) + mapParameter;
+			return getNamePrefix() + mapParameter;
 		}
 		return mapParameter;
 	}
 
 	public String getRotateParameter() {
 		if (!StringUtils.isEmpty(rotateParameter)) {
-			return getNameAsPrefix(originalName) + rotateParameter;
+			return getNamePrefix() + rotateParameter;
 		}
 		return rotateParameter;
 	}
@@ -148,16 +162,19 @@ public class Html5SmartImageWidget extends AbstractWidget implements TabbableDia
 	}
 
 	public String getRequestSuffix() {
-		if (StringUtils.isEmpty(originalName)) {
+		if (StringUtils.isEmpty(originalName) || isSelf) {
+            if (StringUtils.isNotEmpty(namePrefix)) {
+                return "/" + namePrefix + ".img.png";
+            }
 			return ".img.png";
 		} else {
-			return "/" + originalName + ".img.png";
+			return "/" + namePrefix + originalName + ".img.png";
 		}
 	}
 
 	@Override
 	public String getName() {
-		return getNameAsPrefix(originalName);
+		return getNamePrefix() + getFileName();
 	}
 
 	@Override
@@ -169,6 +186,11 @@ public class Html5SmartImageWidget extends AbstractWidget implements TabbableDia
 		if (name.endsWith("/")) {
 			newName = newName.substring(0, newName.length() - 1);
 		}
-		originalName = newName;
+        if (name.endsWith(originalName)) {
+            namePrefix = newName.substring(0, newName.indexOf(originalName));
+        }
+        else {
+            originalName = newName;
+        }
 	}
 }

@@ -18,14 +18,59 @@ package com.citytechinc.cq.component.touchuidialog.widget.smartimage;
 import com.citytechinc.cq.component.annotations.config.TouchUIWidget;
 import com.citytechinc.cq.component.annotations.widgets.Html5SmartImage;
 import com.citytechinc.cq.component.touchuidialog.widget.fileupload.FileUploadWidget;
-import com.citytechinc.cq.component.touchuidialog.widget.fileupload.FileUploadWidgetParameters;
+import org.codehaus.plexus.util.StringUtils;
 
 @TouchUIWidget(annotationClass = Html5SmartImage.class, makerClass = SmartImageWidgetMaker.class,
 	resourceType = FileUploadWidget.RESOURCE_TYPE)
 public class SmartImageWidget extends FileUploadWidget {
 
-	public SmartImageWidget(FileUploadWidgetParameters parameters) {
+    private final boolean isSelf;
+    private final String originalName;
+    private final String fileName;
+
+	public SmartImageWidget(SmartImageWidgetParameters parameters) {
 		super(parameters);
+
+        originalName = parameters.getName();
+        fileName = parameters.getFileName();
+        isSelf = parameters.isSelf();
 	}
+
+	@Override
+	public String getName() {
+		return getNamePrefix() + getFileName();
+	}
+
+    @Override
+    public String getFileNameParameter() {
+        if (!StringUtils.isEmpty(super.getFileNameParameter())) {
+            return getNamePrefix() + super.getFileNameParameter();
+        }
+        return super.getFileNameParameter();
+    }
+
+    @Override
+    public String getFilereferenceparameter() {
+        if (!StringUtils.isEmpty(super.getFilereferenceparameter())) {
+            return getNamePrefix() + super.getFilereferenceparameter();
+        }
+        return super.getFilereferenceparameter();
+    }
+
+    private String getFileName() {
+        if (fileName != null) {
+            return fileName;
+        }
+
+        return "";
+    }
+
+    private String getNamePrefix() {
+        if (StringUtils.isEmpty(originalName) || isSelf) {
+            return "./";
+        } else {
+            return "./" + originalName + "/";
+        }
+    }
 
 }

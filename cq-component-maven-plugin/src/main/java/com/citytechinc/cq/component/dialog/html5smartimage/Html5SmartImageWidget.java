@@ -27,9 +27,7 @@ import com.citytechinc.cq.component.dialog.TabbableDialogElement;
 public class Html5SmartImageWidget extends AbstractWidget implements TabbableDialogElement {
 	public static final String XTYPE = "html5smartimage";
 	private String originalName;
-    private String namePrefix;
-    private final String fileName;
-	private final boolean isSelf;
+	private final String fileName;
 	private final boolean disableFlush;
 	private final boolean disableInfo;
 	private final boolean disableZoom;
@@ -48,9 +46,7 @@ public class Html5SmartImageWidget extends AbstractWidget implements TabbableDia
 	public Html5SmartImageWidget(Html5SmartImageWidgetParameters parameters) {
 		super(parameters);
 		originalName = parameters.getName();
-        this.namePrefix = "";
-        this.fileName = parameters.getFileName();
-        this.isSelf = parameters.isSelf();
+		this.fileName = parameters.getFileName();
 		this.disableFlush = parameters.isDisableFlush();
 		this.disableInfo = parameters.isDisableInfo();
 		this.disableZoom = parameters.isDisableZoom();
@@ -66,21 +62,17 @@ public class Html5SmartImageWidget extends AbstractWidget implements TabbableDia
 		this.tab = parameters.isTab();
 	}
 
-	private String getNamePrefix() {
-		if (StringUtils.isEmpty(originalName) || isSelf) {
-			return "./" + namePrefix;
+	private static String getNameAsPrefix(String name) {
+		if (StringUtils.isEmpty(name)) {
+			return "./";
 		} else {
-			return "./" + namePrefix + originalName + "/";
+			return "./" + name + "/";
 		}
 	}
 
-	private String getFileName() {
-        if (fileName == null) {
-            return "";
-        }
-
-        return fileName;
-    }
+	public String getFileName() {
+		return fileName;
+	}
 
 	public String getTitle() {
 		return title;
@@ -104,35 +96,35 @@ public class Html5SmartImageWidget extends AbstractWidget implements TabbableDia
 
 	public String getCropParameter() {
 		if (!StringUtils.isEmpty(cropParameter)) {
-			return getNamePrefix() + cropParameter;
+			return getNameAsPrefix(originalName) + cropParameter;
 		}
 		return cropParameter;
 	}
 
 	public String getFileNameParameter() {
 		if (!StringUtils.isEmpty(fileNameParameter)) {
-			return getNamePrefix() + fileNameParameter;
+			return getNameAsPrefix(originalName) + fileNameParameter;
 		}
 		return fileNameParameter;
 	}
 
 	public String getFileReferenceParameter() {
 		if (!StringUtils.isEmpty(fileReferenceParameter)) {
-			return getNamePrefix() + fileReferenceParameter;
+			return getNameAsPrefix(originalName) + fileReferenceParameter;
 		}
 		return fileReferenceParameter;
 	}
 
 	public String getMapParameter() {
 		if (!StringUtils.isEmpty(mapParameter)) {
-			return getNamePrefix() + mapParameter;
+			return getNameAsPrefix(originalName) + mapParameter;
 		}
 		return mapParameter;
 	}
 
 	public String getRotateParameter() {
 		if (!StringUtils.isEmpty(rotateParameter)) {
-			return getNamePrefix() + rotateParameter;
+			return getNameAsPrefix(originalName) + rotateParameter;
 		}
 		return rotateParameter;
 	}
@@ -162,19 +154,16 @@ public class Html5SmartImageWidget extends AbstractWidget implements TabbableDia
 	}
 
 	public String getRequestSuffix() {
-		if (StringUtils.isEmpty(originalName) || isSelf) {
-            if (StringUtils.isNotEmpty(namePrefix)) {
-                return "/" + namePrefix + ".img.png";
-            }
+		if (StringUtils.isEmpty(originalName)) {
 			return ".img.png";
 		} else {
-			return "/" + namePrefix + originalName + ".img.png";
+			return "/" + originalName + ".img.png";
 		}
 	}
 
 	@Override
 	public String getName() {
-		return getNamePrefix() + getFileName();
+		return getNameAsPrefix(originalName);
 	}
 
 	@Override
@@ -186,11 +175,6 @@ public class Html5SmartImageWidget extends AbstractWidget implements TabbableDia
 		if (name.endsWith("/")) {
 			newName = newName.substring(0, newName.length() - 1);
 		}
-        if (name.endsWith(originalName)) {
-            namePrefix = newName.substring(0, newName.indexOf(originalName));
-        }
-        else {
-            originalName = newName;
-        }
+		originalName = newName;
 	}
 }

@@ -30,11 +30,9 @@ import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMake
 
 public class SmartImageWidgetMaker extends AbstractTouchUIWidgetMaker<SmartImageWidgetParameters> {
 	private static final String[] MIME_TYPES = { "image" };
-	private final TouchUIWidgetMakerParameters parameters;
 
 	public SmartImageWidgetMaker(TouchUIWidgetMakerParameters parameters) {
 		super(parameters);
-		this.parameters = parameters;
 	}
 
 	@Override
@@ -45,46 +43,28 @@ public class SmartImageWidgetMaker extends AbstractTouchUIWidgetMaker<SmartImage
 			.warn(
 				"There is no HTML5 Smart Image analog in the Touch UI. This field is being rendered as a fileupload however this is most likely not what you want. Use the image inline editor instead for this field.");
 
-		Html5SmartImage smartFileAnnotation = getAnnotation(Html5SmartImage.class);
+		Html5SmartImage smartImageAnnotation = getAnnotation(Html5SmartImage.class);
 
-        widgetParameters.setName(getNameForField());
-        widgetParameters.setFileName(getFileNameForField(smartFileAnnotation));
-		widgetParameters.setTitle(getTitleForField(smartFileAnnotation));
-		widgetParameters.setText(getTextForField(smartFileAnnotation));
-		widgetParameters.setIcon(getIconForField(smartFileAnnotation));
-		widgetParameters.setMultiple(getMultipleForField(smartFileAnnotation));
-		widgetParameters.setFileNameParameter(getFileNameParameterForField(smartFileAnnotation));
-		widgetParameters.setUploadUrl(getUploadUrlForField(smartFileAnnotation));
-		widgetParameters.setUploadUrlBuilder(getUploadUrlBuilderForField(smartFileAnnotation));
-		widgetParameters.setSizeLimit(getSizeLimitForField(smartFileAnnotation));
-		widgetParameters.setAutoStart(getAutoStartForField(smartFileAnnotation));
-		widgetParameters.setUseHTML5(getUseHTML5ForField(smartFileAnnotation));
-		widgetParameters.setDropZone(getDropZoneForField(smartFileAnnotation));
+		widgetParameters.setName(getNameForField());
+		widgetParameters.setFileName(Html5SmartImageWidgetMaker.FILE_NAME);
+		widgetParameters.setTitle(getTitleForField(smartImageAnnotation));
+		widgetParameters.setText(getTextForField(smartImageAnnotation));
+		widgetParameters.setIcon(getIconForField(smartImageAnnotation));
+		widgetParameters.setMultiple(getMultipleForField(smartImageAnnotation));
+		widgetParameters.setFileNameParameter(getNameAsPrefix(smartImageAnnotation)
+			+ Html5SmartImageWidgetMaker.FILE_NAME_PARAMETER);
+		widgetParameters.setUploadUrl(getUploadUrlForField(smartImageAnnotation));
+		widgetParameters.setUploadUrlBuilder(getUploadUrlBuilderForField(smartImageAnnotation));
+		widgetParameters.setSizeLimit(getSizeLimitForField(smartImageAnnotation));
+		widgetParameters.setAutoStart(getAutoStartForField(smartImageAnnotation));
+		widgetParameters.setUseHTML5(getUseHTML5ForField(smartImageAnnotation));
+		widgetParameters.setDropZone(getDropZoneForField(smartImageAnnotation));
 		widgetParameters.setMimeTypes(Arrays.asList(MIME_TYPES));
-		widgetParameters.setFilereferenceparameter(Html5SmartImageWidgetMaker.FILE_REFERENCE_PARAMETER);
+		widgetParameters.setFilereferenceparameter(getNameAsPrefix(smartImageAnnotation)
+			+ Html5SmartImageWidgetMaker.FILE_REFERENCE_PARAMETER);
 
 		return new SmartImageWidget(widgetParameters);
 	}
-
-    @Override
-    protected String getNameForField() {
-        String originalName = getName();
-
-        if (originalName.startsWith("./")) {
-            return originalName.substring(2);
-        }
-
-        return originalName;
-    }
-
-
-    public String getFileNameForField(Html5SmartImage annotation) {
-        if (annotation != null & StringUtils.isNotBlank(annotation.fileName())) {
-            return annotation.fileName();
-        }
-
-        return null;
-    }
 
 	public String getTitleForField(Html5SmartImage annotation) {
 		if (annotation != null && StringUtils.isNotBlank(annotation.title())) {
@@ -116,14 +96,6 @@ public class SmartImageWidgetMaker extends AbstractTouchUIWidgetMaker<SmartImage
 		}
 
 		return false;
-	}
-
-	public String getFileNameParameterForField(Html5SmartImage annotation) {
-		if (annotation != null && StringUtils.isNotBlank(annotation.fileNameParameter())) {
-			return annotation.fileNameParameter();
-		}
-
-		return null;
 	}
 
 	public String getUploadUrlForField(Html5SmartImage annotation) {
@@ -174,4 +146,14 @@ public class SmartImageWidgetMaker extends AbstractTouchUIWidgetMaker<SmartImage
 		return null;
 	}
 
+	private String getNameAsPrefix(Html5SmartImage annotation) {
+		StringBuilder sb = new StringBuilder();
+		if (parameters.isUseDotSlashInName()) {
+			sb.append("./");
+		}
+		if (StringUtils.isNotEmpty(getName()) && !annotation.isSelf()) {
+			sb.append(getName()).append("/");
+		}
+		return sb.toString();
+	}
 }

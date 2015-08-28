@@ -33,6 +33,8 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker<Html5SmartIm
 	public static final String DEFAULT_ROTATE_PARAMETER = "imageRotate";
 	public static final String DEFAULT_MAP_PARAMETER = "imageMap";
 	public static final String FILE_REFERENCE_PARAMETER = "fileReference";
+	public static final String FILE_NAME_PARAMETER = "fileName";
+	public static final String FILE_NAME = "file";
 
 	public Html5SmartImageWidgetMaker(WidgetMakerParameters parameters) {
 		super(parameters);
@@ -43,14 +45,14 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker<Html5SmartIm
 
 		Html5SmartImage smartImageAnnotation = getAnnotation(Html5SmartImage.class);
 
-		parameters.setName(getNameForField());
-		parameters.setFileName(getFileNameForField(smartImageAnnotation));
+		parameters.setName(getNameForField(smartImageAnnotation));
+		parameters.setFileName(FILE_NAME);
 		parameters.setIsSelf(getIsSelfForField(smartImageAnnotation));
 		parameters.setDisableFlush(getDisableFlushForField(smartImageAnnotation));
 		parameters.setDisableInfo(getDisableInfoForField(smartImageAnnotation));
 		parameters.setDisableZoom(getDisableZoomForField(smartImageAnnotation));
 		parameters.setCropParameter(getCropParameterForField(smartImageAnnotation));
-		parameters.setFileNameParameter(getFileNameParameterForField(smartImageAnnotation));
+		parameters.setFileNameParameter(FILE_NAME_PARAMETER);
 		parameters.setFileReferenceParameter(FILE_REFERENCE_PARAMETER);
 		parameters.setMapParameter(getMapParameterForField(smartImageAnnotation));
 		parameters.setRotateParameter(getRotateParameterForField(smartImageAnnotation));
@@ -72,40 +74,17 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker<Html5SmartIm
 
 	}
 
-    @Override
-    protected String getNameForField() {
-        String originalName = getName();
-
-        if (originalName.startsWith("./")) {
-            return originalName.substring(2);
-        }
-
-        return originalName;
-    }
-
-    protected String getFileNameForField(Html5SmartImage smartImageAnnotation) {
-        String fileName = smartImageAnnotation.fileName();
-
-        if (StringUtils.isNotEmpty(fileName)) {
-            return fileName;
-        }
-
-        return null;
-    }
+	protected String getNameForField(Html5SmartImage smartImageAnnotation) {
+		if (smartImageAnnotation.isSelf()) {
+			return null;
+		} else {
+			return getNameForField();
+		}
+	}
 
 	protected String getCropParameterForField(Html5SmartImage smartImageAnnotation) {
 		if (smartImageAnnotation.allowCrop()) {
 			return DEFAULT_CROP_PARAMETER;
-		}
-
-		return null;
-	}
-
-	protected String getFileNameParameterForField(Html5SmartImage smartImageAnnotation) {
-		String fileNameParameter = smartImageAnnotation.fileNameParameter();
-
-		if (StringUtils.isNotEmpty(fileNameParameter)) {
-			return fileNameParameter;
 		}
 
 		return null;

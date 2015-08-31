@@ -34,7 +34,6 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker<Html5SmartIm
 	public static final String DEFAULT_MAP_PARAMETER = "imageMap";
 	public static final String FILE_REFERENCE_PARAMETER = "fileReference";
 	public static final String FILE_NAME_PARAMETER = "fileName";
-	public static final String FILE_NAME = "file";
 
 	public Html5SmartImageWidgetMaker(WidgetMakerParameters parameters) {
 		super(parameters);
@@ -46,7 +45,6 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker<Html5SmartIm
 		Html5SmartImage smartImageAnnotation = getAnnotation(Html5SmartImage.class);
 
 		parameters.setName(getNameForField(smartImageAnnotation));
-		parameters.setFileName(FILE_NAME);
 		parameters.setIsSelf(getIsSelfForField(smartImageAnnotation));
 		parameters.setDisableFlush(getDisableFlushForField(smartImageAnnotation));
 		parameters.setDisableInfo(getDisableInfoForField(smartImageAnnotation));
@@ -76,7 +74,10 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker<Html5SmartIm
 
 	protected String getNameForField(Html5SmartImage smartImageAnnotation) {
 		if (smartImageAnnotation.isSelf()) {
-			return null;
+			if (parameters.isUseDotSlashInName()) {
+				return "./";
+			}
+			return "";
 		} else {
 			return getNameForField();
 		}

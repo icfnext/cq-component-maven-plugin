@@ -20,7 +20,6 @@ import com.citytechinc.cq.component.util.Constants;
 
 public class Html5SmartImageWidgetParameters extends DefaultWidgetParameters {
 	private String originalName;
-	private String fileName;
 	private boolean isSelf;
 	private boolean disableFlush;
 	private boolean disableInfo;
@@ -43,14 +42,6 @@ public class Html5SmartImageWidgetParameters extends DefaultWidgetParameters {
 	public void setOriginalName(String originalName) {
 		this.originalName = originalName;
 	}
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
 
     public boolean isSelf() {
         return isSelf;

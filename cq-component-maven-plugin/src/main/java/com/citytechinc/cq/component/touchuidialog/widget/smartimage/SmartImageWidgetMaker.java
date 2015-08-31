@@ -45,14 +45,12 @@ public class SmartImageWidgetMaker extends AbstractTouchUIWidgetMaker<SmartImage
 
 		Html5SmartImage smartImageAnnotation = getAnnotation(Html5SmartImage.class);
 
-		widgetParameters.setName(getNameForField());
-		widgetParameters.setFileName(Html5SmartImageWidgetMaker.FILE_NAME);
+		widgetParameters.setName(getNameForField(smartImageAnnotation));
 		widgetParameters.setTitle(getTitleForField(smartImageAnnotation));
 		widgetParameters.setText(getTextForField(smartImageAnnotation));
 		widgetParameters.setIcon(getIconForField(smartImageAnnotation));
 		widgetParameters.setMultiple(getMultipleForField(smartImageAnnotation));
-		widgetParameters.setFileNameParameter(getNameAsPrefix(smartImageAnnotation)
-			+ Html5SmartImageWidgetMaker.FILE_NAME_PARAMETER);
+		widgetParameters.setFileNameParameter(Html5SmartImageWidgetMaker.FILE_NAME_PARAMETER);
 		widgetParameters.setUploadUrl(getUploadUrlForField(smartImageAnnotation));
 		widgetParameters.setUploadUrlBuilder(getUploadUrlBuilderForField(smartImageAnnotation));
 		widgetParameters.setSizeLimit(getSizeLimitForField(smartImageAnnotation));
@@ -60,11 +58,21 @@ public class SmartImageWidgetMaker extends AbstractTouchUIWidgetMaker<SmartImage
 		widgetParameters.setUseHTML5(getUseHTML5ForField(smartImageAnnotation));
 		widgetParameters.setDropZone(getDropZoneForField(smartImageAnnotation));
 		widgetParameters.setMimeTypes(Arrays.asList(MIME_TYPES));
-		widgetParameters.setFilereferenceparameter(getNameAsPrefix(smartImageAnnotation)
-			+ Html5SmartImageWidgetMaker.FILE_REFERENCE_PARAMETER);
+		widgetParameters.setFilereferenceparameter(Html5SmartImageWidgetMaker.FILE_REFERENCE_PARAMETER);
 
 		return new SmartImageWidget(widgetParameters);
 	}
+
+    public String getNameForField(Html5SmartImage annotation) {
+        if (annotation.isSelf()) {
+            if (parameters.isUseDotSlashInName()) {
+                return "./";
+            }
+            return "";
+        } else {
+            return getNameForField();
+        }
+    }
 
 	public String getTitleForField(Html5SmartImage annotation) {
 		if (annotation != null && StringUtils.isNotBlank(annotation.title())) {
@@ -144,16 +152,5 @@ public class SmartImageWidgetMaker extends AbstractTouchUIWidgetMaker<SmartImage
 		}
 
 		return null;
-	}
-
-	private String getNameAsPrefix(Html5SmartImage annotation) {
-		StringBuilder sb = new StringBuilder();
-		if (parameters.isUseDotSlashInName()) {
-			sb.append("./");
-		}
-		if (StringUtils.isNotEmpty(getName()) && !annotation.isSelf()) {
-			sb.append(getName()).append("/");
-		}
-		return sb.toString();
 	}
 }

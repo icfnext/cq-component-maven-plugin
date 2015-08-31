@@ -19,16 +19,7 @@ import com.citytechinc.cq.component.touchuidialog.widget.fileupload.FileUploadWi
 
 public class SmartImageWidgetParameters extends FileUploadWidgetParameters {
 
-    private String fileName;
     private boolean isSelf;
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
 
     public boolean isSelf() {
         return isSelf;

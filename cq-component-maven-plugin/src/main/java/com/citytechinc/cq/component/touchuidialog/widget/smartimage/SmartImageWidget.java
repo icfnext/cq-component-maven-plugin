@@ -17,6 +17,7 @@ package com.citytechinc.cq.component.touchuidialog.widget.smartimage;
 
 import com.citytechinc.cq.component.annotations.config.TouchUIWidget;
 import com.citytechinc.cq.component.annotations.widgets.Html5SmartImage;
+import com.citytechinc.cq.component.dialog.html5smartimage.Html5SmartImageWidget;
 import com.citytechinc.cq.component.touchuidialog.widget.fileupload.FileUploadWidget;
 
 @TouchUIWidget(annotationClass = Html5SmartImage.class, makerClass = SmartImageWidgetMaker.class,
@@ -27,4 +28,25 @@ public class SmartImageWidget extends FileUploadWidget {
 		super(parameters);
 	}
 
+    private static String getNameAsPrefix(String name) {
+        if (!name.endsWith("/")) {
+            return name + "/";
+        }
+        return name;
+    }
+
+    @Override
+	public String getName() {
+        return getNameAsPrefix(super.getName()) + Html5SmartImageWidget.NAME_SUFFIX;
+    }
+
+    @Override
+    public String getFilereferenceparameter() {
+        return getNameAsPrefix(super.getName()) + super.getFilereferenceparameter();
+    }
+
+    @Override
+    public String getFileNameParameter() {
+        return getNameAsPrefix(super.getName()) + super.getFileNameParameter();
+    }
 }

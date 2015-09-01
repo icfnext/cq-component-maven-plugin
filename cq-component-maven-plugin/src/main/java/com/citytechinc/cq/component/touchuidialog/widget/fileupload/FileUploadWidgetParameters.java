@@ -25,7 +25,6 @@ public class FileUploadWidgetParameters extends DefaultTouchUIWidgetParameters {
 	private String text;
 	private String icon;
 	private boolean multiple;
-	private String fileNameParameter;
 	private String uploadUrl;
 	private String uploadUrlBuilder;
 	private Long sizeLimit;
@@ -34,7 +33,6 @@ public class FileUploadWidgetParameters extends DefaultTouchUIWidgetParameters {
 	private String dropZone;
 	// TODO: Event handling
 	private List<String> mimeTypes;
-	private String filereferenceparameter;
 
 	@Override
 	public String getTitle() {
@@ -68,14 +66,6 @@ public class FileUploadWidgetParameters extends DefaultTouchUIWidgetParameters {
 
 	public void setMultiple(boolean multiple) {
 		this.multiple = multiple;
-	}
-
-	public String getFileNameParameter() {
-		return fileNameParameter;
-	}
-
-	public void setFileNameParameter(String fileNameParameter) {
-		this.fileNameParameter = fileNameParameter;
 	}
 
 	public String getUploadUrl() {
@@ -142,14 +132,6 @@ public class FileUploadWidgetParameters extends DefaultTouchUIWidgetParameters {
 	@Override
 	public void setResourceType(String resourceType) {
 		throw new UnsupportedOperationException("resourceType is Static for FileUploadWidget");
-	}
-
-	public String getFilereferenceparameter() {
-		return filereferenceparameter;
-	}
-
-	public void setFilereferenceparameter(String filereferenceparameter) {
-		this.filereferenceparameter = filereferenceparameter;
 	}
 
 }

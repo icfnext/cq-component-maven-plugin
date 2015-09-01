@@ -39,8 +39,6 @@ public class FileUploadWidget extends AbstractTouchUIWidget {
 	private final String dropZone;
 	// TODO: Event handling ?
 	private final List<String> mimeTypes;
-	private final String filereferenceparameter;
-	private final String fileNameParameter;
 
 	public FileUploadWidget(FileUploadWidgetParameters parameters) {
 		super(parameters);
@@ -55,8 +53,6 @@ public class FileUploadWidget extends AbstractTouchUIWidget {
 		useHTML5 = parameters.isUseHTML5();
 		dropZone = parameters.getDropZone();
 		mimeTypes = parameters.getMimeTypes();
-		filereferenceparameter = parameters.getFilereferenceparameter();
-		fileNameParameter = parameters.getFileNameParameter();
 	}
 
 	@Override
@@ -102,13 +98,5 @@ public class FileUploadWidget extends AbstractTouchUIWidget {
 
 	public List<String> getMimeTypes() {
 		return mimeTypes;
-	}
-
-	public String getFilereferenceparameter() {
-		return filereferenceparameter;
-	}
-
-	public String getFileNameParameter() {
-		return fileNameParameter;
 	}
 }

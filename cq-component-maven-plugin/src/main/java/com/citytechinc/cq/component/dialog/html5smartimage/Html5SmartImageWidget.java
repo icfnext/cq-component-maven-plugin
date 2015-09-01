@@ -25,7 +25,10 @@ import com.citytechinc.cq.component.dialog.TabbableDialogElement;
 @Widget(annotationClass = Html5SmartImage.class, makerClass = Html5SmartImageWidgetMaker.class,
 	xtype = Html5SmartImageWidget.XTYPE)
 public class Html5SmartImageWidget extends AbstractWidget implements TabbableDialogElement {
+
 	public static final String XTYPE = "html5smartimage";
+	public static final String NAME_SUFFIX = "file";
+
 	private String originalName;
 	private final boolean disableFlush;
 	private final boolean disableInfo;
@@ -61,12 +64,23 @@ public class Html5SmartImageWidget extends AbstractWidget implements TabbableDia
 	}
 
 	private static String getNameAsPrefix(String name) {
-		if (StringUtils.isEmpty(name)) {
-			return "./";
-		} else {
-			return "./" + name + "/";
+		if (!name.endsWith("/")) {
+			return name + "/";
 		}
+        return name;
 	}
+
+    private static String getSanitizedName(String name) {
+        String sanitizedName = name;
+        if (sanitizedName.startsWith("./")) {
+            sanitizedName = sanitizedName.substring(2);
+        }
+        if (sanitizedName.endsWith("/")) {
+            sanitizedName = sanitizedName.substring(0, sanitizedName.length() - 1);
+        }
+
+        return sanitizedName;
+    }
 
 	public String getTitle() {
 		return title;
@@ -147,28 +161,28 @@ public class Html5SmartImageWidget extends AbstractWidget implements TabbableDia
 		return height;
 	}
 
+    //NTS: using the oob naming stuff we are adding ./ to the original name --- historically we were not using this which was the purpose of the getasprefix methods.  Now what we need is a sanatize method which removes the ./ if it is there
 	public String getRequestSuffix() {
-		if (StringUtils.isEmpty(originalName)) {
+		if (StringUtils.isEmpty(originalName) || "./".equals(originalName)) {
 			return ".img.png";
-		} else {
-			return "/" + originalName + ".img.png";
+		}
+        else {
+			return "/" + getSanitizedName(originalName) + ".img.png";
 		}
 	}
 
 	@Override
 	public String getName() {
-		return getNameAsPrefix(originalName);
+		return getNameAsPrefix(originalName) + NAME_SUFFIX;
 	}
 
 	@Override
 	public void setName(String name) {
 		String newName = name;
-		if (name.startsWith("./")) {
-			newName = newName.substring(2);
-		}
 		if (name.endsWith("/")) {
 			newName = newName.substring(0, newName.length() - 1);
 		}
 		originalName = newName;
 	}
+
 }

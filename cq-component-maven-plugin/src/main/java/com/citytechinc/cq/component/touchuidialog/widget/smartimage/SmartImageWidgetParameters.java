@@ -15,16 +15,17 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.smartimage;
 
-import com.citytechinc.cq.component.annotations.config.TouchUIWidget;
-import com.citytechinc.cq.component.annotations.widgets.Html5SmartImage;
-import com.citytechinc.cq.component.touchuidialog.widget.fileupload.FileUploadWidget;
+import com.citytechinc.cq.component.touchuidialog.widget.fileupload.FileUploadWidgetParameters;
 
-@TouchUIWidget(annotationClass = Html5SmartImage.class, makerClass = SmartImageWidgetMaker.class,
-	resourceType = FileUploadWidget.RESOURCE_TYPE)
-public class SmartImageWidget extends FileUploadWidget {
+public class SmartImageWidgetParameters extends FileUploadWidgetParameters {
 
-	public SmartImageWidget(SmartImageWidgetParameters parameters) {
-		super(parameters);
-	}
+    private boolean isSelf;
 
+    public boolean isSelf() {
+        return isSelf;
+    }
+
+    public void setIsSelf(boolean isSelf) {
+        this.isSelf = isSelf;
+    }
 }

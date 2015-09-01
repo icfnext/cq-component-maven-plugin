@@ -31,7 +31,6 @@ public class FileUploadWidget extends AbstractTouchUIWidget {
 	private final String text;
 	private final String icon;
 	private final boolean multiple;
-	private final String fileNameParameter;
 	private final String uploadUrl;
 	private final String uploadUrlBuilder;
 	private final Long sizeLimit;
@@ -40,16 +39,13 @@ public class FileUploadWidget extends AbstractTouchUIWidget {
 	private final String dropZone;
 	// TODO: Event handling ?
 	private final List<String> mimeTypes;
-	private final String filereferenceparameter;
 
 	public FileUploadWidget(FileUploadWidgetParameters parameters) {
 		super(parameters);
-
 		title = parameters.getTitle();
 		text = parameters.getText();
 		icon = parameters.getIcon();
 		multiple = parameters.isMultiple();
-		fileNameParameter = parameters.getFileNameParameter();
 		uploadUrl = parameters.getUploadUrl();
 		uploadUrlBuilder = parameters.getUploadUrlBuilder();
 		sizeLimit = parameters.getSizeLimit();
@@ -57,8 +53,6 @@ public class FileUploadWidget extends AbstractTouchUIWidget {
 		useHTML5 = parameters.isUseHTML5();
 		dropZone = parameters.getDropZone();
 		mimeTypes = parameters.getMimeTypes();
-		filereferenceparameter = parameters.getFilereferenceparameter();
-
 	}
 
 	@Override
@@ -76,10 +70,6 @@ public class FileUploadWidget extends AbstractTouchUIWidget {
 
 	public boolean isMultiple() {
 		return multiple;
-	}
-
-	public String getFileNameParameter() {
-		return fileNameParameter;
 	}
 
 	public String getUploadUrl() {
@@ -108,9 +98,5 @@ public class FileUploadWidget extends AbstractTouchUIWidget {
 
 	public List<String> getMimeTypes() {
 		return mimeTypes;
-	}
-
-	public String getFilereferenceparameter() {
-		return filereferenceparameter;
 	}
 }

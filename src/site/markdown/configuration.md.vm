@@ -26,6 +26,7 @@ $symbol_pound$symbol_pound$symbol_pound Maven POM
 	        <componentPathSuffix>content</componentPathSuffix>
 	        <defaultComponentGroup>Client Group</defaultComponentGroup>
 	        <transformerName>camel-case</transformerName>
+	        <generateTouchUiDialogs>true</generateTouchUiDialogs>
 	        <excludedDependencies>
 	           <dependency>
 	               <groupId>dependency.group.id</groupId>

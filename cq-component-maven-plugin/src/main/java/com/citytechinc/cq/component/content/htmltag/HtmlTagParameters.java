@@ -15,9 +15,9 @@
  */
 package com.citytechinc.cq.component.content.htmltag;
 
-import com.citytechinc.cq.component.xml.XmlElementParameters;
+import com.citytechinc.cq.component.xml.DefaultXmlElementParameters;
 
-public class HtmlTagParameters extends XmlElementParameters {
+public class HtmlTagParameters extends DefaultXmlElementParameters {
 
 	private static final String CONTENT_PRIMARY_TYPE = "nt:unstructured";
 

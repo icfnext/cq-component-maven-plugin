@@ -15,10 +15,10 @@
  */
 package com.citytechinc.cq.component.dialog.datefield;
 
-import com.citytechinc.cq.component.dialog.widget.WidgetParameters;
+import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 import com.citytechinc.cq.component.util.Constants;
 
-public class DateFieldWidgetParameters extends WidgetParameters {
+public class DateFieldWidgetParameters extends DefaultWidgetParameters {
 	private int startDay;
 	private boolean showToday;
 	private String format;

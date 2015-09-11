@@ -15,19 +15,6 @@
  */
 package com.citytechinc.cq.component.xml;
 
-import org.codehaus.plexus.util.StringUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -39,22 +26,36 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.codehaus.plexus.util.StringUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 public class XmlWriter {
 
 	private static final DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 	private static final TransformerFactory transformerFactory = TransformerFactory.newInstance();
-	private static final List<String> DO_NOT_CALL = Arrays.asList("getNameSpace", "getContainedElements", "getFieldName",
-        "getClass", "getRanking");
+	private static final List<String> DO_NOT_CALL = Arrays.asList("getNameSpace", "getContainedElements",
+		"getFieldName", "getClass", "getRanking");
 
-    /** Widget field types that require special prefixes for correct JCR values. */
-    private static final Set<Class> TYPES_WITH_PREFIXES;
+	/** Widget field types that require special prefixes for correct JCR values. */
+	private static final Set<Class> TYPES_WITH_PREFIXES;
 
-    static {
-        TYPES_WITH_PREFIXES = new HashSet<Class>();
-        TYPES_WITH_PREFIXES.add(Double.class);
-        TYPES_WITH_PREFIXES.add(Long.class);
-        TYPES_WITH_PREFIXES.add(Boolean.class);
-    }
+	static {
+		TYPES_WITH_PREFIXES = new HashSet<Class>();
+		TYPES_WITH_PREFIXES.add(Double.class);
+		TYPES_WITH_PREFIXES.add(Long.class);
+		TYPES_WITH_PREFIXES.add(Boolean.class);
+	}
 
 	private XmlWriter() {
 	}
@@ -76,9 +77,8 @@ public class XmlWriter {
 	}
 
 	@SuppressWarnings({ "all" })
-	private static Element createElement(XmlElement xmlElement, Document document)
-		throws IllegalArgumentException, IllegalAccessException, InvocationTargetException, SecurityException,
-		NoSuchMethodException {
+	private static Element createElement(XmlElement xmlElement, Document document) throws IllegalArgumentException,
+		IllegalAccessException, InvocationTargetException, SecurityException, NoSuchMethodException {
 		Class xmlClass = xmlElement.getClass();
 		Method namespaceMethod = xmlClass.getMethod("getNameSpace", null);
 		String namespace = (String) namespaceMethod.invoke(xmlElement, null);
@@ -105,8 +105,8 @@ public class XmlWriter {
 							Object value = entry.getValue();
 							if (value instanceof NameSpacedAttribute<?>) {
 								NameSpacedAttribute<?> nsa = (NameSpacedAttribute<?>) value;
-								setPropertyOnElement(createdElement, nsa.getNameSpace(), nsa.getNameSpacePrefix(), key,
-									nsa.getValue());
+								setPropertyOnElement(createdElement, nsa.getNameSpace(), nsa.getNameSpacePrefix(),
+									StringUtils.isNotEmpty(nsa.getName()) ? nsa.getName() : key, nsa.getValue());
 							} else {
 								setPropertyOnElement(createdElement, null, null, key, value);
 							}
@@ -123,7 +123,7 @@ public class XmlWriter {
 								nsaObject = generateStringFromArray(arrayReturn);
 							}
 							setPropertyOnElementForMethod(createdElement, nsa.getNameSpace(), nsa.getNameSpacePrefix(),
-								methodName, nsaObject);
+								StringUtils.isNotEmpty(nsa.getName()) ? nsa.getName() : methodName, nsaObject);
 						}
 					} else if (methodReturn instanceof List<?>) {
 						List<?> listReturn = (List<?>) methodReturn;
@@ -177,19 +177,21 @@ public class XmlWriter {
 			propertyName = StringUtils.lowercaseFirstLetter(methodName.substring(3));
 		} else if (methodName.startsWith("is")) {
 			propertyName = StringUtils.lowercaseFirstLetter(methodName.substring(2));
+		} else {
+			propertyName = methodName;
 		}
 		setPropertyOnElement(element, nameSpace, nameSpacePrefix, propertyName, methodReturn);
 	}
 
-	private static void setPropertyOnElement(Element element, String nameSpace, String nameSpacePrefix,
-		String name, Object value) {
+	private static void setPropertyOnElement(Element element, String nameSpace, String nameSpacePrefix, String name,
+		Object value) {
 		if (value != null) {
 			String propertyValue = value.toString();
 
-            Class clazz = value.getClass();
+			Class clazz = value.getClass();
 
-            if (TYPES_WITH_PREFIXES.contains(clazz)) {
-                propertyValue = "{" + clazz.getSimpleName() + "}" + propertyValue;
+			if (TYPES_WITH_PREFIXES.contains(clazz)) {
+				propertyValue = "{" + clazz.getSimpleName() + "}" + propertyValue;
 			}
 
 			if (StringUtils.isEmpty(nameSpace)) {

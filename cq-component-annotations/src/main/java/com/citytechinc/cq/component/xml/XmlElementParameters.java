@@ -18,50 +18,26 @@ package com.citytechinc.cq.component.xml;
 import java.util.List;
 import java.util.Map;
 
-public class XmlElementParameters {
-	protected String primaryType;
-	protected String fieldName;
-	protected Map<String, ?> additionalProperties;
-	protected List<? extends XmlElement> containedElements;
-	protected String nameSpace;
+public interface XmlElementParameters {
 
-	public String getPrimaryType() {
-		return primaryType;
-	}
+	public abstract String getPrimaryType();
 
-	public void setPrimaryType(String primaryType) {
-		this.primaryType = primaryType;
-	}
+	public abstract void setPrimaryType(String primaryType);
 
-	public String getFieldName() {
-		return fieldName;
-	}
+	public abstract String getFieldName();
 
-	public void setFieldName(String fieldName) {
-		this.fieldName = fieldName;
-	}
+	public abstract void setFieldName(String fieldName);
 
-	public Map<String, ?> getAdditionalProperties() {
-		return additionalProperties;
-	}
+	public abstract Map<String, ?> getAdditionalProperties();
 
-	public void setAdditionalProperties(Map<String, ?> additionalProperties) {
-		this.additionalProperties = additionalProperties;
-	}
+	public abstract void setAdditionalProperties(Map<String, ?> additionalProperties);
 
-	public List<? extends XmlElement> getContainedElements() {
-		return containedElements;
-	}
+	public abstract List<? extends XmlElement> getContainedElements();
 
-	public void setContainedElements(List<? extends XmlElement> containedElements) {
-		this.containedElements = containedElements;
-	}
+	public abstract void setContainedElements(List<? extends XmlElement> containedElements);
 
-	public String getNameSpace() {
-		return nameSpace;
-	}
+	public abstract String getNameSpace();
 
-	public void setNameSpace(String nameSpace) {
-		this.nameSpace = nameSpace;
-	}
+	public abstract void setNameSpace(String nameSpace);
+
 }

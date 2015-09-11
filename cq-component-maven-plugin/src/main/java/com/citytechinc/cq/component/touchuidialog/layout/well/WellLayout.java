@@ -13,33 +13,16 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.annotations;
+package com.citytechinc.cq.component.touchuidialog.layout.well;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.citytechinc.cq.component.touchuidialog.container.Container;
+import com.citytechinc.cq.component.touchuidialog.container.ContainerParameters;
+import com.citytechinc.cq.component.touchuidialog.layout.Layout;
 
-/**
- * Defines a property to be written to a dialog widget's XML node in the
- * Component's dialog.xml.
- */
-@Retention(RetentionPolicy.CLASS)
-@Target({ ElementType.FIELD, ElementType.METHOD })
-public @interface FieldProperty {
+public class WellLayout extends Container implements Layout {
 
-	/**
-	 * The name of the property on the field
-	 *
-	 * @return String
-	 */
-	String name();
-
-	/**
-	 * The value of the property on the field
-	 *
-	 * @return String
-	 */
-	String value();
+	public WellLayout(ContainerParameters parameters) {
+		super(parameters);
+	}
 
 }

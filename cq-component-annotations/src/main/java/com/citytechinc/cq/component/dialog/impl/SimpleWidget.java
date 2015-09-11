@@ -16,10 +16,10 @@
 package com.citytechinc.cq.component.dialog.impl;
 
 import com.citytechinc.cq.component.dialog.AbstractWidget;
-import com.citytechinc.cq.component.dialog.widget.WidgetParameters;
+import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 
 public class SimpleWidget extends AbstractWidget {
-	public SimpleWidget(WidgetParameters parameters) {
+	public SimpleWidget(DefaultWidgetParameters parameters) {
 		super(parameters);
 	}
 }

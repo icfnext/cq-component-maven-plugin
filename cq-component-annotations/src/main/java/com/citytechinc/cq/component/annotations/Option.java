@@ -48,4 +48,13 @@ public @interface Option {
 	 */
 	String qtip() default "";
 
+	/**
+	 * Used for Touch UI only
+	 *
+	 * Indicates that this option is the default selection
+	 *
+	 * @return boolean
+	 */
+	boolean selected() default false;
+
 }

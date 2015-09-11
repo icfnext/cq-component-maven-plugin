@@ -28,15 +28,29 @@ public @interface Tab {
 	String title() default "";
 
 	/**
+	 * Applicable to Classic-UI only
+	 * 
 	 * Defines the path to the Tab definition in the content repository. This
 	 * property may be used when the Tab is to be populated in the rendered
 	 * dialog using an existing definition in the repository.
 	 *
 	 * @return String
 	 */
-	String path() default "";
+	String classicUIPath() default "";
 
 	/**
+	 * Applicable to Touch-UI only
+	 * 
+	 * Defines the path to the Tab definition in the content repository. This
+	 * property may be used when the Tab is to be populated in the rendered
+	 * dialog using an existing definition in the repository.
+	 * 
+	 */
+	String touchUIPath() default "";
+
+	/**
+	 * Applicable to Classic-UI only
+	 * 
 	 * The set of listeners which will be attributed to the tab. Listeners are
 	 * output as properties in the listeners XML node which is a child of the
 	 * XML node representing the dialog tab..
@@ -44,4 +58,30 @@ public @interface Tab {
 	 * @return Listener[]
 	 */
 	public Listener[] listeners() default {};
+
+	/**
+	 * Applicable to Touch-UI only
+	 * 
+	 * Defines the sling:resourceType for the renderCondition node for this tab
+	 * 
+	 */
+	public String renderConditionResourceType() default "";
+
+	/**
+	 * Applicable to Touch-UI only
+	 * 
+	 * Defines additional properties to be added to the renderCondition node
+	 * 
+	 * These will only be added if renderConditionResourceType is not empty
+	 * 
+	 */
+	public Property[] renderConditionProperties() default {};
+
+	/**
+	 * Applicable to Touch-UI only
+	 * 
+	 * Controls whether or not the tab is shown in the create page dialog
+	 * 
+	 */
+	public boolean showOnCreate() default true;
 }

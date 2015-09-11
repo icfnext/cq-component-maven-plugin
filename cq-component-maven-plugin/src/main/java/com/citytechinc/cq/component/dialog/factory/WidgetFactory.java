@@ -16,8 +16,6 @@
 package com.citytechinc.cq.component.dialog.factory;
 
 import java.lang.reflect.InvocationTargetException;
-import java.net.URI;
-import java.net.URL;
 import java.util.Set;
 
 import javassist.CannotCompileException;
@@ -31,7 +29,6 @@ import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 import com.citytechinc.cq.component.dialog.maker.impl.DefaultWidgetMaker;
 import com.citytechinc.cq.component.maven.util.LogSingleton;
-import com.citytechinc.cq.component.util.ComponentUtil;
 import com.citytechinc.cq.component.util.WidgetConfigHolder;
 
 public class WidgetFactory {
@@ -53,13 +50,15 @@ public class WidgetFactory {
 
 		WidgetMakerContext widgetMakerContext = getWidgetMakerForField(parameters, rankingCeiling);
 
-		parameters.setXtype(widgetMakerContext.getXtype());
+		if (widgetMakerContext != null) {
+			parameters.setXtype(widgetMakerContext.getXtype());
+			WidgetMaker widgetMaker =
+				widgetMakerContext.getWidgetMaker().getConstructor(WidgetMakerParameters.class).newInstance(parameters);
 
-		WidgetMaker widgetMaker =
-			widgetMakerContext.getWidgetMaker().getConstructor(WidgetMakerParameters.class).newInstance(parameters);
+			return widgetMaker.make();
+		}
 
-		return widgetMaker.make();
-
+		return null;
 	}
 
 	private static final WidgetMakerContext
@@ -78,14 +77,14 @@ public class WidgetFactory {
 
 		String xtype = getXTypeForField(parameters);
 
-		if (StringUtils.isEmpty(xtype)) {
-			throw new InvalidComponentFieldException("An xtype could not be determined for the field");
+		if (StringUtils.isNotEmpty(xtype)) {
+			widget = getWidgetConfigByXtype(xtype, parameters, rankingCeiling);
+			if (widget != null && widget.hasMakerClass()) {
+				return new WidgetMakerContext(widget.getMakerClass(), widget.getXtype());
+			}
+			return new WidgetMakerContext(DefaultWidgetMaker.class, xtype);
 		}
-		widget = getWidgetConfigByXtype(xtype, parameters, rankingCeiling);
-		if (widget != null && widget.hasMakerClass()) {
-			return new WidgetMakerContext(widget.getMakerClass(), widget.getXtype());
-		}
-		return new WidgetMakerContext(DefaultWidgetMaker.class, xtype);
+		return null;
 	}
 
 	private static final String getXTypeForField(WidgetMakerParameters parameters)
@@ -95,54 +94,7 @@ public class WidgetFactory {
 			return parameters.getDialogFieldConfig().getXtype();
 		}
 
-		/*
-		 * Handle standard types
-		 */
-
-		Class<?> fieldClass = ComponentUtil.getTypeForMember(parameters.getCtMember(), parameters.getContainingClass());
-
-		String simpleXType = getSimpleXTypeForClass(fieldClass);
-
-		if (StringUtils.isNotEmpty(simpleXType)) {
-			return simpleXType;
-		}
-
-		/*
-		 * selection
-		 */
-		if (fieldClass.isEnum()) {
-			return SELECTION_XTYPE;
-		}
-
 		return null;
-	}
-
-	private static final String getSimpleXTypeForClass(Class<?> clazz) {
-
-		/*
-		 * numberfield
-		 */
-		if (Number.class.isAssignableFrom(clazz) || clazz.equals(int.class) || clazz.equals(double.class)
-			|| clazz.equals(float.class)) {
-			return NUMBERFIELD_XTYPE;
-		}
-
-		/*
-		 * textfield
-		 */
-		if (clazz.equals(String.class)) {
-			return TEXTFIELD_XTYPE;
-		}
-
-		/*
-		 * pathfield
-		 */
-		if (URI.class.isAssignableFrom(clazz) || URL.class.isAssignableFrom(clazz)) {
-			return PATHFIELD_XTYPE;
-		}
-
-		return null;
-
 	}
 
 	public static WidgetConfigHolder getWidgetConfig(WidgetMakerParameters parameters, int rankCeiling)
@@ -188,7 +140,7 @@ public class WidgetFactory {
 			LOG.debug("Checking for known annotation " + curRegisteredAnnotation);
 			WidgetConfigHolder curPotential =
 				parameters.getWidgetRegistry().getWidgetForAnnotation(curRegisteredAnnotation);
-			if (curPotential.getXtype().equals(xtype) && rankCeiling < 0 && curPotential.getRanking() < rankCeiling) {
+			if (curPotential.getXtype().equals(xtype) && rankCeiling < 0 || curPotential.getRanking() < rankCeiling) {
 				LOG.debug("Match found in the registry with ranking " + curPotential.getRanking());
 				if (highestRankedWidget == null || curPotential.getRanking() > highestRankedWidget.getRanking()) {
 					highestRankedWidget = curPotential;

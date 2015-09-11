@@ -28,8 +28,8 @@ public class AbstractXmlElement implements XmlElement {
 	protected String nameSpace;
 
 	public AbstractXmlElement(XmlElementParameters parameters) {
-		primaryType = new NameSpacedAttribute<String>(Constants.JCR_NS_URI, Constants.JCR_NS_PREFIX,
-			parameters.getPrimaryType());
+		primaryType =
+			new NameSpacedAttribute<String>(Constants.JCR_NS_URI, Constants.JCR_NS_PREFIX, parameters.getPrimaryType());
 		this.fieldName = parameters.getFieldName();
 		this.additionalProperties = parameters.getAdditionalProperties();
 		this.containedElements = parameters.getContainedElements();

@@ -1,6 +1,6 @@
 ## Usage
 
-The cq-component-maven-plugin generates .content.xml, _cq_editConfig.xml, and dialog.xml files for Components
+The cq-component-maven-plugin generates .content.xml, _cq_editConfig.xml, _cq_dialog.xml, and dialog.xml files for Components
 and injects them into a previously created CQ Package archive file.  As such, the plugin should be run as part of
 or after the `package` lifecycle phase and, if running during the `package` lifecycle phase, should be configured after the
 plugin creating the aforementioned archive file.
@@ -9,10 +9,10 @@ plugin creating the aforementioned archive file.
 
 This plugin will search through the classes built as part of your project along with those contained in any
 dependencies and transitive dependencies which are not included in the excludedDependencies POM configuration
-looking for those annotated with the `@Component` annotation and generating .content.xml, _cq_editConfig, and dialog.xml files based on
-said annotation, the class itself, and the fields and methods of the class which are annotated with `@DialogField` annotations.
+looking for those annotated with the `@Component` annotation and generating .content.xml, _cq_editConfig, _cq_dialog.xml, and dialog.xml files based on
+said annotation, the class itself, inherited classes and interfaces, and the fields and methods of the class or inherited classes and interfaces  which are annotated with `@DialogField` annotations.
 The plugin will attempt to default most configuration present in these generated files based on information provided by the classes,
-fields, and methods themselves.  These default choices can be overridden via properties of the annotations and stacked annotations.
+fields, and methods.  These default choices can be overridden via properties of the annotations and stacked annotations.
 
 Specific files will only be generated if such files do not already exist for the component.  For example,
 if you have created a dialog.xml file for the component already, this plugin will not overwrite it.
@@ -20,53 +20,22 @@ if you have created a dialog.xml file for the component already, this plugin wil
 ### Component
 [com.citytechinc.cq.component.annotations.Component](apidocs/com/citytechinc/cq/component/annotations/Component.html)
 
-This is the annotation that indicates to the plugin that a class represents a component.  It contains configuration for the _cq_editConfig.xml, .content.xml, and dialog.xml files.
+This is the annotation that indicates to the plugin that a class represents a component.  It contains configuration for the _cq_editConfig.xml, .content.xml, _cq_dialog.xml, and dialog.xml files.
 
 ### DialogField
 [com.citytechinc.cq.component.annotations.DialogField](apidocs/com/citytechinc/cq/component/annotations/DialogField.html)
 
-This annotation marks a field or method as an authorable element.  Authorable elements are represented in CQ Component Dialogs.  How they are represented is based on the type of the field or method, information provided in the `@DialogField` annotation, and information provided in any stacked annotations.
+This annotation marks a field or method as an authorable element.  Authorable elements are represented in CQ Component Dialogs.  How they are represented is based on information provided in the `@DialogField` annotation and information provided in any stacked annotations.
 
-Determination of the xtype to be rendered for an authorable element is based on the following process:
+Determination of the xtype to be rendered for an authorable element in the Classic UI is based on the following process:
 
 1. If the `xtype` property of the `@DialogField` annotation is populated, its value is used.
 2. If a stacked Widget annotation is also associated with the element the xtype associated with the stacked annotation is used.
-3. A guess is made as to the intended xtype based on the type of the field or return type of the method.  The following table denotes the xtypes which the plugin is able to determine via this mechanism.
 
-<table class="table table-striped break-words-table">
-    <thead>
-        <tr>
-            <th>Class/Primitive Type</th>
-            <th>Default xtype</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>? Extends java.lang.Number</td>
-            <td>numberfield</td>
-        </tr>
-        <tr>
-            <td>int</td>
-            <td>numberfield</td>
-        </tr>
-        <tr>
-            <td>double</td>
-            <td>numberfield</td>
-        </tr>
-        <tr>
-            <td>java.lang.String</td>
-            <td>textfield</td>
-        </tr>
-        <tr>
-            <td>java.net.URI</td>
-            <td>pathfield</td>
-        </tr>
-        <tr>
-            <td>java.net.URL</td>
-            <td>pathfield</td>
-        </tr>
-    </tbody>
-</table>
+Determination of the resourceType to be rendered for an authorable element in the Touch UI is similarly:
+
+1. If the `resourceType` property of the `@DialogField` annotation is populated, its value is used.
+2. If a stacked Widget annotation is also associated with the element the resourceType associated with the stacked annotation is used.
 
 The name used will be based off the field name or the method name using Java bean standards and can be overridden using the `name` property of the annotation.
 
@@ -74,16 +43,24 @@ The name used will be based off the field name or the method name using Java bea
 Textfield saved at ./title
 
 	@DialogField(fieldLabel="Title")
+	@TextField
 	private String title;
 
-TextArea saved at ./text
+TextArea saved at ./text using explicitly set xtypes and resourceTypes
 
-    @DialogField(fieldLabel="Text", xtype="textarea")
+    @DialogField(fieldLabel="Text", xtype="textarea", resourceType="granite/ui/components/foundation/form/textarea")
+    private String text;
+    
+TextArea saved at ./text using Stacked Annotations (recommended) 
+
+    @DialogField(fieldLabel="Text")
+    @TextArea
     private String text;
 
 Pathfield saved at ./simplePath
 
-	@DialogField(fieldLabel="Title",name="./simplePath")
+	@DialogField(fieldLabel="Title", name="./simplePath")
+	@PathField
 	private URI path;
 
 ### Widgets
@@ -110,3 +87,89 @@ Numberfield saved as ./quantity
     @NumberField(allowNegative=false, allowDecimals=true)
     private Double quantity;
 
+## Inheritance
+
+Dialog Fields will be inherited from any classes or interfaces extended or implemented respectively by a component's backing class.  
+
+    public interface ClassifiableComponent {
+        @DialogField(fieldLabel = "Classifications", ranking = 1000)
+        @TagInputField
+        public List<Tag> getClassifications();
+    }
+
+    @Component("Concrete Component")
+    public class ConcreteComponent implements ClassifiableComponent {
+    
+        public List<Tag> getClassifications() {
+            ...
+        }
+    
+    }
+
+### DialogFieldOverride
+[com.citytechinc.cq.component.annotations.DialogFieldOverride](apidocs/com/citytechinc/cq/component/annotations/DialogFieldOverride.html)
+
+The `@DialogFieldOverride` annotation allows for granular overrides to `@DialogField` properties which would be otherwise inherited without 
+the respecification of the entire `@DialogField` annotation.
+
+    public interface ClassifiableComponent {
+        @DialogField(fieldLabel = "Classifications", ranking = 1000)
+        @TagInputField
+        public List<Tag> getClassifications();
+    }
+
+    @Component("Concrete Component")
+    public class ConcreteComponent implements ClassifiableComponent {
+    
+        @DialogFieldOverride(ranking = 50, required = false, hideLabel = false)
+        public List<Tag> getClassifications() {
+            ...
+        }
+    
+    }
+
+Due to limitations with Java Annotations, overridable boolean attributes are required in the `@DialogFieldOverride` annotation.  These 
+attributes are the `required` and `hideLabel`.  
+
+### IgnoreDialogField
+[com.citytechinc.cq.component.annotations.IgnoreDialogField](apidocs/com/citytechinc/cq/component/annotations/IgnoreDialogField.html)
+
+The `@IgnoreDialogField` annotation is used to suppress the output of an otherwise inherited field.
+
+    public interface ClassifiableComponent {
+        @DialogField(fieldLabel = "Classifications", ranking = 1000)
+        @TagInputField
+        public List<Tag> getClassifications();
+    }
+
+    @Component("Concrete Component")
+    public class ConcreteComponent implements ClassifiableComponent {
+    
+        @IgnoreDialogField
+        public List<Tag> getClassifications() {
+            //Returns some non-authored list of Tags
+            ...
+        }
+    
+    }
+
+## Touch UI and Classic UI
+
+Introduced in AEM 6.0, the Touch UI is the default page authoring user interface.  Authors who wish to or need to based on 
+functionality may fall back to the Classic UI.  This means that developers often need to support authorability via both the 
+Touch UI and the Classic UI.  By default the CQ Component Plugin will generate both the _cq_dialog.xml file used by the 
+Touch UI and the dialog.xml file used by the Classic UI using a single set of annotations.
+  
+### Disabling Touch UI 
+
+Generation of the Touch UI dialogs can be suppressed at a project, component, or field level.  To suppress generation at a 
+project level set the `generateTouchUiDialogs` POM configuration to `false`.  To suppress generation at a component 
+level, set the `suppressTouchUIDialog` attribute of the `@Component` annotation to `false`.  To suppress generation at 
+a field level, set the `suppressTouchUI` attribute of the `@DialogField` annotation to `false`. 
+
+### Mode-Exclusive Widgets
+
+It is possible to create widgets which work exclusively in Touch UI or Classic UI.  An example of such a widget is 
+that enabled by the `@Switch` annotation.  Currently this annotation will not be recognized by the Classic UI widget 
+rendering mechanisms.  Similarly, custom widgets you create may only have support for one or the other interface 
+depending on your requirements, there is not a systematic requirement to support both.  

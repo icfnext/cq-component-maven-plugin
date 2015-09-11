@@ -27,28 +27,18 @@ import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollection;
 import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollectionParameters;
 
-public class TagInputFieldWidgetMaker extends AbstractWidgetMaker {
+public class TagInputFieldWidgetMaker extends AbstractWidgetMaker<TagInputFieldWidgetParameters> {
 
 	public TagInputFieldWidgetMaker(WidgetMakerParameters parameters) {
 		super(parameters);
 	}
 
-	public DialogElement make() throws ClassNotFoundException {
+	@Override
+	public DialogElement make(TagInputFieldWidgetParameters parameters) throws ClassNotFoundException {
 
 		TagInputField tagAnnotation = getAnnotation(TagInputField.class);
 
-		TagInputFieldWidgetParameters parameters = new TagInputFieldWidgetParameters();
-
-		parameters.setName(getNameForField());
-		parameters.setFieldName(getFieldNameForField());
-		parameters.setFieldLabel(getFieldLabelForField());
-		parameters.setFieldDescription(getFieldDescriptionForField());
-		parameters.setAllowBlank(!getIsRequiredForField());
-		parameters.setDefaultValue(getDefaultValueForField());
-		parameters.setHideLabel(getHideLabelForField());
-		parameters.setListeners(getListeners());
 		parameters.setContainedElements(getWidgetCollectionHolderForField(tagAnnotation));
-		parameters.setAdditionalProperties(getAdditionalPropertiesForField());
 
 		parameters.setDisplayTitles(tagAnnotation.displayTitles());
 

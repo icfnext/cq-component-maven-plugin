@@ -32,7 +32,13 @@ import com.citytechinc.cq.component.annotations.Option;
  * <li>combobox</li>
  * </ol>
  *
- * Represents a Widget of type CQ.form.Selection
+ * Represents a Widget of type CQ.form.Selection in Classic UI
+ *
+ * Represents a Widget of type granite/ui/components/foundation/form/select when
+ * using the select type and granite/ui/components/foundation/form/radiogroup
+ * when using the radio type in Touch UI
+ *
+ * Checkbox and combobox are not currently supported in Touch UI rendering
  *
  */
 @Retention(RetentionPolicy.CLASS)
@@ -55,6 +61,8 @@ public @interface Selection {
 	public Option[] options() default {};
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * The URL from which options are to be pulled. Note: setting this to
 	 * anything other than an empty string overrides any settings made in the
 	 * options property.
@@ -64,6 +72,8 @@ public @interface Selection {
 	public String optionsUrl() default "";
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * A function or the name of a function that will be called on
 	 * processRecords to receive the options. The function must return an array
 	 * of options.
@@ -75,6 +85,8 @@ public @interface Selection {
 	public String optionsProvider() default "";
 
 	/**
+	 * Used for Classic UI only
+	 *
 	 * The sort direction of the the options. If "ASC" or "DESC" the options
 	 * will be sorted by its (internationalized) text.
 	 *
@@ -89,4 +101,26 @@ public @interface Selection {
 	 * @return String
 	 */
 	public String type() default RADIO;
+
+	/**
+	 * Used for Touch UI only
+	 *
+	 * Indicates whether multiple values may be picked for the selection
+	 *
+	 * @return boolean
+	 */
+	public boolean multiple() default false;
+
+	/**
+	 * Used for Touch UI only
+	 *
+	 * Indicates the sling:resourceType of the data source provider. For more
+	 * information on DataSources, see <a href=
+	 * "http://docs.adobe.com/docs/en/cq/current/touch-ui/granite-reference.html#Datasource"
+	 * >http://docs.adobe.com/docs/en/cq/current/touch-ui/granite-reference.html
+	 * #Datasource</a>
+	 *
+	 * @return String
+	 */
+	public String dataSource() default "";
 }

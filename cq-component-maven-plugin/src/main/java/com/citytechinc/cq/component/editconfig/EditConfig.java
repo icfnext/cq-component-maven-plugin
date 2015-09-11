@@ -37,18 +37,24 @@ public class EditConfig extends AbstractXmlElement {
 
 	public EditConfig(EditConfigParameters parameters) {
 		super(parameters);
-		this.actions = new NameSpacedAttribute<List<String>>(com.citytechinc.cq.component.util.Constants.CQ_NS_URI,
-			CQ_NAMESPACE_PREFIX, parameters.getActions());
-		this.dialogMode = new NameSpacedAttribute<String>(com.citytechinc.cq.component.util.Constants.CQ_NS_URI,
-			CQ_NAMESPACE_PREFIX, parameters.getDialogMode());
-		this.layout = new NameSpacedAttribute<String>(com.citytechinc.cq.component.util.Constants.CQ_NS_URI,
-			CQ_NAMESPACE_PREFIX, parameters.getLayout());
-		this.emptyText = new NameSpacedAttribute<String>(com.citytechinc.cq.component.util.Constants.CQ_NS_URI,
-			CQ_NAMESPACE_PREFIX, parameters.getEmptyText());
-		this.inherit = new NameSpacedAttribute<Boolean>(com.citytechinc.cq.component.util.Constants.CQ_NS_URI,
-			CQ_NAMESPACE_PREFIX, parameters.getInherit());
-		this.disableTargeting = new NameSpacedAttribute<Boolean>(com.citytechinc.cq.component.util.Constants.CQ_NS_URI,
-			CQ_NAMESPACE_PREFIX, parameters.getDisableTargeting());
+		this.actions =
+			new NameSpacedAttribute<List<String>>(com.citytechinc.cq.component.util.Constants.CQ_NS_URI,
+				CQ_NAMESPACE_PREFIX, parameters.getActions());
+		this.dialogMode =
+			new NameSpacedAttribute<String>(com.citytechinc.cq.component.util.Constants.CQ_NS_URI, CQ_NAMESPACE_PREFIX,
+				parameters.getDialogMode());
+		this.layout =
+			new NameSpacedAttribute<String>(com.citytechinc.cq.component.util.Constants.CQ_NS_URI, CQ_NAMESPACE_PREFIX,
+				parameters.getLayout());
+		this.emptyText =
+			new NameSpacedAttribute<String>(com.citytechinc.cq.component.util.Constants.CQ_NS_URI, CQ_NAMESPACE_PREFIX,
+				parameters.getEmptyText());
+		this.inherit =
+			new NameSpacedAttribute<Boolean>(com.citytechinc.cq.component.util.Constants.CQ_NS_URI,
+				CQ_NAMESPACE_PREFIX, parameters.getInherit());
+		this.disableTargeting =
+			new NameSpacedAttribute<Boolean>(com.citytechinc.cq.component.util.Constants.CQ_NS_URI,
+				CQ_NAMESPACE_PREFIX, parameters.getDisableTargeting());
 	}
 
 	public NameSpacedAttribute<List<String>> getActions() {

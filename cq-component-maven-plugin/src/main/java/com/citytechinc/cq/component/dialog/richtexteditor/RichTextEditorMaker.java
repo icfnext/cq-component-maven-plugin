@@ -31,9 +31,7 @@ import com.citytechinc.cq.component.annotations.widgets.rte.Links;
 import com.citytechinc.cq.component.annotations.widgets.rte.Lists;
 import com.citytechinc.cq.component.annotations.widgets.rte.MiscTools;
 import com.citytechinc.cq.component.annotations.widgets.rte.ParaFormat;
-import com.citytechinc.cq.component.annotations.widgets.rte.ParaFormatFormat;
 import com.citytechinc.cq.component.annotations.widgets.rte.Style;
-import com.citytechinc.cq.component.annotations.widgets.rte.Styles;
 import com.citytechinc.cq.component.annotations.widgets.rte.SubSuperscript;
 import com.citytechinc.cq.component.annotations.widgets.rte.Table;
 import com.citytechinc.cq.component.annotations.widgets.rte.Undo;
@@ -49,27 +47,18 @@ import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollectionPara
  * configuring_rich_text_editor.html
  *
  */
-public class RichTextEditorMaker extends AbstractWidgetMaker {
+public class RichTextEditorMaker extends AbstractWidgetMaker<RichTextEditorWidgetParameters> {
 	private static final String ALL_FEATURES = "*";
 
 	public RichTextEditorMaker(WidgetMakerParameters parameters) {
 		super(parameters);
 	}
 
-	public DialogElement make() throws ClassNotFoundException {
+	@Override
+	public DialogElement make(RichTextEditorWidgetParameters widgetParameters) throws ClassNotFoundException {
 
 		RichTextEditor rteAnnotation = getAnnotation(RichTextEditor.class);
 
-		RichTextEditorWidgetParameters widgetParameters = new RichTextEditorWidgetParameters();
-		widgetParameters.setName(getNameForField());
-		widgetParameters.setFieldName(getFieldNameForField());
-		widgetParameters.setFieldLabel(getFieldLabelForField());
-		widgetParameters.setFieldDescription(getFieldDescriptionForField());
-		widgetParameters.setAllowBlank(!getIsRequiredForField());
-		widgetParameters.setAdditionalProperties(getAdditionalPropertiesForField());
-		widgetParameters.setDefaultValue(getDefaultValueForField());
-		widgetParameters.setHideLabel(getHideLabelForField());
-		widgetParameters.setListeners(getListeners());
 		widgetParameters.setContainedElements(Arrays.asList(new DialogElement[] { buildRtePlugins(rteAnnotation) }));
 
 		return new RichTextEditorWidget(widgetParameters);
@@ -369,17 +358,16 @@ public class RichTextEditorMaker extends AbstractWidgetMaker {
 	private RtePlugin buildStylesRtePlugin(RichTextEditor rteAnnotation) {
 
 		if (rteAnnotation.styles().length > 0) {
-			Styles stylesAnnotation = rteAnnotation.styles()[0];
 
 			List<DialogElement> styleList = new ArrayList<DialogElement>();
 
-			for (int i = 0; i < stylesAnnotation.styles().length; i++) {
+			for (int i = 0; i < rteAnnotation.styles().length; i++) {
 				String styleFieldName = "style" + i;
 
 				RteStyleParameters styleParameters = new RteStyleParameters();
 				styleParameters.setFieldName(styleFieldName);
-				styleParameters.setCssName(stylesAnnotation.styles()[i].cssName());
-				styleParameters.setText(stylesAnnotation.styles()[i].text());
+				styleParameters.setCssName(rteAnnotation.styles()[i].cssName());
+				styleParameters.setText(rteAnnotation.styles()[i].text());
 				styleList.add(new RteStyle(styleParameters));
 			}
 			WidgetCollectionParameters wcp = new WidgetCollectionParameters();
@@ -400,23 +388,19 @@ public class RichTextEditorMaker extends AbstractWidgetMaker {
 	private RtePlugin buildParaFormatPlugin(RichTextEditor rteAnnotation) {
 
 		if (rteAnnotation.paraformat().length > 0) {
-			ParaFormat paraFormatAnnotation = rteAnnotation.paraformat()[0];
-
 			List<DialogElement> formatList = null;
 
-			if (paraFormatAnnotation.formats().length > 0) {
-				formatList = new ArrayList<DialogElement>();
+			formatList = new ArrayList<DialogElement>();
 
-				for (int i = 0; i < paraFormatAnnotation.formats().length; i++) {
-					String formatFieldName = "format" + i;
+			for (int i = 0; i < rteAnnotation.paraformat().length; i++) {
+				String formatFieldName = "format" + i;
 
-					ParaFormatFormat curFormat = paraFormatAnnotation.formats()[i];
-					RteParaFormatParameters paraParameters = new RteParaFormatParameters();
-					paraParameters.setFieldName(formatFieldName);
-					paraParameters.setTag(curFormat.tag());
-					paraParameters.setDescription(curFormat.description());
-					formatList.add(new RteParaFormat(paraParameters));
-				}
+				ParaFormat curFormat = rteAnnotation.paraformat()[i];
+				RteParaFormatParameters paraParameters = new RteParaFormatParameters();
+				paraParameters.setFieldName(formatFieldName);
+				paraParameters.setTag(curFormat.tag());
+				paraParameters.setDescription(curFormat.description());
+				formatList.add(new RteParaFormat(paraParameters));
 			}
 
 			WidgetCollectionParameters wcp = new WidgetCollectionParameters();
@@ -547,7 +531,11 @@ public class RichTextEditorMaker extends AbstractWidgetMaker {
 	}
 
 	private String convertFeatures(List<String> features) {
-		return "[" + StringUtils.join(features.iterator(), ",") + "]";
+		if (features.size() > 0) {
+			return "[" + StringUtils.join(features.iterator(), ",") + "]";
+		} else {
+			return "-";
+		}
 	}
 
 	private RtePlugin buildLinksPlugin(RichTextEditor rteAnnotation) {

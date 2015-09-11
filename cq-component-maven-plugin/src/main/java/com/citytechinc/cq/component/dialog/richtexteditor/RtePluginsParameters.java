@@ -18,9 +18,9 @@ package com.citytechinc.cq.component.dialog.richtexteditor;
 import java.util.List;
 
 import com.citytechinc.cq.component.dialog.DialogElement;
-import com.citytechinc.cq.component.dialog.DialogElementParameters;
+import com.citytechinc.cq.component.dialog.DefaultDialogElementParameters;
 
-public class RtePluginsParameters extends DialogElementParameters {
+public class RtePluginsParameters extends DefaultDialogElementParameters {
 
 	private List<DialogElement> rtePlugins;
 

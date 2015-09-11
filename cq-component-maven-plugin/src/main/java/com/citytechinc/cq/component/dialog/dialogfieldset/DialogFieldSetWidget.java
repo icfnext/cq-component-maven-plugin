@@ -19,7 +19,8 @@ import com.citytechinc.cq.component.annotations.config.Widget;
 import com.citytechinc.cq.component.annotations.widgets.DialogFieldSet;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
 
-@Widget(annotationClass = DialogFieldSet.class, makerClass = DialogFieldSetWidgetMaker.class, xtype = DialogFieldSetWidget.XTYPE)
+@Widget(annotationClass = DialogFieldSet.class, makerClass = DialogFieldSetWidgetMaker.class,
+	xtype = DialogFieldSetWidget.XTYPE)
 public class DialogFieldSetWidget extends AbstractWidget {
 	public static final String XTYPE = "dialogfieldset";
 

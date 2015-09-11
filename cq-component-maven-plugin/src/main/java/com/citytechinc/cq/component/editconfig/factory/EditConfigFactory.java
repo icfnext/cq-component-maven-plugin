@@ -56,8 +56,7 @@ public class EditConfigFactory {
 	private EditConfigFactory() {
 	}
 
-	public static final EditConfig make(CtClass componentClass) throws InvalidComponentClassException,
-		ClassNotFoundException {
+	public static EditConfig make(CtClass componentClass) throws InvalidComponentClassException, ClassNotFoundException {
 
 		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
@@ -119,7 +118,7 @@ public class EditConfigFactory {
 		return componentAnnotation.emptyText();
 	}
 
-	private static final String getTitleForEditConfig(CtClass componentClass, Component componentAnnotation) {
+	private static String getTitleForEditConfig(CtClass componentClass, Component componentAnnotation) {
 		if (StringUtils.isNotEmpty(componentAnnotation.value())) {
 			return componentAnnotation.value();
 		}
@@ -127,27 +126,17 @@ public class EditConfigFactory {
 		return componentClass.getSimpleName();
 	}
 
-	private static final List<String> getActionsForEditConfig(Component componentAnnotation, String title) {
+	private static List<String> getActionsForEditConfig(Component componentAnnotation, String title) {
 		List<String> actions = Arrays.asList(componentAnnotation.actions());
 
 		if (!actions.isEmpty()) {
 			return actions;
 		}
 
-		actions = new ArrayList<String>();
-
-		actions.add("text:" + title);
-		actions.add("-");
-		actions.add("edit");
-		actions.add("copymove");
-		actions.add("delete");
-		actions.add("-");
-		actions.add("insert");
-
-		return actions;
+		return null;
 	}
 
-	private static final String getDialogModeForEditConfig(Component componentAnnotation) {
+	private static String getDialogModeForEditConfig(Component componentAnnotation) {
 		if (StringUtils.isNotEmpty(componentAnnotation.dialogMode())) {
 			return componentAnnotation.dialogMode();
 		}
@@ -155,7 +144,7 @@ public class EditConfigFactory {
 		return "floating";
 	}
 
-	private static final String getLayoutForEditConfig(Component componentAnnotation) {
+	private static String getLayoutForEditConfig(Component componentAnnotation) {
 		if (StringUtils.isNotEmpty(componentAnnotation.layout())) {
 			return componentAnnotation.layout();
 		}
@@ -163,7 +152,7 @@ public class EditConfigFactory {
 		return "editbar";
 	}
 
-	private static final EditConfigFormParameters getFormParametersForEditConfig(Component componentAnnotation) {
+	private static EditConfigFormParameters getFormParametersForEditConfig(Component componentAnnotation) {
 		if (componentAnnotation.formParameters().length > 0) {
 			Map<String, String> formParameters = new HashMap<String, String>();
 
@@ -179,9 +168,9 @@ public class EditConfigFactory {
 		return null;
 	}
 
-	private static final EditConfigInPlaceEditing getInPlaceEditingForEditConfig(Component componentAnnotation) {
+	private static EditConfigInPlaceEditing getInPlaceEditingForEditConfig(Component componentAnnotation) {
 		if (!StringUtils.isEmpty(componentAnnotation.inPlaceEditingConfigPath())
-			|| !StringUtils.isEmpty(componentAnnotation.inPlaceEditingConfigPath())) {
+			|| !StringUtils.isEmpty(componentAnnotation.inPlaceEditingEditorType())) {
 			EditConfigInPlaceEditingParameters parameters = new EditConfigInPlaceEditingParameters();
 			if (!StringUtils.isEmpty(componentAnnotation.inPlaceEditingConfigPath())) {
 				parameters.setConfigPath(componentAnnotation.inPlaceEditingConfigPath());
@@ -195,7 +184,7 @@ public class EditConfigFactory {
 		return null;
 	}
 
-	private static final EditConfigListeners getListenersForEditConfig(Component componentAnnotation) {
+	private static EditConfigListeners getListenersForEditConfig(Component componentAnnotation) {
 		if (componentAnnotation.listeners().length > 0) {
 			Map<String, String> listeners = new HashMap<String, String>();
 
@@ -211,7 +200,7 @@ public class EditConfigFactory {
 		return null;
 	}
 
-	private static final EditConfigActionConfigs getActionConfigsForEditConfig(Component componentAnnotation) {
+	private static EditConfigActionConfigs getActionConfigsForEditConfig(Component componentAnnotation) {
 		if (componentAnnotation.actionConfigs().length > 0) {
 
 			List<EditConfigActionConfig> actionConfigs = new ArrayList<EditConfigActionConfig>();
@@ -248,7 +237,7 @@ public class EditConfigFactory {
 		return null;
 	}
 
-	private static final EditConfigDropTargets getDropTargetsForEditConfig(Component componentAnnotation) {
+	private static EditConfigDropTargets getDropTargetsForEditConfig(Component componentAnnotation) {
 		if (componentAnnotation.dropTargets().length > 0) {
 
 			List<EditConfigDropTarget> dropTargets = new ArrayList<EditConfigDropTarget>();

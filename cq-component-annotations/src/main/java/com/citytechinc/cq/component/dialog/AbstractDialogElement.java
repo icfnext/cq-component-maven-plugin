@@ -25,7 +25,7 @@ import com.citytechinc.cq.component.xml.XmlElement;
 public abstract class AbstractDialogElement extends AbstractXmlElement implements DialogElement {
 	private double ranking;
 
-	public AbstractDialogElement(DialogElementParameters parameters) {
+	public AbstractDialogElement(DefaultDialogElementParameters parameters) {
 		super(parameters);
 		if (containedElements != null) {
 			Collections.sort(containedElements, new DialogElementComparator());

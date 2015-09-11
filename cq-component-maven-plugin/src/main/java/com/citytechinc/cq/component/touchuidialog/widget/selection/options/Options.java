@@ -13,12 +13,16 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.annotations.widgets.rte;
+package com.citytechinc.cq.component.touchuidialog.widget.selection.options;
 
-/**
- * @see com.citytechinc.cq.component.annotations.widgets.RichTextEditor#styles()
- */
-public @interface Styles {
+import com.citytechinc.cq.component.touchuidialog.AbstractTouchUIDialogElement;
 
-	public Style[] styles() default {};
+public class Options extends AbstractTouchUIDialogElement {
+
+	public static final String OPTIONS_FIELD_NAME = "items";
+
+	public Options(OptionsParameters parameters) {
+		super(parameters);
+	}
+
 }

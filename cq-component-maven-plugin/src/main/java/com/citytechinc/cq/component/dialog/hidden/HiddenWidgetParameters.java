@@ -15,10 +15,10 @@
  */
 package com.citytechinc.cq.component.dialog.hidden;
 
-import com.citytechinc.cq.component.dialog.widget.WidgetParameters;
+import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 import com.citytechinc.cq.component.util.Constants;
 
-public class HiddenWidgetParameters extends WidgetParameters {
+public class HiddenWidgetParameters extends DefaultWidgetParameters {
 	private String value;
 
 	public String getValue() {

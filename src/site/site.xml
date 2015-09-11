@@ -62,7 +62,6 @@
 		</links>
 		<menu name="Main" inherit="top">
 			<item name="Home" href="index.html" />
-			<item name="Blogs" href="blogs.html" />
 			<item name="GitHub"
 				href="https://github.com/Citytechinc/cq-component-maven-plugin/" />
 			<item name="Java Doc" href="apidocs/index.html" />

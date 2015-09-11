@@ -13,15 +13,18 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.annotations.widgets.rte;
+package com.citytechinc.cq.component.touchuidialog.widget.multifield;
 
-/**
- * @see com.citytechinc.cq.component.annotations.widgets.RichTextEditor#paraformat()
- */
-public @interface ParaFormatFormat {
+import com.citytechinc.cq.component.touchuidialog.widget.DefaultTouchUIWidgetParameters;
 
-	public String tag();
+public class MultiFieldWidgetParameters extends DefaultTouchUIWidgetParameters {
+	@Override
+	public String getResourceType() {
+		return MultiFieldWidget.RESOURCE_TYPE;
+	}
 
-	public String description();
-
+	@Override
+	public void setResourceType(String resourceType) {
+		throw new UnsupportedOperationException("resourceType is Static for MultiFieldWidget");
+	}
 }

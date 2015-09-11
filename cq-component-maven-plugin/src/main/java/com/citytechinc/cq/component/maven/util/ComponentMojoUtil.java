@@ -56,6 +56,7 @@ import org.reflections.util.ConfigurationBuilder;
 
 import com.citytechinc.cq.classpool.ClassLoaderClassPool;
 import com.citytechinc.cq.component.annotations.Component;
+import com.citytechinc.cq.component.annotations.config.TouchUIWidget;
 import com.citytechinc.cq.component.annotations.config.Widget;
 import com.citytechinc.cq.component.annotations.transformer.Transformer;
 import com.citytechinc.cq.component.content.util.ContentUtil;
@@ -68,6 +69,13 @@ import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 import com.citytechinc.cq.component.dialog.util.DialogUtil;
 import com.citytechinc.cq.component.dialog.widget.WidgetRegistry;
 import com.citytechinc.cq.component.editconfig.util.EditConfigUtil;
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
+import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
+import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogWriteException;
+import com.citytechinc.cq.component.touchuidialog.util.TouchUIDialogUtil;
+import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMaker;
+import com.citytechinc.cq.component.touchuidialog.widget.registry.TouchUIWidgetRegistry;
+import com.citytechinc.cq.component.util.TouchUIWidgetConfigHolder;
 import com.citytechinc.cq.component.util.WidgetConfigHolder;
 import com.citytechinc.cq.component.xml.AbstractXmlElement;
 import com.citytechinc.cq.component.xml.XmlWriter;
@@ -111,8 +119,7 @@ public class ComponentMojoUtil {
 	/**
 	 * Constructs as Javassist ClassPool which pulls resources based on the
 	 * paths provided by the passed in ClassLoader
-	 * 
-	 * @param classLoader
+	 *
 	 * @return The constructed ClassPool
 	 * @throws NotFoundException
 	 */
@@ -155,7 +162,6 @@ public class ComponentMojoUtil {
 	 * and then adding additional entries for the newly constructed artifacts.
 	 * 
 	 * @param classList
-	 * @param xtypeMap
 	 * @param classLoader
 	 * @param classPool
 	 * @param buildDirectory
@@ -182,13 +188,14 @@ public class ComponentMojoUtil {
 	 * @throws InstantiationException
 	 */
 	public static void buildArchiveFileForProjectAndClassList(List<CtClass> classList, WidgetRegistry widgetRegistry,
-		ClassLoader classLoader, ClassPool classPool, File buildDirectory, String componentPathBase,
-		String defaultComponentPathSuffix, String defaultComponentGroup, File existingArchiveFile,
-		File tempArchiveFile, ComponentNameTransformer transformer) throws OutputFailureException, IOException,
-		InvalidComponentClassException, InvalidComponentFieldException, ParserConfigurationException,
-		TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException,
-		NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException,
-		NoSuchMethodException, InstantiationException {
+		TouchUIWidgetRegistry touchUIWidgetRegistry, ClassLoader classLoader, ClassPool classPool, File buildDirectory,
+		String componentPathBase, String defaultComponentPathSuffix, String defaultComponentGroup,
+		File existingArchiveFile, File tempArchiveFile, ComponentNameTransformer transformer,
+		boolean generateTouchUiDialogs) throws OutputFailureException, IOException, InvalidComponentClassException,
+		InvalidComponentFieldException, ParserConfigurationException, TransformerException, ClassNotFoundException,
+		CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException, IllegalArgumentException,
+		IllegalAccessException, InvocationTargetException, NoSuchMethodException, InstantiationException,
+		TouchUIDialogWriteException, TouchUIDialogGenerationException {
 
 		if (!existingArchiveFile.exists()) {
 			throw new OutputFailureException("Archive file does not exist");
@@ -238,6 +245,12 @@ public class ComponentMojoUtil {
 		 */
 		DialogUtil.buildDialogsFromClassList(transformer, classList, tempOutputStream, existingArchiveEntryNames,
 			widgetRegistry, classLoader, classPool, buildDirectory, componentPathBase, defaultComponentPathSuffix);
+
+		if (generateTouchUiDialogs) {
+			TouchUIDialogUtil.buildDialogsFromClassList(classList, classLoader, classPool, touchUIWidgetRegistry,
+				transformer, buildDirectory, componentPathBase, defaultComponentPathSuffix, tempOutputStream,
+				existingArchiveEntryNames);
+		}
 
 		/*
 		 * Create edit config within temp archive
@@ -296,7 +309,6 @@ public class ComponentMojoUtil {
 	 * based on the component class as well as POM configuration.
 	 * 
 	 * @param componentClass
-	 * @param project
 	 * @param componentPathBase
 	 * @return The determined output directory
 	 * @throws OutputFailureException
@@ -306,10 +318,10 @@ public class ComponentMojoUtil {
 		CtClass componentClass, File buildDirectory, String componentPathBase, String defaultComponentPathSuffix)
 		throws OutputFailureException, ClassNotFoundException {
 
-		String dialogFilePath = OUTPUT_PATH + "/"
-			+ getComponentBasePathForComponentClass(componentClass, componentPathBase) + "/"
-			+ getComponentPathSuffixForComponentClass(componentClass, defaultComponentPathSuffix) + "/"
-			+ getComponentNameForComponentClass(transformer, componentClass);
+		String dialogFilePath =
+			OUTPUT_PATH + "/" + getComponentBasePathForComponentClass(componentClass, componentPathBase) + "/"
+				+ getComponentPathSuffixForComponentClass(componentClass, defaultComponentPathSuffix) + "/"
+				+ getComponentNameForComponentClass(transformer, componentClass);
 
 		File componentOutputDirectory = new File(buildDirectory, dialogFilePath);
 
@@ -396,8 +408,9 @@ public class ComponentMojoUtil {
 	 * @return The determined name
 	 * @throws ClassNotFoundException
 	 */
-	public static String getComponentNameForComponentClass(ComponentNameTransformer transformer, CtClass componentClass)
-		throws ClassNotFoundException {
+	public static String
+		getComponentNameForComponentClass(ComponentNameTransformer transformer, CtClass componentClass)
+			throws ClassNotFoundException {
 		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
 		if (componentAnnotation != null) {
@@ -434,15 +447,35 @@ public class ComponentMojoUtil {
 			Class<? extends Annotation> annotationClass = widgetAnnotation.annotationClass();
 
 			Class<? extends WidgetMaker> makerClass = widgetAnnotation.makerClass();
-			Class<? extends AbstractWidget> widgetClass = classLoader.loadClass(clazz.getName()).asSubclass(
-				AbstractWidget.class);
-			WidgetConfigHolder widgetConfig = new WidgetConfigHolder(annotationClass, widgetClass, makerClass,
-				widgetAnnotation.xtype(), widgetAnnotation.ranking());
+			Class<? extends AbstractWidget> widgetClass =
+				classLoader.loadClass(clazz.getName()).asSubclass(AbstractWidget.class);
+			WidgetConfigHolder widgetConfig =
+				new WidgetConfigHolder(annotationClass, widgetClass, makerClass, widgetAnnotation.xtype(),
+					widgetAnnotation.ranking());
 
 			builtInWidgets.add(widgetConfig);
 
 		}
 		return builtInWidgets;
+	}
+
+	public static List<TouchUIWidgetConfigHolder> getAllTouchUIWidgetAnnotations(ClassPool classPool,
+		ClassLoader classLoader, Reflections reflections) throws NotFoundException, ClassNotFoundException {
+		List<TouchUIWidgetConfigHolder> widgetConfigurations = new ArrayList<TouchUIWidgetConfigHolder>();
+
+		for (Class<?> c : reflections.getTypesAnnotatedWith(TouchUIWidget.class)) {
+			CtClass clazz = classPool.getCtClass(c.getName());
+			TouchUIWidget widgetAnnotation = (TouchUIWidget) clazz.getAnnotation(TouchUIWidget.class);
+			Class<? extends Annotation> annotationClass = widgetAnnotation.annotationClass();
+			Class<? extends TouchUIWidgetMaker> widgetMakerClass = widgetAnnotation.makerClass();
+			Class<? extends TouchUIDialogElement> widgetClass =
+				classLoader.loadClass(clazz.getName()).asSubclass(TouchUIDialogElement.class);
+
+			widgetConfigurations.add(new TouchUIWidgetConfigHolder(annotationClass, widgetClass, widgetMakerClass,
+				widgetAnnotation.resourceType(), widgetAnnotation.ranking()));
+		}
+
+		return widgetConfigurations;
 	}
 
 	/**
@@ -492,9 +525,9 @@ public class ComponentMojoUtil {
 	 * @throws IllegalAccessException
 	 * @throws InstantiationException
 	 */
-	public static Map<String, ComponentNameTransformer> getAllTransformers(ClassPool classPool, Reflections reflections)
-		throws ClassNotFoundException, NotFoundException, MalformedURLException, InstantiationException,
-		IllegalAccessException {
+	public static Map<String, ComponentNameTransformer>
+		getAllTransformers(ClassPool classPool, Reflections reflections) throws ClassNotFoundException,
+			NotFoundException, MalformedURLException, InstantiationException, IllegalAccessException {
 		Map<String, ComponentNameTransformer> transformers = new HashMap<String, ComponentNameTransformer>();
 
 		for (Class<?> c : reflections.getTypesAnnotatedWith(Transformer.class)) {
@@ -543,9 +576,10 @@ public class ComponentMojoUtil {
 	 */
 	public static Reflections getReflections(ClassLoader classLoader) {
 		Reflections.log = null;
-		Reflections reflections = new Reflections(new ConfigurationBuilder().addClassLoader(classLoader)
-			.setUrls(ClasspathHelper.forClassLoader(new ClassLoader[] { classLoader }))
-			.setScanners(new TypeAnnotationsScanner()));
+		Reflections reflections =
+			new Reflections(new ConfigurationBuilder().addClassLoader(classLoader)
+				.setUrls(ClasspathHelper.forClassLoader(new ClassLoader[] { classLoader }))
+				.setScanners(new TypeAnnotationsScanner()));
 		return reflections;
 	}
 
@@ -567,11 +601,10 @@ public class ComponentMojoUtil {
 		CtClass componentClass, ZipArchiveOutputStream archiveStream, Set<String> reservedNames,
 		String componentPathBase, String defaultComponentPathSuffix, String path) throws IOException,
 		ClassNotFoundException {
-		String editConfigFilePath = ComponentMojoUtil.getComponentBasePathForComponentClass(componentClass,
-			componentPathBase)
-			+ "/"
-			+ ComponentMojoUtil.getComponentPathSuffixForComponentClass(componentClass, defaultComponentPathSuffix)
-			+ "/" + ComponentMojoUtil.getComponentNameForComponentClass(transformer, componentClass) + path;
+		String editConfigFilePath =
+			ComponentMojoUtil.getComponentBasePathForComponentClass(componentClass, componentPathBase) + "/"
+				+ ComponentMojoUtil.getComponentPathSuffixForComponentClass(componentClass, defaultComponentPathSuffix)
+				+ "/" + ComponentMojoUtil.getComponentNameForComponentClass(transformer, componentClass) + path;
 
 		if (!reservedNames.contains(editConfigFilePath.toLowerCase())) {
 
@@ -612,8 +645,9 @@ public class ComponentMojoUtil {
 		String path) throws TransformerException, ParserConfigurationException, IOException, OutputFailureException,
 		ClassNotFoundException, IllegalArgumentException, SecurityException, IllegalAccessException,
 		InvocationTargetException, NoSuchMethodException {
-		File componentOutputDirectory = ComponentMojoUtil.getOutputDirectoryForComponentClass(transformer,
-			componentClass, buildDirectory, componentPathBase, defaultComponentPathSuffix);
+		File componentOutputDirectory =
+			ComponentMojoUtil.getOutputDirectoryForComponentClass(transformer, componentClass, buildDirectory,
+				componentPathBase, defaultComponentPathSuffix);
 
 		File file = new File(componentOutputDirectory, path);
 

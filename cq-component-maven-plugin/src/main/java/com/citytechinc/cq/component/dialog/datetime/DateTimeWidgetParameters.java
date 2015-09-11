@@ -15,10 +15,10 @@
  */
 package com.citytechinc.cq.component.dialog.datetime;
 
-import com.citytechinc.cq.component.dialog.widget.WidgetParameters;
+import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 import com.citytechinc.cq.component.util.Constants;
 
-public class DateTimeWidgetParameters extends WidgetParameters {
+public class DateTimeWidgetParameters extends DefaultWidgetParameters {
 	@Override
 	public String getPrimaryType() {
 		return Constants.CQ_WIDGET;

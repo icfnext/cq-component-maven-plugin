@@ -51,7 +51,7 @@ import com.citytechinc.cq.component.util.Constants;
 import com.citytechinc.cq.component.xml.XmlElement;
 
 public class TabsLayoutMaker extends AbstractLayoutMaker {
-
+	
 	public TabsLayoutMaker(LayoutMakerParameters parameters) {
 		super(parameters);
 	}
@@ -177,15 +177,17 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
 				TouchUIDialogElement currentElement = TouchUIWidgetFactory.make(currentWidgetMakerParameters, -1);
 				if (currentElement != null) {
 					currentElement.setRanking(currentWidgetMakerParameters.getDialogFieldConfig().getRanking());
+					
+					int tabIndex = getTabIndexForDialogField(currentWidgetMakerParameters, tabParametersList);
 
-					if (currentWidgetMakerParameters.getDialogFieldConfig().getTab() <= tabParametersList.size()) {
-						tabContentParametersList.get(currentWidgetMakerParameters.getDialogFieldConfig().getTab() - 1)
+					if (tabIndex <= tabParametersList.size()) {
+						tabContentParametersList.get(tabIndex - 1)
 							.addItem(currentElement);
 					} else {
 						throw new LayoutMakerException("Field "
 							+ currentWidgetMakerParameters.getDialogFieldConfig().getName() + " of class "
 							+ currentWidgetMakerParameters.getClass().getName() + " placed in non-existant tab "
-							+ currentWidgetMakerParameters.getDialogFieldConfig().getTab());
+							+ tabIndex);
 					}
 				}
 
@@ -220,5 +222,22 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
 
 		return new Items(itemsParameters);
 
+	}
+	
+	private static int getTabIndexForDialogField(TouchUIWidgetMakerParameters widgetMakerParameters, List<SectionParameters> sectionParametersList) {
+		int tabIndex = widgetMakerParameters.getDialogFieldConfig().getTab();
+		String tabTitle = widgetMakerParameters.getDialogFieldConfig().getTabTitle();
+		
+		if (StringUtils.isNotBlank(tabTitle)) {
+			for (int i = 0; i < sectionParametersList.size(); i++) {
+				SectionParameters sectionParameters = sectionParametersList.get(i);
+				String candidateTitle = sectionParameters.getTitle();
+				if (tabTitle.equals(candidateTitle)) {
+					tabIndex = i + 1;
+					break;
+				}
+			}
+		}
+		return tabIndex;
 	}
 }

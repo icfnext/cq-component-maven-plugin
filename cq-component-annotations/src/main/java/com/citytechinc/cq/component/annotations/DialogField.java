@@ -110,6 +110,17 @@ public @interface DialogField {
 	 * @return int
 	 */
 	public int tab() default 1;
+	
+	/**
+	 * The tab title of the tab in which to place the dialog widget representing 
+	 * the authorable element.
+	 * <p>
+	 * Overrides {@link #tab()} if set. Falls back to {@link #tab()} if tab matching
+	 * title cannot be found.
+	 * 
+	 * @return String
+	 */
+	public String tabTitle() default "";
 
 	/**
 	 * A list of additional properties not already represented by properties of

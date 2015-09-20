@@ -32,6 +32,7 @@ public class DialogFieldConfig {
 	private boolean hideLabel;
 	private String defaultValue;
 	private int tab;
+	private String tabTitle;
 	private Property[] additionalProperties;
 	private Listener[] listeners;
 	private double ranking;
@@ -55,6 +56,7 @@ public class DialogFieldConfig {
 		this.hideLabel = dialogField.hideLabel();
 		this.defaultValue = dialogField.defaultValue();
 		this.tab = dialogField.tab();
+		this.tabTitle = dialogField.tabTitle();
 		this.additionalProperties = dialogField.additionalProperties();
 		this.listeners = dialogField.listeners();
 		this.ranking = dialogField.ranking();
@@ -138,6 +140,14 @@ public class DialogFieldConfig {
 
 	public void setTab(int tab) {
 		this.tab = tab;
+	}
+
+	public String getTabTitle() {
+		return tabTitle;
+	}
+
+	public void setTabTitle(String tabTitle) {
+		this.tabTitle = tabTitle;
 	}
 
 	public Property[] getAdditionalProperties() {

@@ -20,13 +20,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javassist.CannotCompileException;
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtMember;
-import javassist.CtMethod;
-import javassist.NotFoundException;
-
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.Component;
@@ -54,8 +47,15 @@ import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollectionPara
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 import com.citytechinc.cq.component.maven.util.LogSingleton;
 
-public class DialogFactory {
+import javassist.CannotCompileException;
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.CtMember;
+import javassist.CtMethod;
+import javassist.NotFoundException;
 
+public class DialogFactory {
+	
 	private static final String DEFAULT_TAB_FIELD_NAME = "tab";
 
 	private DialogFactory() {
@@ -145,8 +145,8 @@ public class DialogFactory {
 					DialogElement builtFieldWidget = WidgetFactory.make(parameters, -1);
 					if (builtFieldWidget != null) {
 						builtFieldWidget.setRanking(dialogFieldConfig.getRanking());
-
-						int tabIndex = dialogFieldConfig.getTab();
+						
+						int tabIndex = getTabIndexForDialogField(dialogFieldConfig, tabsList);
 
 						if (tabIndex < 1 || tabIndex > tabsList.size()) {
 							throw new InvalidComponentFieldException("Invalid tab index " + tabIndex + " for field "
@@ -220,5 +220,23 @@ public class DialogFactory {
 		tabParams.setContainedElements(Arrays.asList(new DialogElement[] { widgetCollection }));
 		tabParams.setListeners(tab.getListeners());
 		return new Tab(tabParams);
+	}
+	
+	private static final int getTabIndexForDialogField(DialogFieldConfig dialogFieldConfig, List<TabHolder> tabsList) {
+		int tabIndex = dialogFieldConfig.getTab();
+		String tabTitle = dialogFieldConfig.getTabTitle();
+		
+		if (StringUtils.isNotBlank(tabTitle)) {
+			for (int i = 0; i < tabsList.size(); i++) {
+				TabHolder tabHolder = tabsList.get(i);
+				String candidateTitle = tabHolder.getTitle();
+				if (tabTitle.equals(candidateTitle)) {
+					tabIndex = i + 1;
+					break;
+				}
+			}
+		}
+		
+		return tabIndex;
 	}
 }

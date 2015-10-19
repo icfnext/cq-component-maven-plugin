@@ -149,8 +149,7 @@ $symbol_pound$symbol_pound Configurable Properties
             <td>generateTouchUiDialogs</td>
             <td>Boolean</td>
             <td>true</td>
-            <td>Enabled the generation of dialogs for Touch UI</b>
-            </td>
+            <td>Enabled the generation of dialogs for Touch UI</td>
         </tr>
 	</tbody>
 </table>

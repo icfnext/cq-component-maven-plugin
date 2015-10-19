@@ -15,16 +15,6 @@
  */
 package com.citytechinc.cq.component.touchuidialog.factory;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javassist.ClassPool;
-import javassist.CtClass;
-
-import javax.annotation.Nullable;
-
-import org.codehaus.plexus.util.StringUtils;
-
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialog;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogParameters;
@@ -36,6 +26,13 @@ import com.citytechinc.cq.component.touchuidialog.layout.maker.exceptions.Layout
 import com.citytechinc.cq.component.touchuidialog.layout.tabs.TabsLayoutMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.registry.TouchUIWidgetRegistry;
 import com.citytechinc.cq.component.xml.XmlElement;
+import javassist.ClassPool;
+import javassist.CtClass;
+import org.codehaus.plexus.util.StringUtils;
+
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TouchUIDialogFactory {
 
@@ -81,6 +78,12 @@ public class TouchUIDialogFactory {
 			containedElements.add(layout);
 
 			parameters.setContainedElements(containedElements);
+
+			// Add the extraClientLibs parameter
+			String[] extraClientlibs = componentAnnotation.extraClientlibs();
+			if(extraClientlibs.length > 0){
+				parameters.setExtraClientlibs(componentAnnotation.extraClientlibs());
+			}
 
 			return new TouchUIDialog(parameters);
 

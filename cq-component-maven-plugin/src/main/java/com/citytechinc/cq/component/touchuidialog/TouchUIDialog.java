@@ -26,6 +26,7 @@ public class TouchUIDialog extends AbstractTouchUIDialogElement {
 	private String fileName;
 	private NameSpacedAttribute<String> title;
 	private String helpPath;
+	private String[] extraClientlibs;
 
 	public TouchUIDialog(TouchUIDialogParameters parameters) {
 		super(parameters);
@@ -34,6 +35,7 @@ public class TouchUIDialog extends AbstractTouchUIDialogElement {
 		this.title =
 			new NameSpacedAttribute<String>(Constants.JCR_NS_URI, Constants.JCR_NS_PREFIX, parameters.getTitle());
 		this.helpPath = parameters.getHelpPath();
+		this.extraClientlibs = parameters.getExtraClientlibs();
 	}
 
 	public String getFileName() {
@@ -50,6 +52,10 @@ public class TouchUIDialog extends AbstractTouchUIDialogElement {
 
 	public String getMode() {
 		return "edit";
+	}
+
+	public String[] getExtraClientlibs() {
+		return extraClientlibs;
 	}
 
 }

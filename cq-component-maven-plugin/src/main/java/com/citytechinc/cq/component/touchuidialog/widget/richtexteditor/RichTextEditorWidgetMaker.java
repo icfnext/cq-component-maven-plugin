@@ -15,18 +15,24 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.richtexteditor;
 
-import com.citytechinc.cq.component.maven.util.LogSingleton;
+import com.citytechinc.cq.component.annotations.widgets.RichTextEditor;
+import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
+import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
+import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
-import com.citytechinc.cq.component.touchuidialog.widget.textarea.TextAreaWidgetMaker;
 
-public class RichTextEditorWidgetMaker extends TextAreaWidgetMaker {
+public class RichTextEditorWidgetMaker extends AbstractTouchUIWidgetMaker<RichTextEditorWidgetParameters> {
 
 	public RichTextEditorWidgetMaker(TouchUIWidgetMakerParameters parameters) {
 		super(parameters);
-		LogSingleton
-			.getInstance()
-			.warn(
-				"There is no RichTextEditor dialog widget currently for Touch UI. This widget maker will render the widget as a Text Area but that is likely not what is intended.  To provide rich text editing capabilities in a component authorable via the Touch UI, expose these capabilities via a 'text' inline editor.");
+	}
+
+	@Override
+	protected TouchUIDialogElement make(RichTextEditorWidgetParameters parameters) throws ClassNotFoundException, InvalidComponentFieldException, TouchUIDialogGenerationException, IllegalAccessException, InstantiationException {
+		RichTextEditor richTextEditorAnnotation = getAnnotation(RichTextEditor.class);
+
+		return new RichTextEditorWidget(parameters);
 	}
 
 }

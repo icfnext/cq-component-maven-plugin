@@ -23,6 +23,7 @@ import java.util.Set;
 import javassist.ClassPool;
 import javassist.NotFoundException;
 
+import org.codehaus.plexus.util.StringUtils;
 import org.reflections.Reflections;
 
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
@@ -32,7 +33,7 @@ public class DefaultTouchUIWidgetRegistry implements TouchUIWidgetRegistry {
 
 	private final Map<Class<?>, TouchUIWidgetConfigHolder> annotationToWidgetConfigMap;
 
-	public DefaultTouchUIWidgetRegistry(ClassPool classPool, ClassLoader classLoader, Reflections reflections)
+	public DefaultTouchUIWidgetRegistry(ClassPool classPool, ClassLoader classLoader, Reflections reflections, List<String> additionalFeatures)
 		throws NotFoundException, ClassNotFoundException {
 		annotationToWidgetConfigMap = new HashMap<Class<?>, TouchUIWidgetConfigHolder>();
 
@@ -40,7 +41,10 @@ public class DefaultTouchUIWidgetRegistry implements TouchUIWidgetRegistry {
 			ComponentMojoUtil.getAllTouchUIWidgetAnnotations(classPool, classLoader, reflections);
 
 		for (TouchUIWidgetConfigHolder currentWidgetConfiguration : widgetConfigurations) {
-			if (currentWidgetConfiguration.getAnnotationClass() != null) {
+			if (
+					currentWidgetConfiguration.getAnnotationClass() != null
+							&& (StringUtils.isEmpty(currentWidgetConfiguration.getFeatureFlag())
+							|| additionalFeatures.contains(currentWidgetConfiguration.getFeatureFlag()))) {
 				annotationToWidgetConfigMap.put(currentWidgetConfiguration.getAnnotationClass(),
 					currentWidgetConfiguration);
 			}

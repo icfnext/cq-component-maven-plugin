@@ -451,7 +451,7 @@ public class ComponentMojoUtil {
 				classLoader.loadClass(clazz.getName()).asSubclass(AbstractWidget.class);
 			WidgetConfigHolder widgetConfig =
 				new WidgetConfigHolder(annotationClass, widgetClass, makerClass, widgetAnnotation.xtype(),
-					widgetAnnotation.ranking());
+					widgetAnnotation.ranking(), widgetAnnotation.featureFlag());
 
 			builtInWidgets.add(widgetConfig);
 
@@ -472,7 +472,7 @@ public class ComponentMojoUtil {
 				classLoader.loadClass(clazz.getName()).asSubclass(TouchUIDialogElement.class);
 
 			widgetConfigurations.add(new TouchUIWidgetConfigHolder(annotationClass, widgetClass, widgetMakerClass,
-				widgetAnnotation.resourceType(), widgetAnnotation.ranking()));
+				widgetAnnotation.resourceType(), widgetAnnotation.ranking(), widgetAnnotation.featureFlag()));
 		}
 
 		return widgetConfigurations;

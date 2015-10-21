@@ -26,7 +26,6 @@ import javassist.CtMember;
 import javassist.CtMethod;
 import javassist.NotFoundException;
 
-
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.codehaus.plexus.util.StringUtils;
 

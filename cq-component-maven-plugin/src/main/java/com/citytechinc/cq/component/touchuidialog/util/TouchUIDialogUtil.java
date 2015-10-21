@@ -45,6 +45,7 @@ import com.citytechinc.cq.component.touchuidialog.factory.TouchUIDialogFactory;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 import com.citytechinc.cq.component.touchuidialog.widget.registry.TouchUIWidgetRegistry;
 import com.citytechinc.cq.component.touchuidialog.widget.selection.options.OptionParameters;
+import com.citytechinc.cq.component.touchuidialog.widget.radiogroup.RadioGroupWidget;
 
 public class TouchUIDialogUtil {
 	private static final String OPTION_FIELD_NAME_PREFIX = "option";
@@ -166,6 +167,10 @@ public class TouchUIDialogUtil {
 				optionParameters.setValue(curOptionAnnotation.value());
 				optionParameters.setSelected(curOptionAnnotation.selected());
 				optionParameters.setFieldName(OPTION_FIELD_NAME_PREFIX + (i++));
+				
+				if (Selection.RADIO.equals(selectionAnnotation.type())) {
+					optionParameters.setResourceType(RadioGroupWidget.RADIO_RESOURCE_TYPE);
+				}
 
 				options.add(new com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option(
 					optionParameters));

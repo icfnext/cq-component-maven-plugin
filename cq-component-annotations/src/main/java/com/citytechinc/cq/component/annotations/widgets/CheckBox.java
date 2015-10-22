@@ -41,11 +41,22 @@ public @interface CheckBox {
 	String inputValue() default "on";
 
 	/**
-	 * true if the checkbox should render initially checked
+	 * Used for Classis UI only
+	 * 
+	 * True if the checkbox should render initially checked
 	 *
 	 * @return boolean
 	 */
 	boolean checked() default false;
+	
+	/**
+	 * Used for Touch UI only
+	 * 
+	 * The value to be stored if the checkbox is checked.
+	 *
+	 * @return boolean
+	 */
+	String value() default "{Boolean}true";
 
 	/**
 	 * Used for Touch UI only

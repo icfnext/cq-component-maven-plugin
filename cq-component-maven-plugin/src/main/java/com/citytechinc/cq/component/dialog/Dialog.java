@@ -15,14 +15,14 @@
  */
 package com.citytechinc.cq.component.dialog;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import com.citytechinc.cq.component.dialog.tabpanel.TabPanel;
 import com.citytechinc.cq.component.dialog.tabpanel.TabPanelParameters;
 import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollection;
 import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollectionParameters;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Dialog extends AbstractWidget {
 	private final String title;

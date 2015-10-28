@@ -15,14 +15,14 @@
  */
 package com.citytechinc.cq.component.annotations;
 
+import com.citytechinc.cq.component.annotations.editconfig.ActionConfig;
+import com.citytechinc.cq.component.annotations.editconfig.DropTarget;
+import com.citytechinc.cq.component.annotations.editconfig.FormParameter;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import com.citytechinc.cq.component.annotations.editconfig.ActionConfig;
-import com.citytechinc.cq.component.annotations.editconfig.DropTarget;
-import com.citytechinc.cq.component.annotations.editconfig.FormParameter;
 
 /**
  * The Component annotation is used to indicate that a Class represents a CQ
@@ -350,6 +350,13 @@ public @interface Component {
 	 * @return ContentProperty[]
 	 */
 	ContentProperty[] contentAdditionalProperties() default {};
+
+	/**
+	 * A list of extra client libs to be included on the jcr:root node
+	 *
+	 * @return ComponentProperty[]
+	 */
+	String[] extraClientlibs() default {};
 
 	/**
 	 * Indicates whether the Target context menu should be disabled for the

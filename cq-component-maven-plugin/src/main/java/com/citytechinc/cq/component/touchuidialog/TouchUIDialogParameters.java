@@ -25,6 +25,7 @@ public class TouchUIDialogParameters extends DefaultTouchUIDialogElementParamete
 	private String fileName;
 	private String title;
 	private String helpPath;
+	private String[] extraClientlibs;
 
 	@Override
 	public String getResourceType() {
@@ -72,5 +73,11 @@ public class TouchUIDialogParameters extends DefaultTouchUIDialogElementParamete
 
 	public void setHelpPath(String helpPath) {
 		this.helpPath = helpPath;
+	}
+
+	public void setExtraClientlibs(String[] extraClientlibs) { this.extraClientlibs = extraClientlibs; }
+
+	public String[] getExtraClientlibs() {
+		return extraClientlibs;
 	}
 }

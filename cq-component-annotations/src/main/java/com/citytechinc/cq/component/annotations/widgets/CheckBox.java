@@ -41,11 +41,25 @@ public @interface CheckBox {
 	String inputValue() default "on";
 
 	/**
-	 * true if the checkbox should render initially checked
+	 * Used for Classis UI only
+	 * 
+	 * True if the checkbox should render initially checked
 	 *
 	 * @return boolean
 	 */
 	boolean checked() default false;
+	
+	/**
+	 * Used for Touch UI Only
+	 * 
+	 * Indicates if the checkbox is checked. This will emply ignoreData to be true.
+	 * To set this to be true or false add a boolean with the desired value. To not
+	 * set this at all (and thereby cause ignoreData to remain false) dont set this
+	 * field, or suppy an empoty array.
+	 *
+	 * @return boolean
+	 */
+	boolean[] touchUIChecked() default {};
 
 	/**
 	 * Used for Touch UI only

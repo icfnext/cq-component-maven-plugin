@@ -38,7 +38,7 @@ public class CheckboxWidgetMaker extends AbstractTouchUIWidgetMaker<CheckboxWidg
 
 		widgetParameters.setText(getTextForField(checkboxAnnotation));
 		widgetParameters.setTitle(getTitleForField(checkboxAnnotation));
-		widgetParameters.setValue(getValueForField(checkboxAnnotation));
+		widgetParameters.setChecked(getCheckedForField(checkboxAnnotation));
 
 		return new CheckboxWidget(widgetParameters);
 	}
@@ -59,12 +59,12 @@ public class CheckboxWidgetMaker extends AbstractTouchUIWidgetMaker<CheckboxWidg
 		return null;
 	}
 	
-	public String getValueForField(CheckBox annotation) {
-		if (annotation != null && StringUtils.isNotBlank(annotation.value())) {
-			return annotation.value();
+	public boolean[] getCheckedForField(CheckBox annotation) {
+		if (annotation != null) {
+			return annotation.touchUIChecked();
 		}
 
-		return null;
+		return new boolean[0];
 	}
 
 }

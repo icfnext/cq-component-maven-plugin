@@ -27,14 +27,14 @@ public class CheckboxWidget extends AbstractTouchUIWidget {
 
 	private final String text;
 	private final String title;
-	private final String value;
+	private final boolean[] checked;
 
 	public CheckboxWidget(CheckboxWidgetParameters parameters) {
 		super(parameters);
 
 		text = parameters.getText();
 		title = parameters.getTitle();
-		value = parameters.getValue();
+		checked = parameters.getChecked();
 
 	}
 
@@ -46,8 +46,11 @@ public class CheckboxWidget extends AbstractTouchUIWidget {
 		return title;
 	}
 
-	public String getValue() {
-		return value;
+	public Boolean getChecked() {
+		if (checked != null && checked.length != 0) {
+			return new Boolean(checked[0]);
+		} else {
+			return null;
+		}
 	}
-
 }

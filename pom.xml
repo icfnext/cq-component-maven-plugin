@@ -46,15 +46,9 @@
 	</scm>
 
 	<distributionManagement>
-		<!--
 		<snapshotRepository>
 			<id>sonatype-nexus-staging</id>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-		-->
-		<snapshotRepository>
-			<id>mtsnapshot</id>
-			<url>http://us01s-ecombld02.am.mt.mtnet:8081/nexus/content/repositories/mt-snapshots/</url>
 		</snapshotRepository>
 		<repository>
 			<id>sonatype-nexus-staging</id>

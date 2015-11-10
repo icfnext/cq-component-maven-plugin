@@ -58,13 +58,13 @@ public class CheckboxWidgetMaker extends AbstractTouchUIWidgetMaker<CheckboxWidg
 
 		return null;
 	}
-
-	public boolean getCheckedForField(CheckBox annotation) {
+	
+	public boolean[] getCheckedForField(CheckBox annotation) {
 		if (annotation != null) {
-			return annotation.checked();
+			return annotation.touchUIChecked();
 		}
 
-		return false;
+		return new boolean[0];
 	}
 
 }

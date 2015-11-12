@@ -70,7 +70,7 @@ public @interface DateField {
 	 *
 	 * @return String
 	 */
-	String storedFormat() default "YYYY-MM-DD";
+	String storedFormat() default "YYYY-MM-DDThh:mm:ss.SSSZ";
 
 	/**
 	 * For Touch-UI only

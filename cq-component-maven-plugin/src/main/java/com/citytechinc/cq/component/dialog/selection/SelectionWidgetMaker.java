@@ -41,7 +41,7 @@ import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollectionPara
  * 
  * 
  */
-public class SelectionWidgetMaker extends AbstractWidgetMaker {
+public class SelectionWidgetMaker extends AbstractWidgetMaker<SelectionWidgetParameters> {
 	public SelectionWidgetMaker(WidgetMakerParameters parameters) {
 		super(parameters);
 	}
@@ -49,19 +49,10 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 	private static final String OPTION_FIELD_NAME_PREFIX = "option";
 
 	@Override
-	public DialogElement make() throws ClassNotFoundException, InvalidComponentFieldException, NotFoundException {
+	public DialogElement make(SelectionWidgetParameters parameters) throws ClassNotFoundException,
+		InvalidComponentFieldException, NotFoundException {
 
 		Selection selectionAnnotation = getAnnotation(Selection.class);
-		SelectionWidgetParameters parameters = new SelectionWidgetParameters();
-		parameters.setName(getNameForField());
-		parameters.setFieldName(getFieldNameForField());
-		parameters.setFieldLabel(getFieldLabelForField());
-		parameters.setFieldDescription(getFieldDescriptionForField());
-		parameters.setAllowBlank(!getIsRequiredForField());
-		parameters.setAdditionalProperties(getAdditionalPropertiesForField());
-		parameters.setDefaultValue(getDefaultValueForField());
-		parameters.setHideLabel(getHideLabelForField());
-		parameters.setListeners(getListeners());
 
 		List<DialogElement> options = buildSelectionOptionsForField(selectionAnnotation);
 		parameters.setType(getSelectionTypeForField(selectionAnnotation));
@@ -176,8 +167,9 @@ public class SelectionWidgetMaker extends AbstractWidgetMaker {
 
 		CtClass annotatedEnumClass = classPool.getCtClass(optionEnum.getDeclaringClass().getName());
 		CtMember annotatedEnumField = annotatedEnumClass.getField(optionEnum.name());
-		com.citytechinc.cq.component.annotations.Option optionAnnotation = (com.citytechinc.cq.component.annotations.Option) annotatedEnumField
-			.getAnnotation(com.citytechinc.cq.component.annotations.Option.class);
+		com.citytechinc.cq.component.annotations.Option optionAnnotation =
+			(com.citytechinc.cq.component.annotations.Option) annotatedEnumField
+				.getAnnotation(com.citytechinc.cq.component.annotations.Option.class);
 
 		if (optionAnnotation != null) {
 			if (StringUtils.isNotEmpty(optionAnnotation.text())) {

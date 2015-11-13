@@ -21,10 +21,10 @@ import java.util.List;
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.dialog.DialogElement;
-import com.citytechinc.cq.component.dialog.DialogElementParameters;
+import com.citytechinc.cq.component.dialog.DefaultDialogElementParameters;
 import com.citytechinc.cq.component.xml.XmlElement;
 
-public class TabPanelParameters extends DialogElementParameters {
+public class TabPanelParameters extends DefaultDialogElementParameters {
 	private static final String DEFAULT_FIELD_NAME = "tabs";
 	private static final String PRIMARY_TYPE = "cq:TabPanel";
 

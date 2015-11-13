@@ -39,6 +39,15 @@ public @interface DialogField {
 	public String xtype() default "";
 
 	/**
+	 * Applicable to Touch-UI only
+	 *
+	 * Allows for explicit definition of a dialog field's sling:resourceType.
+	 *
+	 * @return String
+	 */
+	public String resourceType() default "";
+
+	/**
 	 * The path to which the value for the authorable element will be saved
 	 * during content authoring.
 	 *
@@ -109,7 +118,7 @@ public @interface DialogField {
 	 *
 	 * @return FieldProperty[]
 	 */
-	public FieldProperty[] additionalProperties() default {};
+	public Property[] additionalProperties() default {};
 
 	/**
 	 * The set of listeners which will be attributed to the dialog widget
@@ -130,4 +139,61 @@ public @interface DialogField {
 	 * @return double
 	 */
 	public double ranking() default 0;
+
+	/**
+	 * For Touch-UI Only
+	 *
+	 * Many of the Touch UI widgets react to an underlying value being set for
+	 * the field.
+	 *
+	 * @return String
+	 */
+	public String value() default "";
+
+	/**
+	 * For Touch-UI Only
+	 *
+	 * @return String
+	 */
+	public String title() default "";
+
+	/**
+	 * Indicates that the particular field should be rendered in a disabled
+	 * state
+	 *
+	 * @return boolean
+	 */
+	public boolean disabled() default false;
+
+	/**
+	 * For Touch-UI Only
+	 *
+	 * Additional css classes to attribute to the rendered field
+	 *
+	 * @return String
+	 */
+	public String cssClass() default "";
+
+	/**
+	 * Indicates that a Touch UI widget should not be produced for the annotated
+	 * member
+	 *
+	 * @return boolean
+	 */
+	public boolean suppressTouchUI() default false;
+
+	/**
+	 * Indicates that a Touch UI widget should also render as read only
+	 *
+	 * @return boolean
+	 */
+	public boolean renderReadOnly() default true;
+
+	/**
+	 * Indicates that a Touch UI widget should show on page creation
+	 *
+	 * @return boolean
+	 */
+	public boolean showOnCreate() default true;
+
 }

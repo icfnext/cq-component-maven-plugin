@@ -22,27 +22,18 @@ import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 
-public class Html5SmartFileWidgetMaker extends AbstractWidgetMaker {
+public class Html5SmartFileWidgetMaker extends AbstractWidgetMaker<Html5SmartFileWidgetParameters> {
 
 	public Html5SmartFileWidgetMaker(WidgetMakerParameters parameters) {
 		super(parameters);
 	}
 
-	public DialogElement make() throws ClassNotFoundException {
+	@Override
+	public DialogElement make(Html5SmartFileWidgetParameters parameters) throws ClassNotFoundException {
 
 		Html5SmartFile smartFileAnnotation = getAnnotation(Html5SmartFile.class);
 
-		Html5SmartFileWidgetParameters parameters = new Html5SmartFileWidgetParameters();
-
 		parameters.setName(getNameForField(smartFileAnnotation));
-		parameters.setFieldName(getFieldNameForField());
-		parameters.setFieldLabel(getFieldLabelForField());
-		parameters.setFieldDescription(getFieldDescriptionForField());
-		parameters.setAllowBlank(!getIsRequiredForField());
-		parameters.setDefaultValue(getDefaultValueForField());
-		parameters.setHideLabel(getHideLabelForField());
-		parameters.setListeners(getListeners());
-		parameters.setAdditionalProperties(getAdditionalPropertiesForField());
 
 		parameters.setAllowFileNameEditing(getAllowFileNameEditingForField(smartFileAnnotation));
 		parameters.setAllowFileReference(getAllowFileReferenceForField(smartFileAnnotation));

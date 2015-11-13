@@ -18,11 +18,12 @@ package com.citytechinc.cq.component.dialog;
 import javassist.CtMember;
 
 import com.citytechinc.cq.component.annotations.DialogField;
-import com.citytechinc.cq.component.annotations.FieldProperty;
+import com.citytechinc.cq.component.annotations.Property;
 import com.citytechinc.cq.component.annotations.Listener;
 
 public class DialogFieldConfig {
 	private String xtype;
+	private String resourceType;
 	private String name;
 	private String fieldLabel;
 	private String fieldName;
@@ -31,13 +32,21 @@ public class DialogFieldConfig {
 	private boolean hideLabel;
 	private String defaultValue;
 	private int tab;
-	private FieldProperty[] additionalProperties;
+	private Property[] additionalProperties;
 	private Listener[] listeners;
 	private double ranking;
 	private CtMember member;
+	private String value;
+	private String title;
+	private boolean disabled;
+	private String cssClass;
+	private boolean suppressTouchUI;
+	private boolean renderReadOnly;
+	private boolean showOnCreate;
 
 	public DialogFieldConfig(DialogField dialogField, CtMember member) {
 		this.xtype = dialogField.xtype();
+		this.resourceType = dialogField.resourceType();
 		this.name = dialogField.name();
 		this.fieldLabel = dialogField.fieldLabel();
 		this.fieldName = dialogField.fieldName();
@@ -50,6 +59,13 @@ public class DialogFieldConfig {
 		this.listeners = dialogField.listeners();
 		this.ranking = dialogField.ranking();
 		this.member = member;
+		this.value = dialogField.value();
+		this.title = dialogField.title();
+		this.disabled = dialogField.disabled();
+		this.cssClass = dialogField.cssClass();
+		this.suppressTouchUI = dialogField.suppressTouchUI();
+		this.setRenderReadOnly(dialogField.renderReadOnly());
+		this.setShowOnCreate(dialogField.showOnCreate());
 	}
 
 	public String getXtype() {
@@ -124,11 +140,11 @@ public class DialogFieldConfig {
 		this.tab = tab;
 	}
 
-	public FieldProperty[] getAdditionalProperties() {
+	public Property[] getAdditionalProperties() {
 		return additionalProperties;
 	}
 
-	public void setAdditionalProperties(FieldProperty[] additionalProperties) {
+	public void setAdditionalProperties(Property[] additionalProperties) {
 		this.additionalProperties = additionalProperties;
 	}
 
@@ -154,5 +170,65 @@ public class DialogFieldConfig {
 
 	public void setMember(CtMember member) {
 		this.member = member;
+	}
+
+	public String getResourceType() {
+		return resourceType;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public boolean isDisabled() {
+		return disabled;
+	}
+
+	public void setDisabled(boolean disabled) {
+		this.disabled = disabled;
+	}
+
+	public String getCssClass() {
+		return cssClass;
+	}
+
+	public void setCssClass(String cssClass) {
+		this.cssClass = cssClass;
+	}
+
+	public boolean isSuppressTouchUI() {
+		return suppressTouchUI;
+	}
+
+	public void setSuppressTouchUI(boolean suppressTouchUI) {
+		this.suppressTouchUI = suppressTouchUI;
+	}
+
+	public boolean isRenderReadOnly() {
+		return renderReadOnly;
+	}
+
+	public void setRenderReadOnly(boolean renderReadOnly) {
+		this.renderReadOnly = renderReadOnly;
+	}
+
+	public boolean isShowOnCreate() {
+		return showOnCreate;
+	}
+
+	public void setShowOnCreate(boolean showOnCreate) {
+		this.showOnCreate = showOnCreate;
 	}
 }

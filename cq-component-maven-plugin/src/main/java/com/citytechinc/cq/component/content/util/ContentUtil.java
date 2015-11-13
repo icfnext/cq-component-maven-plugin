@@ -136,8 +136,9 @@ public class ContentUtil {
 
 				builtContents.add(builtContent);
 
-				File contentFile = writeContentToFile(transformer, builtContent, curClass, buildDirectory,
-					componentPathBase, defaultComponentPathSuffix);
+				File contentFile =
+					writeContentToFile(transformer, builtContent, curClass, buildDirectory, componentPathBase,
+						defaultComponentPathSuffix);
 				writeContentToArchiveFile(transformer, contentFile, curClass, zipOutputStream, reservedNames,
 					componentPathBase, defaultComponentPathSuffix);
 			}

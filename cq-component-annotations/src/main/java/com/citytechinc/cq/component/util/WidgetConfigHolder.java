@@ -31,6 +31,7 @@ public class WidgetConfigHolder {
 	private final Class<? extends WidgetMaker> makerClass;
 	private final String xtype;
 	private final int ranking;
+	private final String featureFlag;
 
 	/**
 	 *
@@ -41,12 +42,13 @@ public class WidgetConfigHolder {
 	 * @param ranking
 	 */
 	public WidgetConfigHolder(Class<?> annotationClass, Class<? extends AbstractWidget> widgetClass,
-		Class<? extends WidgetMaker> makerClass, String xtype, int ranking) {
+		Class<? extends WidgetMaker> makerClass, String xtype, int ranking, String featureFlag) {
 		this.annotationClass = annotationClass;
 		this.widgetClass = widgetClass;
 		this.makerClass = makerClass;
 		this.xtype = xtype;
 		this.ranking = ranking;
+		this.featureFlag = featureFlag;
 	}
 
 	public Class<?> getAnnotationClass() {
@@ -75,5 +77,9 @@ public class WidgetConfigHolder {
 
 	public boolean hasXtype() {
 		return xtype != null;
+	}
+
+	public String getFeatureFlag() {
+		return featureFlag;
 	}
 }

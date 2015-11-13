@@ -15,11 +15,12 @@
  */
 package com.citytechinc.cq.component.dialog.html5smartimage;
 
-import com.citytechinc.cq.component.dialog.widget.WidgetParameters;
+import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 import com.citytechinc.cq.component.util.Constants;
 
-public class Html5SmartImageWidgetParameters extends WidgetParameters {
+public class Html5SmartImageWidgetParameters extends DefaultWidgetParameters {
 	private String originalName;
+	private boolean isSelf;
 	private boolean disableFlush;
 	private boolean disableInfo;
 	private boolean disableZoom;
@@ -42,7 +43,15 @@ public class Html5SmartImageWidgetParameters extends WidgetParameters {
 		this.originalName = originalName;
 	}
 
-	public boolean isDisableFlush() {
+    public boolean isSelf() {
+        return isSelf;
+    }
+
+    public void setIsSelf(boolean isSelf) {
+        this.isSelf = isSelf;
+    }
+
+    public boolean isDisableFlush() {
 		return disableFlush;
 	}
 

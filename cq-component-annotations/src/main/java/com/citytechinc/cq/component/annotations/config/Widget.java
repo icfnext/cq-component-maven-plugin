@@ -69,4 +69,12 @@ public @interface Widget {
 	 * not be guaranteed.
 	 */
 	int ranking() default -1;
+
+	/**
+	 * Feature flag which can be configured in a POMs additionalFeatures configuration
+	 * indicating the inclusion of this widget in the widget registry during dialog rendering.
+	 * If left empty the widget will always be included.
+	 *
+	 */
+	String featureFlag() default "";
 }

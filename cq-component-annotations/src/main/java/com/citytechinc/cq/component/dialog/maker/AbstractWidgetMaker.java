@@ -15,27 +15,32 @@
  */
 package com.citytechinc.cq.component.dialog.maker;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
 import java.util.Map;
 
+import javassist.CannotCompileException;
 import javassist.CtClass;
 import javassist.CtField;
 import javassist.NotFoundException;
 
 import org.codehaus.plexus.util.StringUtils;
 
-import com.citytechinc.cq.component.annotations.FieldProperty;
+import com.citytechinc.cq.component.annotations.Property;
 import com.citytechinc.cq.component.annotations.Listener;
+import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.Listeners;
 import com.citytechinc.cq.component.dialog.ListenersParameters;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
+import com.citytechinc.cq.component.dialog.widget.WidgetParameters;
 import com.citytechinc.cq.component.util.ComponentUtil;
 
 /**
  *
  *
  */
-public abstract class AbstractWidgetMaker implements WidgetMaker {
+public abstract class AbstractWidgetMaker<T extends WidgetParameters> implements WidgetMaker {
 
 	protected final WidgetMakerParameters parameters;
 
@@ -48,6 +53,30 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 	public AbstractWidgetMaker(WidgetMakerParameters parameters) {
 		this.parameters = parameters;
 	}
+
+	@SuppressWarnings("unchecked")
+	public final DialogElement make() throws InvalidComponentFieldException, NotFoundException, ClassNotFoundException,
+		SecurityException, CannotCompileException, NoSuchFieldException, InstantiationException,
+		IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
+		Class<T> clazz = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+		T parameters = clazz.newInstance();
+		parameters.setName(getNameForField());
+		parameters.setFieldName(getFieldNameForField());
+		parameters.setFieldLabel(getFieldLabelForField());
+		parameters.setFieldDescription(getFieldDescriptionForField());
+		parameters.setAllowBlank(!getIsRequiredForField());
+		parameters.setAdditionalProperties(getAdditionalPropertiesForField());
+		parameters.setDefaultValue(getDefaultValueForField());
+		parameters.setHideLabel(getHideLabelForField());
+		parameters.setListeners(getListeners());
+		parameters.setDisabled(getDisabledForField());
+		return make(parameters);
+	}
+
+	protected abstract DialogElement make(T parameters) throws InvalidComponentFieldException, NotFoundException,
+		ClassNotFoundException, SecurityException, CannotCompileException, NoSuchFieldException,
+		InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
+		NoSuchMethodException;
 
 	/**
 	 * <p>
@@ -138,7 +167,7 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 		if (parameters.getDialogFieldConfig().getAdditionalProperties().length > 0) {
 			Map<String, String> properties = new HashMap<String, String>();
 
-			for (FieldProperty curProperty : parameters.getDialogFieldConfig().getAdditionalProperties()) {
+			for (Property curProperty : parameters.getDialogFieldConfig().getAdditionalProperties()) {
 				properties.put(curProperty.name(), curProperty.value());
 			}
 
@@ -161,6 +190,10 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 		}
 
 		return null;
+	}
+
+	protected boolean getDisabledForField() {
+		return parameters.getDialogFieldConfig().isDisabled();
 	}
 
 	/**
@@ -242,9 +275,9 @@ public abstract class AbstractWidgetMaker implements WidgetMaker {
 	 * @throws ClassNotFoundException
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T getAnnotation(Class<T> annotationClass) throws ClassNotFoundException {
+	public <E> E getAnnotation(Class<E> annotationClass) throws ClassNotFoundException {
 		if (parameters.getCtMember().hasAnnotation(annotationClass)) {
-			return (T) parameters.getCtMember().getAnnotation(annotationClass);
+			return (E) parameters.getCtMember().getAnnotation(annotationClass);
 		}
 		return null;
 	}

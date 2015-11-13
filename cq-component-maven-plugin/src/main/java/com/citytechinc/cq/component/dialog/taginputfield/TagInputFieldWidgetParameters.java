@@ -15,10 +15,10 @@
  */
 package com.citytechinc.cq.component.dialog.taginputfield;
 
-import com.citytechinc.cq.component.dialog.widget.WidgetParameters;
+import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 import com.citytechinc.cq.component.util.Constants;
 
-public class TagInputFieldWidgetParameters extends WidgetParameters {
+public class TagInputFieldWidgetParameters extends DefaultWidgetParameters {
 	private boolean displayTitles;
 
 	public boolean isDisplayTitles() {

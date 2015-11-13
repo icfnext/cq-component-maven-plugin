@@ -34,8 +34,8 @@ public class HtmlTag extends AbstractXmlElement {
 
 		super(parameters);
 
-		this.tagName = new NameSpacedAttribute<String>(Constants.CQ_NS_URI, Constants.CQ_NS_PREFIX,
-			parameters.getTagName());
+		this.tagName =
+			new NameSpacedAttribute<String>(Constants.CQ_NS_URI, Constants.CQ_NS_PREFIX, parameters.getTagName());
 		this.cssClass = parameters.getCssClass();
 		this.id = parameters.getId();
 

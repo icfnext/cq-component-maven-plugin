@@ -15,9 +15,9 @@
  */
 package com.citytechinc.cq.component.dialog.html5smartimage;
 
-import com.citytechinc.cq.component.dialog.DialogElementParameters;
+import com.citytechinc.cq.component.dialog.DefaultDialogElementParameters;
 
-public class AspectRatioParameters extends DialogElementParameters {
+public class AspectRatioParameters extends DefaultDialogElementParameters {
 	private static final String PRIMARY_TYPE = "nt:unstructured";
 	private int height;
 	private int width;

@@ -15,10 +15,10 @@
  */
 package com.citytechinc.cq.component.dialog.pathfield;
 
-import com.citytechinc.cq.component.dialog.widget.WidgetParameters;
+import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 import com.citytechinc.cq.component.util.Constants;
 
-public class PathFieldWidgetParameters extends WidgetParameters {
+public class PathFieldWidgetParameters extends DefaultWidgetParameters {
 	private boolean escapeAmp;
 	private boolean hideTrigger;
 	private boolean parBrowse;

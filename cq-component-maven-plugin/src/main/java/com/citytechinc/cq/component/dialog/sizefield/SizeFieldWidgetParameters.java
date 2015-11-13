@@ -15,10 +15,10 @@
  */
 package com.citytechinc.cq.component.dialog.sizefield;
 
-import com.citytechinc.cq.component.dialog.widget.WidgetParameters;
+import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 import com.citytechinc.cq.component.util.Constants;
 
-public class SizeFieldWidgetParameters extends WidgetParameters {
+public class SizeFieldWidgetParameters extends DefaultWidgetParameters {
 	private String heightParameter;
 	private String heightPrefix;
 	private String heightSuffix;

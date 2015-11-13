@@ -31,14 +31,15 @@ import com.citytechinc.cq.component.annotations.widgets.rte.Lists;
 import com.citytechinc.cq.component.annotations.widgets.rte.MiscTools;
 import com.citytechinc.cq.component.annotations.widgets.rte.ParaFormat;
 import com.citytechinc.cq.component.annotations.widgets.rte.SpellCheck;
-import com.citytechinc.cq.component.annotations.widgets.rte.Styles;
+import com.citytechinc.cq.component.annotations.widgets.rte.Style;
 import com.citytechinc.cq.component.annotations.widgets.rte.SubSuperscript;
 import com.citytechinc.cq.component.annotations.widgets.rte.Table;
 import com.citytechinc.cq.component.annotations.widgets.rte.Undo;
 
 /**
- * Represents a Widget of type CQ.form.RichText
+ * Represents a Widget of type CQ.form.RichText in Classic UI
  *
+ * This widget is not supported in Touch UI and will render as a textarea
  */
 @Retention(RetentionPolicy.CLASS)
 @Target({ ElementType.FIELD, ElementType.METHOD })
@@ -162,7 +163,7 @@ public @interface RichTextEditor {
 	 *
 	 * @return Styles[]
 	 */
-	public Styles[] styles() default {};
+	public Style[] styles() default {};
 
 	/**
 	 * SubSuperscript RTE Plugin configuration. For more information on

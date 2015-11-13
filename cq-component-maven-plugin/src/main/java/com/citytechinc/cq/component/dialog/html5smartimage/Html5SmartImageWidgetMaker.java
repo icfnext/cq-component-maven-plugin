@@ -27,38 +27,31 @@ import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 
-public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
-	private static final String ASPECT_RATIO_PREFIX = "aspectRatio";
-	private static final String DEFAULT_CROP_PARAMETER = "imageCrop";
-	private static final String DEFAULT_ROTATE_PARAMETER = "imageRotate";
-	private static final String DEFAULT_MAP_PARAMETER = "imageMap";
+public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker<Html5SmartImageWidgetParameters> {
+	public static final String ASPECT_RATIO_PREFIX = "aspectRatio";
+	public static final String DEFAULT_CROP_PARAMETER = "imageCrop";
+	public static final String DEFAULT_ROTATE_PARAMETER = "imageRotate";
+	public static final String DEFAULT_MAP_PARAMETER = "imageMap";
+	public static final String FILE_REFERENCE_PARAMETER = "fileReference";
+	public static final String FILE_NAME_PARAMETER = "fileName";
 
 	public Html5SmartImageWidgetMaker(WidgetMakerParameters parameters) {
 		super(parameters);
 	}
 
-	public DialogElement make() throws ClassNotFoundException {
+	@Override
+	public DialogElement make(Html5SmartImageWidgetParameters parameters) throws ClassNotFoundException {
 
 		Html5SmartImage smartImageAnnotation = getAnnotation(Html5SmartImage.class);
 
-		Html5SmartImageWidgetParameters parameters = new Html5SmartImageWidgetParameters();
-
 		parameters.setName(getNameForField(smartImageAnnotation));
-		parameters.setFieldName(getFieldNameForField());
-		parameters.setFieldLabel(getFieldLabelForField());
-		parameters.setFieldDescription(getFieldDescriptionForField());
-		parameters.setAllowBlank(!getIsRequiredForField());
-		parameters.setDefaultValue(getDefaultValueForField());
-		parameters.setHideLabel(getHideLabelForField());
-		parameters.setListeners(getListeners());
-		parameters.setAdditionalProperties(getAdditionalPropertiesForField());
-
+		parameters.setIsSelf(getIsSelfForField(smartImageAnnotation));
 		parameters.setDisableFlush(getDisableFlushForField(smartImageAnnotation));
 		parameters.setDisableInfo(getDisableInfoForField(smartImageAnnotation));
 		parameters.setDisableZoom(getDisableZoomForField(smartImageAnnotation));
 		parameters.setCropParameter(getCropParameterForField(smartImageAnnotation));
-		parameters.setFileNameParameter(getFileNameParameterForField(smartImageAnnotation));
-		parameters.setFileReferenceParameter(getFileReferenceParameterForField(smartImageAnnotation));
+		parameters.setFileNameParameter(FILE_NAME_PARAMETER);
+		parameters.setFileReferenceParameter(FILE_REFERENCE_PARAMETER);
 		parameters.setMapParameter(getMapParameterForField(smartImageAnnotation));
 		parameters.setRotateParameter(getRotateParameterForField(smartImageAnnotation));
 		parameters.setUploadUrl(getUploadUrlForField(smartImageAnnotation));
@@ -80,23 +73,17 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
 	}
 
 	protected String getNameForField(Html5SmartImage smartImageAnnotation) {
-		String name = smartImageAnnotation.name();
-
-		if (StringUtils.isNotEmpty(name)) {
-			return name;
+		if (smartImageAnnotation.isSelf()) {
+			if (parameters.isUseDotSlashInName()) {
+				return "./";
+			}
+			return "";
+		} else {
+			return getNameForField();
 		}
-
-		return null;
 	}
 
-	@SuppressWarnings("deprecation")
 	protected String getCropParameterForField(Html5SmartImage smartImageAnnotation) {
-		String cropParameter = smartImageAnnotation.cropParameter();
-
-		if (StringUtils.isNotEmpty(cropParameter)) {
-			return cropParameter;
-		}
-
 		if (smartImageAnnotation.allowCrop()) {
 			return DEFAULT_CROP_PARAMETER;
 		}
@@ -104,34 +91,7 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
 		return null;
 	}
 
-	protected String getFileNameParameterForField(Html5SmartImage smartImageAnnotation) {
-		String fileNameParameter = smartImageAnnotation.fileNameParameter();
-
-		if (StringUtils.isNotEmpty(fileNameParameter)) {
-			return fileNameParameter;
-		}
-
-		return null;
-	}
-
-	protected String getFileReferenceParameterForField(Html5SmartImage smartImageAnnotation) {
-		String fileReferenceParameter = smartImageAnnotation.fileReferenceParameter();
-
-		if (StringUtils.isNotEmpty(fileReferenceParameter)) {
-			return fileReferenceParameter;
-		}
-
-		return null;
-	}
-
-	@SuppressWarnings("deprecation")
 	protected String getMapParameterForField(Html5SmartImage smartImageAnnotation) {
-		String mapParameter = smartImageAnnotation.mapParameter();
-
-		if (StringUtils.isNotEmpty(mapParameter)) {
-			return mapParameter;
-		}
-
 		if (smartImageAnnotation.allowMap()) {
 			return DEFAULT_MAP_PARAMETER;
 		}
@@ -139,13 +99,7 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
 		return null;
 	}
 
-	@SuppressWarnings("deprecation")
 	protected String getRotateParameterForField(Html5SmartImage smartImageAnnotation) {
-		String rotateParameter = smartImageAnnotation.rotateParameter();
-		if (StringUtils.isNotEmpty(rotateParameter)) {
-			return rotateParameter;
-		}
-
 		if (smartImageAnnotation.allowRotate()) {
 			return DEFAULT_ROTATE_PARAMETER;
 		}
@@ -182,6 +136,10 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
 		return null;
 	}
 
+	protected boolean getIsSelfForField(Html5SmartImage smartImageAnnotation) {
+		return smartImageAnnotation.isSelf();
+	}
+
 	protected boolean getDisableFlushForField(Html5SmartImage smartImageAnnotation) {
 		return smartImageAnnotation.disableFlush();
 	}
@@ -199,7 +157,8 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
 	}
 
 	protected CropConfig buildCropConfig(AspectRatio[] cropAspectRatios) {
-		List<com.citytechinc.cq.component.dialog.html5smartimage.AspectRatio> aspectRatioList = new ArrayList<com.citytechinc.cq.component.dialog.html5smartimage.AspectRatio>();
+		List<com.citytechinc.cq.component.dialog.html5smartimage.AspectRatio> aspectRatioList =
+			new ArrayList<com.citytechinc.cq.component.dialog.html5smartimage.AspectRatio>();
 		int count = 0;
 		for (AspectRatio cropAspectRatio : cropAspectRatios) {
 			AspectRatioParameters arp = new AspectRatioParameters();
@@ -207,8 +166,8 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker {
 			arp.setWidth(cropAspectRatio.width());
 			arp.setHeight(cropAspectRatio.height());
 			arp.setFieldName(ASPECT_RATIO_PREFIX + count++);
-			com.citytechinc.cq.component.dialog.html5smartimage.AspectRatio aspectRatio = new com.citytechinc.cq.component.dialog.html5smartimage.AspectRatio(
-				arp);
+			com.citytechinc.cq.component.dialog.html5smartimage.AspectRatio aspectRatio =
+				new com.citytechinc.cq.component.dialog.html5smartimage.AspectRatio(arp);
 			aspectRatioList.add(aspectRatio);
 		}
 

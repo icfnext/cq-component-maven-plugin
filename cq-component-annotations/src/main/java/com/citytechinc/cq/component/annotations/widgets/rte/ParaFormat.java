@@ -20,6 +20,8 @@ package com.citytechinc.cq.component.annotations.widgets.rte;
  */
 public @interface ParaFormat {
 
-	public ParaFormatFormat[] formats() default {};
+	public String tag();
+
+	public String description();
 
 }

@@ -15,10 +15,10 @@
  */
 package com.citytechinc.cq.component.dialog.cqincludes;
 
-import com.citytechinc.cq.component.dialog.DialogElementParameters;
+import com.citytechinc.cq.component.dialog.DefaultDialogElementParameters;
 import com.citytechinc.cq.component.util.Constants;
 
-public class CQIncludeParameters extends DialogElementParameters {
+public class CQIncludeParameters extends DefaultDialogElementParameters {
 	private String path;
 
 	public String getPath() {

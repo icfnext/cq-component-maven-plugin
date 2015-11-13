@@ -20,27 +20,16 @@ import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 
-public class NumberFieldWidgetMaker extends AbstractWidgetMaker {
+public class NumberFieldWidgetMaker extends AbstractWidgetMaker<NumberFieldWidgetParameters> {
 
 	public NumberFieldWidgetMaker(WidgetMakerParameters parameters) {
 		super(parameters);
 	}
 
-	public DialogElement make() throws ClassNotFoundException {
+	@Override
+	public DialogElement make(NumberFieldWidgetParameters parameters) throws ClassNotFoundException {
 
 		NumberField numberFieldAnnotation = getAnnotation(NumberField.class);
-
-		NumberFieldWidgetParameters parameters = new NumberFieldWidgetParameters();
-
-		parameters.setName(getNameForField());
-		parameters.setFieldName(getFieldNameForField());
-		parameters.setFieldLabel(getFieldLabelForField());
-		parameters.setFieldDescription(getFieldDescriptionForField());
-		parameters.setAllowBlank(!getIsRequiredForField());
-		parameters.setDefaultValue(getDefaultValueForField());
-		parameters.setHideLabel(getHideLabelForField());
-		parameters.setListeners(getListeners());
-		parameters.setAdditionalProperties(getAdditionalPropertiesForField());
 
 		parameters.setAllowDecimals(getAllowDecimalsForField(numberFieldAnnotation));
 		parameters.setAllowNegative(getAllowNegativeForField(numberFieldAnnotation));

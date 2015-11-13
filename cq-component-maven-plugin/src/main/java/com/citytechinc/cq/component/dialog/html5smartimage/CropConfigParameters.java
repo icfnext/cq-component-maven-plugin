@@ -15,9 +15,9 @@
  */
 package com.citytechinc.cq.component.dialog.html5smartimage;
 
-import com.citytechinc.cq.component.dialog.DialogElementParameters;
+import com.citytechinc.cq.component.dialog.DefaultDialogElementParameters;
 
-public class CropConfigParameters extends DialogElementParameters {
+public class CropConfigParameters extends DefaultDialogElementParameters {
 	private static final String PRIMARY_TYPE = "nt:unstructured";
 	private static final String FIELD_NAME = "cropConfig";
 

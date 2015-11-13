@@ -17,7 +17,7 @@ package com.citytechinc.cq.component.dialog;
 
 import com.citytechinc.cq.component.annotations.Listener;
 
-public class ListenersParameters extends DialogElementParameters {
+public class ListenersParameters extends DefaultDialogElementParameters {
 	public static final String FIELD_NAME = "listeners";
 	public static final String PRIMARY_TYPE = "nt:unstructured";
 	private Listener[] listenerAnnotations;

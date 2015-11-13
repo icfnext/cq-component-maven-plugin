@@ -19,7 +19,8 @@ import com.citytechinc.cq.component.annotations.config.Widget;
 import com.citytechinc.cq.component.annotations.widgets.TagInputField;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
 
-@Widget(annotationClass = TagInputField.class, makerClass = TagInputFieldWidgetMaker.class, xtype = TagInputFieldWidget.XTYPE)
+@Widget(annotationClass = TagInputField.class, makerClass = TagInputFieldWidgetMaker.class,
+	xtype = TagInputFieldWidget.XTYPE)
 public class TagInputFieldWidget extends AbstractWidget {
 	public static final String XTYPE = "tags";
 

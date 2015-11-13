@@ -22,5 +22,6 @@ class ComponentPluginExtension {
 	String componentPathSuffix="content"
 	String defaultComponentGroup="Components"
 	String transformerName="camel-case"
+	boolean generateTouchUiDialogs=true
 	//TODO: Implement excludedDependences
 }

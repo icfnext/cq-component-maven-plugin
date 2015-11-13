@@ -26,6 +26,7 @@ $symbol_pound$symbol_pound$symbol_pound Maven POM
 	        <componentPathSuffix>content</componentPathSuffix>
 	        <defaultComponentGroup>Client Group</defaultComponentGroup>
 	        <transformerName>camel-case</transformerName>
+	        <generateTouchUiDialogs>true</generateTouchUiDialogs>
 	        <excludedDependencies>
 	           <dependency>
 	               <groupId>dependency.group.id</groupId>
@@ -143,6 +144,12 @@ $symbol_pound$symbol_pound Configurable Properties
                 <br/>
                 <b>Currently unavailable in the Gradle Plugin.</b>
             </td>
+        </tr>
+        <tr>
+            <td>generateTouchUiDialogs</td>
+            <td>Boolean</td>
+            <td>true</td>
+            <td>Enabled the generation of dialogs for Touch UI</td>
         </tr>
 	</tbody>
 </table>

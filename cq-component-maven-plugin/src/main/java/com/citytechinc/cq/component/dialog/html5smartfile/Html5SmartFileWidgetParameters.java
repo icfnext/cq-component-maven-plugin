@@ -15,10 +15,10 @@
  */
 package com.citytechinc.cq.component.dialog.html5smartfile;
 
-import com.citytechinc.cq.component.dialog.widget.WidgetParameters;
+import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 import com.citytechinc.cq.component.util.Constants;
 
-public class Html5SmartFileWidgetParameters extends WidgetParameters {
+public class Html5SmartFileWidgetParameters extends DefaultWidgetParameters {
 	private boolean allowFileNameEditing;
 	private boolean allowFileReference;
 	private boolean allowUpload;

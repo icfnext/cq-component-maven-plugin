@@ -15,14 +15,14 @@
  */
 package com.citytechinc.cq.component.annotations;
 
+import com.citytechinc.cq.component.annotations.editconfig.ActionConfig;
+import com.citytechinc.cq.component.annotations.editconfig.DropTarget;
+import com.citytechinc.cq.component.annotations.editconfig.FormParameter;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import com.citytechinc.cq.component.annotations.editconfig.ActionConfig;
-import com.citytechinc.cq.component.annotations.editconfig.DropTarget;
-import com.citytechinc.cq.component.annotations.editconfig.FormParameter;
 
 /**
  * The Component annotation is used to indicate that a Class represents a CQ
@@ -352,6 +352,13 @@ public @interface Component {
 	ContentProperty[] contentAdditionalProperties() default {};
 
 	/**
+	 * A list of extra client libs to be included on the jcr:root node
+	 *
+	 * @return ComponentProperty[]
+	 */
+	String[] extraClientlibs() default {};
+
+	/**
 	 * Indicates whether the Target context menu should be disabled for the
 	 * particular component. Populates the cq:disableTargeting property of the
 	 * _cq_editConfig.xml. For information on this properties usage, see <a
@@ -370,4 +377,21 @@ public @interface Component {
 	 * @return HtmlTag[]
 	 */
 	HtmlTag[] htmlTag() default {};
+
+	/**
+	 * Indicates whether writing of the cq:dialog.xml appropriate to the Touch
+	 * UI AEM interface should be skipped for this component.
+	 *
+	 * @return boolean
+	 */
+	boolean suppressTouchUIDialog() default false;
+
+	/**
+	 * A path to be followed when a user clicks the help button in the Touch UI
+	 * Authoring interface.
+	 *
+	 * @return String
+	 */
+	String helpPath() default "";
+
 }

@@ -16,9 +16,9 @@
 package com.citytechinc.cq.component.editconfig.inplaceediting;
 
 import com.citytechinc.cq.component.util.Constants;
-import com.citytechinc.cq.component.xml.XmlElementParameters;
+import com.citytechinc.cq.component.xml.DefaultXmlElementParameters;
 
-public class EditConfigInPlaceEditingParameters extends XmlElementParameters {
+public class EditConfigInPlaceEditingParameters extends DefaultXmlElementParameters {
 	private static final String EDIT_CONFIG_IN_PLACE_EDITING_PRIMARY_TYPE = "cq:InplaceEditingConfig";
 
 	private boolean active;

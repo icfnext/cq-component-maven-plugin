@@ -24,6 +24,7 @@ import java.util.Set;
 import javassist.ClassPool;
 import javassist.NotFoundException;
 
+import org.codehaus.plexus.util.StringUtils;
 import org.reflections.Reflections;
 
 import com.citytechinc.cq.component.dialog.widget.WidgetRegistry;
@@ -35,13 +36,13 @@ public class DefaultWidgetRegistry implements WidgetRegistry {
 
 	private final Map<Class<?>, WidgetConfigHolder> annotationToWidgetConfigMap;
 
-	public DefaultWidgetRegistry(ClassPool classPool, ClassLoader classLoader, Reflections reflections)
+	public DefaultWidgetRegistry(ClassPool classPool, ClassLoader classLoader, Reflections reflections, List<String> additionalFeatures)
 		throws MalformedURLException, ClassNotFoundException, NotFoundException {
 
 		LogSingleton LOG = LogSingleton.getInstance();
 
-		List<WidgetConfigHolder> widgetConfigs = ComponentMojoUtil.getAllWidgetAnnotations(classPool, classLoader,
-			reflections);
+		List<WidgetConfigHolder> widgetConfigs =
+			ComponentMojoUtil.getAllWidgetAnnotations(classPool, classLoader, reflections);
 
 		LOG.debug(widgetConfigs.size() + " Widget Configurations found");
 
@@ -50,7 +51,10 @@ public class DefaultWidgetRegistry implements WidgetRegistry {
 		for (WidgetConfigHolder curConfig : widgetConfigs) {
 			LOG.debug("Widget Config -- " + curConfig.getWidgetClass() + " : " + curConfig.getMakerClass() + " : "
 				+ curConfig.getAnnotationClass() + " : " + curConfig.getXtype());
-			if (curConfig.getAnnotationClass() != null) {
+			if (
+					curConfig.getAnnotationClass() != null
+							&& (StringUtils.isEmpty(curConfig.getFeatureFlag())
+							|| additionalFeatures.contains(curConfig.getFeatureFlag()))) {
 				this.annotationToWidgetConfigMap.put(curConfig.getAnnotationClass(), curConfig);
 			}
 		}

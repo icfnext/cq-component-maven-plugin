@@ -214,6 +214,15 @@ public @interface Component {
 	String fileName() default "dialog";
 
 	/**
+	 * The name, without extension, to use for the output _cq_dialog xml file. This
+	 * can be used when you want to output a dialog type other than the edit
+	 * dialog.
+	 *
+	 * @return String
+	 */
+	String touchFileName() default "_cq_dialog";
+
+	/**
 	 * Indicates whether a _cq_editConfig file should be generated for the
 	 * component defined by the annotated Java Class. When set to false, a
 	 * _cq_editConfig file will not be generated regardless of whether one

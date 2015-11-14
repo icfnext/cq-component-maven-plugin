@@ -54,6 +54,7 @@ public class TouchUIDialogFactory {
 			TouchUIDialogParameters parameters = new TouchUIDialogParameters();
 
 			parameters.setTitle(componentAnnotation.value());
+			parameters.setFileName(componentAnnotation.touchFileName());
 
 			if (StringUtils.isNotBlank(componentAnnotation.helpPath())) {
 				parameters.setHelpPath(componentAnnotation.helpPath());

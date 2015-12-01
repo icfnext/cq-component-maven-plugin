@@ -403,4 +403,16 @@ public @interface Component {
 	 */
 	String helpPath() default "";
 
+	/**
+	 * Applicable to the Touch UI only
+	 *
+	 * If set to true, extended classes and implemented interfaces will not be interrogated when arriving
+	 * at a list of Dialog Fields for a Touch UI dialog.  This intends to support situations where you are
+	 * both extending a class and a sling:resourceType and thus will be using the dialog resource merger for
+	 * the inclusion of the supertype's dialog fields as opposed to inclusion via class inheritance.
+	 *
+	 * @return boolean
+	 */
+	boolean suppressFieldInheritanceForTouchUI() default false;
+
 }

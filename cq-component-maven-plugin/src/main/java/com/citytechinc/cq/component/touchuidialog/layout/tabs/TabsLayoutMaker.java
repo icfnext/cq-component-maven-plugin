@@ -110,6 +110,7 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
 					SectionParameters currentTabParameters = new SectionParameters();
 					if (StringUtils.isNotEmpty(currentTabAnnotation.title())) {
 						currentTabParameters.setTitle(currentTabAnnotation.title());
+						currentTabParameters.setNodeName(currentTabAnnotation.touchUINodeName());
 						LayoutElement currentTabLayoutElement =
 							new FixedColumnsLayoutElement(new FixedColumnsLayoutElementParameters());
 						currentTabParameters.setLayoutElement(currentTabLayoutElement);
@@ -207,7 +208,10 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
 		for (int i = 0; i < tabParametersList.size(); i++) {
 			if (tabParametersList.get(i) != null) {
 				SectionParameters currentSectionParameters = tabParametersList.get(i);
-				if (StringUtils.isNotEmpty(tabParametersList.get(i).getTitle())) {
+				if (StringUtils.isNotEmpty(tabParametersList.get(i).getNodeName())) {
+					currentSectionParameters.setFieldName(tabParametersList.get(i).getNodeName());
+				}
+				else if (StringUtils.isNotEmpty(tabParametersList.get(i).getTitle())) {
 					currentSectionParameters.setFieldName(tabParametersList.get(i).getTitle());
 				} else {
 					currentSectionParameters.setFieldName("tab_" + i);

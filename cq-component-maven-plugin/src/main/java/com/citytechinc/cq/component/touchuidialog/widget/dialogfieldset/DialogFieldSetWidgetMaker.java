@@ -101,10 +101,6 @@ public class DialogFieldSetWidgetMaker extends AbstractTouchUIWidgetMaker<Dialog
 				}
 
 				if (dialogFieldConfig != null && !dialogFieldConfig.isSuppressTouchUI()) {
-					Class<?> fieldClass = parameters.getClassLoader().loadClass(member.getDeclaringClass().getName());
-
-					double ranking = dialogFieldConfig.getRanking();
-
 					if (StringUtils.isNotBlank(dialogFieldSetAnnotation.namePrefix())) {
 						String name = dialogFieldConfig.getName();
 						String newName;
@@ -121,6 +117,7 @@ public class DialogFieldSetWidgetMaker extends AbstractTouchUIWidgetMaker<Dialog
 					}
 
 					TouchUIWidgetMakerParameters curFieldMember = new TouchUIWidgetMakerParameters();
+					Class<?> fieldClass = parameters.getClassLoader().loadClass(member.getDeclaringClass().getName());
 					curFieldMember.setDialogFieldConfig(dialogFieldConfig);
 					curFieldMember.setContainingClass(fieldClass);
 					curFieldMember.setClassLoader(parameters.getClassLoader());
@@ -131,7 +128,7 @@ public class DialogFieldSetWidgetMaker extends AbstractTouchUIWidgetMaker<Dialog
 					TouchUIDialogElement currentDialogElement = TouchUIWidgetFactory.make(curFieldMember, -1);
 					
 					if (currentDialogElement != null) {
-						currentDialogElement.setRanking(ranking);
+						currentDialogElement.setRanking(dialogFieldConfig.getRanking());
 						elements.add(currentDialogElement);
 					}
 				}

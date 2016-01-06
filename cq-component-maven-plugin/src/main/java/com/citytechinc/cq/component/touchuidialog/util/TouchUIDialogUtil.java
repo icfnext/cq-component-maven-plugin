@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.citytechinc.cq.component.annotations.Component;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMember;
@@ -109,8 +110,9 @@ public class TouchUIDialogUtil {
 		List<TouchUIWidgetMakerParameters> widgetMakerParametersList = new ArrayList<TouchUIWidgetMakerParameters>();
 
 		List<CtMember> fieldsAndMethods = new ArrayList<CtMember>();
-		fieldsAndMethods.addAll(ComponentMojoUtil.collectFields(componentClass));
-		fieldsAndMethods.addAll(ComponentMojoUtil.collectMethods(componentClass));
+		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
+		fieldsAndMethods.addAll(ComponentMojoUtil.collectFields(componentClass, componentAnnotation.suppressFieldInheritanceForTouchUI()));
+		fieldsAndMethods.addAll(ComponentMojoUtil.collectMethods(componentClass, componentAnnotation.suppressFieldInheritanceForTouchUI()));
 
 		// Load the true class
 		Class<?> trueComponentClass = classLoader.loadClass(componentClass.getName());

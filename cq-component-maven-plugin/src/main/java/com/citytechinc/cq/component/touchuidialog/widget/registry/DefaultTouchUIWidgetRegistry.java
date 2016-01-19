@@ -15,6 +15,8 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.registry;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,21 +32,33 @@ import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 import com.citytechinc.cq.component.util.TouchUIWidgetConfigHolder;
 
 public class DefaultTouchUIWidgetRegistry implements TouchUIWidgetRegistry {
+	private static final String DEFAULT_COMPONENT_PACKAGE = "com.citytechinc.cq.component.touchuidialog";
 
 	private final Map<Class<?>, TouchUIWidgetConfigHolder> annotationToWidgetConfigMap;
 
-	public DefaultTouchUIWidgetRegistry(ClassPool classPool, ClassLoader classLoader, Reflections reflections, List<String> additionalFeatures)
-		throws NotFoundException, ClassNotFoundException {
+	public DefaultTouchUIWidgetRegistry(ClassPool classPool, ClassLoader classLoader, Reflections reflections,
+		List<String> additionalFeatures) throws NotFoundException, ClassNotFoundException {
 		annotationToWidgetConfigMap = new HashMap<Class<?>, TouchUIWidgetConfigHolder>();
 
 		List<TouchUIWidgetConfigHolder> widgetConfigurations =
 			ComponentMojoUtil.getAllTouchUIWidgetAnnotations(classPool, classLoader, reflections);
 
+		Collections.sort(widgetConfigurations, new Comparator<TouchUIWidgetConfigHolder>() {
+
+			@Override
+			public int compare(TouchUIWidgetConfigHolder widgetConfig1, TouchUIWidgetConfigHolder widgetConfig2) {
+				if (widgetConfig1.getWidgetClass().getName().startsWith(DEFAULT_COMPONENT_PACKAGE)) {
+					return -1;
+				} else {
+					return 1;
+				}
+			}
+		});
+
 		for (TouchUIWidgetConfigHolder currentWidgetConfiguration : widgetConfigurations) {
-			if (
-					currentWidgetConfiguration.getAnnotationClass() != null
-							&& (StringUtils.isEmpty(currentWidgetConfiguration.getFeatureFlag())
-							|| additionalFeatures.contains(currentWidgetConfiguration.getFeatureFlag()))) {
+			if (currentWidgetConfiguration.getAnnotationClass() != null
+				&& (StringUtils.isEmpty(currentWidgetConfiguration.getFeatureFlag()) || additionalFeatures
+					.contains(currentWidgetConfiguration.getFeatureFlag()))) {
 				annotationToWidgetConfigMap.put(currentWidgetConfiguration.getAnnotationClass(),
 					currentWidgetConfiguration);
 			}

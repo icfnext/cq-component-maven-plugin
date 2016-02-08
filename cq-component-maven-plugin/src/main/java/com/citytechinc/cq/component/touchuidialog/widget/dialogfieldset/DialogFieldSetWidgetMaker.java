@@ -101,38 +101,34 @@ public class DialogFieldSetWidgetMaker extends AbstractTouchUIWidgetMaker<Dialog
 				}
 
 				if (dialogFieldConfig != null && !dialogFieldConfig.isSuppressTouchUI()) {
-					Class<?> fieldClass = parameters.getClassLoader().loadClass(member.getDeclaringClass().getName());
-
-					double ranking = dialogFieldConfig.getRanking();
+					if (StringUtils.isNotBlank(dialogFieldSetAnnotation.namePrefix())) {
+						String name = dialogFieldConfig.getName();
+						String newName;
+						if (name.startsWith("./")) {
+							newName = name.substring(2);
+						} else {
+							newName = name;
+						}
+						newName = dialogFieldSetAnnotation.namePrefix() + newName;
+						if (name.startsWith("./")) {
+							newName = "./" + newName;
+						}
+						dialogFieldConfig.setName(newName);
+					}
 
 					TouchUIWidgetMakerParameters curFieldMember = new TouchUIWidgetMakerParameters();
+					Class<?> fieldClass = parameters.getClassLoader().loadClass(member.getDeclaringClass().getName());
 					curFieldMember.setDialogFieldConfig(dialogFieldConfig);
 					curFieldMember.setContainingClass(fieldClass);
 					curFieldMember.setClassLoader(parameters.getClassLoader());
 					curFieldMember.setClassPool(parameters.getClassPool());
 					curFieldMember.setWidgetRegistry(parameters.getWidgetRegistry());
 					curFieldMember.setUseDotSlashInName(true);
-
+					
 					TouchUIDialogElement currentDialogElement = TouchUIWidgetFactory.make(curFieldMember, -1);
+					
 					if (currentDialogElement != null) {
-						if (currentDialogElement instanceof AbstractTouchUIWidget
-							&& StringUtils.isNotBlank(dialogFieldSetAnnotation.namePrefix())) {
-
-							AbstractTouchUIWidget widget = (AbstractTouchUIWidget) currentDialogElement;
-							String name = widget.getName();
-							String newName;
-							if (name.startsWith("./")) {
-								newName = name.substring(2);
-							} else {
-								newName = name;
-							}
-							newName = dialogFieldSetAnnotation.namePrefix() + newName;
-							if (name.startsWith("./")) {
-								newName = "./" + newName;
-							}
-							widget.setName(newName);
-						}
-						currentDialogElement.setRanking(ranking);
+						currentDialogElement.setRanking(dialogFieldConfig.getRanking());
 						elements.add(currentDialogElement);
 					}
 				}

@@ -64,4 +64,8 @@ public interface TouchUIWidgetParameters extends TouchUIDialogElementParameters 
 	public boolean isShowOnCreate();
 
 	public void setShowOnCreate(boolean showOnCreate);
+
+    public boolean isHideOnEdit();
+
+    public void setHideOnEdit(boolean hideOnEdit);
 }

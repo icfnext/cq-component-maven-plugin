@@ -37,6 +37,7 @@ public class AbstractTouchUIWidget extends AbstractTouchUIDialogElement {
 	private final String cssClass;
 	private final boolean renderReadOnly;
 	private final NameSpacedAttribute<Boolean> showOnCreate;
+    private final NameSpacedAttribute<Boolean> hideOnEdit;
 
 	public AbstractTouchUIWidget(DefaultTouchUIWidgetParameters parameters) {
 		super(parameters);
@@ -53,6 +54,8 @@ public class AbstractTouchUIWidget extends AbstractTouchUIDialogElement {
 		this.renderReadOnly = parameters.isRenderReadOnly();
 		this.showOnCreate =
 			new NameSpacedAttribute<Boolean>(Constants.CQ_NS_URI, Constants.CQ_NS_PREFIX, parameters.isShowOnCreate());
+        this.hideOnEdit =
+            new NameSpacedAttribute<Boolean>(Constants.CQ_NS_URI, Constants.CQ_NS_PREFIX, parameters.isHideOnEdit());
 	}
 
 	public String getName() {
@@ -110,4 +113,8 @@ public class AbstractTouchUIWidget extends AbstractTouchUIDialogElement {
 	public NameSpacedAttribute<Boolean> getShowOnCreate() {
 		return showOnCreate;
 	}
+
+    public NameSpacedAttribute<Boolean> getHideOnEdit() {
+        return hideOnEdit;
+    }
 }

@@ -85,6 +85,14 @@ public @interface Tab {
 	 */
 	public boolean showOnCreate() default true;
 
+    /**
+     * Applicable to Touch-UI only
+     *
+     * Controls whether or not the tab is hidden in the edit page dialog
+     *
+     */
+    public boolean hideOnEdit() default false;
+
 	/**
 	 * Applicable to Touch-UI only
 	 *

@@ -138,6 +138,7 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
 						currentTabParameters.setRenderCondition(renderConditionElement);
 					}
 					currentTabParameters.setShowOnCreate(currentTabAnnotation.showOnCreate());
+                    currentTabParameters.setHideOnEdit(currentTabAnnotation.hideOnEdit());
 					tabParametersList.add(currentTabParameters);
 				} else {
 					tabContentParametersList.add(null);

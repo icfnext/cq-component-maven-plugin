@@ -43,6 +43,7 @@ public class DialogFieldConfig {
 	private boolean suppressTouchUI;
 	private boolean renderReadOnly;
 	private boolean showOnCreate;
+    private boolean hideOnEdit;
 
 	public DialogFieldConfig(DialogField dialogField, CtMember member) {
 		this.xtype = dialogField.xtype();
@@ -66,6 +67,7 @@ public class DialogFieldConfig {
 		this.suppressTouchUI = dialogField.suppressTouchUI();
 		this.setRenderReadOnly(dialogField.renderReadOnly());
 		this.setShowOnCreate(dialogField.showOnCreate());
+        this.setHideOnEdit(dialogField.hideOnEdit());
 	}
 
 	public String getXtype() {
@@ -231,4 +233,12 @@ public class DialogFieldConfig {
 	public void setShowOnCreate(boolean showOnCreate) {
 		this.showOnCreate = showOnCreate;
 	}
+
+    public boolean isHideOnEdit() {
+        return hideOnEdit;
+    }
+
+    public void setHideOnEdit(boolean hideOnEdit) {
+        this.hideOnEdit = hideOnEdit;
+    }
 }

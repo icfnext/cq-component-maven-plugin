@@ -34,6 +34,7 @@ public class DefaultTouchUIWidgetParameters extends DefaultTouchUIDialogElementP
 	protected String cssClass;
 	protected boolean renderReadOnly;
 	protected boolean showOnCreate;
+    protected boolean hideOnEdit;
 
 	public String getFieldLabel() {
 		return fieldLabel;
@@ -131,5 +132,13 @@ public class DefaultTouchUIWidgetParameters extends DefaultTouchUIDialogElementP
 	public void setShowOnCreate(boolean showOnCreate) {
 		this.showOnCreate = showOnCreate;
 	}
+
+    public boolean isHideOnEdit() {
+        return hideOnEdit;
+    }
+
+    public void setHideOnEdit(boolean hideOnEdit) {
+        this.hideOnEdit = hideOnEdit;
+    }
 
 }

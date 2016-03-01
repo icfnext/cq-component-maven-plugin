@@ -44,7 +44,8 @@ public class DefaultTouchUIWidgetRegistry implements TouchUIWidgetRegistry {
 			if (
 					currentWidgetConfiguration.getAnnotationClass() != null
 							&& (StringUtils.isEmpty(currentWidgetConfiguration.getFeatureFlag())
-							|| additionalFeatures.contains(currentWidgetConfiguration.getFeatureFlag()))) {
+							|| (!currentWidgetConfiguration.getFeatureFlag().startsWith("!") && additionalFeatures.contains(currentWidgetConfiguration.getFeatureFlag()))
+							|| (currentWidgetConfiguration.getFeatureFlag().startsWith("!") && !additionalFeatures.contains(currentWidgetConfiguration.getFeatureFlag().substring(1))))) {
 				annotationToWidgetConfigMap.put(currentWidgetConfiguration.getAnnotationClass(),
 					currentWidgetConfiguration);
 			}

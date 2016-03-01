@@ -59,4 +59,13 @@ public @interface TagInputField {
 	 */
 	boolean multiple() default true;
 
+	/**
+	 * Used for Touch-UI only
+	 *
+	 * Constrains the tag options to those found under the provided base.
+	 *
+	 * @return String
+	 */
+	String tagsPath() default "";
+
 }

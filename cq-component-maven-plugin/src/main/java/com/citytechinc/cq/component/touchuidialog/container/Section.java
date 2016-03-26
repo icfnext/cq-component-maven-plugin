@@ -29,6 +29,7 @@ public class Section extends Container {
 	private String path;
 	private String resourceType;
 	private final NameSpacedAttribute<Boolean> showOnCreate;
+    private final NameSpacedAttribute<Boolean> hideOnEdit;
 
 	public Section(SectionParameters parameters) {
 		super(parameters);
@@ -45,6 +46,9 @@ public class Section extends Container {
 
 		showOnCreate =
 			new NameSpacedAttribute<Boolean>(Constants.CQ_NS_URI, Constants.CQ_NS_PREFIX, parameters.isShowOnCreate());
+
+        hideOnEdit =
+            new NameSpacedAttribute<Boolean>(Constants.CQ_NS_URI, Constants.CQ_NS_PREFIX, parameters.isHideOnEdit());
 	}
 
 	public NameSpacedAttribute<String> getTitle() {
@@ -62,5 +66,9 @@ public class Section extends Container {
 	public NameSpacedAttribute<Boolean> getShowOnCreate() {
 		return showOnCreate;
 	}
+
+    public NameSpacedAttribute<Boolean> getHideOnEdit() {
+        return hideOnEdit;
+    }
 
 }

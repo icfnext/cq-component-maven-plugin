@@ -196,4 +196,11 @@ public @interface DialogField {
 	 */
 	public boolean showOnCreate() default true;
 
+    /**
+     * Indicates that a Touch UI widget should hide on page edit
+     *
+     * @return boolean
+     */
+    public boolean hideOnEdit() default false;
+
 }

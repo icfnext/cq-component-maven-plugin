@@ -68,4 +68,13 @@ public @interface TagInputField {
 	 */
 	String tagsPath() default "";
 
+	/**
+	 * Used for Touch-UI only
+	 *
+	 * Opterates the same as but takes precidence over tagsPath
+	 *
+	 * @return String
+	 */
+	String rootPath() default "";
+
 }

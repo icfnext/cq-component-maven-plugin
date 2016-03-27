@@ -22,7 +22,7 @@ import com.citytechinc.cq.component.touchuidialog.widget.autocomplete.AutoComple
 import com.citytechinc.cq.component.touchuidialog.widget.tagspicker.TagsPickerWidget;
 
 @TouchUIWidget(annotationClass = TagInputField.class, makerClass = TagInputFieldWidgetMaker.class,
-	resourceType = TagInputFieldWidget.RESOURCE_TYPE, featureFlag = "!" + TagsPickerWidget.FEATURE_FLAG)
+	resourceType = TagInputFieldWidget.RESOURCE_TYPE)
 public class TagInputFieldWidget extends AutoCompleteWidget {
 
 	public static final String VALUES_RESOURCE_TYPE = "granite/ui/components/foundation/form/autocomplete/tags";

@@ -26,6 +26,7 @@ import javassist.NotFoundException;
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.Property;
+import com.citytechinc.cq.component.annotations.Property.RenderValue;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
@@ -281,7 +282,7 @@ public abstract class AbstractTouchUIWidgetMaker<T extends TouchUIWidgetParamete
 			Map<String, String> properties = new HashMap<String, String>();
 
 			for (Property curProperty : parameters.getDialogFieldConfig().getAdditionalProperties()) {
-				if ("touch".equals(curProperty.renderIn()) || "both".equals(curProperty.renderIn())) {
+				if (RenderValue.TOUCH.equals(curProperty.renderIn()) || RenderValue.BOTH.equals(curProperty.renderIn())) {
 					properties.put(curProperty.name(), curProperty.value());
 				}
 			}

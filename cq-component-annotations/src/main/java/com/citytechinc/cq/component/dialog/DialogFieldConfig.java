@@ -17,9 +17,6 @@ package com.citytechinc.cq.component.dialog;
 
 import javassist.CtMember;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.Property;
 import com.citytechinc.cq.component.annotations.Listener;
@@ -150,14 +147,7 @@ public class DialogFieldConfig {
 	}
 
 	public void setAdditionalProperties(Property[] additionalProperties) {
-		List<Property> properties = new ArrayList<Property>();
-		for(Property property : additionalProperties) {
-			if ("classic".equals(property.renderIn()) || "both".equals(property.renderIn())) {
-				properties.add(property);
-			}
-		}
-		
-		this.additionalProperties =  properties.toArray(new Property[properties.size()]);
+		this.additionalProperties = additionalProperties;
 	}
 
 	public Listener[] getListeners() {

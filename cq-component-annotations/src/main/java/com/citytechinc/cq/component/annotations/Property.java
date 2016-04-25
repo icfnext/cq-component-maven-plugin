@@ -42,11 +42,15 @@ public @interface Property {
 	 */
 	String value();
 	
+	enum RenderValue {
+		BOTH, CLASSIC, TOUCH
+	}
+	
 	/**
 	 * Whether this property should be rendered for the touch, classic, or both.
 	 *
 	 * @return String
 	 */
-	String renderIn() default "both";
+	RenderValue renderIn() default RenderValue.BOTH;
 
 }

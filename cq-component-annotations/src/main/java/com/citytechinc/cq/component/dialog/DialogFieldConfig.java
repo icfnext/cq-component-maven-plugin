@@ -17,6 +17,9 @@ package com.citytechinc.cq.component.dialog;
 
 import javassist.CtMember;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.Property;
 import com.citytechinc.cq.component.annotations.Listener;
@@ -56,7 +59,7 @@ public class DialogFieldConfig {
 		this.hideLabel = dialogField.hideLabel();
 		this.defaultValue = dialogField.defaultValue();
 		this.tab = dialogField.tab();
-		this.additionalProperties = dialogField.additionalProperties();
+		setAdditionalProperties(dialogField.additionalProperties());
 		this.listeners = dialogField.listeners();
 		this.ranking = dialogField.ranking();
 		this.member = member;
@@ -147,7 +150,14 @@ public class DialogFieldConfig {
 	}
 
 	public void setAdditionalProperties(Property[] additionalProperties) {
-		this.additionalProperties = additionalProperties;
+		List<Property> properties = new ArrayList<Property>();
+		for(Property property : additionalProperties) {
+			if ("classic".equals(property.renderIn()) || "both".equals(property.renderIn())) {
+				properties.add(property);
+			}
+		}
+		
+		this.additionalProperties =  properties.toArray(new Property[properties.size()]);
 	}
 
 	public Listener[] getListeners() {

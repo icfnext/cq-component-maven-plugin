@@ -281,7 +281,9 @@ public abstract class AbstractTouchUIWidgetMaker<T extends TouchUIWidgetParamete
 			Map<String, String> properties = new HashMap<String, String>();
 
 			for (Property curProperty : parameters.getDialogFieldConfig().getAdditionalProperties()) {
-				properties.put(curProperty.name(), curProperty.value());
+				if ("touch".equals(curProperty.renderIn()) || "both".equals(curProperty.renderIn())) {
+					properties.put(curProperty.name(), curProperty.value());
+				}
 			}
 
 			return properties;

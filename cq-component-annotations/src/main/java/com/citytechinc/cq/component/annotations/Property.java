@@ -41,5 +41,12 @@ public @interface Property {
 	 * @return String
 	 */
 	String value();
+	
+	/**
+	 * Whether this property should be rendered for the touch, classic, or both.
+	 *
+	 * @return String
+	 */
+	String renderIn() default "both";
 
 }

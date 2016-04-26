@@ -56,7 +56,7 @@ public class DialogFieldConfig {
 		this.hideLabel = dialogField.hideLabel();
 		this.defaultValue = dialogField.defaultValue();
 		this.tab = dialogField.tab();
-		setAdditionalProperties(dialogField.additionalProperties());
+		this.additionalProperties = dialogField.additionalProperties();
 		this.listeners = dialogField.listeners();
 		this.ranking = dialogField.ranking();
 		this.member = member;

@@ -47,9 +47,10 @@ public @interface Property {
 	}
 	
 	/**
-	 * Whether this property should be rendered for the touch, classic, or both.
+	 * When used in DialogField.additionalProperties this field will determine 
+	 * whether this property should be rendered for touch UI, classic UI, or both.
 	 *
-	 * @return String
+	 * @return RenderValue
 	 */
 	RenderValue renderIn() default RenderValue.BOTH;
 

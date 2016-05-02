@@ -41,5 +41,17 @@ public @interface Property {
 	 * @return String
 	 */
 	String value();
+	
+	enum RenderValue {
+		BOTH, CLASSIC, TOUCH
+	}
+	
+	/**
+	 * When used in DialogField.additionalProperties this field will determine 
+	 * whether this property should be rendered for touch UI, classic UI, or both.
+	 *
+	 * @return RenderValue
+	 */
+	RenderValue renderIn() default RenderValue.BOTH;
 
 }

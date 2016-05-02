@@ -70,7 +70,13 @@ public @interface TouchUIWidget {
 	/**
 	 * Feature flag which can be configured in a POMs additionalFeatures configuration
 	 * indicating the inclusion of this widget in the widget registry during dialog rendering.
-	 * If left empty the widget will always be included.
+	 * This flag allows for three types of feature flag configuration.
+	 *
+	 * <ul>
+	 *   <li>If left empty the widget will always be included.</li>
+	 *   <li>If populated with a string which does not start with "!" the feature will only be included if an additionalFeature matching this string is configured in the using project's POM</li>
+	 *   <li>If populated with a string which starts with "!" the feature will only be included if an additionalFeature matching the substring of this configuration starting at position 1 is NOT included in the project's POM</li>
+	 * </ul>
 	 *
 	 */
 	String featureFlag() default "";

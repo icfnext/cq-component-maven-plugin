@@ -70,6 +70,7 @@
 		<menu name="Basics" inherit="bottom">
 			<item name="Configuration" href="configuration.html" />
 			<item name="Usage" href="usage.html" />
+			<item name="Additional Features" href="additional-features.html" />
 		</menu>
 		<menu name="Extending" inherit="bottom">
 			<item name="Adding a Widget" href="adding-a-widget.html" />

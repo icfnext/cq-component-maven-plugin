@@ -33,6 +33,10 @@ $symbol_pound$symbol_pound$symbol_pound Maven POM
 	               <artifactId>dependency-artifact-id</artifactId>
 	           </dependency>
 	        </excludedDependencies>
+	        <additionalFeatures>
+                <additionalFeature>feature-flag</additionalFeature>
+                <additionalFeature>another-feature-flag</additionalFeature>
+            </additionalFeatures>
 	    </configuration>
 	</plugin>
 
@@ -150,6 +154,13 @@ $symbol_pound$symbol_pound Configurable Properties
             <td>Boolean</td>
             <td>true</td>
             <td>Enabled the generation of dialogs for Touch UI</td>
+        </tr>
+        <tr>
+            <td>additionalFeatures</td>
+            <td>List</td>
+            <td></td>
+            <td>A list of Feature Flags for features which should be enabled.  See the Additional Features page 
+                for more information on this configuration.</td>
         </tr>
 	</tbody>
 </table>

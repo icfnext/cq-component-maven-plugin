@@ -169,7 +169,7 @@ public class TouchUIDialogUtil {
 				optionParameters.setValue(curOptionAnnotation.value());
 				optionParameters.setSelected(curOptionAnnotation.selected());
 				optionParameters.setFieldName(OPTION_FIELD_NAME_PREFIX + (i++));
-				
+
 				if (Selection.RADIO.equals(selectionAnnotation.type())) {
 					optionParameters.setResourceType(RadioGroupWidget.RADIO_RESOURCE_TYPE);
 				}
@@ -189,7 +189,9 @@ public class TouchUIDialogUtil {
 			try {
 				for (Object curEnumObject : classLoader.loadClass(type.getName()).getEnumConstants()) {
 					Enum<?> curEnum = (Enum<?>) curEnumObject;
-					options.add(buildSelectionOptionForEnum(curEnum, classPool, OPTION_FIELD_NAME_PREFIX + (i++)));
+					options.add(buildSelectionOptionForEnum(
+						selectionAnnotation, curEnum, classPool, OPTION_FIELD_NAME_PREFIX + (i++))
+					);
 				}
 			} catch (Exception e) {
 				throw new InvalidComponentFieldException("Error generating selection from enum", e);
@@ -200,8 +202,9 @@ public class TouchUIDialogUtil {
 	}
 
 	protected static final com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option
-		buildSelectionOptionForEnum(Enum<?> optionEnum, ClassPool classPool, String fieldName)
-			throws SecurityException, NoSuchFieldException, NotFoundException, ClassNotFoundException {
+		buildSelectionOptionForEnum(Selection selectionAnnotation, Enum<?> optionEnum, ClassPool classPool,
+			String fieldName) throws SecurityException, NoSuchFieldException, NotFoundException,
+			ClassNotFoundException {
 
 		String text = optionEnum.name();
 		String value = optionEnum.name();
@@ -225,6 +228,11 @@ public class TouchUIDialogUtil {
 		parameters.setFieldName(fieldName);
 		parameters.setText(text);
 		parameters.setValue(value);
+
+		if (Selection.RADIO.equals(selectionAnnotation.type())) {
+			parameters.setResourceType(RadioGroupWidget.RADIO_RESOURCE_TYPE);
+		}
+
 		return new com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option(parameters);
 
 	}

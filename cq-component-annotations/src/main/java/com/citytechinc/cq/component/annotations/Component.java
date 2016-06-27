@@ -16,6 +16,7 @@
 package com.citytechinc.cq.component.annotations;
 
 import com.citytechinc.cq.component.annotations.editconfig.ActionConfig;
+import com.citytechinc.cq.component.annotations.editconfig.ChildEditorConfig;
 import com.citytechinc.cq.component.annotations.editconfig.DropTarget;
 import com.citytechinc.cq.component.annotations.editconfig.FormParameter;
 
@@ -330,6 +331,15 @@ public @interface Component {
 	 * @return String
 	 */
 	String inPlaceEditingEditorType() default "";
+
+	/**
+	 * Specifies the configuration(s) for child in place editors. It only makes sense to include the child editor
+	 * configurations if the inPlaceEditingActive is set to 'true' and the inPlaceEditingEditorType is set to 'hybrid'.
+	 * For more information, see the <a href=
+	 * "https://docs.adobe.com/docs/en/aem/6-1/develop/components/multiple-inplace-editors.html"
+	 * >Configuring Multiple Editors Documentation</a>.
+	 */
+	ChildEditorConfig[] inPlaceEditingChildEditorConfigs() default {};
 
 	/**
 	 * Establishes the set of form parameters written to the cq:formParameters

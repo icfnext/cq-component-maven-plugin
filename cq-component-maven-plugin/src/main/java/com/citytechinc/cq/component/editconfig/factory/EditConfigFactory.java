@@ -100,11 +100,6 @@ public class EditConfigFactory {
 			editConfigChildren.add(ecfp);
 		}
 
-        EditConfigInPlaceEditingChildEditors ecipece = getInPlaceEditingChildEditorsForEditConfig(componentAnnotation);
-        if (ecipece != null) {
-            editConfigChildren.add(ecipece);
-        }
-
 		EditConfigDropTargets ecdt = getDropTargetsForEditConfig(componentAnnotation);
 		if (ecdt != null) {
 			editConfigChildren.add(ecdt);
@@ -187,6 +182,16 @@ public class EditConfigFactory {
 				parameters.setEditorType(componentAnnotation.inPlaceEditingEditorType());
 			}
 			parameters.setActive(componentAnnotation.inPlaceEditingActive());
+
+            //handle child editors as a contained element
+            List<XmlElement> inPlaceEditingChildElements = new ArrayList<XmlElement>();
+            final EditConfigInPlaceEditingChildEditors childEditors
+                    = getInPlaceEditingChildEditorsForEditConfig(componentAnnotation);
+            if (childEditors != null) {
+                inPlaceEditingChildElements.add(childEditors);
+                parameters.setContainedElements(inPlaceEditingChildElements);
+            }
+
 			return new EditConfigInPlaceEditing(parameters);
 		}
 		return null;
@@ -206,7 +211,8 @@ public class EditConfigFactory {
 				params.setTitle(childEditorConfig.title());
 				params.setType(childEditorConfig.type());
 				params.setPropertyName(childEditorConfig.propertyName());
-				childEditorConfigs.add(new EditConfigInPlaceEditingChildEditorConfig(params));
+
+                childEditorConfigs.add(new EditConfigInPlaceEditingChildEditorConfig(params));
 			}
 
 			EditConfigInPlaceEditingChildEditorsParameters parameters =

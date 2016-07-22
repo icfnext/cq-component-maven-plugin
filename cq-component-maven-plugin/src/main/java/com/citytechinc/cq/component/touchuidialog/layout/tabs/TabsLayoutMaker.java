@@ -15,14 +15,6 @@
  */
 package com.citytechinc.cq.component.touchuidialog.layout.tabs;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.codehaus.plexus.util.StringUtils;
-
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.Property;
 import com.citytechinc.cq.component.annotations.Tab;
@@ -49,6 +41,13 @@ import com.citytechinc.cq.component.touchuidialog.widget.factory.TouchUIWidgetFa
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 import com.citytechinc.cq.component.util.Constants;
 import com.citytechinc.cq.component.xml.XmlElement;
+import org.codehaus.plexus.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TabsLayoutMaker extends AbstractLayoutMaker {
 
@@ -72,7 +71,12 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
 		// Add the Layout element and Items to the contained elements list
 		List<XmlElement> containedElements = new ArrayList<XmlElement>();
 		containedElements.add(layoutElement);
-		containedElements.add(makeItems());
+
+        Items items = makeItems();
+        if (items == null) {
+            return null;
+        }
+		containedElements.add(items);
 
 		layoutParameters.setContainedElements(containedElements);
 
@@ -198,7 +202,7 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
 
 		// Add content to all the tabs
 		for (int i = 0; i < tabParametersList.size(); i++) {
-			if (tabContentParametersList.get(i) != null) {
+			if (tabContentParametersList.get(i) != null && !tabContentParametersList.get(i).getItems().isEmpty()) {
 				Collections.sort(tabContentParametersList.get(i).getItems(), new TouchUIDialogElementComparator());
 				tabParametersList.get(i).addItem(new Column(tabContentParametersList.get(i)));
 			}
@@ -211,19 +215,22 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
 				SectionParameters currentSectionParameters = tabParametersList.get(i);
 				if (StringUtils.isNotEmpty(tabParametersList.get(i).getNodeName())) {
 					currentSectionParameters.setFieldName(tabParametersList.get(i).getNodeName());
-				}
-				else if (StringUtils.isNotEmpty(tabParametersList.get(i).getTitle())) {
+				} else if (StringUtils.isNotEmpty(tabParametersList.get(i).getTitle())) {
 					currentSectionParameters.setFieldName(tabParametersList.get(i).getTitle());
 				} else {
 					currentSectionParameters.setFieldName("tab_" + i);
 				}
-				tabs.add(new Section(currentSectionParameters));
+				if (!tabParametersList.get(i).getItems().isEmpty()) {
+					tabs.add(new Section(currentSectionParameters));
+				}
 			}
 		}
 
+		if (tabs.isEmpty()) {
+			return null;
+		}
+
 		itemsParameters.setContainedElements(tabs);
-
 		return new Items(itemsParameters);
-
 	}
 }

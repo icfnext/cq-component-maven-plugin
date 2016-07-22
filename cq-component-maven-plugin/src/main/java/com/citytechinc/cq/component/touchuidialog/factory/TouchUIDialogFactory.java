@@ -73,6 +73,9 @@ public class TouchUIDialogFactory {
 
 			// Delegate the rest of the production to the LayoutMaker
 			Layout layout = layoutMaker.make();
+			if (layout == null) {
+				return null;
+			}
 
 			// Add the generated Layout to the Dialog's contained elements
 			List<XmlElement> containedElements = new ArrayList<XmlElement>();

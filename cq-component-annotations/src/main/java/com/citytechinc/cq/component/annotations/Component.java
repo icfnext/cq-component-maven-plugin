@@ -388,6 +388,13 @@ public @interface Component {
 	HtmlTag[] htmlTag() default {};
 
 	/**
+	 * Indicates whether writing of the dialog.xml should be skipped for this component.
+	 *
+	 * @return boolean
+	 */
+	boolean suppressUIDialog() default false;
+
+	/**
 	 * Indicates whether writing of the cq:dialog.xml appropriate to the Touch
 	 * UI AEM interface should be skipped for this component.
 	 *

@@ -15,32 +15,10 @@
  */
 package com.citytechinc.cq.component.dialog.util;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
-import javassist.CannotCompileException;
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtMember;
-import javassist.CtMethod;
-import javassist.NotFoundException;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
-import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
-import org.codehaus.plexus.util.StringUtils;
-
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.DialogFieldOverride;
-import com.citytechinc.cq.component.annotations.Property;
 import com.citytechinc.cq.component.annotations.Listener;
+import com.citytechinc.cq.component.annotations.Property;
 import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
 import com.citytechinc.cq.component.dialog.Dialog;
 import com.citytechinc.cq.component.dialog.DialogFieldConfig;
@@ -50,6 +28,25 @@ import com.citytechinc.cq.component.dialog.exception.OutputFailureException;
 import com.citytechinc.cq.component.dialog.factory.DialogFactory;
 import com.citytechinc.cq.component.dialog.widget.WidgetRegistry;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
+import javassist.CannotCompileException;
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.CtMember;
+import javassist.CtMethod;
+import javassist.NotFoundException;
+import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
+import org.codehaus.plexus.util.StringUtils;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 public class DialogUtil {
 	private DialogUtil() {
@@ -58,7 +55,7 @@ public class DialogUtil {
 	/**
 	 * Writes a dialog.xml file, the path of which being based on the component
 	 * Class.
-	 * 
+	 *
 	 * @param dialog
 	 * @param componentClass
 	 * @return The written file
@@ -87,7 +84,7 @@ public class DialogUtil {
 	/**
 	 * Writes a provided dialog file to a provided archive output stream at a
 	 * path determined by the class of the component.
-	 * 
+	 *
 	 * @param dialogFile
 	 * @param componentClass
 	 * @param archiveStream
@@ -112,7 +109,7 @@ public class DialogUtil {
 	 * Dialog object for each one annotated with the Component annotation. Any
 	 * classes provided in the class list which are not thusly annotated are
 	 * ignored.
-	 * 
+	 *
 	 * @param classList
 	 * @param zipOutputStream
 	 * @param reservedNames
@@ -151,13 +148,14 @@ public class DialogUtil {
 
 			ComponentMojoUtil.getLog().debug("Processing Component Class " + curClass);
 			Dialog builtDialog = DialogFactory.make(curClass, widgetRegistry, classLoader, classPool);
-			dialogList.add(builtDialog);
-			File dialogFile =
-				writeDialogToFile(transformer, builtDialog, curClass, buildDirectory, componentPathBase,
-					defaultComponentPathSuffix);
-			writeDialogToArchiveFile(transformer, dialogFile, curClass, zipOutputStream, reservedNames,
-				componentPathBase, defaultComponentPathSuffix);
-			dialogList.add(builtDialog);
+			if (builtDialog != null) {
+				File dialogFile =
+					writeDialogToFile(transformer, builtDialog, curClass, buildDirectory, componentPathBase,
+						defaultComponentPathSuffix);
+				writeDialogToArchiveFile(transformer, dialogFile, curClass, zipOutputStream, reservedNames,
+					componentPathBase, defaultComponentPathSuffix);
+				dialogList.add(builtDialog);
+			}
 		}
 
 		return dialogList;

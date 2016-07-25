@@ -12,6 +12,9 @@ Allows for RTEs as in-dialog widgets in the Touch UI.
 ### tagspickerwidget
 Uses the tags picker widget type for Tag Input Fields as opposed to the autocomplete widget type.
 
+### hiddenfieldwidget
+Allows the creation of hidden fields in Touch UI.
+
 ## Using Feature Flags in Custom Widgets
 The `@TouchUIWidget` annotation exposes a `featureFlag` property which allows for the enablement of a given 
 widget contingent on the configuration of the matching flag in the executing project's POM.  If your custom widget 

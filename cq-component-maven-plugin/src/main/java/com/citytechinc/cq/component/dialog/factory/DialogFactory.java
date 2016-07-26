@@ -15,20 +15,6 @@
  */
 package com.citytechinc.cq.component.dialog.factory;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import javassist.CannotCompileException;
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtMember;
-import javassist.CtMethod;
-import javassist.NotFoundException;
-
-import org.codehaus.plexus.util.StringUtils;
-
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.IgnoreDialogField;
@@ -53,6 +39,18 @@ import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollection;
 import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollectionParameters;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 import com.citytechinc.cq.component.maven.util.LogSingleton;
+import javassist.CannotCompileException;
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.CtMember;
+import javassist.CtMethod;
+import javassist.NotFoundException;
+import org.codehaus.plexus.util.StringUtils;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class DialogFactory {
 
@@ -162,10 +160,14 @@ public class DialogFactory {
 		List<DialogElement> tabList = new ArrayList<DialogElement>();
 
 		for (TabHolder tab : tabsList) {
-			if (tab != null) {
+			if (tab != null && !tab.getElements().isEmpty()) {
 				tabList.add(buildTabForDialogElementSet(tab));
 			}
 		}
+
+        if (tabList.isEmpty()) {
+            return null;
+        }
 
 		Integer width = null;
 		Integer height = null;

@@ -14,20 +14,20 @@
 	</modules>
 
 	<organization>
-		<name>CITYTECH, Inc.</name>
-		<url>http://www.citytechinc.com</url>
+		<name>ICF Olson</name>
+		<url>http://www.icfolson.com</url>
 	</organization>
 
-	<url>http://code.citytechinc.com/cq-component-maven-plugin/index.html</url>
+	<url>http://code.digitalatolson.com/cq-component-maven-plugin/index.html</url>
 
 	<developers>
 		<developer>
 			<name>Michael Hodgdon</name>
-			<email>mhodgdon@citytechinc.com</email>
+			<email>michael.hodgdon@icfolson.com</email>
 		</developer>
 		<developer>
 			<name>Paul Michelotti</name>
-			<email>pmichelotti@citytechinc.com</email>
+			<email>paul.michelotti@icfolson.com</email>
 		</developer>
 	</developers>
 

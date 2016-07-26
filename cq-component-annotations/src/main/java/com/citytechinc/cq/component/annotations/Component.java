@@ -15,14 +15,14 @@
  */
 package com.citytechinc.cq.component.annotations;
 
+import com.citytechinc.cq.component.annotations.editconfig.ActionConfig;
+import com.citytechinc.cq.component.annotations.editconfig.DropTarget;
+import com.citytechinc.cq.component.annotations.editconfig.FormParameter;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import com.citytechinc.cq.component.annotations.editconfig.ActionConfig;
-import com.citytechinc.cq.component.annotations.editconfig.DropTarget;
-import com.citytechinc.cq.component.annotations.editconfig.FormParameter;
 
 /**
  * The Component annotation is used to indicate that a Class represents a CQ
@@ -214,6 +214,15 @@ public @interface Component {
 	String fileName() default "dialog";
 
 	/**
+	 * The name, without extension, to use for the output _cq_dialog xml file. This
+	 * can be used when you want to output a dialog type other than the edit
+	 * dialog.
+	 *
+	 * @return String
+	 */
+	String touchFileName() default "_cq_dialog";
+
+	/**
 	 * Indicates whether a _cq_editConfig file should be generated for the
 	 * component defined by the annotated Java Class. When set to false, a
 	 * _cq_editConfig file will not be generated regardless of whether one
@@ -352,6 +361,13 @@ public @interface Component {
 	ContentProperty[] contentAdditionalProperties() default {};
 
 	/**
+	 * A list of extra client libs to be included on the jcr:root node
+	 *
+	 * @return ComponentProperty[]
+	 */
+	String[] extraClientlibs() default {};
+
+	/**
 	 * Indicates whether the Target context menu should be disabled for the
 	 * particular component. Populates the cq:disableTargeting property of the
 	 * _cq_editConfig.xml. For information on this properties usage, see <a
@@ -386,5 +402,17 @@ public @interface Component {
 	 * @return String
 	 */
 	String helpPath() default "";
+
+	/**
+	 * Applicable to the Touch UI only
+	 *
+	 * If set to true, extended classes and implemented interfaces will not be interrogated when arriving
+	 * at a list of Dialog Fields for a Touch UI dialog.  This intends to support situations where you are
+	 * both extending a class and a sling:resourceType and thus will be using the dialog resource merger for
+	 * the inclusion of the supertype's dialog fields as opposed to inclusion via class inheritance.
+	 *
+	 * @return boolean
+	 */
+	boolean suppressFieldInheritanceForTouchUI() default false;
 
 }

@@ -13,45 +13,27 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.annotations;
+package com.citytechinc.cq.component.annotations.widgets;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * Defines a property to be written to a dialog widget's XML node in the
- * Component's dialog.xml.
- */
+import com.citytechinc.cq.component.annotations.Property;
+
 @Retention(RetentionPolicy.CLASS)
 @Target({ ElementType.FIELD, ElementType.METHOD })
-public @interface Property {
+public @interface AutoComplete {
+	boolean multiple() default false;
 
-	/**
-	 * The name of the property on the field
-	 *
-	 * @return String
-	 */
-	String name();
+	String mode() default "contains";
 
-	/**
-	 * The value of the property on the field
-	 *
-	 * @return String
-	 */
-	String value();
-	
-	enum RenderValue {
-		BOTH, CLASSIC, TOUCH
-	}
-	
-	/**
-	 * When used in DialogField.additionalProperties this field will determine 
-	 * whether this property should be rendered for touch UI, classic UI, or both.
-	 *
-	 * @return RenderValue
-	 */
-	RenderValue renderIn() default RenderValue.BOTH;
+	String datasourceResourceType() default "";
 
+	String valuesResourceType() default "";
+
+	String optionsResourceType() default "";
+
+	Property[] datasourceProperties() default {};
 }

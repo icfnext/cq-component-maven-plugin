@@ -13,27 +13,20 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.touchuidialog.widget.selection;
+package com.citytechinc.cq.component.touchuidialog.widget.sizefield;
 
 import com.citytechinc.cq.component.annotations.config.TouchUIWidget;
-import com.citytechinc.cq.component.annotations.widgets.Selection;
+import com.citytechinc.cq.component.annotations.widgets.SizeField;
 import com.citytechinc.cq.component.touchuidialog.widget.AbstractTouchUIWidget;
 
-@TouchUIWidget(annotationClass = Selection.class, makerClass = SelectionFieldWidgetMaker.class,
-	resourceType = SelectionFieldWidget.RESOURCE_TYPE)
-public class SelectionFieldWidget extends AbstractTouchUIWidget {
+@TouchUIWidget(annotationClass = SizeField.class, makerClass = SizeFieldWidgetMaker.class,
+        resourceType = SizeFieldWidget.RESOURCE_TYPE)
+public class SizeFieldWidget extends AbstractTouchUIWidget {
 
-	public static final String RESOURCE_TYPE = "granite/ui/components/foundation/form/select";
+    public static final String RESOURCE_TYPE = "cq/gui/components/authoring/dialog/sizefield";
 
-	private final boolean multiple;
+    public SizeFieldWidget(SizeFieldWidgetParameters parameters) {
+        super(parameters);
+    }
 
-	public SelectionFieldWidget(SelectionFieldWidgetParameters parameters) {
-		super(parameters);
-
-		this.multiple = parameters.isMultiple();
-	}
-
-	public boolean getMultiple() {
-		return multiple;
-	}
 }

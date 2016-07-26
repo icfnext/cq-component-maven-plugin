@@ -28,6 +28,7 @@ import javassist.NotFoundException;
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.Property;
+import com.citytechinc.cq.component.annotations.Property.RenderValue;
 import com.citytechinc.cq.component.annotations.Listener;
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.Listeners;
@@ -168,7 +169,9 @@ public abstract class AbstractWidgetMaker<T extends WidgetParameters> implements
 			Map<String, String> properties = new HashMap<String, String>();
 
 			for (Property curProperty : parameters.getDialogFieldConfig().getAdditionalProperties()) {
-				properties.put(curProperty.name(), curProperty.value());
+				if (RenderValue.CLASSIC.equals(curProperty.renderIn()) || RenderValue.BOTH.equals(curProperty.renderIn())) {
+					properties.put(curProperty.name(), curProperty.value());
+				}
 			}
 
 			return properties;

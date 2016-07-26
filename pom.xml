@@ -4,7 +4,7 @@
 	<groupId>com.citytechinc.cq.cq-component-plugin</groupId>
 	<artifactId>cq-component-plugin</artifactId>
 	<packaging>pom</packaging>
-	<version>4.0.0</version>
+	<version>4.1.0</version>
 	<name>CQ Component Plugin</name>
 	<description>Plugin enabling annotation driven CQ5 Component development.</description>
 
@@ -14,20 +14,20 @@
 	</modules>
 
 	<organization>
-		<name>CITYTECH, Inc.</name>
-		<url>http://www.citytechinc.com</url>
+		<name>ICF Olson</name>
+		<url>http://www.icfolson.com</url>
 	</organization>
 
-	<url>http://code.citytechinc.com/cq-component-maven-plugin/index.html</url>
+	<url>http://code.digitalatolson.com/cq-component-maven-plugin/index.html</url>
 
 	<developers>
 		<developer>
 			<name>Michael Hodgdon</name>
-			<email>mhodgdon@citytechinc.com</email>
+			<email>michael.hodgdon@icfolson.com</email>
 		</developer>
 		<developer>
 			<name>Paul Michelotti</name>
-			<email>pmichelotti@citytechinc.com</email>
+			<email>paul.michelotti@icfolson.com</email>
 		</developer>
 	</developers>
 
@@ -128,7 +128,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
-				<version>3.2</version>
+				<version>3.3</version>
 				<dependencies>
 					<dependency>
 						<groupId>org.apache.maven.doxia</groupId>
@@ -201,7 +201,7 @@
 					<plugin>
 						<groupId>com.github.github</groupId>
 						<artifactId>site-maven-plugin</artifactId>
-						<version>0.8</version>
+						<version>0.12</version>
 						<configuration>
 							<message>site for ${project.version}</message>
 							<server>github</server>

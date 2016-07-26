@@ -72,9 +72,11 @@ public class SelectionFieldWidgetMaker extends AbstractTouchUIWidgetMaker<Select
 		widgetParameters.setMultiple(getMultipleForField(selectionField));
 		widgetParameters.setDataSource(getDataSourceForField(selectionField));
 
-		widgetParameters.setOptions(TouchUIDialogUtil.getOptionsForSelection(selectionField, getType(),
-			parameters.getClassLoader(), parameters.getClassPool()));
-
+        if(widgetParameters.getDataSource() == null) {
+            widgetParameters.setOptions(TouchUIDialogUtil
+                .getOptionsForSelection(selectionField, getType(), parameters.getClassLoader(),
+                    parameters.getClassPool()));
+        }
 		return new SelectionFieldWidget(widgetParameters);
 	}
 

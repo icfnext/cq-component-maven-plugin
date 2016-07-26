@@ -15,8 +15,12 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.autocomplete;
 
+import com.citytechinc.cq.component.annotations.config.TouchUIWidget;
+import com.citytechinc.cq.component.annotations.widgets.AutoComplete;
 import com.citytechinc.cq.component.touchuidialog.widget.AbstractTouchUIWidget;
 
+@TouchUIWidget(annotationClass = AutoComplete.class, makerClass = AutoCompleteWidgetMaker.class,
+	resourceType = AutoCompleteWidget.RESOURCE_TYPE)
 public class AutoCompleteWidget extends AbstractTouchUIWidget {
 
 	public static final String RESOURCE_TYPE = "granite/ui/components/foundation/form/autocomplete";

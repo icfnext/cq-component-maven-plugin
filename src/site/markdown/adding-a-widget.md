@@ -360,3 +360,7 @@ the output resourceType, associating all three with the annotated Widget.
 		...
 	
 	}
+
+### Using Additional Feature Flags in Custom Widgets
+See the Overlaying Features section of the [Additional Features](additional-features.html) page for information 
+concerning the usage of Feature Flags in custom widget development.

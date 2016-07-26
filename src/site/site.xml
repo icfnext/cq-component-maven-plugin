@@ -4,8 +4,8 @@
 	xsi:schemaLocation="http://maven.apache.org/DECORATION/1.3.0 http://maven.apache.org/xsd/decoration-1.3.0.xsd">
 
 	<skin>
-		<groupId>com.citytechinc.maven</groupId>
-		<artifactId>citytech-maven-skin</artifactId>
+		<groupId>com.icfolson.maven</groupId>
+		<artifactId>icfolson-maven-skin</artifactId>
 		<version>1.0.0</version>
 	</skin>
 
@@ -65,11 +65,12 @@
 			<item name="GitHub"
 				href="https://github.com/Citytechinc/cq-component-maven-plugin/" />
 			<item name="Java Doc" href="apidocs/index.html" />
-			<item name="CITYTECH Inc." href="http://www.citytechinc.com" />
+			<item name="ICF Olson" href="http://www.cityteicfolson.com" />
 		</menu>
 		<menu name="Basics" inherit="bottom">
 			<item name="Configuration" href="configuration.html" />
 			<item name="Usage" href="usage.html" />
+			<item name="Additional Features" href="additional-features.html" />
 		</menu>
 		<menu name="Extending" inherit="bottom">
 			<item name="Adding a Widget" href="adding-a-widget.html" />

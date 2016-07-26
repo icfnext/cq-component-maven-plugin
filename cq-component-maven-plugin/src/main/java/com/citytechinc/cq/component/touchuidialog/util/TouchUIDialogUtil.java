@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.citytechinc.cq.component.annotations.Component;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMember;
@@ -45,6 +46,7 @@ import com.citytechinc.cq.component.touchuidialog.factory.TouchUIDialogFactory;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 import com.citytechinc.cq.component.touchuidialog.widget.registry.TouchUIWidgetRegistry;
 import com.citytechinc.cq.component.touchuidialog.widget.selection.options.OptionParameters;
+import com.citytechinc.cq.component.touchuidialog.widget.radiogroup.RadioGroupWidget;
 
 public class TouchUIDialogUtil {
 	private static final String OPTION_FIELD_NAME_PREFIX = "option";
@@ -108,8 +110,9 @@ public class TouchUIDialogUtil {
 		List<TouchUIWidgetMakerParameters> widgetMakerParametersList = new ArrayList<TouchUIWidgetMakerParameters>();
 
 		List<CtMember> fieldsAndMethods = new ArrayList<CtMember>();
-		fieldsAndMethods.addAll(ComponentMojoUtil.collectFields(componentClass));
-		fieldsAndMethods.addAll(ComponentMojoUtil.collectMethods(componentClass));
+		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
+		fieldsAndMethods.addAll(ComponentMojoUtil.collectFields(componentClass, componentAnnotation.suppressFieldInheritanceForTouchUI()));
+		fieldsAndMethods.addAll(ComponentMojoUtil.collectMethods(componentClass, componentAnnotation.suppressFieldInheritanceForTouchUI()));
 
 		// Load the true class
 		Class<?> trueComponentClass = classLoader.loadClass(componentClass.getName());
@@ -167,6 +170,10 @@ public class TouchUIDialogUtil {
 				optionParameters.setSelected(curOptionAnnotation.selected());
 				optionParameters.setFieldName(OPTION_FIELD_NAME_PREFIX + (i++));
 
+				if (Selection.RADIO.equals(selectionAnnotation.type())) {
+					optionParameters.setResourceType(RadioGroupWidget.RADIO_RESOURCE_TYPE);
+				}
+
 				options.add(new com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option(
 					optionParameters));
 			}
@@ -182,7 +189,9 @@ public class TouchUIDialogUtil {
 			try {
 				for (Object curEnumObject : classLoader.loadClass(type.getName()).getEnumConstants()) {
 					Enum<?> curEnum = (Enum<?>) curEnumObject;
-					options.add(buildSelectionOptionForEnum(curEnum, classPool, OPTION_FIELD_NAME_PREFIX + (i++)));
+					options.add(buildSelectionOptionForEnum(
+						selectionAnnotation, curEnum, classPool, OPTION_FIELD_NAME_PREFIX + (i++))
+					);
 				}
 			} catch (Exception e) {
 				throw new InvalidComponentFieldException("Error generating selection from enum", e);
@@ -193,8 +202,9 @@ public class TouchUIDialogUtil {
 	}
 
 	protected static final com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option
-		buildSelectionOptionForEnum(Enum<?> optionEnum, ClassPool classPool, String fieldName)
-			throws SecurityException, NoSuchFieldException, NotFoundException, ClassNotFoundException {
+		buildSelectionOptionForEnum(Selection selectionAnnotation, Enum<?> optionEnum, ClassPool classPool,
+			String fieldName) throws SecurityException, NoSuchFieldException, NotFoundException,
+			ClassNotFoundException {
 
 		String text = optionEnum.name();
 		String value = optionEnum.name();
@@ -218,6 +228,11 @@ public class TouchUIDialogUtil {
 		parameters.setFieldName(fieldName);
 		parameters.setText(text);
 		parameters.setValue(value);
+
+		if (Selection.RADIO.equals(selectionAnnotation.type())) {
+			parameters.setResourceType(RadioGroupWidget.RADIO_RESOURCE_TYPE);
+		}
+
 		return new com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option(parameters);
 
 	}

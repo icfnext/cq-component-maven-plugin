@@ -26,6 +26,7 @@ import javassist.NotFoundException;
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.Property;
+import com.citytechinc.cq.component.annotations.Property.RenderValue;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
@@ -63,6 +64,7 @@ public abstract class AbstractTouchUIWidgetMaker<T extends TouchUIWidgetParamete
 		parameters.setRenderReadOnly(getRenderReadOnlyForField());
 		parameters.setAdditionalProperties(getAdditionalPropertiesForField());
 		parameters.setShowOnCreate(getShowOnCreateForField());
+        parameters.setHideOnEdit(getHideOnEditForField());
 
 		return make(parameters);
 
@@ -193,6 +195,10 @@ public abstract class AbstractTouchUIWidgetMaker<T extends TouchUIWidgetParamete
 		return parameters.getDialogFieldConfig().isShowOnCreate();
 	}
 
+    private boolean getHideOnEditForField() {
+        return parameters.getDialogFieldConfig().isHideOnEdit();
+    }
+
 	/**
 	 *
 	 * @return When the widget is represented by a field in the Java class, this
@@ -276,7 +282,9 @@ public abstract class AbstractTouchUIWidgetMaker<T extends TouchUIWidgetParamete
 			Map<String, String> properties = new HashMap<String, String>();
 
 			for (Property curProperty : parameters.getDialogFieldConfig().getAdditionalProperties()) {
-				properties.put(curProperty.name(), curProperty.value());
+				if (RenderValue.TOUCH.equals(curProperty.renderIn()) || RenderValue.BOTH.equals(curProperty.renderIn())) {
+					properties.put(curProperty.name(), curProperty.value());
+				}
 			}
 
 			return properties;

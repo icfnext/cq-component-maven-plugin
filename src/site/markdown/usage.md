@@ -173,3 +173,11 @@ It is possible to create widgets which work exclusively in Touch UI or Classic U
 that enabled by the `@Switch` annotation.  Currently this annotation will not be recognized by the Classic UI widget 
 rendering mechanisms.  Similarly, custom widgets you create may only have support for one or the other interface 
 depending on your requirements, there is not a systematic requirement to support both.  
+
+### Suppressing Field Inheritance
+
+Sling's resource merger, used in the rendering of Dialogs in the Touch UI, merges properties of child resource type 
+dialogs with those of the parent.  To avoid duplicative and potentially invalid definition of fields in the 
+Touch UI dialog XML, the `suppressFieldInheritanceForTouchUI` flag can be enabled.  Enabling this flag will keep 
+the Touch UI widget rendering mechanisms from looking up the Java class hierarchy when collecting dialog field 
+widgets.  

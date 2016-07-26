@@ -451,7 +451,7 @@ public class ComponentMojoUtil {
 				classLoader.loadClass(clazz.getName()).asSubclass(AbstractWidget.class);
 			WidgetConfigHolder widgetConfig =
 				new WidgetConfigHolder(annotationClass, widgetClass, makerClass, widgetAnnotation.xtype(),
-					widgetAnnotation.ranking());
+					widgetAnnotation.ranking(), widgetAnnotation.featureFlag());
 
 			builtInWidgets.add(widgetConfig);
 
@@ -472,7 +472,7 @@ public class ComponentMojoUtil {
 				classLoader.loadClass(clazz.getName()).asSubclass(TouchUIDialogElement.class);
 
 			widgetConfigurations.add(new TouchUIWidgetConfigHolder(annotationClass, widgetClass, widgetMakerClass,
-				widgetAnnotation.resourceType(), widgetAnnotation.ranking()));
+				widgetAnnotation.resourceType(), widgetAnnotation.ranking(), widgetAnnotation.featureFlag()));
 		}
 
 		return widgetConfigurations;
@@ -549,21 +549,37 @@ public class ComponentMojoUtil {
 	 * @return The constructed list of fields
 	 * @throws NotFoundException
 	 */
-	public static List<CtField> collectFields(CtClass ctClass) throws NotFoundException {
+	public static List<CtField> collectFields(CtClass ctClass, boolean suppressInheritedFields) throws NotFoundException {
 		List<CtField> fields = new ArrayList<CtField>();
 		if (ctClass != null) {
 			fields.addAll(Arrays.asList(ctClass.getDeclaredFields()));
-			fields.addAll(collectFields(ctClass.getSuperclass()));
+			if (!suppressInheritedFields) {
+				fields.addAll(collectFields(ctClass.getSuperclass()));
+			}
 		}
 		return fields;
 	}
 
-	public static List<CtMethod> collectMethods(CtClass ctClass) {
+	public static List<CtField> collectFields(CtClass ctClass) throws NotFoundException {
+		return collectFields(ctClass, false);
+	}
+
+	public static List<CtMethod> collectMethods(CtClass ctClass, boolean suppressInheritedMethods) {
 		List<CtMethod> methods = new ArrayList<CtMethod>();
 		if (ctClass != null) {
-			methods.addAll(Arrays.asList(ctClass.getMethods()));
+			if (suppressInheritedMethods) {
+				//TODO: I think this will include private which I don't think we want
+				methods.addAll(Arrays.asList(ctClass.getDeclaredMethods()));
+			}
+			else {
+				methods.addAll(Arrays.asList(ctClass.getMethods()));
+			}
 		}
 		return methods;
+	}
+
+	public static List<CtMethod> collectMethods(CtClass ctClass) {
+		return collectMethods(ctClass, false);
 	}
 
 	/**

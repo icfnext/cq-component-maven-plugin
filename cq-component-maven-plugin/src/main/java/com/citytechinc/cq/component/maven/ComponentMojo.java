@@ -73,6 +73,9 @@ public class ComponentMojo extends AbstractMojo {
 	@Parameter(defaultValue = "true")
 	private boolean generateTouchUiDialogs;
 
+	@Parameter(required = false)
+	private List<String> additionalFeatures;
+
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
 
@@ -93,10 +96,10 @@ public class ComponentMojo extends AbstractMojo {
 			List<CtClass> classList =
 				ComponentMojoUtil.getAllComponentAnnotations(classPool, reflections, getExcludedClasses());
 
-			WidgetRegistry widgetRegistry = new DefaultWidgetRegistry(classPool, classLoader, reflections);
+			WidgetRegistry widgetRegistry = new DefaultWidgetRegistry(classPool, classLoader, reflections, getAdditionalFeatures());
 
 			TouchUIWidgetRegistry touchUIWidgetRegistry =
-				new DefaultTouchUIWidgetRegistry(classPool, classLoader, reflections);
+				new DefaultTouchUIWidgetRegistry(classPool, classLoader, reflections, getAdditionalFeatures());
 
 			Map<String, ComponentNameTransformer> transformers =
 				ComponentMojoUtil.getAllTransformers(classPool, reflections);
@@ -199,5 +202,13 @@ public class ComponentMojo extends AbstractMojo {
 		getLog().debug("Temp archive file name " + zipFileName);
 
 		return new File(buildDirectory, zipFileName);
+	}
+
+	private List<String> getAdditionalFeatures() {
+		if (additionalFeatures == null) {
+			return new ArrayList<String>();
+		}
+
+		return additionalFeatures;
 	}
 }

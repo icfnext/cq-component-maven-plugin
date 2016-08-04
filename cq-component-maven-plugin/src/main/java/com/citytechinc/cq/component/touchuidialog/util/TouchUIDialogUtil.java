@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import com.citytechinc.cq.component.annotations.Component;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMember;
@@ -30,6 +29,7 @@ import javassist.NotFoundException;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.codehaus.plexus.util.StringUtils;
 
+import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.IgnoreDialogField;
 import com.citytechinc.cq.component.annotations.widgets.Selection;
@@ -44,9 +44,9 @@ import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenera
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogWriteException;
 import com.citytechinc.cq.component.touchuidialog.factory.TouchUIDialogFactory;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
+import com.citytechinc.cq.component.touchuidialog.widget.radiogroup.RadioGroupWidget;
 import com.citytechinc.cq.component.touchuidialog.widget.registry.TouchUIWidgetRegistry;
 import com.citytechinc.cq.component.touchuidialog.widget.selection.options.OptionParameters;
-import com.citytechinc.cq.component.touchuidialog.widget.radiogroup.RadioGroupWidget;
 
 public class TouchUIDialogUtil {
 	private static final String OPTION_FIELD_NAME_PREFIX = "option";
@@ -58,7 +58,7 @@ public class TouchUIDialogUtil {
 		ClassPool classPool, TouchUIWidgetRegistry widgetRegistry, ComponentNameTransformer transformer,
 		File buildDirectory, String componentPathBase, String defaultComponentPathSuffix,
 		ZipArchiveOutputStream archiveStream, Set<String> reservedNames) throws TouchUIDialogGenerationException,
-		TouchUIDialogWriteException {
+		TouchUIDialogWriteException, ClassNotFoundException, NotFoundException, InvalidComponentClassException {
 
 		List<TouchUIDialog> dialogList = new ArrayList<TouchUIDialog>();
 
@@ -66,7 +66,7 @@ public class TouchUIDialogUtil {
 			TouchUIDialog currentDialog =
 				TouchUIDialogFactory.make(currentComponentClass, classLoader, classPool, widgetRegistry);
 
-			if (currentDialog != null) {
+			if (currentDialog != null && isWidgetInComponentClass(currentComponentClass)) {
 				File currentDialogOutput =
 					writeDialogToFile(transformer, currentDialog, currentComponentClass, buildDirectory,
 						componentPathBase, defaultComponentPathSuffix);
@@ -111,8 +111,10 @@ public class TouchUIDialogUtil {
 
 		List<CtMember> fieldsAndMethods = new ArrayList<CtMember>();
 		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
-		fieldsAndMethods.addAll(ComponentMojoUtil.collectFields(componentClass, componentAnnotation.suppressFieldInheritanceForTouchUI()));
-		fieldsAndMethods.addAll(ComponentMojoUtil.collectMethods(componentClass, componentAnnotation.suppressFieldInheritanceForTouchUI()));
+		fieldsAndMethods.addAll(ComponentMojoUtil.collectFields(componentClass,
+			componentAnnotation.suppressFieldInheritanceForTouchUI()));
+		fieldsAndMethods.addAll(ComponentMojoUtil.collectMethods(componentClass,
+			componentAnnotation.suppressFieldInheritanceForTouchUI()));
 
 		// Load the true class
 		Class<?> trueComponentClass = classLoader.loadClass(componentClass.getName());
@@ -145,6 +147,40 @@ public class TouchUIDialogUtil {
 		}
 
 		return widgetMakerParametersList;
+
+	}
+
+	public static boolean isWidgetInComponentClass(CtClass componentClass) throws NotFoundException,
+		ClassNotFoundException, InvalidComponentClassException {
+
+		List<CtMember> fieldsAndMethods = new ArrayList<CtMember>();
+		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
+		fieldsAndMethods.addAll(ComponentMojoUtil.collectFields(componentClass,
+			componentAnnotation.suppressFieldInheritanceForTouchUI()));
+		fieldsAndMethods.addAll(ComponentMojoUtil.collectMethods(componentClass,
+			componentAnnotation.suppressFieldInheritanceForTouchUI()));
+
+		// Iterate through all the fields creating configs for each and
+		// preparing the necessary widget maker parameters
+		for (CtMember member : fieldsAndMethods) {
+			if (!member.hasAnnotation(IgnoreDialogField.class)) {
+				DialogFieldConfig dialogFieldConfig = null;
+				if (member instanceof CtMethod) {
+					dialogFieldConfig = DialogUtil.getDialogFieldFromSuperClasses((CtMethod) member);
+				} else {
+					if (member.hasAnnotation(DialogField.class)) {
+						dialogFieldConfig =
+							new DialogFieldConfig((DialogField) member.getAnnotation(DialogField.class), member);
+					}
+				}
+
+				if (dialogFieldConfig != null && !dialogFieldConfig.isSuppressTouchUI()) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 
 	}
 
@@ -189,9 +225,8 @@ public class TouchUIDialogUtil {
 			try {
 				for (Object curEnumObject : classLoader.loadClass(type.getName()).getEnumConstants()) {
 					Enum<?> curEnum = (Enum<?>) curEnumObject;
-					options.add(buildSelectionOptionForEnum(
-						selectionAnnotation, curEnum, classPool, OPTION_FIELD_NAME_PREFIX + (i++))
-					);
+					options.add(buildSelectionOptionForEnum(selectionAnnotation, curEnum, classPool,
+						OPTION_FIELD_NAME_PREFIX + (i++)));
 				}
 			} catch (Exception e) {
 				throw new InvalidComponentFieldException("Error generating selection from enum", e);
@@ -203,8 +238,7 @@ public class TouchUIDialogUtil {
 
 	protected static final com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option
 		buildSelectionOptionForEnum(Selection selectionAnnotation, Enum<?> optionEnum, ClassPool classPool,
-			String fieldName) throws SecurityException, NoSuchFieldException, NotFoundException,
-			ClassNotFoundException {
+			String fieldName) throws SecurityException, NoSuchFieldException, NotFoundException, ClassNotFoundException {
 
 		String text = optionEnum.name();
 		String value = optionEnum.name();

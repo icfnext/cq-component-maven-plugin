@@ -39,8 +39,9 @@ import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.DialogFieldOverride;
-import com.citytechinc.cq.component.annotations.Property;
+import com.citytechinc.cq.component.annotations.IgnoreDialogField;
 import com.citytechinc.cq.component.annotations.Listener;
+import com.citytechinc.cq.component.annotations.Property;
 import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
 import com.citytechinc.cq.component.dialog.Dialog;
 import com.citytechinc.cq.component.dialog.DialogFieldConfig;
@@ -148,16 +149,17 @@ public class DialogUtil {
 		final List<Dialog> dialogList = new ArrayList<Dialog>();
 
 		for (CtClass curClass : classList) {
-
-			ComponentMojoUtil.getLog().debug("Processing Component Class " + curClass);
-			Dialog builtDialog = DialogFactory.make(curClass, widgetRegistry, classLoader, classPool);
-			dialogList.add(builtDialog);
-			File dialogFile =
-				writeDialogToFile(transformer, builtDialog, curClass, buildDirectory, componentPathBase,
-					defaultComponentPathSuffix);
-			writeDialogToArchiveFile(transformer, dialogFile, curClass, zipOutputStream, reservedNames,
-				componentPathBase, defaultComponentPathSuffix);
-			dialogList.add(builtDialog);
+			if (isWidgetInComponentClass(curClass)) {
+				ComponentMojoUtil.getLog().debug("Processing Component Class " + curClass);
+				Dialog builtDialog = DialogFactory.make(curClass, widgetRegistry, classLoader, classPool);
+				dialogList.add(builtDialog);
+				File dialogFile =
+					writeDialogToFile(transformer, builtDialog, curClass, buildDirectory, componentPathBase,
+						defaultComponentPathSuffix);
+				writeDialogToArchiveFile(transformer, dialogFile, curClass, zipOutputStream, reservedNames,
+					componentPathBase, defaultComponentPathSuffix);
+				dialogList.add(builtDialog);
+			}
 		}
 
 		return dialogList;
@@ -289,5 +291,36 @@ public class DialogUtil {
 			dialogFieldConfig.setSuppressTouchUI(dialogField.suppressTouchUI());
 		}
 
+	}
+
+	private static boolean isWidgetInComponentClass(CtClass componentClass) throws NotFoundException,
+		ClassNotFoundException, InvalidComponentClassException {
+
+		List<CtMember> fieldsAndMethods = new ArrayList<CtMember>();
+		fieldsAndMethods.addAll(ComponentMojoUtil.collectFields(componentClass));
+		fieldsAndMethods.addAll(ComponentMojoUtil.collectMethods(componentClass));
+
+		/*
+		 * Iterate through all fields establishing proper widgets for each
+		 */
+		for (CtMember member : fieldsAndMethods) {
+			if (!member.hasAnnotation(IgnoreDialogField.class)) {
+				DialogFieldConfig dialogFieldConfig = null;
+				if (member instanceof CtMethod) {
+					dialogFieldConfig = DialogUtil.getDialogFieldFromSuperClasses((CtMethod) member);
+				} else {
+					if (member.hasAnnotation(DialogField.class)) {
+						dialogFieldConfig =
+							new DialogFieldConfig((DialogField) member.getAnnotation(DialogField.class), member);
+					}
+				}
+
+				if (dialogFieldConfig != null) {
+					return true;
+
+				}
+			}
+		}
+		return false;
 	}
 }

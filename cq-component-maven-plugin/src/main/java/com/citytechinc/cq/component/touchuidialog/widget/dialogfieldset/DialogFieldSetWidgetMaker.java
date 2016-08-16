@@ -123,7 +123,7 @@ public class DialogFieldSetWidgetMaker extends AbstractTouchUIWidgetMaker<Dialog
 					curFieldMember.setClassLoader(parameters.getClassLoader());
 					curFieldMember.setClassPool(parameters.getClassPool());
 					curFieldMember.setWidgetRegistry(parameters.getWidgetRegistry());
-					curFieldMember.setUseDotSlashInName(true);
+					curFieldMember.setUseDotSlashInName(parameters.isUseDotSlashInName());
 					
 					TouchUIDialogElement currentDialogElement = TouchUIWidgetFactory.make(curFieldMember, -1);
 					

@@ -4,7 +4,7 @@
 	<groupId>com.citytechinc.cq.cq-component-plugin</groupId>
 	<artifactId>cq-component-plugin</artifactId>
 	<packaging>pom</packaging>
-	<version>4.1.1</version>
+	<version>4.1.2-SNAPSHOT</version>
 	<name>CQ Component Plugin</name>
 	<description>Plugin enabling annotation driven CQ5 Component development.</description>
 

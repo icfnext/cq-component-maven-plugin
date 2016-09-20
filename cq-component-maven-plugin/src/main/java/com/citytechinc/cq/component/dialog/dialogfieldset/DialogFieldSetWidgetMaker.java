@@ -121,15 +121,22 @@ public class DialogFieldSetWidgetMaker extends AbstractWidgetMaker<DialogFieldSe
 							AbstractWidget widget = (AbstractWidget) builtFieldWidget;
 							String name = widget.getName();
 							String newName;
-							if (name.startsWith("./")) {
-								newName = name.substring(2);
-							} else {
+
+							if (StringUtils.isBlank(name)) {
 								newName = name;
 							}
-							newName = dialogFieldSetAnnotation.namePrefix() + newName;
-							if (name.startsWith("./")) {
-								newName = "./" + newName;
+							else {
+								if (name.startsWith("./")) {
+									newName = name.substring(2);
+								} else {
+									newName = name;
+								}
+								newName = dialogFieldSetAnnotation.namePrefix() + newName;
+								if (name.startsWith("./")) {
+									newName = "./" + newName;
+								}
 							}
+
 							widget.setName(newName);
 						}
 						builtFieldWidget.setRanking(ranking);

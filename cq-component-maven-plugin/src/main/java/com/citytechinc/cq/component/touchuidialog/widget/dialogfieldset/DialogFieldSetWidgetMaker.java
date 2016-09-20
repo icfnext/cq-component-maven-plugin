@@ -101,20 +101,6 @@ public class DialogFieldSetWidgetMaker extends AbstractTouchUIWidgetMaker<Dialog
 				}
 
 				if (dialogFieldConfig != null && !dialogFieldConfig.isSuppressTouchUI()) {
-					if (StringUtils.isNotBlank(dialogFieldSetAnnotation.namePrefix())) {
-						String name = dialogFieldConfig.getName();
-						String newName;
-						if (name.startsWith("./")) {
-							newName = name.substring(2);
-						} else {
-							newName = name;
-						}
-						newName = dialogFieldSetAnnotation.namePrefix() + newName;
-						if (name.startsWith("./")) {
-							newName = "./" + newName;
-						}
-						dialogFieldConfig.setName(newName);
-					}
 
 					TouchUIWidgetMakerParameters curFieldMember = new TouchUIWidgetMakerParameters();
 					Class<?> fieldClass = parameters.getClassLoader().loadClass(member.getDeclaringClass().getName());
@@ -126,7 +112,31 @@ public class DialogFieldSetWidgetMaker extends AbstractTouchUIWidgetMaker<Dialog
 					curFieldMember.setUseDotSlashInName(true);
 					
 					TouchUIDialogElement currentDialogElement = TouchUIWidgetFactory.make(curFieldMember, -1);
-					
+
+					if (currentDialogElement instanceof  AbstractTouchUIWidget &&
+							StringUtils.isNotBlank(dialogFieldSetAnnotation.namePrefix())) {
+						AbstractTouchUIWidget widget = (AbstractTouchUIWidget) currentDialogElement;
+
+						String name = widget.getName();
+						String newName;
+
+						if (StringUtils.isBlank(name)) {
+							newName = name;
+						}
+						else {
+							if (name.startsWith("./")) {
+								newName = name.substring(2);
+							} else {
+								newName = name;
+							}
+							newName = dialogFieldSetAnnotation.namePrefix() + newName;
+							if (name.startsWith("./")) {
+								newName = "./" + newName;
+							}
+						}
+						widget.setName(newName);
+					}
+
 					if (currentDialogElement != null) {
 						currentDialogElement.setRanking(dialogFieldConfig.getRanking());
 						elements.add(currentDialogElement);

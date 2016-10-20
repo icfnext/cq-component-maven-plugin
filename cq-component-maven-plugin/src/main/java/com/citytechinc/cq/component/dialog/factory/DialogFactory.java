@@ -20,19 +20,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javassist.CannotCompileException;
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtMember;
-import javassist.CtMethod;
-import javassist.NotFoundException;
+import com.citytechinc.cq.component.annotations.*;
+import javassist.*;
 
 import org.codehaus.plexus.util.StringUtils;
 
-import com.citytechinc.cq.component.annotations.Component;
-import com.citytechinc.cq.component.annotations.DialogField;
-import com.citytechinc.cq.component.annotations.IgnoreDialogField;
-import com.citytechinc.cq.component.annotations.Listener;
 import com.citytechinc.cq.component.dialog.Dialog;
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.DialogFieldConfig;
@@ -59,6 +51,63 @@ public class DialogFactory {
 	private static final String DEFAULT_TAB_FIELD_NAME = "tab";
 
 	private DialogFactory() {
+	}
+
+	public static void makeComposite(List<TabHolder> tabsList, CtClass compositeClass, WidgetRegistry widgetRegistry, ClassLoader classLoader, ClassPool classPool
+									 ) throws InvalidComponentClassException, InvalidComponentFieldException,
+			ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException,
+			InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
+			NoSuchMethodException {
+
+		List<CtMember> fieldsAndMethods = new ArrayList<CtMember>();
+		fieldsAndMethods.addAll(ComponentMojoUtil.collectFields(compositeClass));
+		fieldsAndMethods.addAll(ComponentMojoUtil.collectMethods(compositeClass));
+
+		// Load the true class
+		Class<?> trueCompositeClass = classLoader.loadClass(compositeClass.getName());
+
+		/*
+		 * Iterate through all fields establishing proper widgets for each
+		 */
+		for (CtMember member : fieldsAndMethods) {
+			if (!member.hasAnnotation(IgnoreDialogField.class)) {
+				DialogFieldConfig dialogFieldConfig = null;
+				if (member instanceof CtMethod) {
+					dialogFieldConfig = DialogUtil.getDialogFieldFromSuperClasses((CtMethod) member);
+				} else {
+					if (member.hasAnnotation(DialogField.class)) {
+						dialogFieldConfig =
+								new DialogFieldConfig((DialogField) member.getAnnotation(DialogField.class), member);
+					} else if (member.hasAnnotation(Composite.class)) { // Recursion
+
+                        CtField ctField = (CtField) member;
+                        CtClass fieldType = ctField.getType();
+                        makeComposite(tabsList, fieldType, widgetRegistry, classLoader, classPool);
+					}
+				}
+
+				if (dialogFieldConfig != null) {
+					WidgetMakerParameters parameters =
+							new WidgetMakerParameters(dialogFieldConfig, trueCompositeClass, classLoader, classPool,
+									widgetRegistry, null, true);
+
+					DialogElement builtFieldWidget = WidgetFactory.make(parameters, -1);
+					if (builtFieldWidget != null) {
+						builtFieldWidget.setRanking(dialogFieldConfig.getRanking());
+
+						int tabIndex = dialogFieldConfig.getTab();
+
+						if (tabIndex < 1 || tabIndex > tabsList.size()) {
+							throw new InvalidComponentFieldException("Invalid tab index " + tabIndex + " for field "
+									+ dialogFieldConfig.getFieldName());
+						}
+
+						tabsList.get(tabIndex - 1).addElement(builtFieldWidget);
+					}
+				}
+			}
+		}
+
 	}
 
 	public static Dialog make(CtClass componentClass, WidgetRegistry widgetRegistry, ClassLoader classLoader,
@@ -134,6 +183,12 @@ public class DialogFactory {
 					if (member.hasAnnotation(DialogField.class)) {
 						dialogFieldConfig =
 							new DialogFieldConfig((DialogField) member.getAnnotation(DialogField.class), member);
+					} else if (member.hasAnnotation(Composite.class)) {
+
+                        CtField ctField = (CtField) member;
+                        CtClass fieldType = ctField.getType();
+                        makeComposite(tabsList, fieldType, widgetRegistry, classLoader, classPool);
+
 					}
 				}
 

@@ -15,86 +15,96 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.dialogfieldset;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.container.items.Items;
 import com.citytechinc.cq.component.touchuidialog.container.items.ItemsParameters;
 import com.citytechinc.cq.component.touchuidialog.widget.DefaultTouchUIWidgetParameters;
 import com.citytechinc.cq.component.xml.XmlElement;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DialogFieldSetWidgetParameters extends DefaultTouchUIWidgetParameters {
 
-	protected List<TouchUIDialogElement> items;
+    protected List<TouchUIDialogElement> items;
 
-	protected String text;
+    protected String text;
 
-	public String getText() {
-		return text;
-	}
+    protected String jcrTitle;
 
-	public void setText(String text) {
-		this.text = text;
-	}
+    public String getJcrTitle() {
+        return jcrTitle;
+    }
 
-	public void addItem(TouchUIDialogElement item) {
-		if (items == null) {
-			items = new ArrayList<TouchUIDialogElement>();
-		}
+    public void setJcrTitle(String jcrTitle) {
+        this.jcrTitle = jcrTitle;
+    }
 
-		items.add(item);
-	}
+    public String getText() {
+        return text;
+    }
 
-	public List<TouchUIDialogElement> getItems() {
-		return items;
-	}
+    public void setText(String text) {
+        this.text = text;
+    }
 
-	public void setItems(List<TouchUIDialogElement> items) {
-		this.items = items;
-	}
+    public void addItem(TouchUIDialogElement item) {
+        if (items == null) {
+            items = new ArrayList<TouchUIDialogElement>();
+        }
 
-	public Items getItemsElement() {
-		ItemsParameters itemsParameters = new ItemsParameters();
+        items.add(item);
+    }
 
-		itemsParameters.setFieldName("items");
+    public List<TouchUIDialogElement> getItems() {
+        return items;
+    }
 
-		List<XmlElement> elements = new ArrayList<XmlElement>();
+    public void setItems(List<TouchUIDialogElement> items) {
+        this.items = items;
+    }
 
-		if (!getItems().isEmpty()) {
-			elements.addAll(getItems());
-			itemsParameters.setContainedElements(elements);
-			return new Items(itemsParameters);
-		}
+    public Items getItemsElement() {
+        ItemsParameters itemsParameters = new ItemsParameters();
 
-		return null;
-	}
+        itemsParameters.setFieldName("items");
 
-	@Override
-	public List<? extends XmlElement> getContainedElements() {
-		List<XmlElement> allContainedElements = new ArrayList<XmlElement>();
+        List<XmlElement> elements = new ArrayList<XmlElement>();
 
-		Items items = getItemsElement();
+        if (!getItems().isEmpty()) {
+            elements.addAll(getItems());
+            itemsParameters.setContainedElements(elements);
+            return new Items(itemsParameters);
+        }
 
-		if (items != null) {
-			allContainedElements.add(items);
-		}
+        return null;
+    }
 
-		if (containedElements != null) {
-			allContainedElements.addAll(containedElements);
-		}
+    @Override
+    public List<? extends XmlElement> getContainedElements() {
+        List<XmlElement> allContainedElements = new ArrayList<XmlElement>();
 
-		return allContainedElements;
-	}
+        Items items = getItemsElement();
 
-	@Override
-	public String getResourceType() {
-		return DialogFieldSetWidget.RESOURCE_TYPE;
-	}
+        if (items != null) {
+            allContainedElements.add(items);
+        }
 
-	@Override
-	public void setResourceType(String resourceType) {
-		throw new UnsupportedOperationException("resourceType is Static for DialogFieldSetWidget");
-	}
+        if (containedElements != null) {
+            allContainedElements.addAll(containedElements);
+        }
+
+        return allContainedElements;
+    }
+
+    @Override
+    public String getResourceType() {
+        return DialogFieldSetWidget.RESOURCE_TYPE;
+    }
+
+    @Override
+    public void setResourceType(String resourceType) {
+        throw new UnsupportedOperationException("resourceType is Static for DialogFieldSetWidget");
+    }
 
 }

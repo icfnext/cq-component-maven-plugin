@@ -19,8 +19,8 @@ import com.citytechinc.cq.component.xml.XmlElementParameters;
 
 public interface TouchUIDialogElementParameters extends XmlElementParameters {
 
-	public abstract String getResourceType();
+    String getResourceType();
 
-	public abstract void setResourceType(String resourceType);
+    void setResourceType(String resourceType);
 
 }

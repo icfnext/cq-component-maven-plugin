@@ -92,11 +92,17 @@ public abstract class AbstractTouchUIWidgetMaker<T extends TouchUIWidgetParamete
 		String overrideName = parameters.getDialogFieldConfig().getName();
 
 		if (StringUtils.isNotEmpty(overrideName)) {
+		    if (overrideName.endsWith("/")) {
+		        overrideName = overrideName + getName();
+            }
+
 			return overrideName;
 		}
+
 		if (parameters.isUseDotSlashInName()) {
 			return "./" + getName();
 		}
+
 		return getName();
 	}
 

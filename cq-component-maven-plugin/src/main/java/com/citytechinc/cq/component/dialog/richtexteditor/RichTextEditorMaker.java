@@ -300,6 +300,7 @@ public class RichTextEditorMaker extends AbstractWidgetMaker<RichTextEditorWidge
 		if (rteAnnotation.edit().length > 0) {
 			Edit[] editAnnotations = rteAnnotation.edit();
 			Edit editAnnotation = editAnnotations[0];
+			String defaultPasteMode = editAnnotation.defaultPasteMode();
 
 			List<String> editFeatures = new ArrayList<String>();
 
@@ -318,10 +319,10 @@ public class RichTextEditorMaker extends AbstractWidgetMaker<RichTextEditorWidge
 			if (editAnnotation.pasteWordhtml()) {
 				editFeatures.add("paste-wordhtml");
 			}
-			RtePluginParameters widgetParameters = new RtePluginParameters();
-			widgetParameters.setFieldName("edit");
+			EditRtePluginParameters widgetParameters = new EditRtePluginParameters();
+			widgetParameters.setDefaultPasteMode(defaultPasteMode);
 			widgetParameters.setFeatures(convertFeatures(editFeatures));
-			return new RtePlugin(widgetParameters);
+			return new EditRtePlugin(widgetParameters);
 		}
 
 		return null;

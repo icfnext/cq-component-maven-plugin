@@ -17,7 +17,7 @@ package com.citytechinc.cq.component.dialog.richtexteditor;
 
 public class EditRtePlugin extends RtePlugin {
 
-	public static final String UNDO = "undo";
+	public static final String EDIT = "edit";
 
 	private final String defaultPasteMode;
 

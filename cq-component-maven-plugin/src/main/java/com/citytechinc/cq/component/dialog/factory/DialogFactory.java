@@ -24,13 +24,11 @@ import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMember;
-import javassist.CtMethod;
 import javassist.NotFoundException;
 
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.Component;
-import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.IgnoreDialogField;
 import com.citytechinc.cq.component.annotations.Listener;
 import com.citytechinc.cq.component.dialog.Dialog;
@@ -127,15 +125,7 @@ public class DialogFactory {
 		 */
 		for (CtMember member : fieldsAndMethods) {
 			if (!member.hasAnnotation(IgnoreDialogField.class)) {
-				DialogFieldConfig dialogFieldConfig = null;
-				if (member instanceof CtMethod) {
-					dialogFieldConfig = DialogUtil.getDialogFieldFromSuperClasses((CtMethod) member);
-				} else {
-					if (member.hasAnnotation(DialogField.class)) {
-						dialogFieldConfig =
-							new DialogFieldConfig((DialogField) member.getAnnotation(DialogField.class), member);
-					}
-				}
+				DialogFieldConfig dialogFieldConfig = DialogUtil.getDialogFieldFromSuperClasses(member);
 
 				if (dialogFieldConfig != null) {
 					WidgetMakerParameters parameters =

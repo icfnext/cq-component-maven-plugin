@@ -23,14 +23,12 @@ import java.util.Set;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMember;
-import javassist.CtMethod;
 import javassist.NotFoundException;
 
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.Component;
-import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.IgnoreDialogField;
 import com.citytechinc.cq.component.annotations.widgets.Selection;
 import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
@@ -123,15 +121,7 @@ public class TouchUIDialogUtil {
 		// preparing the necessary widget maker parameters
 		for (CtMember member : fieldsAndMethods) {
 			if (!member.hasAnnotation(IgnoreDialogField.class)) {
-				DialogFieldConfig dialogFieldConfig = null;
-				if (member instanceof CtMethod) {
-					dialogFieldConfig = DialogUtil.getDialogFieldFromSuperClasses((CtMethod) member);
-				} else {
-					if (member.hasAnnotation(DialogField.class)) {
-						dialogFieldConfig =
-							new DialogFieldConfig((DialogField) member.getAnnotation(DialogField.class), member);
-					}
-				}
+				DialogFieldConfig dialogFieldConfig = DialogUtil.getDialogFieldFromSuperClasses(member);
 
 				if (dialogFieldConfig != null && !dialogFieldConfig.isSuppressTouchUI()) {
 					TouchUIWidgetMakerParameters touchUIWidgetMakerParameters = new TouchUIWidgetMakerParameters();
@@ -164,15 +154,7 @@ public class TouchUIDialogUtil {
 		// preparing the necessary widget maker parameters
 		for (CtMember member : fieldsAndMethods) {
 			if (!member.hasAnnotation(IgnoreDialogField.class)) {
-				DialogFieldConfig dialogFieldConfig = null;
-				if (member instanceof CtMethod) {
-					dialogFieldConfig = DialogUtil.getDialogFieldFromSuperClasses((CtMethod) member);
-				} else {
-					if (member.hasAnnotation(DialogField.class)) {
-						dialogFieldConfig =
-							new DialogFieldConfig((DialogField) member.getAnnotation(DialogField.class), member);
-					}
-				}
+				DialogFieldConfig dialogFieldConfig = DialogUtil.getDialogFieldFromSuperClasses(member);;
 
 				if (dialogFieldConfig != null && !dialogFieldConfig.isSuppressTouchUI()) {
 					return true;
@@ -181,7 +163,6 @@ public class TouchUIDialogUtil {
 		}
 
 		return false;
-
 	}
 
 	public static final List<com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option>

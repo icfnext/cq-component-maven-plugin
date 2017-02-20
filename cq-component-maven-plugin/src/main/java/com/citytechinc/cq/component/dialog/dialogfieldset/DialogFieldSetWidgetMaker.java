@@ -23,12 +23,10 @@ import java.util.List;
 
 import javassist.CannotCompileException;
 import javassist.CtMember;
-import javassist.CtMethod;
 import javassist.NotFoundException;
 
 import org.codehaus.plexus.util.StringUtils;
 
-import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.IgnoreDialogField;
 import com.citytechinc.cq.component.annotations.widgets.DialogFieldSet;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
@@ -92,17 +90,10 @@ public class DialogFieldSetWidgetMaker extends AbstractWidgetMaker<DialogFieldSe
 		for (CtMember member : fieldsAndMethods) {
 			if (!member.hasAnnotation(IgnoreDialogField.class)) {
 				DialogFieldConfig dialogFieldConfig = null;
-				if (member instanceof CtMethod) {
-					try {
-						dialogFieldConfig = DialogUtil.getDialogFieldFromSuperClasses((CtMethod) member);
-					} catch (InvalidComponentClassException e) {
-						throw new InvalidComponentFieldException(e.getMessage(), e);
-					}
-				} else {
-					if (member.hasAnnotation(DialogField.class)) {
-						dialogFieldConfig =
-							new DialogFieldConfig((DialogField) member.getAnnotation(DialogField.class), member);
-					}
+				try {
+					dialogFieldConfig = DialogUtil.getDialogFieldFromSuperClasses(member);
+				} catch (InvalidComponentClassException e) {
+					throw new InvalidComponentFieldException(e.getMessage(), e);
 				}
 
 				if (dialogFieldConfig != null) {

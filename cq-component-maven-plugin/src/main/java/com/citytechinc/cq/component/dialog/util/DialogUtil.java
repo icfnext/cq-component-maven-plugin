@@ -27,6 +27,7 @@ import java.util.Set;
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
+import javassist.CtField;
 import javassist.CtMember;
 import javassist.CtMethod;
 import javassist.NotFoundException;
@@ -196,42 +197,79 @@ public class DialogUtil {
 		return newMember;
 	}
 
+	/**
+	 * This method is kept for backwards compatibility.  (i.e. MultiCompositeField)
+	 *
+	 * @param method the method with dialog annotation
+	 * @return a dialog field configuration
+	 * @throws NotFoundException
+	 * @throws ClassNotFoundException
+	 * @throws InvalidComponentClassException
+	 */
 	public static DialogFieldConfig getDialogFieldFromSuperClasses(CtMethod method) throws NotFoundException,
+		ClassNotFoundException, InvalidComponentClassException {
+		return getDialogFieldFromSuperClasses((CtMember) method);
+	}
+
+	public static DialogFieldConfig getDialogFieldFromSuperClasses(CtMember member) throws NotFoundException,
 		ClassNotFoundException, InvalidComponentClassException {
 		DialogFieldConfig dialogFieldConfig = null;
 		List<CtClass> classes = new ArrayList<CtClass>();
-		CtClass clazz = method.getDeclaringClass();
+		CtClass clazz = member.getDeclaringClass();
 		classes.add(clazz);
 		while (clazz.getSuperclass() != null) {
 			classes.add(clazz.getSuperclass());
 			clazz = clazz.getSuperclass();
 		}
 		Collections.reverse(classes);
-		CtMember interfaceMember = getMemberForAnnotatedInterfaceMethod(method);
-		if (interfaceMember != null) {
-			dialogFieldConfig =
-				new DialogFieldConfig((DialogField) interfaceMember.getAnnotation(DialogField.class), interfaceMember);
-		}
-		for (CtClass ctclass : classes) {
-			try {
-				CtMethod superClassMethod = ctclass.getDeclaredMethod(method.getName(), method.getParameterTypes());
-				if (superClassMethod.hasAnnotation(DialogField.class)) {
-					dialogFieldConfig =
-						new DialogFieldConfig((DialogField) superClassMethod.getAnnotation(DialogField.class),
-							superClassMethod);
-				} else if (superClassMethod.hasAnnotation(DialogFieldOverride.class)) {
-					mergeDialogFields(dialogFieldConfig, superClassMethod);
-				}
-			} catch (NotFoundException e) {
+
+		if (member instanceof CtMethod) {
+			CtMember interfaceMember = getMemberForAnnotatedInterfaceMethod((CtMethod) member);
+			if (interfaceMember != null) {
+				dialogFieldConfig =
+					new DialogFieldConfig((DialogField) interfaceMember.getAnnotation(DialogField.class),
+						interfaceMember);
 			}
+			for (CtClass ctClass : classes) {
+				try {
+					CtMethod superClassMethod = ctClass
+						.getDeclaredMethod(member.getName(), ((CtMethod) member).getParameterTypes());
+					if (superClassMethod.hasAnnotation(DialogField.class)) {
+						dialogFieldConfig =
+							new DialogFieldConfig((DialogField) superClassMethod.getAnnotation(DialogField.class),
+								superClassMethod);
+					} else if (superClassMethod.hasAnnotation(DialogFieldOverride.class)) {
+						mergeDialogFields(dialogFieldConfig, superClassMethod);
+					}
+				} catch (NotFoundException e) {
+				}
+			}
+		} else if (member instanceof CtField) {
+			for (CtClass ctClass : classes) {
+				try {
+					CtField superClassField = ctClass
+						.getDeclaredField(member.getName());
+
+					if (superClassField.hasAnnotation(DialogField.class)) {
+						dialogFieldConfig = new DialogFieldConfig(
+							(DialogField) superClassField.getAnnotation(DialogField.class), superClassField);
+					} else if (superClassField.hasAnnotation(DialogFieldOverride.class)) {
+						mergeDialogFields(dialogFieldConfig, superClassField);
+					}
+				} catch (NotFoundException e) {
+				}
+			}
+		} else {
+			dialogFieldConfig = new DialogFieldConfig((DialogField) member.getAnnotation(DialogField.class), member);
 		}
+
 		return dialogFieldConfig;
 	}
 
-	private static void mergeDialogFields(DialogFieldConfig dialogFieldConfig, CtMethod method)
+	private static void mergeDialogFields(DialogFieldConfig dialogFieldConfig, CtMember member)
 		throws ClassNotFoundException {
-		if (dialogFieldConfig != null && method.hasAnnotation(DialogFieldOverride.class)) {
-			DialogFieldOverride dialogField = (DialogFieldOverride) method.getAnnotation(DialogFieldOverride.class);
+		if (dialogFieldConfig != null && member.hasAnnotation(DialogFieldOverride.class)) {
+			DialogFieldOverride dialogField = (DialogFieldOverride) member.getAnnotation(DialogFieldOverride.class);
 			if (StringUtils.isNotEmpty(dialogField.fieldLabel())) {
 				dialogFieldConfig.setFieldLabel(dialogField.fieldLabel());
 			}
@@ -305,15 +343,7 @@ public class DialogUtil {
 		 */
 		for (CtMember member : fieldsAndMethods) {
 			if (!member.hasAnnotation(IgnoreDialogField.class)) {
-				DialogFieldConfig dialogFieldConfig = null;
-				if (member instanceof CtMethod) {
-					dialogFieldConfig = DialogUtil.getDialogFieldFromSuperClasses((CtMethod) member);
-				} else {
-					if (member.hasAnnotation(DialogField.class)) {
-						dialogFieldConfig =
-							new DialogFieldConfig((DialogField) member.getAnnotation(DialogField.class), member);
-					}
-				}
+				DialogFieldConfig dialogFieldConfig = DialogUtil.getDialogFieldFromSuperClasses(member);;
 
 				if (dialogFieldConfig != null) {
 					return true;

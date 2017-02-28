@@ -30,4 +30,12 @@ public @interface Edit {
 
 	public boolean pasteWordhtml() default true;
 
+	/**
+	 * @see <a href="https://docs.adobe.com/docs/en/aem/6-2/administer/operations/page-authoring/rich-text-editor.html#Default%20Paste%20Mode">Default Paste Mode</a>
+	 *
+	 * Currently only supported in Classic UI
+	 *
+	 * Possible values are 'wordhtml' (default), 'plaintext' or 'browser'
+	 */
+	public String defaultPasteMode() default "wordhtml";
 }

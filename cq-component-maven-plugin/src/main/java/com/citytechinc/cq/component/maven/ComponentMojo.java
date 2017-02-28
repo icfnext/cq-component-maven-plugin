@@ -52,6 +52,14 @@ import com.citytechinc.cq.component.touchuidialog.widget.registry.TouchUIWidgetR
 @Mojo(name = "component", defaultPhase = LifecyclePhase.PACKAGE, requiresDependencyResolution = ResolutionScope.COMPILE)
 public class ComponentMojo extends AbstractMojo {
 
+	@Parameter(property = "aem.package.fileName",
+		defaultValue = "${project.build.directory}/${project.build.finalName}.zip")
+	private String packageFileName;
+
+	@Parameter(property = "aem.temp.package.fileName",
+		defaultValue = "${project.build.directory}/${project.build.finalName}-temp.zip")
+	private String tempPackageFileName;
+
 	@Parameter(defaultValue = "${project}")
 	private MavenProject project;
 
@@ -76,48 +84,54 @@ public class ComponentMojo extends AbstractMojo {
 	@Parameter(required = false)
 	private List<String> additionalFeatures;
 
+	@Parameter(defaultValue = "false")
+	private Boolean skip;
+
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
+		if (skip) {
+			getLog().info("Skipping execution per configuration.");
+		} else {
+			LogSingleton.getInstance().setLogger(getLog());
 
-		LogSingleton.getInstance().setLogger(getLog());
+			try {
 
-		try {
+				@SuppressWarnings("unchecked")
+				List<String> classpathElements = project.getCompileClasspathElements();
 
-			@SuppressWarnings("unchecked")
-			List<String> classpathElements = project.getCompileClasspathElements();
+				ClassLoader classLoader =
+					ComponentMojoUtil.getClassLoader(classpathElements, this.getClass().getClassLoader());
 
-			ClassLoader classLoader =
-				ComponentMojoUtil.getClassLoader(classpathElements, this.getClass().getClassLoader());
+				ClassPool classPool = ComponentMojoUtil.getClassPool(classLoader);
 
-			ClassPool classPool = ComponentMojoUtil.getClassPool(classLoader);
+				Reflections reflections = ComponentMojoUtil.getReflections(classLoader);
 
-			Reflections reflections = ComponentMojoUtil.getReflections(classLoader);
+				List<CtClass> classList =
+					ComponentMojoUtil.getAllComponentAnnotations(classPool, reflections, getExcludedClasses());
 
-			List<CtClass> classList =
-				ComponentMojoUtil.getAllComponentAnnotations(classPool, reflections, getExcludedClasses());
+				WidgetRegistry widgetRegistry = new DefaultWidgetRegistry(classPool, classLoader, reflections, getAdditionalFeatures());
 
-			WidgetRegistry widgetRegistry = new DefaultWidgetRegistry(classPool, classLoader, reflections, getAdditionalFeatures());
+				TouchUIWidgetRegistry touchUIWidgetRegistry =
+					new DefaultTouchUIWidgetRegistry(classPool, classLoader, reflections, getAdditionalFeatures());
 
-			TouchUIWidgetRegistry touchUIWidgetRegistry =
-				new DefaultTouchUIWidgetRegistry(classPool, classLoader, reflections, getAdditionalFeatures());
+				Map<String, ComponentNameTransformer> transformers =
+					ComponentMojoUtil.getAllTransformers(classPool, reflections);
 
-			Map<String, ComponentNameTransformer> transformers =
-				ComponentMojoUtil.getAllTransformers(classPool, reflections);
+				ComponentNameTransformer transformer = transformers.get(transformerName);
 
-			ComponentNameTransformer transformer = transformers.get(transformerName);
+				if (transformer == null) {
+					throw new ConfigurationException("The configured transformer wasn't found");
+				}
 
-			if (transformer == null) {
-				throw new ConfigurationException("The configured transformer wasn't found");
+				ComponentMojoUtil.buildArchiveFileForProjectAndClassList(classList, widgetRegistry, touchUIWidgetRegistry,
+					classLoader, classPool, new File(project.getBuild().getDirectory()), componentPathBase,
+					componentPathSuffix, defaultComponentGroup, getArchiveFileForProject(), getTempArchiveFileForProject(),
+					transformer, generateTouchUiDialogs);
+
+			} catch (Exception e) {
+				getLog().error(e.getMessage(), e);
+				throw new MojoExecutionException(e.getMessage(), e);
 			}
-
-			ComponentMojoUtil.buildArchiveFileForProjectAndClassList(classList, widgetRegistry, touchUIWidgetRegistry,
-				classLoader, classPool, new File(project.getBuild().getDirectory()), componentPathBase,
-				componentPathSuffix, defaultComponentGroup, getArchiveFileForProject(), getTempArchiveFileForProject(),
-				transformer, generateTouchUiDialogs);
-
-		} catch (Exception e) {
-			getLog().error(e.getMessage(), e);
-			throw new MojoExecutionException(e.getMessage(), e);
 		}
 
 	}
@@ -185,23 +199,15 @@ public class ComponentMojo extends AbstractMojo {
 	}
 
 	private File getArchiveFileForProject() {
-		File buildDirectory = new File(project.getBuild().getDirectory());
+		getLog().debug("Archive file name configured to be " + packageFileName);
 
-		String zipFileName = project.getArtifactId() + "-" + project.getVersion() + ".zip";
-
-		getLog().debug("Determined ZIP file name to be " + zipFileName);
-
-		return new File(buildDirectory, zipFileName);
+		return new File(packageFileName);
 	}
 
 	private File getTempArchiveFileForProject() {
-		File buildDirectory = new File(project.getBuild().getDirectory());
+		getLog().debug("Temp archive file name configured to be " + tempPackageFileName);
 
-		String zipFileName = project.getArtifactId() + "-" + project.getVersion() + "-temp.zip";
-
-		getLog().debug("Temp archive file name " + zipFileName);
-
-		return new File(buildDirectory, zipFileName);
+		return new File(tempPackageFileName);
 	}
 
 	private List<String> getAdditionalFeatures() {

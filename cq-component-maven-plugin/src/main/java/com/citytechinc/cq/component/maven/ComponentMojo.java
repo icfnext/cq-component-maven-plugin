@@ -84,54 +84,47 @@ public class ComponentMojo extends AbstractMojo {
 	@Parameter(required = false)
 	private List<String> additionalFeatures;
 
-	@Parameter(defaultValue = "false")
-	private Boolean skip;
-
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
-		if (skip) {
-			getLog().info("Skipping execution per configuration.");
-		} else {
-			LogSingleton.getInstance().setLogger(getLog());
+		LogSingleton.getInstance().setLogger(getLog());
 
-			try {
+		try {
 
-				@SuppressWarnings("unchecked")
-				List<String> classpathElements = project.getCompileClasspathElements();
+			@SuppressWarnings("unchecked")
+			List<String> classpathElements = project.getCompileClasspathElements();
 
-				ClassLoader classLoader =
-					ComponentMojoUtil.getClassLoader(classpathElements, this.getClass().getClassLoader());
+			ClassLoader classLoader =
+				ComponentMojoUtil.getClassLoader(classpathElements, this.getClass().getClassLoader());
 
-				ClassPool classPool = ComponentMojoUtil.getClassPool(classLoader);
+			ClassPool classPool = ComponentMojoUtil.getClassPool(classLoader);
 
-				Reflections reflections = ComponentMojoUtil.getReflections(classLoader);
+			Reflections reflections = ComponentMojoUtil.getReflections(classLoader);
 
-				List<CtClass> classList =
-					ComponentMojoUtil.getAllComponentAnnotations(classPool, reflections, getExcludedClasses());
+			List<CtClass> classList =
+				ComponentMojoUtil.getAllComponentAnnotations(classPool, reflections, getExcludedClasses());
 
-				WidgetRegistry widgetRegistry = new DefaultWidgetRegistry(classPool, classLoader, reflections, getAdditionalFeatures());
+			WidgetRegistry widgetRegistry = new DefaultWidgetRegistry(classPool, classLoader, reflections, getAdditionalFeatures());
 
-				TouchUIWidgetRegistry touchUIWidgetRegistry =
-					new DefaultTouchUIWidgetRegistry(classPool, classLoader, reflections, getAdditionalFeatures());
+			TouchUIWidgetRegistry touchUIWidgetRegistry =
+				new DefaultTouchUIWidgetRegistry(classPool, classLoader, reflections, getAdditionalFeatures());
 
-				Map<String, ComponentNameTransformer> transformers =
-					ComponentMojoUtil.getAllTransformers(classPool, reflections);
+			Map<String, ComponentNameTransformer> transformers =
+				ComponentMojoUtil.getAllTransformers(classPool, reflections);
 
-				ComponentNameTransformer transformer = transformers.get(transformerName);
+			ComponentNameTransformer transformer = transformers.get(transformerName);
 
-				if (transformer == null) {
-					throw new ConfigurationException("The configured transformer wasn't found");
-				}
-
-				ComponentMojoUtil.buildArchiveFileForProjectAndClassList(classList, widgetRegistry, touchUIWidgetRegistry,
-					classLoader, classPool, new File(project.getBuild().getDirectory()), componentPathBase,
-					componentPathSuffix, defaultComponentGroup, getArchiveFileForProject(), getTempArchiveFileForProject(),
-					transformer, generateTouchUiDialogs);
-
-			} catch (Exception e) {
-				getLog().error(e.getMessage(), e);
-				throw new MojoExecutionException(e.getMessage(), e);
+			if (transformer == null) {
+				throw new ConfigurationException("The configured transformer wasn't found");
 			}
+
+			ComponentMojoUtil.buildArchiveFileForProjectAndClassList(classList, widgetRegistry, touchUIWidgetRegistry,
+				classLoader, classPool, new File(project.getBuild().getDirectory()), componentPathBase,
+				componentPathSuffix, defaultComponentGroup, getArchiveFileForProject(), getTempArchiveFileForProject(),
+				transformer, generateTouchUiDialogs);
+
+		} catch (Exception e) {
+			getLog().error(e.getMessage(), e);
+			throw new MojoExecutionException(e.getMessage(), e);
 		}
 
 	}

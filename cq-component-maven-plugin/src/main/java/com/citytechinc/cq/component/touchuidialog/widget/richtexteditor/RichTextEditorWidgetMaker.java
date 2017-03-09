@@ -16,23 +16,31 @@
 package com.citytechinc.cq.component.touchuidialog.widget.richtexteditor;
 
 import com.citytechinc.cq.component.annotations.widgets.RichTextEditor;
+import com.citytechinc.cq.component.builder.RtePluginBuilder;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
+import com.citytechinc.cq.component.dialog.richtexteditor.RtePlugins;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 
+import java.util.Collections;
+
 public class RichTextEditorWidgetMaker extends AbstractTouchUIWidgetMaker<RichTextEditorWidgetParameters> {
 
-	public RichTextEditorWidgetMaker(TouchUIWidgetMakerParameters parameters) {
-		super(parameters);
-	}
+    public RichTextEditorWidgetMaker(TouchUIWidgetMakerParameters parameters) {
+        super(parameters);
+    }
 
-	@Override
-	protected TouchUIDialogElement make(RichTextEditorWidgetParameters parameters) throws ClassNotFoundException, InvalidComponentFieldException, TouchUIDialogGenerationException, IllegalAccessException, InstantiationException {
-		RichTextEditor richTextEditorAnnotation = getAnnotation(RichTextEditor.class);
+    @Override
+    protected TouchUIDialogElement make(RichTextEditorWidgetParameters parameters)
+        throws ClassNotFoundException, InvalidComponentFieldException, TouchUIDialogGenerationException,
+        IllegalAccessException, InstantiationException {
+        final RichTextEditor rteAnnotation = getAnnotation(RichTextEditor.class);
+        final RtePlugins plugins = new RtePluginBuilder(rteAnnotation).build();
 
-		return new RichTextEditorWidget(parameters);
-	}
+        parameters.setContainedElements(Collections.singletonList(plugins));
 
+        return new RichTextEditorWidget(parameters);
+    }
 }

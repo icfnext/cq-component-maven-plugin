@@ -1,5 +1,5 @@
 /**
- *    Copyright 2013 CITYTECH, Inc.
+ *    Copyright 2017 ICF Olson
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@ import com.citytechinc.cq.component.annotations.widgets.rte.SpellCheck;
 import com.citytechinc.cq.component.annotations.widgets.rte.Style;
 import com.citytechinc.cq.component.annotations.widgets.rte.SubSuperscript;
 import com.citytechinc.cq.component.annotations.widgets.rte.Table;
+import com.citytechinc.cq.component.annotations.widgets.rte.UISettings;
 import com.citytechinc.cq.component.annotations.widgets.rte.Undo;
 
 /**
@@ -194,5 +195,17 @@ public @interface RichTextEditor {
 	 * @return Undo[]
 	 */
 	public Undo[] undo() default {};
+
+	/**
+	 * For Touch-UI Only
+	 * 
+	 * UI Settings Node configuration plugin see <a href=
+	 * "https://docs.adobe.com/docs/en/aem/6-2/administer/operations/page-authoring/rich-text-editor.html?#Configuring
+	 * RichText Editor dialog settings for toolbar (Touch UI)>Configuring
+	 * RichText Editor dialog settings for toolbar (Touch UI)</a>.
+	 *
+	 * @return Undo[]
+	 */
+	public UISettings[] uiSettings() default {};
 
 }

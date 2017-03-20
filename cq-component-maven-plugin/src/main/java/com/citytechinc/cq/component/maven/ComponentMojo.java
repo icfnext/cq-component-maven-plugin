@@ -51,14 +51,11 @@ import com.citytechinc.cq.component.touchuidialog.widget.registry.TouchUIWidgetR
 
 @Mojo(name = "component", defaultPhase = LifecyclePhase.PACKAGE, requiresDependencyResolution = ResolutionScope.COMPILE)
 public class ComponentMojo extends AbstractMojo {
+	private static final String TEMP_FILENAME_SUFFIX = "-temp";
 
 	@Parameter(property = "aem.package.fileName",
 		defaultValue = "${project.build.directory}/${project.build.finalName}.zip")
 	private String packageFileName;
-
-	@Parameter(property = "aem.temp.package.fileName",
-		defaultValue = "${project.build.directory}/${project.build.finalName}-temp.zip")
-	private String tempPackageFileName;
 
 	@Parameter(defaultValue = "${project}")
 	private MavenProject project;
@@ -198,6 +195,15 @@ public class ComponentMojo extends AbstractMojo {
 	}
 
 	private File getTempArchiveFileForProject() {
+		int extIndex = packageFileName.lastIndexOf('.');
+		String tempPackageFileName;
+		if (extIndex > -1) {
+			tempPackageFileName = packageFileName.substring(0, extIndex) + TEMP_FILENAME_SUFFIX
+				+ packageFileName.substring(extIndex);
+		} else {
+			tempPackageFileName = packageFileName + TEMP_FILENAME_SUFFIX;
+		}
+
 		getLog().debug("Temp archive file name configured to be " + tempPackageFileName);
 
 		return new File(tempPackageFileName);

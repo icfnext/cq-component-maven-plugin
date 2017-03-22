@@ -29,7 +29,8 @@ public class Section extends Container {
 	private String path;
 	private String resourceType;
 	private final NameSpacedAttribute<Boolean> showOnCreate;
-    private final NameSpacedAttribute<Boolean> hideOnEdit;
+	private final NameSpacedAttribute<Boolean> hideOnEdit;
+	private NameSpacedAttribute<String> orderBefore;
 
 	public Section(SectionParameters parameters) {
 		super(parameters);
@@ -47,8 +48,14 @@ public class Section extends Container {
 		showOnCreate =
 			new NameSpacedAttribute<Boolean>(Constants.CQ_NS_URI, Constants.CQ_NS_PREFIX, parameters.isShowOnCreate());
 
-        hideOnEdit =
-            new NameSpacedAttribute<Boolean>(Constants.CQ_NS_URI, Constants.CQ_NS_PREFIX, parameters.isHideOnEdit());
+		hideOnEdit =
+			new NameSpacedAttribute<Boolean>(Constants.CQ_NS_URI, Constants.CQ_NS_PREFIX, parameters.isHideOnEdit());
+
+		if (StringUtils.isNotEmpty(parameters.getOrderBefore())) {
+			orderBefore =
+				new NameSpacedAttribute<String>(Constants.SLING_NS_PREFIX, Constants.SLING_NS_PREFIX,
+					parameters.getOrderBefore());
+		}
 	}
 
 	public NameSpacedAttribute<String> getTitle() {
@@ -67,8 +74,12 @@ public class Section extends Container {
 		return showOnCreate;
 	}
 
-    public NameSpacedAttribute<Boolean> getHideOnEdit() {
-        return hideOnEdit;
-    }
+	public NameSpacedAttribute<Boolean> getHideOnEdit() {
+		return hideOnEdit;
+	}
+
+	public NameSpacedAttribute<String> getOrderBefore() {
+		return orderBefore;
+	}
 
 }

@@ -29,8 +29,9 @@ public class SectionParameters extends ContainerParameters {
 	private String path;
 	private TouchUIDialogElement renderCondition;
 	private boolean showOnCreate;
-    private boolean hideOnEdit;
+	private boolean hideOnEdit;
 	private String nodeName;
+	private String orderBefore;
 
 	@Override
 	public String getResourceType() {
@@ -89,13 +90,13 @@ public class SectionParameters extends ContainerParameters {
 		this.showOnCreate = showOnCreate;
 	}
 
-    public boolean isHideOnEdit() {
-        return hideOnEdit;
-    }
+	public boolean isHideOnEdit() {
+		return hideOnEdit;
+	}
 
-    public void setHideOnEdit(boolean hideOnEdit) {
-        this.hideOnEdit = hideOnEdit;
-    }
+	public void setHideOnEdit(boolean hideOnEdit) {
+		this.hideOnEdit = hideOnEdit;
+	}
 
 	public String getNodeName() {
 		return nodeName;
@@ -103,5 +104,13 @@ public class SectionParameters extends ContainerParameters {
 
 	public void setNodeName(String nodeName) {
 		this.nodeName = nodeName;
+	}
+
+	public String getOrderBefore() {
+		return orderBefore;
+	}
+
+	public void setOrderBefore(String orderBefore) {
+		this.orderBefore = orderBefore;
 	}
 }

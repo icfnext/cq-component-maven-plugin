@@ -85,24 +85,33 @@ public @interface Tab {
 	 */
 	public boolean showOnCreate() default true;
 
-    /**
-     * Applicable to Touch-UI only
-     *
-     * Controls whether or not the tab is hidden in the edit page dialog
-     *
-     */
-    public boolean hideOnEdit() default false;
+	/**
+	 * Applicable to Touch-UI only
+	 *
+	 * Controls whether or not the tab is hidden in the edit page dialog
+	 *
+	 */
+	public boolean hideOnEdit() default false;
 
 	/**
 	 * Applicable to Touch-UI only
 	 *
-	 * Allows direct control over the name of the node generated for the Tab.  This is useful in situations
-	 * where you are supertyping a resource or you plan for your resource to be supertyped as it allows for
-	 * the dialog structure to be shared by the inheriting components which is necessary for the resource
-	 * merger mechanisms to act as expected.
+	 * Allows direct control over the name of the node generated for the Tab.
+	 * This is useful in situations where you are supertyping a resource or you
+	 * plan for your resource to be supertyped as it allows for the dialog
+	 * structure to be shared by the inheriting components which is necessary
+	 * for the resource merger mechanisms to act as expected.
 	 *
-	 * If unset the tab names will continue to default to a sanitized version of the title.
+	 * If unset the tab names will continue to default to a sanitized version of
+	 * the title.
 	 */
 	String touchUINodeName() default "";
 
+	/**
+	 * Applicable to Touch-UI only
+	 *
+	 * Sets the sling:orderBefore property. This can be used when supertyping a
+	 * resource to reorder the tabs
+	 */
+	String orderBefore() default "";
 }

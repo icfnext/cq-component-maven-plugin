@@ -138,7 +138,10 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
 						currentTabParameters.setRenderCondition(renderConditionElement);
 					}
 					currentTabParameters.setShowOnCreate(currentTabAnnotation.showOnCreate());
-                    currentTabParameters.setHideOnEdit(currentTabAnnotation.hideOnEdit());
+					currentTabParameters.setHideOnEdit(currentTabAnnotation.hideOnEdit());
+					if (StringUtils.isNotEmpty(currentTabAnnotation.orderBefore())) {
+						currentTabParameters.setOrderBefore(currentTabAnnotation.orderBefore());
+					}
 					tabParametersList.add(currentTabParameters);
 				} else {
 					tabContentParametersList.add(null);
@@ -211,8 +214,7 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
 				SectionParameters currentSectionParameters = tabParametersList.get(i);
 				if (StringUtils.isNotEmpty(tabParametersList.get(i).getNodeName())) {
 					currentSectionParameters.setFieldName(tabParametersList.get(i).getNodeName());
-				}
-				else if (StringUtils.isNotEmpty(tabParametersList.get(i).getTitle())) {
+				} else if (StringUtils.isNotEmpty(tabParametersList.get(i).getTitle())) {
 					currentSectionParameters.setFieldName(tabParametersList.get(i).getTitle());
 				} else {
 					currentSectionParameters.setFieldName("tab_" + i);

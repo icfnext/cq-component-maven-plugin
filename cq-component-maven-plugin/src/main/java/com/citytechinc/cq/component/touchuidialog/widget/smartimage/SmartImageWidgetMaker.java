@@ -143,12 +143,25 @@ public class SmartImageWidgetMaker extends AbstractTouchUIWidgetMaker<SmartImage
 
 	private String getNameAsPrefix(Html5SmartImage annotation) {
 		StringBuilder sb = new StringBuilder();
-		if (parameters.isUseDotSlashInName()) {
-			sb.append("./");
-		}
-		if (StringUtils.isNotEmpty(getName()) && !annotation.isSelf()) {
-			sb.append(getName()).append("/");
-		}
+
+		String overrideName = parameters.getDialogFieldConfig().getName();
+
+        if (StringUtils.isNotEmpty(overrideName)) {
+            sb.append(overrideName);
+
+            if (!overrideName.endsWith("/")) {
+                sb.append("/");
+            }
+        } else {
+            if (parameters.isUseDotSlashInName()) {
+                sb.append("./");
+            }
+
+            if (StringUtils.isNotEmpty(getName()) && !annotation.isSelf()) {
+                sb.append(getName()).append("/");
+            }
+        }
+
 		return sb.toString();
 	}
 }

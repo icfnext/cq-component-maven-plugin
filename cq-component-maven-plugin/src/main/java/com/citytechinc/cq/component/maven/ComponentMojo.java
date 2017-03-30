@@ -52,9 +52,10 @@ import com.citytechinc.cq.component.touchuidialog.widget.registry.TouchUIWidgetR
 @Mojo(name = "component", defaultPhase = LifecyclePhase.PACKAGE, requiresDependencyResolution = ResolutionScope.COMPILE)
 public class ComponentMojo extends AbstractMojo {
 	private static final String TEMP_FILENAME_SUFFIX = "-temp";
+	private static final String PACKAGE_EXTENSION = ".zip";
 
 	@Parameter(property = "aem.package.fileName",
-		defaultValue = "${project.build.directory}/${project.build.finalName}.zip")
+		defaultValue = "${project.build.directory}/${project.build.finalName}")
 	private String packageFileName;
 
 	@Parameter(defaultValue = "${project}")
@@ -189,20 +190,13 @@ public class ComponentMojo extends AbstractMojo {
 	}
 
 	private File getArchiveFileForProject() {
-		getLog().debug("Archive file name configured to be " + packageFileName);
+		getLog().debug("Archive file name configured to be " + packageFileName + PACKAGE_EXTENSION);
 
-		return new File(packageFileName);
+		return new File(packageFileName + PACKAGE_EXTENSION);
 	}
 
 	private File getTempArchiveFileForProject() {
-		int extIndex = packageFileName.lastIndexOf('.');
-		String tempPackageFileName;
-		if (extIndex > -1) {
-			tempPackageFileName = packageFileName.substring(0, extIndex) + TEMP_FILENAME_SUFFIX
-				+ packageFileName.substring(extIndex);
-		} else {
-			tempPackageFileName = packageFileName + TEMP_FILENAME_SUFFIX;
-		}
+		String tempPackageFileName = packageFileName + TEMP_FILENAME_SUFFIX + PACKAGE_EXTENSION;
 
 		getLog().debug("Temp archive file name configured to be " + tempPackageFileName);
 

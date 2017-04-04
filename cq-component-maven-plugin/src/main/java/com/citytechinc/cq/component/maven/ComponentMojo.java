@@ -51,6 +51,12 @@ import com.citytechinc.cq.component.touchuidialog.widget.registry.TouchUIWidgetR
 
 @Mojo(name = "component", defaultPhase = LifecyclePhase.PACKAGE, requiresDependencyResolution = ResolutionScope.COMPILE)
 public class ComponentMojo extends AbstractMojo {
+	private static final String TEMP_FILENAME_SUFFIX = "-temp";
+	private static final String PACKAGE_EXTENSION = ".zip";
+
+	@Parameter(property = "aem.package.fileName",
+		defaultValue = "${project.build.finalName}")
+	private String packageFileName;
 
 	@Parameter(defaultValue = "${project}")
 	private MavenProject project;
@@ -78,7 +84,6 @@ public class ComponentMojo extends AbstractMojo {
 
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
-
 		LogSingleton.getInstance().setLogger(getLog());
 
 		try {
@@ -187,21 +192,19 @@ public class ComponentMojo extends AbstractMojo {
 	private File getArchiveFileForProject() {
 		File buildDirectory = new File(project.getBuild().getDirectory());
 
-		String zipFileName = project.getArtifactId() + "-" + project.getVersion() + ".zip";
+		getLog().debug("Archive file name configured to be " + packageFileName + PACKAGE_EXTENSION);
 
-		getLog().debug("Determined ZIP file name to be " + zipFileName);
-
-		return new File(buildDirectory, zipFileName);
+		return new File(buildDirectory, packageFileName + PACKAGE_EXTENSION);
 	}
 
 	private File getTempArchiveFileForProject() {
 		File buildDirectory = new File(project.getBuild().getDirectory());
 
-		String zipFileName = project.getArtifactId() + "-" + project.getVersion() + "-temp.zip";
+		String tempPackageFileName = packageFileName + TEMP_FILENAME_SUFFIX + PACKAGE_EXTENSION;
 
-		getLog().debug("Temp archive file name " + zipFileName);
+		getLog().debug("Temp archive file name configured to be " + tempPackageFileName);
 
-		return new File(buildDirectory, zipFileName);
+		return new File(buildDirectory, tempPackageFileName);
 	}
 
 	private List<String> getAdditionalFeatures() {

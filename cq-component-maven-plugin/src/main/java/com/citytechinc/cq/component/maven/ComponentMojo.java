@@ -55,7 +55,7 @@ public class ComponentMojo extends AbstractMojo {
 	private static final String PACKAGE_EXTENSION = ".zip";
 
 	@Parameter(property = "aem.package.fileName",
-		defaultValue = "${project.build.directory}/${project.build.finalName}")
+		defaultValue = "${project.build.finalName}")
 	private String packageFileName;
 
 	@Parameter(defaultValue = "${project}")
@@ -190,17 +190,21 @@ public class ComponentMojo extends AbstractMojo {
 	}
 
 	private File getArchiveFileForProject() {
+		File buildDirectory = new File(project.getBuild().getDirectory());
+
 		getLog().debug("Archive file name configured to be " + packageFileName + PACKAGE_EXTENSION);
 
-		return new File(packageFileName + PACKAGE_EXTENSION);
+		return new File(buildDirectory, packageFileName + PACKAGE_EXTENSION);
 	}
 
 	private File getTempArchiveFileForProject() {
+		File buildDirectory = new File(project.getBuild().getDirectory());
+
 		String tempPackageFileName = packageFileName + TEMP_FILENAME_SUFFIX + PACKAGE_EXTENSION;
 
 		getLog().debug("Temp archive file name configured to be " + tempPackageFileName);
 
-		return new File(tempPackageFileName);
+		return new File(buildDirectory, tempPackageFileName);
 	}
 
 	private List<String> getAdditionalFeatures() {

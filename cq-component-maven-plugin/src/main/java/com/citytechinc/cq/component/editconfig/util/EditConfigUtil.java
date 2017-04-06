@@ -19,10 +19,15 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import javassist.ClassPool;
 import javassist.CtClass;
+import javassist.CtMethod;
+import javassist.NotFoundException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -30,11 +35,13 @@ import javax.xml.transform.TransformerException;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 
 import com.citytechinc.cq.component.annotations.Component;
+import com.citytechinc.cq.component.annotations.editconfig.InPlaceEditorConfig;
 import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
 import com.citytechinc.cq.component.dialog.exception.OutputFailureException;
 import com.citytechinc.cq.component.editconfig.EditConfig;
 import com.citytechinc.cq.component.editconfig.factory.EditConfigFactory;
+import com.citytechinc.cq.component.editconfig.registry.InPlaceEditorRegistry;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 
 public class EditConfigUtil {
@@ -113,13 +120,16 @@ public class EditConfigUtil {
 	 * @throws IllegalAccessException
 	 * @throws SecurityException
 	 * @throws IllegalArgumentException
+	 * @throws NotFoundException
+	 * @throws InstantiationException
 	 */
 	public static List<EditConfig> buildEditConfigFromClassList(List<CtClass> classList,
-		ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames, File buildDirectory,
-		String componentPathBase, String defaultComponentPathSuffix, ComponentNameTransformer transformer)
-		throws InvalidComponentClassException, TransformerException, ParserConfigurationException, IOException,
-		OutputFailureException, ClassNotFoundException, IllegalArgumentException, SecurityException,
-		IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+		ZipArchiveOutputStream zipOutputStream, Set<String> reservedNames, InPlaceEditorRegistry inPlaceEditorRegistry,
+		ClassLoader classLoader, ClassPool classPool, File buildDirectory, String componentPathBase,
+		String defaultComponentPathSuffix, ComponentNameTransformer transformer) throws InvalidComponentClassException,
+		TransformerException, ParserConfigurationException, IOException, OutputFailureException,
+		ClassNotFoundException, IllegalArgumentException, SecurityException, IllegalAccessException,
+		InvocationTargetException, NoSuchMethodException, NotFoundException, InstantiationException {
 
 		List<EditConfig> builtEditConfigs = new ArrayList<EditConfig>();
 
@@ -127,7 +137,8 @@ public class EditConfigUtil {
 			Component annotation = (Component) curClass.getAnnotation(Component.class);
 
 			if (annotation != null && annotation.editConfig()) {
-				EditConfig builtEditConfig = EditConfigFactory.make(curClass);
+				EditConfig builtEditConfig =
+					EditConfigFactory.make(curClass, inPlaceEditorRegistry, classLoader, classPool);
 
 				builtEditConfigs.add(builtEditConfig);
 
@@ -141,5 +152,67 @@ public class EditConfigUtil {
 
 		return builtEditConfigs;
 	};
+
+	public static InPlaceEditorConfig getInPlaceEditorFromSuperClasses(CtMethod method,
+		Set<Class<?>> registeredAnnotations) throws NotFoundException, ClassNotFoundException,
+		InvalidComponentClassException {
+		InPlaceEditorConfig inPlaceEditorConfig = null;
+		List<CtClass> classes = new ArrayList<CtClass>();
+		CtClass clazz = method.getDeclaringClass();
+		classes.add(clazz);
+		while (clazz.getSuperclass() != null) {
+			classes.add(clazz.getSuperclass());
+			clazz = clazz.getSuperclass();
+		}
+		Collections.reverse(classes);
+		inPlaceEditorConfig = getMemberForAnnotatedInterfaceMethod(method, registeredAnnotations);
+		if (inPlaceEditorConfig == null) {
+			for (CtClass ctclass : classes) {
+				try {
+					CtMethod superClassMethod = ctclass.getDeclaredMethod(method.getName(), method.getParameterTypes());
+					for (Class<?> annotationClass : registeredAnnotations) {
+						if (superClassMethod.hasAnnotation(annotationClass)) {
+							inPlaceEditorConfig =
+								new InPlaceEditorConfig(superClassMethod.getAnnotation(annotationClass),
+									superClassMethod, annotationClass);
+						}
+					}
+				} catch (NotFoundException e) {
+				}
+			}
+		}
+		return inPlaceEditorConfig;
+	}
+
+	private static InPlaceEditorConfig getMemberForAnnotatedInterfaceMethod(CtMethod member,
+		Set<Class<?>> registeredAnnotations) throws InvalidComponentClassException, ClassNotFoundException,
+		NotFoundException {
+		InPlaceEditorConfig inPlaceEditorConfig = null;
+		List<CtClass> interfaces = new ArrayList<CtClass>();
+		CtClass clazz = member.getDeclaringClass();
+		while (clazz != null) {
+			interfaces.addAll(Arrays.asList(clazz.getInterfaces()));
+			clazz = clazz.getSuperclass();
+		}
+		for (CtClass ctclass : interfaces) {
+			try {
+				CtMethod newMethodMember = ctclass.getDeclaredMethod(member.getName(), member.getParameterTypes());
+				for (Class<?> annotationClass : registeredAnnotations) {
+					Object ipeAnnotation = newMethodMember.getAnnotation(annotationClass);
+					if (ipeAnnotation != null) {
+						if (inPlaceEditorConfig == null) {
+							inPlaceEditorConfig =
+								new InPlaceEditorConfig(ipeAnnotation, newMethodMember, annotationClass);
+						} else {
+							throw new InvalidComponentClassException(
+								"Class has multiple interfaces that have the same method signature annotated");
+						}
+					}
+				}
+			} catch (NotFoundException e) {
+			}
+		}
+		return inPlaceEditorConfig;
+	}
 
 }

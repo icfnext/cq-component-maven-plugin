@@ -13,19 +13,12 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.annotations;
+package com.citytechinc.cq.component.editconfig;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.citytechinc.cq.component.xml.XmlElement;
 
-/**
- * Used to flag a method that has an interface with a InPlaceEditor annotation
- * to be ignored
- */
-@Retention(RetentionPolicy.CLASS)
-@Target({ ElementType.FIELD, ElementType.METHOD })
-public @interface IgnoreDialogField {
+public interface InPlaceEditorElement extends XmlElement {
+	Boolean getActive();
 
+	String getEditorType();
 }

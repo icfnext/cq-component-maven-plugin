@@ -13,19 +13,18 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.annotations;
+package com.citytechinc.cq.component.editconfig.inplaceediting.image;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.citytechinc.cq.component.annotations.config.InPlaceEditor;
+import com.citytechinc.cq.component.editconfig.AbstractInPlaceEditorElement;
+import com.citytechinc.cq.component.editconfig.DefaultInPlaceEditorParameters;
 
-/**
- * Used to flag a method that has an interface with a InPlaceEditor annotation
- * to be ignored
- */
-@Retention(RetentionPolicy.CLASS)
-@Target({ ElementType.FIELD, ElementType.METHOD })
-public @interface IgnoreDialogField {
+@InPlaceEditor(annotationClass = com.citytechinc.cq.component.editconfig.annotations.inplaceeditors.ImageEditor.class,
+	editorType = "image", makerClass = ImageEditorMaker.class)
+public class ImageEditor extends AbstractInPlaceEditorElement {
+
+	public ImageEditor(DefaultInPlaceEditorParameters parameters) {
+		super(parameters);
+	}
 
 }

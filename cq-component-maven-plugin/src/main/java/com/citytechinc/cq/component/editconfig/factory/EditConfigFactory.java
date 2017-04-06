@@ -15,25 +15,33 @@
  */
 package com.citytechinc.cq.component.editconfig.factory;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javassist.ClassPool;
 import javassist.CtClass;
+import javassist.CtMember;
+import javassist.CtMethod;
+import javassist.NotFoundException;
 
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.Component;
+import com.citytechinc.cq.component.annotations.IgnoreInPlaceEditor;
 import com.citytechinc.cq.component.annotations.Listener;
 import com.citytechinc.cq.component.annotations.editconfig.ActionConfig;
 import com.citytechinc.cq.component.annotations.editconfig.ActionConfigProperty;
 import com.citytechinc.cq.component.annotations.editconfig.DropTarget;
 import com.citytechinc.cq.component.annotations.editconfig.FormParameter;
+import com.citytechinc.cq.component.annotations.editconfig.InPlaceEditorConfig;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
 import com.citytechinc.cq.component.editconfig.EditConfig;
 import com.citytechinc.cq.component.editconfig.EditConfigParameters;
+import com.citytechinc.cq.component.editconfig.InPlaceEditorElement;
 import com.citytechinc.cq.component.editconfig.actionconfigs.EditConfigActionConfig;
 import com.citytechinc.cq.component.editconfig.actionconfigs.EditConfigActionConfigParameters;
 import com.citytechinc.cq.component.editconfig.actionconfigs.EditConfigActionConfigs;
@@ -48,6 +56,14 @@ import com.citytechinc.cq.component.editconfig.inplaceediting.EditConfigInPlaceE
 import com.citytechinc.cq.component.editconfig.inplaceediting.EditConfigInPlaceEditingParameters;
 import com.citytechinc.cq.component.editconfig.listeners.EditConfigListeners;
 import com.citytechinc.cq.component.editconfig.listeners.EditConfigListenersParameters;
+import com.citytechinc.cq.component.editconfig.maker.InPlaceEditorMakerParameters;
+import com.citytechinc.cq.component.editconfig.registry.InPlaceEditorRegistry;
+import com.citytechinc.cq.component.editconfig.util.EditConfigUtil;
+import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
+import com.citytechinc.cq.component.util.Constants;
+import com.citytechinc.cq.component.util.InPlaceEditorConfigHolder;
+import com.citytechinc.cq.component.xml.DefaultXmlElement;
+import com.citytechinc.cq.component.xml.DefaultXmlElementParameters;
 import com.citytechinc.cq.component.xml.XmlElement;
 
 public class EditConfigFactory {
@@ -56,7 +72,10 @@ public class EditConfigFactory {
 	private EditConfigFactory() {
 	}
 
-	public static EditConfig make(CtClass componentClass) throws InvalidComponentClassException, ClassNotFoundException {
+	public static EditConfig make(CtClass componentClass, InPlaceEditorRegistry inPlaceEditorRegistry,
+		ClassLoader classLoader, ClassPool classPool) throws InvalidComponentClassException, ClassNotFoundException,
+		NotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException,
+		InvocationTargetException, NoSuchMethodException, SecurityException {
 
 		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
@@ -87,7 +106,8 @@ public class EditConfigFactory {
 			editConfigChildren.add(ecac);
 		}
 
-		EditConfigInPlaceEditing ecipe = getInPlaceEditingForEditConfig(componentAnnotation);
+		InPlaceEditorElement ecipe =
+			getInPlaceEditingForEditConfig(componentClass, componentAnnotation, inPlaceEditorRegistry);
 		if (ecipe != null) {
 			editConfigChildren.add(ecipe);
 		}
@@ -168,7 +188,10 @@ public class EditConfigFactory {
 		return null;
 	}
 
-	private static EditConfigInPlaceEditing getInPlaceEditingForEditConfig(Component componentAnnotation) {
+	private static InPlaceEditorElement getInPlaceEditingForEditConfig(CtClass componentClass,
+		Component componentAnnotation, InPlaceEditorRegistry inPlaceEditorRegistry) throws NotFoundException,
+		ClassNotFoundException, InvalidComponentClassException, InstantiationException, IllegalAccessException,
+		IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		if (!StringUtils.isEmpty(componentAnnotation.inPlaceEditingConfigPath())
 			|| !StringUtils.isEmpty(componentAnnotation.inPlaceEditingEditorType())) {
 			EditConfigInPlaceEditingParameters parameters = new EditConfigInPlaceEditingParameters();
@@ -180,6 +203,68 @@ public class EditConfigFactory {
 			}
 			parameters.setActive(componentAnnotation.inPlaceEditingActive());
 			return new EditConfigInPlaceEditing(parameters);
+		} else {
+			List<InPlaceEditorConfig> inPlaceEditorConfigs = new ArrayList<InPlaceEditorConfig>();
+			List<CtMember> fieldsAndMethods = new ArrayList<CtMember>();
+			fieldsAndMethods.addAll(ComponentMojoUtil.collectFields(componentClass));
+			fieldsAndMethods.addAll(ComponentMojoUtil.collectMethods(componentClass));
+
+			for (CtMember member : fieldsAndMethods) {
+				if (!member.hasAnnotation(IgnoreInPlaceEditor.class)) {
+					InPlaceEditorConfig inPlaceEditorConfig = null;
+					if (member instanceof CtMethod) {
+						inPlaceEditorConfig =
+							EditConfigUtil.getInPlaceEditorFromSuperClasses((CtMethod) member,
+								inPlaceEditorRegistry.getRegisteredAnnotations());
+					} else {
+						for (Class<?> annotationClass : inPlaceEditorRegistry.getRegisteredAnnotations()) {
+							Object ipeAnnotation = member.getAnnotation(annotationClass);
+							if (ipeAnnotation != null) {
+								if (inPlaceEditorConfig == null) {
+									inPlaceEditorConfig =
+										new InPlaceEditorConfig(ipeAnnotation, member, annotationClass);
+								}
+							}
+						}
+					}
+					if (inPlaceEditorConfig != null) {
+						inPlaceEditorConfigs.add(inPlaceEditorConfig);
+					}
+				}
+			}
+			if (inPlaceEditorConfigs.size() > 0) {
+				if (inPlaceEditorConfigs.size() == 1) {
+					InPlaceEditorConfigHolder ipeConfigHolder =
+						inPlaceEditorRegistry.getInPlaceEditorForAnnotation(inPlaceEditorConfigs.get(0)
+							.getAnnotationClass());
+					InPlaceEditorMakerParameters ipeMakerParameters = new InPlaceEditorMakerParameters();
+					ipeMakerParameters.setInPlaceEditorConfig(inPlaceEditorConfigs.get(0));
+					ipeMakerParameters.setSetActive(true);
+					return ipeConfigHolder.getMakerClass().getConstructor(InPlaceEditorMakerParameters.class)
+						.newInstance(ipeMakerParameters).make();
+				} else {
+					List<InPlaceEditorElement> childEditors = new ArrayList<InPlaceEditorElement>();
+					for (InPlaceEditorConfig ipeConfig : inPlaceEditorConfigs) {
+						InPlaceEditorConfigHolder ipeConfigHolder =
+							inPlaceEditorRegistry.getInPlaceEditorForAnnotation(ipeConfig.getAnnotationClass());
+						InPlaceEditorMakerParameters ipeMakerParameters = new InPlaceEditorMakerParameters();
+						ipeMakerParameters.setInPlaceEditorConfig(ipeConfig);
+						childEditors.add(ipeConfigHolder.getMakerClass()
+							.getConstructor(InPlaceEditorMakerParameters.class).newInstance(ipeMakerParameters).make());
+					}
+					DefaultXmlElementParameters cqChildEditorsParameters = new DefaultXmlElementParameters();
+					cqChildEditorsParameters.setContainedElements(childEditors);
+					cqChildEditorsParameters.setNameSpace(Constants.CQ_NS_URI);
+					cqChildEditorsParameters.setPrimaryType(Constants.NT_UNSTRUCTURED);
+					cqChildEditorsParameters.setFieldName("cq:childEditors");
+					DefaultXmlElement cqChildEditorsElement = new DefaultXmlElement(cqChildEditorsParameters);
+					EditConfigInPlaceEditingParameters parameters = new EditConfigInPlaceEditingParameters();
+					parameters.setEditorType("hybrid");
+					parameters.setActive(true);
+					parameters.setContainedElements(Arrays.asList(cqChildEditorsElement));
+					return new EditConfigInPlaceEditing(parameters);
+				}
+			}
 		}
 		return null;
 	}

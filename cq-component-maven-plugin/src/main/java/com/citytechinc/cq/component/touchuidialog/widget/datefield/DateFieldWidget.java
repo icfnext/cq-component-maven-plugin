@@ -54,4 +54,8 @@ public class DateFieldWidget extends AbstractTouchUIWidget {
 	public String getDisplayedFormat() {
 		return displayedFormat;
 	}
+
+	public String getType() {
+		return "datetime";
+	}
 }

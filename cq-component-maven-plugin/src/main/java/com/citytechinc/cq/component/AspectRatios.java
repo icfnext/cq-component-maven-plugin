@@ -13,11 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.dialog.html5smartimage;
+package com.citytechinc.cq.component;
 
-import com.citytechinc.cq.component.dialog.AbstractDialogElement;
+import com.citytechinc.cq.component.xml.AbstractXmlElement;
 
-public class AspectRatios extends AbstractDialogElement {
+public class AspectRatios extends AbstractXmlElement {
 
 	public AspectRatios(AspectRatiosParameters parameters) {
 		super(parameters);

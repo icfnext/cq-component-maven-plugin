@@ -20,6 +20,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.citytechinc.cq.component.AspectRatio;
+import com.citytechinc.cq.component.AspectRatioParameters;
+import com.citytechinc.cq.component.AspectRatios;
+import com.citytechinc.cq.component.AspectRatiosParameters;
 import com.citytechinc.cq.component.editconfig.DefaultInPlaceEditorParameters;
 import com.citytechinc.cq.component.editconfig.InPlaceEditorElement;
 import com.citytechinc.cq.component.editconfig.maker.AbstractInPlaceEditorMaker;
@@ -29,7 +33,6 @@ import com.citytechinc.cq.component.util.Constants;
 import com.citytechinc.cq.component.xml.DefaultXmlElement;
 import com.citytechinc.cq.component.xml.DefaultXmlElementParameters;
 import com.citytechinc.cq.component.xml.XmlElement;
-import com.citytechinc.cq.component.xml.XmlElementParameters;
 
 public class ImageEditorMaker extends AbstractInPlaceEditorMaker<DefaultInPlaceEditorParameters> {
 
@@ -60,6 +63,23 @@ public class ImageEditorMaker extends AbstractInPlaceEditorMaker<DefaultInPlaceE
 		cropParameters.setPrimaryType(Constants.NT_UNSTRUCTURED);
 		cropParameters.setAdditionalProperties(Collections.singletonMap("features", imageEditor.enableCrop() ? "*"
 			: "-"));
+
+		if (imageEditor.cropAspectRatios().length > 0) {
+			List<AspectRatio> aspectRatioChildren = new ArrayList<AspectRatio>();
+			for (int i = 0; i < imageEditor.cropAspectRatios().length; i++) {
+				com.citytechinc.cq.component.annotations.AspectRatio aspectRatio = imageEditor.cropAspectRatios()[i];
+				AspectRatioParameters arp = new AspectRatioParameters();
+				arp.setName(aspectRatio.text());
+				arp.setRatio((double) aspectRatio.height() / aspectRatio.width());
+				arp.setFieldName(Integer.toString(i));
+				aspectRatioChildren.add(new AspectRatio(arp));
+			}
+
+			AspectRatiosParameters aspectRatiosParameters = new AspectRatiosParameters();
+			aspectRatiosParameters.setContainedElements(aspectRatioChildren);
+			cropParameters.setContainedElements(Arrays.asList(new AspectRatios(aspectRatiosParameters)));
+		}
+
 		pluginChildren.add(new DefaultXmlElement(cropParameters));
 
 		// Builds map node

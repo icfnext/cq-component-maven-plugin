@@ -13,11 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.dialog.html5smartimage;
+package com.citytechinc.cq.component;
 
-import com.citytechinc.cq.component.dialog.DefaultDialogElementParameters;
+import com.citytechinc.cq.component.xml.DefaultXmlElementParameters;
 
-public class AspectRatiosParameters extends DefaultDialogElementParameters {
+public class AspectRatiosParameters extends DefaultXmlElementParameters {
 	private static final String PRIMARY_TYPE = "nt:unstructured";
 	private static final String FIELD_NAME = "aspectRatios";
 

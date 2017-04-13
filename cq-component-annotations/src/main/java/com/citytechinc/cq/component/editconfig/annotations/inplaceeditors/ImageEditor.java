@@ -20,6 +20,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.citytechinc.cq.component.annotations.AspectRatio;
+
 @Retention(RetentionPolicy.CLASS)
 @Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface ImageEditor {
@@ -28,4 +30,6 @@ public @interface ImageEditor {
 	boolean enableRotate() default true;
 
 	boolean enableMap() default true;
+
+	AspectRatio[] cropAspectRatios() default {};
 }

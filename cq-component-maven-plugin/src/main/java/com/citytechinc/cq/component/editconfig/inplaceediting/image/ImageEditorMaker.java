@@ -24,6 +24,7 @@ import com.citytechinc.cq.component.AspectRatio;
 import com.citytechinc.cq.component.AspectRatioParameters;
 import com.citytechinc.cq.component.AspectRatios;
 import com.citytechinc.cq.component.AspectRatiosParameters;
+import com.citytechinc.cq.component.editconfig.ConfigElement;
 import com.citytechinc.cq.component.editconfig.DefaultInPlaceEditorParameters;
 import com.citytechinc.cq.component.editconfig.InPlaceEditorElement;
 import com.citytechinc.cq.component.editconfig.maker.AbstractInPlaceEditorMaker;
@@ -98,11 +99,10 @@ public class ImageEditorMaker extends AbstractInPlaceEditorMaker<DefaultInPlaceE
 
 		// Builds config node
 		DefaultXmlElementParameters configParameters = new DefaultXmlElementParameters();
-		configParameters.setFieldName("config");
 		configParameters.setPrimaryType(Constants.NT_UNSTRUCTURED);
 		configParameters.setContainedElements(Arrays.asList(plugins));
-		DefaultXmlElement config = new DefaultXmlElement(configParameters);
-		parameters.setContainedElements(Arrays.asList(config));
+		ConfigElement config = new ConfigElement(configParameters);
+		parameters.setConfigElement(config);
 
 		return new com.citytechinc.cq.component.editconfig.inplaceediting.image.ImageEditor(parameters);
 	}

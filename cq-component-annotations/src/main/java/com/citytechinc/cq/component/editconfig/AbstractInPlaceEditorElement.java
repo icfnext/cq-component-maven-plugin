@@ -15,15 +15,19 @@
  */
 package com.citytechinc.cq.component.editconfig;
 
+import java.util.List;
+
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.xml.AbstractXmlElement;
+import com.citytechinc.cq.component.xml.XmlElement;
 
 public abstract class AbstractInPlaceEditorElement extends AbstractXmlElement implements InPlaceEditorElement {
 	private final Boolean active;
 	private final String editorType;
 	private final String type;
 	private final String title;
+	private ConfigElement configElement;
 
 	public AbstractInPlaceEditorElement(InPlaceEditorParameters parameters) {
 		super(parameters);
@@ -36,6 +40,7 @@ public abstract class AbstractInPlaceEditorElement extends AbstractXmlElement im
 			this.editorType = null;
 		}
 		this.title = StringUtils.isNotEmpty(parameters.getTitle()) ? parameters.getTitle() : parameters.getFieldName();
+		this.configElement = parameters.getConfigElement();
 	}
 
 	public Boolean getActive() {
@@ -52,5 +57,17 @@ public abstract class AbstractInPlaceEditorElement extends AbstractXmlElement im
 
 	public String getTitle() {
 		return title;
+	}
+
+	public ConfigElement getConfigElement() {
+		return configElement;
+	}
+
+	public void setConfigElement(ConfigElement configElement) {
+		this.configElement = configElement;
+	}
+
+	public void setContainedElements(List<XmlElement> containedElements) {
+		this.containedElements = containedElements;
 	}
 }

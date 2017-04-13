@@ -39,6 +39,7 @@ import com.citytechinc.cq.component.annotations.editconfig.DropTarget;
 import com.citytechinc.cq.component.annotations.editconfig.FormParameter;
 import com.citytechinc.cq.component.annotations.editconfig.InPlaceEditorConfig;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
+import com.citytechinc.cq.component.editconfig.ConfigElement;
 import com.citytechinc.cq.component.editconfig.EditConfig;
 import com.citytechinc.cq.component.editconfig.EditConfigParameters;
 import com.citytechinc.cq.component.editconfig.InPlaceEditorElement;
@@ -240,17 +241,34 @@ public class EditConfigFactory {
 					InPlaceEditorMakerParameters ipeMakerParameters = new InPlaceEditorMakerParameters();
 					ipeMakerParameters.setInPlaceEditorConfig(inPlaceEditorConfigs.get(0));
 					ipeMakerParameters.setSetActive(true);
-					return ipeConfigHolder.getMakerClass().getConstructor(InPlaceEditorMakerParameters.class)
-						.newInstance(ipeMakerParameters).make();
+					InPlaceEditorElement ipeElement =
+						ipeConfigHolder.getMakerClass().getConstructor(InPlaceEditorMakerParameters.class)
+							.newInstance(ipeMakerParameters).make();
+					ConfigElement configElement = ipeElement.getConfigElement();
+					if (configElement != null) {
+						configElement.setFieldName("config");
+						ipeElement.setContainedElements(Arrays.asList(new XmlElement[] { configElement }));
+						ipeElement.setConfigElement(null);
+					}
+					return ipeElement;
 				} else {
 					List<InPlaceEditorElement> childEditors = new ArrayList<InPlaceEditorElement>();
+					List<ConfigElement> configElements = new ArrayList<ConfigElement>();
 					for (InPlaceEditorConfig ipeConfig : inPlaceEditorConfigs) {
 						InPlaceEditorConfigHolder ipeConfigHolder =
 							inPlaceEditorRegistry.getInPlaceEditorForAnnotation(ipeConfig.getAnnotationClass());
 						InPlaceEditorMakerParameters ipeMakerParameters = new InPlaceEditorMakerParameters();
 						ipeMakerParameters.setInPlaceEditorConfig(ipeConfig);
-						childEditors.add(ipeConfigHolder.getMakerClass()
-							.getConstructor(InPlaceEditorMakerParameters.class).newInstance(ipeMakerParameters).make());
+						InPlaceEditorElement ipeElement =
+							ipeConfigHolder.getMakerClass().getConstructor(InPlaceEditorMakerParameters.class)
+								.newInstance(ipeMakerParameters).make();
+						ConfigElement configElement = ipeElement.getConfigElement();
+						if (configElement != null) {
+							configElement.setFieldName(ipeElement.getFieldName());
+							configElements.add(configElement);
+							ipeElement.setConfigElement(null);
+							childEditors.add(ipeElement);
+						}
 					}
 					DefaultXmlElementParameters cqChildEditorsParameters = new DefaultXmlElementParameters();
 					cqChildEditorsParameters.setContainedElements(childEditors);
@@ -258,11 +276,20 @@ public class EditConfigFactory {
 					cqChildEditorsParameters.setPrimaryType(Constants.NT_UNSTRUCTURED);
 					cqChildEditorsParameters.setFieldName("cq:childEditors");
 					DefaultXmlElement cqChildEditorsElement = new DefaultXmlElement(cqChildEditorsParameters);
+
+					DefaultXmlElementParameters configParameters = new DefaultXmlElementParameters();
+					configParameters.setContainedElements(configElements);
+					configParameters.setPrimaryType(Constants.NT_UNSTRUCTURED);
+					configParameters.setFieldName("config");
+					DefaultXmlElement configElement = new DefaultXmlElement(configParameters);
+
 					EditConfigInPlaceEditingParameters parameters = new EditConfigInPlaceEditingParameters();
 					parameters.setEditorType("hybrid");
 					parameters.setActive(true);
-					parameters.setContainedElements(Arrays.asList(cqChildEditorsElement));
-					return new EditConfigInPlaceEditing(parameters);
+					EditConfigInPlaceEditing editConfig = new EditConfigInPlaceEditing(parameters);
+					editConfig.setContainedElements(Arrays.asList(new XmlElement[] { cqChildEditorsElement,
+						configElement }));
+					return editConfig;
 				}
 			}
 		}

@@ -13,10 +13,19 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.editconfig.maker;
+package com.citytechinc.cq.component.editconfig;
 
-import com.citytechinc.cq.component.editconfig.InPlaceEditorElement;
+import com.citytechinc.cq.component.xml.DefaultXmlElement;
+import com.citytechinc.cq.component.xml.XmlElementParameters;
 
-public interface InPlaceEditorMaker {
-	public InPlaceEditorElement make() throws ClassNotFoundException, IllegalAccessException, InstantiationException;
+public class ConfigElement extends DefaultXmlElement {
+
+	public ConfigElement(XmlElementParameters parameters) {
+		super(parameters);
+	}
+
+	public void setFieldName(String fieldName) {
+		this.fieldName = fieldName;
+	}
+
 }

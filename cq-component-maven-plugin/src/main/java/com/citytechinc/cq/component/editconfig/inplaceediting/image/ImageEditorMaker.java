@@ -44,9 +44,8 @@ public class ImageEditorMaker extends AbstractInPlaceEditorMaker<DefaultInPlaceE
 	protected InPlaceEditorElement make(DefaultInPlaceEditorParameters parameters) throws ClassNotFoundException,
 		IllegalAccessException, InstantiationException {
 		ImageEditor imageEditor = (ImageEditor) this.parameters.getInPlaceEditorConfig().getInPlaceEditorAnnotation();
-
+		parameters.setTitle(imageEditor.title());
 		parameters.setEditorType("image");
-		parameters.setTitle(getName());
 
 		List<XmlElement> pluginChildren = new ArrayList<XmlElement>();
 		// Builds rotate node

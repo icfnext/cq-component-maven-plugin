@@ -15,6 +15,8 @@
  */
 package com.citytechinc.cq.component.editconfig;
 
+import org.codehaus.plexus.util.StringUtils;
+
 import com.citytechinc.cq.component.xml.AbstractXmlElement;
 
 public abstract class AbstractInPlaceEditorElement extends AbstractXmlElement implements InPlaceEditorElement {
@@ -33,7 +35,7 @@ public abstract class AbstractInPlaceEditorElement extends AbstractXmlElement im
 			this.type = parameters.getEditorType();
 			this.editorType = null;
 		}
-		this.title = parameters.getTitle();
+		this.title = StringUtils.isNotEmpty(parameters.getTitle()) ? parameters.getTitle() : parameters.getFieldName();
 	}
 
 	public Boolean getActive() {

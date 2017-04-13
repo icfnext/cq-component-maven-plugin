@@ -25,6 +25,8 @@ import com.citytechinc.cq.component.annotations.AspectRatio;
 @Retention(RetentionPolicy.CLASS)
 @Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface ImageEditor {
+	String title() default "";
+
 	boolean enableCrop() default true;
 
 	boolean enableRotate() default true;

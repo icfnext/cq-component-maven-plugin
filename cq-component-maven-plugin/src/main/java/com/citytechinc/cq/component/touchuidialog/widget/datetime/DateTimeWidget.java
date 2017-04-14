@@ -1,5 +1,5 @@
 /**
- *    Copyright 2013 CITYTECH, Inc.
+ *    Copyright 2017 ICF Olson
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -27,6 +27,10 @@ public class DateTimeWidget extends DateFieldWidget {
 
 	public DateTimeWidget(DateTimeWidgetParameters parameters) {
 		super(parameters);
+	}
+
+	public String getType() {
+		return "datetime";
 	}
 
 }

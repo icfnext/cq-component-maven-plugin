@@ -1,5 +1,5 @@
 /**
- *    Copyright 2013 CITYTECH, Inc.
+ *    Copyright 2017 ICF Olson
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -143,12 +143,25 @@ public class SmartImageWidgetMaker extends AbstractTouchUIWidgetMaker<SmartImage
 
 	private String getNameAsPrefix(Html5SmartImage annotation) {
 		StringBuilder sb = new StringBuilder();
-		if (parameters.isUseDotSlashInName()) {
-			sb.append("./");
-		}
-		if (StringUtils.isNotEmpty(getName()) && !annotation.isSelf()) {
-			sb.append(getName()).append("/");
-		}
+
+		String overrideName = parameters.getDialogFieldConfig().getName();
+
+        if (StringUtils.isNotEmpty(overrideName)) {
+            sb.append(overrideName);
+
+            if (!overrideName.endsWith("/")) {
+                sb.append("/");
+            }
+        } else {
+            if (parameters.isUseDotSlashInName()) {
+                sb.append("./");
+            }
+
+            if (StringUtils.isNotEmpty(getName()) && !annotation.isSelf()) {
+                sb.append(getName()).append("/");
+            }
+        }
+
 		return sb.toString();
 	}
 }

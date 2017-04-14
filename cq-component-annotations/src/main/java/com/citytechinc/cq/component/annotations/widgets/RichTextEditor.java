@@ -1,5 +1,5 @@
 /**
- *    Copyright 2013 CITYTECH, Inc.
+ *    Copyright 2017 ICF Olson
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@ import com.citytechinc.cq.component.annotations.widgets.rte.SpellCheck;
 import com.citytechinc.cq.component.annotations.widgets.rte.Style;
 import com.citytechinc.cq.component.annotations.widgets.rte.SubSuperscript;
 import com.citytechinc.cq.component.annotations.widgets.rte.Table;
+import com.citytechinc.cq.component.annotations.widgets.rte.UISettings;
 import com.citytechinc.cq.component.annotations.widgets.rte.Undo;
 
 /**
@@ -53,7 +54,7 @@ public @interface RichTextEditor {
 	 *
 	 * @return Edit[]
 	 */
-	public Edit[] edit() default {};
+	Edit[] edit() default {};
 
 	/**
 	 * FindReplace RTE Plugin configuration. For more information on configuring
@@ -63,7 +64,7 @@ public @interface RichTextEditor {
 	 *
 	 * @return FindReplace[]
 	 */
-	public FindReplace[] findreplace() default {};
+	FindReplace[] findreplace() default {};
 
 	/**
 	 * Format RTE Plugin configuration. For more information on configuring this
@@ -73,7 +74,7 @@ public @interface RichTextEditor {
 	 *
 	 * @return Format[]
 	 */
-	public Format[] format() default {};
+	Format[] format() default {};
 
 	/**
 	 * Image RTE Plugin configuration. For more information on configuring this
@@ -83,7 +84,7 @@ public @interface RichTextEditor {
 	 *
 	 * @return Image[]
 	 */
-	public Image[] image() default {};
+	Image[] image() default {};
 
 	/**
 	 * Keys RTE Plugin configuration. For more information on configuring this
@@ -93,7 +94,7 @@ public @interface RichTextEditor {
 	 *
 	 * @return Keys[]
 	 */
-	public Keys[] keys() default {};
+	Keys[] keys() default {};
 
 	/**
 	 * Justify RTE Plugin configuration. For more information on configuring
@@ -103,7 +104,7 @@ public @interface RichTextEditor {
 	 *
 	 * @return Justify[]
 	 */
-	public Justify[] justify() default {};
+	Justify[] justify() default {};
 
 	/**
 	 * Links RTE Plugin configuration. For more information on configuring this
@@ -113,7 +114,7 @@ public @interface RichTextEditor {
 	 *
 	 * @return Links[]
 	 */
-	public Links[] links() default {};
+	Links[] links() default {};
 
 	/**
 	 * Lists RTE Plugin configuration. For more information on configuring this
@@ -123,7 +124,7 @@ public @interface RichTextEditor {
 	 *
 	 * @return Lists
 	 */
-	public Lists[] lists() default {};
+	Lists[] lists() default {};
 
 	/**
 	 * MiscTools RTE Plugin configuration. For more information on configuring
@@ -133,7 +134,7 @@ public @interface RichTextEditor {
 	 *
 	 * @return MiscTools[]
 	 */
-	public MiscTools[] misctools() default {};
+	MiscTools[] misctools() default {};
 
 	/**
 	 * ParaFormat RTE Plugin configuration. For more information on configuring
@@ -143,7 +144,7 @@ public @interface RichTextEditor {
 	 *
 	 * @return ParaFormat[]
 	 */
-	public ParaFormat[] paraformat() default {};
+	ParaFormat[] paraformat() default {};
 
 	/**
 	 * SpellCheck RTE Plugin configuration. For more information on configuring
@@ -153,7 +154,7 @@ public @interface RichTextEditor {
 	 *
 	 * @return SpellCheck[]
 	 */
-	public SpellCheck[] spellcheck() default {};
+	SpellCheck[] spellcheck() default {};
 
 	/**
 	 * Styles RTE Plugin configuration. For more information on configuring this
@@ -163,7 +164,7 @@ public @interface RichTextEditor {
 	 *
 	 * @return Styles[]
 	 */
-	public Style[] styles() default {};
+	Style[] styles() default {};
 
 	/**
 	 * SubSuperscript RTE Plugin configuration. For more information on
@@ -173,7 +174,7 @@ public @interface RichTextEditor {
 	 *
 	 * @return SubSuperscript[]
 	 */
-	public SubSuperscript[] subsuperscript() default {};
+	SubSuperscript[] subsuperscript() default {};
 
 	/**
 	 * Table RTE Plugin configuration. For more information on configuring this
@@ -183,7 +184,7 @@ public @interface RichTextEditor {
 	 *
 	 * @return Table[]
 	 */
-	public Table[] table() default {};
+	Table[] table() default {};
 
 	/**
 	 * Undo RTE Plugin configuration. For more information on configuring this
@@ -193,6 +194,18 @@ public @interface RichTextEditor {
 	 *
 	 * @return Undo[]
 	 */
-	public Undo[] undo() default {};
+	Undo[] undo() default {};
+
+	/**
+	 * For Touch-UI Only
+	 *
+	 * UI Settings Node configuration plugin see <a href=
+	 * "https://docs.adobe.com/docs/en/aem/6-2/administer/operations/page-authoring/rich-text-editor.html?#Configuri
+	 * n g RichText Editor dialog settings for toolbar (Touch UI)>Configuring
+	 * RichText Editor dialog settings for toolbar (Touch UI)</a>.
+	 *
+	 * @return Undo[]
+	 */
+	UISettings[] uiSettings() default {};
 
 }

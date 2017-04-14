@@ -1,5 +1,5 @@
 /**
- *    Copyright 2013 CITYTECH, Inc.
+ *    Copyright 2017 ICF Olson
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -30,4 +30,12 @@ public @interface Edit {
 
 	public boolean pasteWordhtml() default true;
 
+	/**
+	 * @see <a href="https://docs.adobe.com/docs/en/aem/6-2/administer/operations/page-authoring/rich-text-editor.html#Default%20Paste%20Mode">Default Paste Mode</a>
+	 *
+	 * Currently only supported in Classic UI
+	 *
+	 * Possible values are 'wordhtml' (default), 'plaintext' or 'browser'
+	 */
+	public String defaultPasteMode() default "wordhtml";
 }

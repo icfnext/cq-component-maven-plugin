@@ -29,4 +29,8 @@ public class DateTimeWidget extends DateFieldWidget {
 		super(parameters);
 	}
 
+	public String getType() {
+		return "datetime";
+	}
+
 }

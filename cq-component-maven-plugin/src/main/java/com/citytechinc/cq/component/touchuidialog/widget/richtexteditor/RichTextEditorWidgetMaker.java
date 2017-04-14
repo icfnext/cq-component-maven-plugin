@@ -21,6 +21,7 @@ import java.util.List;
 import com.citytechinc.cq.component.annotations.widgets.RichTextEditor;
 import com.citytechinc.cq.component.annotations.widgets.rte.UISettings;
 import com.citytechinc.cq.component.builder.RtePluginBuilder;
+import com.citytechinc.cq.component.builder.RtePluginBuilderParameters;
 import com.citytechinc.cq.component.builder.RteUISettingsBuilder;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
@@ -41,7 +42,7 @@ public class RichTextEditorWidgetMaker extends AbstractTouchUIWidgetMaker<RichTe
 		InstantiationException {
 		List<XmlElement> children = new ArrayList<XmlElement>();
 		final RichTextEditor rteAnnotation = getAnnotation(RichTextEditor.class);
-		children.add(new RtePluginBuilder(rteAnnotation).build());
+		children.add(new RtePluginBuilder(new RtePluginBuilderParameters(rteAnnotation)).build());
 
 		if (rteAnnotation.uiSettings().length > 0) {
 			UISettings uiSettings = rteAnnotation.uiSettings()[0];

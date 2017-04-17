@@ -544,17 +544,23 @@ public class ComponentMojoUtil {
 	/**
 	 * Constructs a list of all fields contained in the provided CtClass and any
 	 * of its parent classes.
-	 * 
+	 *
 	 * @param ctClass
 	 * @return The constructed list of fields
 	 * @throws NotFoundException
 	 */
-	public static List<CtField> collectFields(CtClass ctClass, boolean suppressInheritedFields) throws NotFoundException {
+	public static List<CtField> collectFields(CtClass ctClass, boolean suppressInheritedFields)
+		throws NotFoundException {
+
 		List<CtField> fields = new ArrayList<CtField>();
 		if (ctClass != null) {
 			fields.addAll(Arrays.asList(ctClass.getDeclaredFields()));
 			if (!suppressInheritedFields) {
-				fields.addAll(collectFields(ctClass.getSuperclass()));
+				List<CtField> superFields = collectFields(ctClass.getSuperclass());
+
+				for (final CtField superField : superFields) {
+					addField(superField, fields);
+				}
 			}
 		}
 		return fields;
@@ -676,6 +682,27 @@ public class ComponentMojoUtil {
 		XmlWriter.writeXml(xmlElement, new FileOutputStream(file));
 
 		return file;
+	}
+
+	/**
+	 * Add field to target field list only if it does not already exist.
+	 *
+	 * @param sourceField  the field to add
+	 * @param targetFields the list to add to
+	 */
+	private static void addField(CtField sourceField, List<CtField> targetFields) {
+
+		boolean fieldExists = false;
+		for (CtField targetField : targetFields) {
+			if (StringUtils.equals(targetField.getName(), sourceField.getName())) {
+				fieldExists = true;
+				break;
+			}
+		}
+
+		if (!fieldExists) {
+			targetFields.add(sourceField);
+		}
 	}
 
 }

@@ -191,11 +191,11 @@ public class ComponentMojoUtil {
 		TouchUIWidgetRegistry touchUIWidgetRegistry, ClassLoader classLoader, ClassPool classPool, File buildDirectory,
 		String componentPathBase, String defaultComponentPathSuffix, String defaultComponentGroup,
 		File existingArchiveFile, File tempArchiveFile, ComponentNameTransformer transformer,
-		boolean generateTouchUiDialogs) throws OutputFailureException, IOException, InvalidComponentClassException,
-		InvalidComponentFieldException, ParserConfigurationException, TransformerException, ClassNotFoundException,
-		CannotCompileException, NotFoundException, SecurityException, NoSuchFieldException, IllegalArgumentException,
-		IllegalAccessException, InvocationTargetException, NoSuchMethodException, InstantiationException,
-		TouchUIDialogWriteException, TouchUIDialogGenerationException {
+		boolean generateTouchUiDialogs, boolean generateClassicUiDialogs) throws OutputFailureException, IOException,
+		InvalidComponentClassException, InvalidComponentFieldException, ParserConfigurationException,
+		TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException,
+		NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException,
+		NoSuchMethodException, InstantiationException, TouchUIDialogWriteException, TouchUIDialogGenerationException {
 
 		if (!existingArchiveFile.exists()) {
 			throw new OutputFailureException("Archive file does not exist");
@@ -243,8 +243,10 @@ public class ComponentMojoUtil {
 		/*
 		 * Create Dialogs within temp archive
 		 */
-		DialogUtil.buildDialogsFromClassList(transformer, classList, tempOutputStream, existingArchiveEntryNames,
-			widgetRegistry, classLoader, classPool, buildDirectory, componentPathBase, defaultComponentPathSuffix);
+		if (generateClassicUiDialogs) {
+			DialogUtil.buildDialogsFromClassList(transformer, classList, tempOutputStream, existingArchiveEntryNames,
+				widgetRegistry, classLoader, classPool, buildDirectory, componentPathBase, defaultComponentPathSuffix);
+		}
 
 		if (generateTouchUiDialogs) {
 			TouchUIDialogUtil.buildDialogsFromClassList(classList, classLoader, classPool, touchUIWidgetRegistry,
@@ -549,7 +551,8 @@ public class ComponentMojoUtil {
 	 * @return The constructed list of fields
 	 * @throws NotFoundException
 	 */
-	public static List<CtField> collectFields(CtClass ctClass, boolean suppressInheritedFields) throws NotFoundException {
+	public static List<CtField> collectFields(CtClass ctClass, boolean suppressInheritedFields)
+		throws NotFoundException {
 		List<CtField> fields = new ArrayList<CtField>();
 		if (ctClass != null) {
 			fields.addAll(Arrays.asList(ctClass.getDeclaredFields()));
@@ -568,10 +571,10 @@ public class ComponentMojoUtil {
 		List<CtMethod> methods = new ArrayList<CtMethod>();
 		if (ctClass != null) {
 			if (suppressInheritedMethods) {
-				//TODO: I think this will include private which I don't think we want
+				// TODO: I think this will include private which I don't think
+				// we want
 				methods.addAll(Arrays.asList(ctClass.getDeclaredMethods()));
-			}
-			else {
+			} else {
 				methods.addAll(Arrays.asList(ctClass.getMethods()));
 			}
 		}

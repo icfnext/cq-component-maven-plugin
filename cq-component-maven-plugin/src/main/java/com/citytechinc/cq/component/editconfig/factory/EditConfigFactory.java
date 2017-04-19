@@ -15,20 +15,11 @@
  */
 package com.citytechinc.cq.component.editconfig.factory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javassist.CtClass;
-
-import org.codehaus.plexus.util.StringUtils;
-
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.Listener;
 import com.citytechinc.cq.component.annotations.editconfig.ActionConfig;
 import com.citytechinc.cq.component.annotations.editconfig.ActionConfigProperty;
+import com.citytechinc.cq.component.annotations.editconfig.ChildEditorConfig;
 import com.citytechinc.cq.component.annotations.editconfig.DropTarget;
 import com.citytechinc.cq.component.annotations.editconfig.FormParameter;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
@@ -45,10 +36,22 @@ import com.citytechinc.cq.component.editconfig.droptargets.EditConfigDropTargets
 import com.citytechinc.cq.component.editconfig.formparameters.EditConfigFormParameters;
 import com.citytechinc.cq.component.editconfig.formparameters.EditConfigFormParametersParameters;
 import com.citytechinc.cq.component.editconfig.inplaceediting.EditConfigInPlaceEditing;
+import com.citytechinc.cq.component.editconfig.inplaceediting.EditConfigInPlaceEditingChildEditorConfig;
+import com.citytechinc.cq.component.editconfig.inplaceediting.EditConfigInPlaceEditingChildEditorConfigParameters;
+import com.citytechinc.cq.component.editconfig.inplaceediting.EditConfigInPlaceEditingChildEditors;
+import com.citytechinc.cq.component.editconfig.inplaceediting.EditConfigInPlaceEditingChildEditorsParameters;
 import com.citytechinc.cq.component.editconfig.inplaceediting.EditConfigInPlaceEditingParameters;
 import com.citytechinc.cq.component.editconfig.listeners.EditConfigListeners;
 import com.citytechinc.cq.component.editconfig.listeners.EditConfigListenersParameters;
 import com.citytechinc.cq.component.xml.XmlElement;
+import javassist.CtClass;
+import org.codehaus.plexus.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class EditConfigFactory {
 	private static final String ACTION_CONFIG_FIELD_NAME = "actionConfig";
@@ -179,7 +182,44 @@ public class EditConfigFactory {
 				parameters.setEditorType(componentAnnotation.inPlaceEditingEditorType());
 			}
 			parameters.setActive(componentAnnotation.inPlaceEditingActive());
+
+            //handle child editors as a contained element
+            List<XmlElement> inPlaceEditingChildElements = new ArrayList<XmlElement>();
+            final EditConfigInPlaceEditingChildEditors childEditors
+                    = getInPlaceEditingChildEditorsForEditConfig(componentAnnotation);
+            if (childEditors != null) {
+                inPlaceEditingChildElements.add(childEditors);
+                parameters.setContainedElements(inPlaceEditingChildElements);
+            }
+
 			return new EditConfigInPlaceEditing(parameters);
+		}
+		return null;
+	}
+
+	private static EditConfigInPlaceEditingChildEditors getInPlaceEditingChildEditorsForEditConfig(
+			Component componentAnnotation) {
+		if (componentAnnotation.inPlaceEditingChildEditorConfigs().length > 0) {
+
+			List<EditConfigInPlaceEditingChildEditorConfig> childEditorConfigs =
+					new ArrayList<EditConfigInPlaceEditingChildEditorConfig>();
+
+			for (ChildEditorConfig childEditorConfig : componentAnnotation.inPlaceEditingChildEditorConfigs()) {
+				EditConfigInPlaceEditingChildEditorConfigParameters params =
+						new EditConfigInPlaceEditingChildEditorConfigParameters();
+				params.setFieldName(childEditorConfig.propertyName());
+				params.setTitle(childEditorConfig.title());
+				params.setType(childEditorConfig.type());
+				params.setPropertyName(childEditorConfig.propertyName());
+
+                childEditorConfigs.add(new EditConfigInPlaceEditingChildEditorConfig(params));
+			}
+
+			EditConfigInPlaceEditingChildEditorsParameters parameters =
+					new EditConfigInPlaceEditingChildEditorsParameters();
+			parameters.setContainedElements(childEditorConfigs);
+
+			return new EditConfigInPlaceEditingChildEditors(parameters);
 		}
 		return null;
 	}

@@ -20,11 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtMember;
-import javassist.CtMethod;
-import javassist.NotFoundException;
+import com.citytechinc.cq.component.annotations.Composite;
+import javassist.*;
 
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.codehaus.plexus.util.StringUtils;
@@ -103,6 +100,7 @@ public class TouchUIDialogUtil {
 
 	}
 
+
 	public static List<TouchUIWidgetMakerParameters> getWidgetMakerParametersForComponentClass(CtClass componentClass,
 		ClassLoader classLoader, ClassPool classPool, TouchUIWidgetRegistry widgetRegistry) throws NotFoundException,
 		ClassNotFoundException, InvalidComponentClassException {
@@ -111,10 +109,14 @@ public class TouchUIDialogUtil {
 
 		List<CtMember> fieldsAndMethods = new ArrayList<CtMember>();
 		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
-		fieldsAndMethods.addAll(ComponentMojoUtil.collectFields(componentClass,
-			componentAnnotation.suppressFieldInheritanceForTouchUI()));
-		fieldsAndMethods.addAll(ComponentMojoUtil.collectMethods(componentClass,
-			componentAnnotation.suppressFieldInheritanceForTouchUI()));
+
+		boolean suppressFieldInheritanceForTouchUI = true;
+		if(componentAnnotation != null) {
+			suppressFieldInheritanceForTouchUI = componentAnnotation.suppressFieldInheritanceForTouchUI();
+		}
+
+		fieldsAndMethods.addAll(ComponentMojoUtil.collectFields(componentClass, suppressFieldInheritanceForTouchUI));
+		fieldsAndMethods.addAll(ComponentMojoUtil.collectMethods(componentClass, suppressFieldInheritanceForTouchUI));
 
 		// Load the true class
 		Class<?> trueComponentClass = classLoader.loadClass(componentClass.getName());
@@ -130,6 +132,15 @@ public class TouchUIDialogUtil {
 					if (member.hasAnnotation(DialogField.class)) {
 						dialogFieldConfig =
 							new DialogFieldConfig((DialogField) member.getAnnotation(DialogField.class), member);
+					} else if (member.hasAnnotation(Composite.class)) {
+
+						CtField ctField = (CtField) member;
+						CtClass fieldType = ctField.getType();
+
+						List<TouchUIWidgetMakerParameters> params =
+								getWidgetMakerParametersForComponentClass(fieldType, classLoader, classPool, widgetRegistry);
+
+						widgetMakerParametersList.addAll(params);
 					}
 				}
 

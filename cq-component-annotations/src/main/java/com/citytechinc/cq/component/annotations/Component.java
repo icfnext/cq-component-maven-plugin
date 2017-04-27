@@ -214,9 +214,9 @@ public @interface Component {
 	String fileName() default "dialog";
 
 	/**
-	 * The name, without extension, to use for the output _cq_dialog xml file. This
-	 * can be used when you want to output a dialog type other than the edit
-	 * dialog.
+	 * The name, without extension, to use for the output _cq_dialog xml file.
+	 * This can be used when you want to output a dialog type other than the
+	 * edit dialog.
 	 *
 	 * @return String
 	 */
@@ -396,6 +396,14 @@ public @interface Component {
 	boolean suppressTouchUIDialog() default false;
 
 	/**
+	 * Indicates whether writing of the dialog.xml appropriate to the Classic UI
+	 * AEM interface should be skipped for this component.
+	 *
+	 * @return boolean
+	 */
+	boolean suppressClassicUIDialog() default false;
+
+	/**
 	 * A path to be followed when a user clicks the help button in the Touch UI
 	 * Authoring interface.
 	 *
@@ -406,10 +414,12 @@ public @interface Component {
 	/**
 	 * Applicable to the Touch UI only
 	 *
-	 * If set to true, extended classes and implemented interfaces will not be interrogated when arriving
-	 * at a list of Dialog Fields for a Touch UI dialog.  This intends to support situations where you are
-	 * both extending a class and a sling:resourceType and thus will be using the dialog resource merger for
-	 * the inclusion of the supertype's dialog fields as opposed to inclusion via class inheritance.
+	 * If set to true, extended classes and implemented interfaces will not be
+	 * interrogated when arriving at a list of Dialog Fields for a Touch UI
+	 * dialog. This intends to support situations where you are both extending a
+	 * class and a sling:resourceType and thus will be using the dialog resource
+	 * merger for the inclusion of the supertype's dialog fields as opposed to
+	 * inclusion via class inheritance.
 	 *
 	 * @return boolean
 	 */

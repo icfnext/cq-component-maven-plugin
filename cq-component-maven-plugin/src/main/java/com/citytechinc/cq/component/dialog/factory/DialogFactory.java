@@ -69,6 +69,10 @@ public class DialogFactory {
 
 		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
+		if (componentAnnotation.suppressClassicUIDialog()) {
+			return null;
+		}
+
 		/*
 		 * Get dialog title
 		 */

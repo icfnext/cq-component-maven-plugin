@@ -196,7 +196,7 @@ public class ComponentMojoUtil {
 		TouchUIWidgetRegistry touchUIWidgetRegistry, InPlaceEditorRegistry inPlaceEditorRegistry,
 		ClassLoader classLoader, ClassPool classPool, File buildDirectory, String componentPathBase,
 		String defaultComponentPathSuffix, String defaultComponentGroup, File existingArchiveFile,
-		File tempArchiveFile, ComponentNameTransformer transformer, boolean generateTouchUiDialogs)
+		File tempArchiveFile, ComponentNameTransformer transformer, boolean generateTouchUiDialogs, boolean generateClassicUiDialogs)
 		throws OutputFailureException, IOException, InvalidComponentClassException, InvalidComponentFieldException,
 		ParserConfigurationException, TransformerException, ClassNotFoundException, CannotCompileException,
 		NotFoundException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException,
@@ -249,8 +249,10 @@ public class ComponentMojoUtil {
 		/*
 		 * Create Dialogs within temp archive
 		 */
-		DialogUtil.buildDialogsFromClassList(transformer, classList, tempOutputStream, existingArchiveEntryNames,
-			widgetRegistry, classLoader, classPool, buildDirectory, componentPathBase, defaultComponentPathSuffix);
+		if (generateClassicUiDialogs) {
+			DialogUtil.buildDialogsFromClassList(transformer, classList, tempOutputStream, existingArchiveEntryNames,
+				widgetRegistry, classLoader, classPool, buildDirectory, componentPathBase, defaultComponentPathSuffix);
+		}
 
 		if (generateTouchUiDialogs) {
 			TouchUIDialogUtil.buildDialogsFromClassList(classList, classLoader, classPool, touchUIWidgetRegistry,

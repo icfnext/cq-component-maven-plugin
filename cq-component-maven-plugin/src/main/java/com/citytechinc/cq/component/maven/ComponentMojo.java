@@ -56,8 +56,7 @@ public class ComponentMojo extends AbstractMojo {
 	private static final String TEMP_FILENAME_SUFFIX = "-temp";
 	private static final String PACKAGE_EXTENSION = ".zip";
 
-	@Parameter(property = "aem.package.fileName",
-		defaultValue = "${project.build.finalName}")
+	@Parameter(property = "aem.package.fileName", defaultValue = "${project.build.finalName}")
 	private String packageFileName;
 
 	@Parameter(defaultValue = "${project}")
@@ -80,6 +79,9 @@ public class ComponentMojo extends AbstractMojo {
 
 	@Parameter(defaultValue = "true")
 	private boolean generateTouchUiDialogs;
+
+	@Parameter(defaultValue = "true")
+	private boolean generateClassicUiDialogs;
 
 	@Parameter(required = false)
 	private List<String> additionalFeatures;
@@ -124,7 +126,7 @@ public class ComponentMojo extends AbstractMojo {
 			ComponentMojoUtil.buildArchiveFileForProjectAndClassList(classList, widgetRegistry, touchUIWidgetRegistry,
 				inPlaceEditorRegistry, classLoader, classPool, new File(project.getBuild().getDirectory()),
 				componentPathBase, componentPathSuffix, defaultComponentGroup, getArchiveFileForProject(),
-				getTempArchiveFileForProject(), transformer, generateTouchUiDialogs);
+				getTempArchiveFileForProject(), transformer, generateTouchUiDialogs, generateClassicUiDialogs);
 
 		} catch (Exception e) {
 			getLog().error(e.getMessage(), e);

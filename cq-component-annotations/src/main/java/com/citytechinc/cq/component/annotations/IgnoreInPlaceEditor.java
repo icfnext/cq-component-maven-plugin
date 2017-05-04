@@ -21,8 +21,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Used to flag a method that has an interface with a DialogField annotation to
- * be ignored
+ * Used to flag a method that has an interface with a InPlaceEditor annotation
+ * to be ignored
  */
 @Retention(RetentionPolicy.CLASS)
 @Target({ ElementType.FIELD, ElementType.METHOD })

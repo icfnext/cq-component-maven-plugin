@@ -13,19 +13,18 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.editconfig.inplaceediting;
+package com.citytechinc.cq.component.editconfig.inplaceediting.text;
 
+import com.citytechinc.cq.component.annotations.config.InPlaceEditor;
 import com.citytechinc.cq.component.editconfig.AbstractInPlaceEditorElement;
+import com.citytechinc.cq.component.editconfig.DefaultInPlaceEditorParameters;
 
-public class EditConfigInPlaceEditing extends AbstractInPlaceEditorElement {
-	private final String configPath;
+@InPlaceEditor(annotationClass = com.citytechinc.cq.component.editconfig.annotations.inplaceeditors.TextEditor.class,
+	editorType = "image", makerClass = TextEditorMaker.class)
+public class TextEditor extends AbstractInPlaceEditorElement {
 
-	public EditConfigInPlaceEditing(EditConfigInPlaceEditingParameters parameters) {
+	public TextEditor(DefaultInPlaceEditorParameters parameters) {
 		super(parameters);
-		configPath = parameters.getConfigPath();
 	}
 
-	public String getConfigPath() {
-		return configPath;
-	}
 }

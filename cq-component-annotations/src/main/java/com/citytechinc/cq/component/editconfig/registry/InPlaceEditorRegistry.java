@@ -13,19 +13,25 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.editconfig.inplaceediting;
+package com.citytechinc.cq.component.editconfig.registry;
 
-import com.citytechinc.cq.component.editconfig.AbstractInPlaceEditorElement;
+import java.util.Set;
 
-public class EditConfigInPlaceEditing extends AbstractInPlaceEditorElement {
-	private final String configPath;
+import com.citytechinc.cq.component.util.InPlaceEditorConfigHolder;
 
-	public EditConfigInPlaceEditing(EditConfigInPlaceEditingParameters parameters) {
-		super(parameters);
-		configPath = parameters.getConfigPath();
-	}
+public interface InPlaceEditorRegistry {
 
-	public String getConfigPath() {
-		return configPath;
-	}
+	/**
+	 *
+	 * @return The In Place Editor Configuration associated with the specified
+	 *         annotation
+	 */
+	public InPlaceEditorConfigHolder getInPlaceEditorForAnnotation(Class<?> annotation);
+
+	/**
+	 *
+	 * @return A set of all known In Place Editor annotations
+	 */
+	public Set<Class<?>> getRegisteredAnnotations();
+
 }

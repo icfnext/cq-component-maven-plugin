@@ -21,11 +21,14 @@ import java.util.List;
 
 import org.codehaus.plexus.util.StringUtils;
 
-import com.citytechinc.cq.component.annotations.widgets.AspectRatio;
+import com.citytechinc.cq.component.AspectRatioParameters;
+import com.citytechinc.cq.component.AspectRatios;
+import com.citytechinc.cq.component.AspectRatiosParameters;
 import com.citytechinc.cq.component.annotations.widgets.Html5SmartImage;
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
+import com.citytechinc.cq.component.annotations.AspectRatio;
 
 public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker<Html5SmartImageWidgetParameters> {
 	public static final String ASPECT_RATIO_PREFIX = "aspectRatio";
@@ -157,8 +160,8 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker<Html5SmartIm
 	}
 
 	protected CropConfig buildCropConfig(AspectRatio[] cropAspectRatios) {
-		List<com.citytechinc.cq.component.dialog.html5smartimage.AspectRatio> aspectRatioList =
-			new ArrayList<com.citytechinc.cq.component.dialog.html5smartimage.AspectRatio>();
+		List<com.citytechinc.cq.component.AspectRatio> aspectRatioList =
+			new ArrayList<com.citytechinc.cq.component.AspectRatio>();
 		int count = 0;
 		for (AspectRatio cropAspectRatio : cropAspectRatios) {
 			AspectRatioParameters arp = new AspectRatioParameters();
@@ -166,8 +169,8 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker<Html5SmartIm
 			arp.setWidth(cropAspectRatio.width());
 			arp.setHeight(cropAspectRatio.height());
 			arp.setFieldName(ASPECT_RATIO_PREFIX + count++);
-			com.citytechinc.cq.component.dialog.html5smartimage.AspectRatio aspectRatio =
-				new com.citytechinc.cq.component.dialog.html5smartimage.AspectRatio(arp);
+			com.citytechinc.cq.component.AspectRatio aspectRatio =
+				new com.citytechinc.cq.component.AspectRatio(arp);
 			aspectRatioList.add(aspectRatio);
 		}
 
@@ -176,7 +179,7 @@ public class Html5SmartImageWidgetMaker extends AbstractWidgetMaker<Html5SmartIm
 		AspectRatios aspectRatios = new AspectRatios(arp);
 
 		CropConfigParameters ccp = new CropConfigParameters();
-		ccp.setContainedElements(Arrays.asList(new DialogElement[] { aspectRatios }));
+		ccp.setContainedElements(Arrays.asList(aspectRatios));
 
 		return new CropConfig(ccp);
 	}

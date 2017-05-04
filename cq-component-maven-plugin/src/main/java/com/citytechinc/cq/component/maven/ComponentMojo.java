@@ -44,6 +44,8 @@ import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
 import com.citytechinc.cq.component.dialog.widget.WidgetRegistry;
 import com.citytechinc.cq.component.dialog.widget.impl.DefaultWidgetRegistry;
+import com.citytechinc.cq.component.editconfig.registry.DefaultInPlaceEditorRegistry;
+import com.citytechinc.cq.component.editconfig.registry.InPlaceEditorRegistry;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 import com.citytechinc.cq.component.maven.util.LogSingleton;
 import com.citytechinc.cq.component.touchuidialog.widget.registry.DefaultTouchUIWidgetRegistry;
@@ -109,6 +111,9 @@ public class ComponentMojo extends AbstractMojo {
 			TouchUIWidgetRegistry touchUIWidgetRegistry =
 				new DefaultTouchUIWidgetRegistry(classPool, classLoader, reflections, getAdditionalFeatures());
 
+			InPlaceEditorRegistry inPlaceEditorRegistry =
+				new DefaultInPlaceEditorRegistry(classPool, classLoader, reflections);
+
 			Map<String, ComponentNameTransformer> transformers =
 				ComponentMojoUtil.getAllTransformers(classPool, reflections);
 
@@ -119,9 +124,9 @@ public class ComponentMojo extends AbstractMojo {
 			}
 
 			ComponentMojoUtil.buildArchiveFileForProjectAndClassList(classList, widgetRegistry, touchUIWidgetRegistry,
-				classLoader, classPool, new File(project.getBuild().getDirectory()), componentPathBase,
-				componentPathSuffix, defaultComponentGroup, getArchiveFileForProject(), getTempArchiveFileForProject(),
-				transformer, generateTouchUiDialogs, generateClassicUiDialogs);
+				inPlaceEditorRegistry, classLoader, classPool, new File(project.getBuild().getDirectory()),
+				componentPathBase, componentPathSuffix, defaultComponentGroup, getArchiveFileForProject(),
+				getTempArchiveFileForProject(), transformer, generateTouchUiDialogs, generateClassicUiDialogs);
 
 		} catch (Exception e) {
 			getLog().error(e.getMessage(), e);

@@ -13,34 +13,24 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.annotations.widgets;
+package com.citytechinc.cq.component.annotations.config;
 
+import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.citytechinc.cq.component.editconfig.maker.InPlaceEditorMaker;
+
 @Retention(RetentionPolicy.CLASS)
-@Target({ ElementType.FIELD, ElementType.METHOD })
-public @interface AspectRatio {
-	/**
-	 * The text to display for the aspect ratio
-	 * 
-	 * @return String
-	 */
-	String text();
+@Target(ElementType.TYPE)
+public @interface InPlaceEditor {
 
-	/**
-	 * The width part of the aspect ratio
-	 * 
-	 * @return int
-	 */
-	int width();
+	Class<? extends Annotation> annotationClass();
 
-	/**
-	 * The height part of the aspect ratio
-	 * 
-	 * @return int
-	 */
-	int height();
+	Class<? extends InPlaceEditorMaker> makerClass();
+
+	String editorType();
+
 }

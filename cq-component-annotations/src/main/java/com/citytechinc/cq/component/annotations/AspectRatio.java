@@ -13,19 +13,34 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.editconfig.inplaceediting;
+package com.citytechinc.cq.component.annotations;
 
-import com.citytechinc.cq.component.editconfig.AbstractInPlaceEditorElement;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public class EditConfigInPlaceEditing extends AbstractInPlaceEditorElement {
-	private final String configPath;
+@Retention(RetentionPolicy.CLASS)
+@Target({ ElementType.FIELD, ElementType.METHOD })
+public @interface AspectRatio {
+	/**
+	 * The text to display for the aspect ratio
+	 * 
+	 * @return String
+	 */
+	String text();
 
-	public EditConfigInPlaceEditing(EditConfigInPlaceEditingParameters parameters) {
-		super(parameters);
-		configPath = parameters.getConfigPath();
-	}
+	/**
+	 * The width part of the aspect ratio
+	 * 
+	 * @return int
+	 */
+	int width();
 
-	public String getConfigPath() {
-		return configPath;
-	}
+	/**
+	 * The height part of the aspect ratio
+	 * 
+	 * @return int
+	 */
+	int height();
 }

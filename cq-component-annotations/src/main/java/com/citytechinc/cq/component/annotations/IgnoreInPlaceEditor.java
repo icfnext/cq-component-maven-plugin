@@ -13,19 +13,19 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.editconfig.inplaceediting;
+package com.citytechinc.cq.component.annotations;
 
-import com.citytechinc.cq.component.editconfig.AbstractInPlaceEditorElement;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public class EditConfigInPlaceEditing extends AbstractInPlaceEditorElement {
-	private final String configPath;
+/**
+ * Used to flag a method that has an interface with a InPlaceEditor annotation
+ * to be ignored
+ */
+@Retention(RetentionPolicy.CLASS)
+@Target({ ElementType.FIELD, ElementType.METHOD })
+public @interface IgnoreInPlaceEditor {
 
-	public EditConfigInPlaceEditing(EditConfigInPlaceEditingParameters parameters) {
-		super(parameters);
-		configPath = parameters.getConfigPath();
-	}
-
-	public String getConfigPath() {
-		return configPath;
-	}
 }

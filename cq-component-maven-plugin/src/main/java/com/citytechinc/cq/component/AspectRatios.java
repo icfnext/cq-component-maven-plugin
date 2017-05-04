@@ -13,19 +13,14 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.editconfig.inplaceediting;
+package com.citytechinc.cq.component;
 
-import com.citytechinc.cq.component.editconfig.AbstractInPlaceEditorElement;
+import com.citytechinc.cq.component.xml.AbstractXmlElement;
 
-public class EditConfigInPlaceEditing extends AbstractInPlaceEditorElement {
-	private final String configPath;
+public class AspectRatios extends AbstractXmlElement {
 
-	public EditConfigInPlaceEditing(EditConfigInPlaceEditingParameters parameters) {
+	public AspectRatios(AspectRatiosParameters parameters) {
 		super(parameters);
-		configPath = parameters.getConfigPath();
 	}
 
-	public String getConfigPath() {
-		return configPath;
-	}
 }

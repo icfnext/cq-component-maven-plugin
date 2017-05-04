@@ -13,19 +13,19 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.editconfig.inplaceediting;
+package com.citytechinc.cq.component.editconfig;
 
-import com.citytechinc.cq.component.editconfig.AbstractInPlaceEditorElement;
+import com.citytechinc.cq.component.xml.DefaultXmlElement;
+import com.citytechinc.cq.component.xml.XmlElementParameters;
 
-public class EditConfigInPlaceEditing extends AbstractInPlaceEditorElement {
-	private final String configPath;
+public class ConfigElement extends DefaultXmlElement {
 
-	public EditConfigInPlaceEditing(EditConfigInPlaceEditingParameters parameters) {
+	public ConfigElement(XmlElementParameters parameters) {
 		super(parameters);
-		configPath = parameters.getConfigPath();
 	}
 
-	public String getConfigPath() {
-		return configPath;
+	public void setFieldName(String fieldName) {
+		this.fieldName = fieldName;
 	}
+
 }

@@ -13,19 +13,25 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.editconfig.inplaceediting;
+package com.citytechinc.cq.component.editconfig.annotations.inplaceeditors;
 
-import com.citytechinc.cq.component.editconfig.AbstractInPlaceEditorElement;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public class EditConfigInPlaceEditing extends AbstractInPlaceEditorElement {
-	private final String configPath;
+import com.citytechinc.cq.component.annotations.AspectRatio;
 
-	public EditConfigInPlaceEditing(EditConfigInPlaceEditingParameters parameters) {
-		super(parameters);
-		configPath = parameters.getConfigPath();
-	}
+@Retention(RetentionPolicy.CLASS)
+@Target({ ElementType.FIELD, ElementType.METHOD })
+public @interface ImageEditor {
+	String title() default "";
 
-	public String getConfigPath() {
-		return configPath;
-	}
+	boolean enableCrop() default true;
+
+	boolean enableRotate() default true;
+
+	boolean enableMap() default true;
+
+	AspectRatio[] cropAspectRatios() default {};
 }

@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.citytechinc.cq.cq-component-plugin</groupId>
 		<artifactId>cq-component-plugin</artifactId>
-		<version>4.4.0-SNAPSHOT</version>
+		<version>5.0.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>cq-component-maven-plugin</artifactId>

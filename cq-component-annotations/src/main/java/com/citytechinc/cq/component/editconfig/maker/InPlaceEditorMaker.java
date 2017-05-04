@@ -13,19 +13,10 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.editconfig.inplaceediting;
+package com.citytechinc.cq.component.editconfig.maker;
 
-import com.citytechinc.cq.component.editconfig.AbstractInPlaceEditorElement;
+import com.citytechinc.cq.component.editconfig.InPlaceEditorElement;
 
-public class EditConfigInPlaceEditing extends AbstractInPlaceEditorElement {
-	private final String configPath;
-
-	public EditConfigInPlaceEditing(EditConfigInPlaceEditingParameters parameters) {
-		super(parameters);
-		configPath = parameters.getConfigPath();
-	}
-
-	public String getConfigPath() {
-		return configPath;
-	}
+public interface InPlaceEditorMaker {
+	public InPlaceEditorElement make() throws ClassNotFoundException, IllegalAccessException, InstantiationException;
 }

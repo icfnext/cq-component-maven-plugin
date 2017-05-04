@@ -56,6 +56,7 @@ import org.reflections.util.ConfigurationBuilder;
 
 import com.citytechinc.cq.classpool.ClassLoaderClassPool;
 import com.citytechinc.cq.component.annotations.Component;
+import com.citytechinc.cq.component.annotations.config.InPlaceEditor;
 import com.citytechinc.cq.component.annotations.config.TouchUIWidget;
 import com.citytechinc.cq.component.annotations.config.Widget;
 import com.citytechinc.cq.component.annotations.transformer.Transformer;
@@ -68,6 +69,9 @@ import com.citytechinc.cq.component.dialog.exception.OutputFailureException;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
 import com.citytechinc.cq.component.dialog.util.DialogUtil;
 import com.citytechinc.cq.component.dialog.widget.WidgetRegistry;
+import com.citytechinc.cq.component.editconfig.InPlaceEditorElement;
+import com.citytechinc.cq.component.editconfig.maker.InPlaceEditorMaker;
+import com.citytechinc.cq.component.editconfig.registry.InPlaceEditorRegistry;
 import com.citytechinc.cq.component.editconfig.util.EditConfigUtil;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
@@ -75,6 +79,7 @@ import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogWriteE
 import com.citytechinc.cq.component.touchuidialog.util.TouchUIDialogUtil;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.registry.TouchUIWidgetRegistry;
+import com.citytechinc.cq.component.util.InPlaceEditorConfigHolder;
 import com.citytechinc.cq.component.util.TouchUIWidgetConfigHolder;
 import com.citytechinc.cq.component.util.WidgetConfigHolder;
 import com.citytechinc.cq.component.xml.AbstractXmlElement;
@@ -188,14 +193,15 @@ public class ComponentMojoUtil {
 	 * @throws InstantiationException
 	 */
 	public static void buildArchiveFileForProjectAndClassList(List<CtClass> classList, WidgetRegistry widgetRegistry,
-		TouchUIWidgetRegistry touchUIWidgetRegistry, ClassLoader classLoader, ClassPool classPool, File buildDirectory,
-		String componentPathBase, String defaultComponentPathSuffix, String defaultComponentGroup,
-		File existingArchiveFile, File tempArchiveFile, ComponentNameTransformer transformer,
-		boolean generateTouchUiDialogs, boolean generateClassicUiDialogs) throws OutputFailureException, IOException,
-		InvalidComponentClassException, InvalidComponentFieldException, ParserConfigurationException,
-		TransformerException, ClassNotFoundException, CannotCompileException, NotFoundException, SecurityException,
-		NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException,
-		NoSuchMethodException, InstantiationException, TouchUIDialogWriteException, TouchUIDialogGenerationException {
+		TouchUIWidgetRegistry touchUIWidgetRegistry, InPlaceEditorRegistry inPlaceEditorRegistry,
+		ClassLoader classLoader, ClassPool classPool, File buildDirectory, String componentPathBase,
+		String defaultComponentPathSuffix, String defaultComponentGroup, File existingArchiveFile,
+		File tempArchiveFile, ComponentNameTransformer transformer, boolean generateTouchUiDialogs, boolean generateClassicUiDialogs)
+		throws OutputFailureException, IOException, InvalidComponentClassException, InvalidComponentFieldException,
+		ParserConfigurationException, TransformerException, ClassNotFoundException, CannotCompileException,
+		NotFoundException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException,
+		InvocationTargetException, NoSuchMethodException, InstantiationException, TouchUIDialogWriteException,
+		TouchUIDialogGenerationException {
 
 		if (!existingArchiveFile.exists()) {
 			throw new OutputFailureException("Archive file does not exist");
@@ -258,7 +264,8 @@ public class ComponentMojoUtil {
 		 * Create edit config within temp archive
 		 */
 		EditConfigUtil.buildEditConfigFromClassList(classList, tempOutputStream, existingArchiveEntryNames,
-			buildDirectory, componentPathBase, defaultComponentPathSuffix, transformer);
+			inPlaceEditorRegistry, classLoader, classPool, buildDirectory, componentPathBase,
+			defaultComponentPathSuffix, transformer);
 
 		/*
 		 * Copy temp archive to the original archive position
@@ -478,6 +485,25 @@ public class ComponentMojoUtil {
 		}
 
 		return widgetConfigurations;
+	}
+
+	public static List<InPlaceEditorConfigHolder> getInPlaceEditorAnnotations(ClassPool classPool,
+		ClassLoader classLoader, Reflections reflections) throws NotFoundException, ClassNotFoundException {
+		List<InPlaceEditorConfigHolder> inPlaceEditorConfigurations = new ArrayList<InPlaceEditorConfigHolder>();
+
+		for (Class<?> c : reflections.getTypesAnnotatedWith(InPlaceEditor.class)) {
+			CtClass clazz = classPool.getCtClass(c.getName());
+			InPlaceEditor inPlaceEditorAnnotation = (InPlaceEditor) clazz.getAnnotation(InPlaceEditor.class);
+			Class<? extends Annotation> annotationClass = inPlaceEditorAnnotation.annotationClass();
+			Class<? extends InPlaceEditorMaker> makerClass = inPlaceEditorAnnotation.makerClass();
+			Class<? extends InPlaceEditorElement> inPlaceEditorClass =
+				classLoader.loadClass(clazz.getName()).asSubclass(InPlaceEditorElement.class);
+
+			inPlaceEditorConfigurations.add(new InPlaceEditorConfigHolder(annotationClass, inPlaceEditorClass,
+				makerClass, inPlaceEditorAnnotation.editorType()));
+		}
+
+		return inPlaceEditorConfigurations;
 	}
 
 	/**

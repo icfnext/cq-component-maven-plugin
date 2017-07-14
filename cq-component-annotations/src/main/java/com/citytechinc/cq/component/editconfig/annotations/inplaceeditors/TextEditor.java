@@ -33,7 +33,6 @@ import com.citytechinc.cq.component.annotations.widgets.rte.ParaFormat;
 import com.citytechinc.cq.component.annotations.widgets.rte.SpellCheck;
 import com.citytechinc.cq.component.annotations.widgets.rte.Style;
 import com.citytechinc.cq.component.annotations.widgets.rte.SubSuperscript;
-import com.citytechinc.cq.component.annotations.widgets.rte.Table;
 import com.citytechinc.cq.component.annotations.widgets.rte.UISettings;
 import com.citytechinc.cq.component.annotations.widgets.rte.Undo;
 
@@ -186,8 +185,8 @@ public @interface TextEditor {
 	 * For Touch-UI Only
 	 *
 	 * UI Settings Node configuration plugin see <a href=
-	 * "https://docs.adobe.com/docs/en/aem/6-2/administer/operations/page-authoring/rich-text-editor.html?#Config
-	 * u r i n g RichText Editor dialog settings for toolbar (Touch
+	 * "https://docs.adobe.com/docs/en/aem/6-2/administer/operations/page-authoring/rich-text-editor.html?#Confi
+	 * g u r i n g RichText Editor dialog settings for toolbar (Touch
 	 * UI)>Configuring RichText Editor dialog settings for toolbar (Touch
 	 * UI)</a>.
 	 *

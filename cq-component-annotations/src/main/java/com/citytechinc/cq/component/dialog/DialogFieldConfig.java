@@ -44,6 +44,7 @@ public class DialogFieldConfig {
 	private boolean renderReadOnly;
 	private boolean showOnCreate;
     private boolean hideOnEdit;
+    private boolean hideDialogField;
 
 	public DialogFieldConfig(DialogField dialogField, CtMember member) {
 		this.xtype = dialogField.xtype();
@@ -241,4 +242,12 @@ public class DialogFieldConfig {
     public void setHideOnEdit(boolean hideOnEdit) {
         this.hideOnEdit = hideOnEdit;
     }
+
+    public boolean isHideDialogField() {
+		return hideDialogField;
+	}
+
+	public void setHideDialogField(boolean hideDialogField) {
+		this.hideDialogField = hideDialogField;
+	}
 }

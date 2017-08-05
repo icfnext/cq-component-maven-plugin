@@ -26,6 +26,6 @@ import java.lang.annotation.Target;
  * Hides dialog fields during the resource merger of the current dialog and the dialog of a resourceSuperType
  */
 @Retention(RetentionPolicy.CLASS)
-@Target({ ElementType.FIELD, ElementType.METHOD })
+@Target({ ElementType.METHOD })
 public @interface HideDialogField {
 }

@@ -64,10 +64,8 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
 
 		// Construct the appropriate Layout Element
 		TabsLayoutElementParameters tabsLayoutElementParameters = new TabsLayoutElementParameters();
+        tabsLayoutElementParameters.setType("nav");
 		TabsLayoutElement layoutElement = new TabsLayoutElement(tabsLayoutElementParameters);
-
-		// TODO: Some of the example tab layouts use a type of 'nav'. Determine
-		// what this does and if it is appropriate to set type here
 
 		// Add the Layout element and Items to the contained elements list
 		List<XmlElement> containedElements = new ArrayList<XmlElement>();
@@ -99,7 +97,6 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
 		// Determine the Tabs to create
 		List<SectionParameters> tabParametersList = new ArrayList<SectionParameters>();
 		List<ColumnParameters> tabContentParametersList = new ArrayList<ColumnParameters>();
-		if (componentAnnotation.tabs().length > 0) {
 			for (Tab currentTabAnnotation : componentAnnotation.tabs()) {
 				if (StringUtils.isNotEmpty(currentTabAnnotation.title())
 					&& StringUtils.isNotEmpty(currentTabAnnotation.touchUIPath())) {
@@ -148,29 +145,6 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
 					tabParametersList.add(null);
 				}
 			}
-		} else {
-			SectionParameters currentTabParameters = new SectionParameters();
-
-			currentTabParameters.setTitle(componentAnnotation.value());
-
-			// Determine the layout to use for the Tab
-			// TODO: This probably needs to allow for dynamic in tab layout at
-			// some point
-			LayoutElement currentTabLayoutElement =
-				new FixedColumnsLayoutElement(new FixedColumnsLayoutElementParameters());
-			currentTabParameters.setLayoutElement(currentTabLayoutElement);
-
-			// Based on the layout set up container parameters to match the tab
-			// parameters
-			// TODO: This probably needs to allow for dynamic in tab layout at
-			// some point
-			ColumnParameters tabContentParameters = new ColumnParameters();
-			tabContentParameters.setFieldName("column");
-
-			tabContentParametersList.add(tabContentParameters);
-			tabParametersList.add(currentTabParameters);
-		}
-
 		try {
 			// Populate the content for each tab
 			List<TouchUIWidgetMakerParameters> widgetMakerParameters =

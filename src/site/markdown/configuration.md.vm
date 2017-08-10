@@ -27,12 +27,12 @@ $symbol_pound$symbol_pound$symbol_pound Maven POM
 	        <defaultComponentGroup>Client Group</defaultComponentGroup>
 	        <transformerName>camel-case</transformerName>
 	        <generateTouchUiDialogs>true</generateTouchUiDialogs>
-	        <excludedDependencies>
+	        <excludeDependencies>
 	           <dependency>
 	               <groupId>dependency.group.id</groupId>
 	               <artifactId>dependency-artifact-id</artifactId>
 	           </dependency>
-	        </excludedDependencies>
+	        </excludeDependencies>
 	        <additionalFeatures>
                 <additionalFeature>feature-flag</additionalFeature>
                 <additionalFeature>another-feature-flag</additionalFeature>

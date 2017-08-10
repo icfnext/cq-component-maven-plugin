@@ -4,7 +4,7 @@
 	<groupId>com.citytechinc.cq.cq-component-plugin</groupId>
 	<artifactId>cq-component-plugin</artifactId>
 	<packaging>pom</packaging>
-	<version>4.3.0</version>
+	<version>5.0.0</version>
 	<name>CQ Component Plugin</name>
 	<description>Plugin enabling annotation driven CQ5 Component development.</description>
 
@@ -218,6 +218,15 @@
 					</plugin>
 				</plugins>
 			</build>
+		</profile>
+		<profile>
+			<id>disable-java8-doclint</id>
+			<activation>
+				<jdk>[1.8,)</jdk>
+			</activation>
+			<properties>
+				<additionalparam>-Xdoclint:none</additionalparam>
+			</properties>
 		</profile>
 	</profiles>
 

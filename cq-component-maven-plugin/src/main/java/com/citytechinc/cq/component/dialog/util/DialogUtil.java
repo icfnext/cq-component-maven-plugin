@@ -152,13 +152,15 @@ public class DialogUtil {
 			if (isWidgetInComponentClass(curClass)) {
 				ComponentMojoUtil.getLog().debug("Processing Component Class " + curClass);
 				Dialog builtDialog = DialogFactory.make(curClass, widgetRegistry, classLoader, classPool);
-				dialogList.add(builtDialog);
-				File dialogFile =
-					writeDialogToFile(transformer, builtDialog, curClass, buildDirectory, componentPathBase,
-						defaultComponentPathSuffix);
-				writeDialogToArchiveFile(transformer, dialogFile, curClass, zipOutputStream, reservedNames,
-					componentPathBase, defaultComponentPathSuffix);
-				dialogList.add(builtDialog);
+				if (builtDialog != null && isWidgetInComponentClass(curClass)) {
+					dialogList.add(builtDialog);
+					File dialogFile =
+						writeDialogToFile(transformer, builtDialog, curClass, buildDirectory, componentPathBase,
+							defaultComponentPathSuffix);
+					writeDialogToArchiveFile(transformer, dialogFile, curClass, zipOutputStream, reservedNames,
+						componentPathBase, defaultComponentPathSuffix);
+					dialogList.add(builtDialog);
+				}
 			}
 		}
 

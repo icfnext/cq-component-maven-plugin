@@ -13,16 +13,34 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.gradle
+package com.citytechinc.cq.component.annotations;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
+@Retention(RetentionPolicy.CLASS)
+@Target({ ElementType.FIELD, ElementType.METHOD })
+public @interface AspectRatio {
+	/**
+	 * The text to display for the aspect ratio
+	 * 
+	 * @return String
+	 */
+	String text();
 
-class ComponentPluginExtension {
-	String componentPathBase
-	String componentPathSuffix="content"
-	String defaultComponentGroup="Components"
-	String transformerName="camel-case"
-	boolean generateTouchUiDialogs=true
-	boolean generateClassicUiDialogs=true
-	//TODO: Implement excludedDependences
+	/**
+	 * The width part of the aspect ratio
+	 * 
+	 * @return int
+	 */
+	int width();
+
+	/**
+	 * The height part of the aspect ratio
+	 * 
+	 * @return int
+	 */
+	int height();
 }

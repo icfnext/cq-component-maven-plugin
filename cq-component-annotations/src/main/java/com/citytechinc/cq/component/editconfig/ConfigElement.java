@@ -13,16 +13,19 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.gradle
+package com.citytechinc.cq.component.editconfig;
 
+import com.citytechinc.cq.component.xml.DefaultXmlElement;
+import com.citytechinc.cq.component.xml.XmlElementParameters;
 
+public class ConfigElement extends DefaultXmlElement {
 
-class ComponentPluginExtension {
-	String componentPathBase
-	String componentPathSuffix="content"
-	String defaultComponentGroup="Components"
-	String transformerName="camel-case"
-	boolean generateTouchUiDialogs=true
-	boolean generateClassicUiDialogs=true
-	//TODO: Implement excludedDependences
+	public ConfigElement(XmlElementParameters parameters) {
+		super(parameters);
+	}
+
+	public void setFieldName(String fieldName) {
+		this.fieldName = fieldName;
+	}
+
 }

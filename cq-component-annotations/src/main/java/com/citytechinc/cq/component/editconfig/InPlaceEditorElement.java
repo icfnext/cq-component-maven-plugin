@@ -13,16 +13,20 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.gradle
+package com.citytechinc.cq.component.editconfig;
 
+import java.util.List;
 
+import com.citytechinc.cq.component.xml.XmlElement;
 
-class ComponentPluginExtension {
-	String componentPathBase
-	String componentPathSuffix="content"
-	String defaultComponentGroup="Components"
-	String transformerName="camel-case"
-	boolean generateTouchUiDialogs=true
-	boolean generateClassicUiDialogs=true
-	//TODO: Implement excludedDependences
+public interface InPlaceEditorElement extends XmlElement {
+	Boolean getActive();
+
+	String getEditorType();
+
+	ConfigElement getConfigElement();
+
+	void setConfigElement(ConfigElement configElement);
+
+	void setContainedElements(List<XmlElement> containedElements);
 }

@@ -13,16 +13,25 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.gradle
+package com.citytechinc.cq.component.editconfig.registry;
 
+import java.util.Set;
 
+import com.citytechinc.cq.component.util.InPlaceEditorConfigHolder;
 
-class ComponentPluginExtension {
-	String componentPathBase
-	String componentPathSuffix="content"
-	String defaultComponentGroup="Components"
-	String transformerName="camel-case"
-	boolean generateTouchUiDialogs=true
-	boolean generateClassicUiDialogs=true
-	//TODO: Implement excludedDependences
+public interface InPlaceEditorRegistry {
+
+	/**
+	 *
+	 * @return The In Place Editor Configuration associated with the specified
+	 *         annotation
+	 */
+	public InPlaceEditorConfigHolder getInPlaceEditorForAnnotation(Class<?> annotation);
+
+	/**
+	 *
+	 * @return A set of all known In Place Editor annotations
+	 */
+	public Set<Class<?>> getRegisteredAnnotations();
+
 }

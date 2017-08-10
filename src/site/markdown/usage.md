@@ -87,6 +87,24 @@ Numberfield saved as ./quantity
     @NumberField(allowNegative=false, allowDecimals=true)
     private Double quantity;
 
+### In Place Editors
+In Place Editor specific annotations are used to configure in place editors inside the cq:editConfig.xml.  If multiple in place editor annotations are found for a given class, a hybrid in place editor is configured using the provided individual configurations.
+
+All of the default in place editor annotations can be found [here](apidocs/com/citytechinc/cq/component/editconfig/annotations/inplaceeditors/package-summary.html).
+
+#### In Place Editor Examples
+A Rich Text In Place Editor saved at ./text
+
+    @TextEditor
+	String text
+
+An Image In Place Editor saved at ./image (with the additional widget annotations so that it functions)
+
+    @DialogField(fieldLabel = "Image")
+	@Html5SmartImage(tab=false)
+	@ImageEditor(title="Image")
+	Image image
+
 ## Inheritance
 
 Dialog Fields will be inherited from any classes or interfaces extended or implemented respectively by a component's backing class.  
@@ -166,6 +184,12 @@ Generation of the Touch UI dialogs can be suppressed at a project, component, or
 project level set the `generateTouchUiDialogs` POM configuration to `false`.  To suppress generation at a component 
 level, set the `suppressTouchUIDialog` attribute of the `@Component` annotation to `false`.  To suppress generation at 
 a field level, set the `suppressTouchUI` attribute of the `@DialogField` annotation to `false`. 
+
+### Disabling Classic UI 
+
+Generation of the Classic UI dialogs can be suppressed at a project, component, or field level.  To suppress generation at a 
+project level set the `generateClassicUiDialogs` POM configuration to `false`.  To suppress generation at a component 
+level, set the `suppressClassicUIDialog` attribute of the `@Component` annotation to `false`.
 
 ### Mode-Exclusive Widgets
 

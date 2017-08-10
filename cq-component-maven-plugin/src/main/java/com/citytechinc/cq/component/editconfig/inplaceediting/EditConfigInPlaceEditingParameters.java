@@ -15,23 +15,12 @@
  */
 package com.citytechinc.cq.component.editconfig.inplaceediting;
 
+import com.citytechinc.cq.component.editconfig.DefaultInPlaceEditorParameters;
 import com.citytechinc.cq.component.util.Constants;
-import com.citytechinc.cq.component.xml.DefaultXmlElementParameters;
 
-public class EditConfigInPlaceEditingParameters extends DefaultXmlElementParameters {
+public class EditConfigInPlaceEditingParameters extends DefaultInPlaceEditorParameters {
 	private static final String EDIT_CONFIG_IN_PLACE_EDITING_PRIMARY_TYPE = "cq:InplaceEditingConfig";
-
-	private boolean active;
 	private String configPath;
-	private String editorType;
-
-	public boolean isActive() {
-		return active;
-	}
-
-	public void setActive(boolean active) {
-		this.active = active;
-	}
 
 	public String getConfigPath() {
 		return configPath;
@@ -39,14 +28,6 @@ public class EditConfigInPlaceEditingParameters extends DefaultXmlElementParamet
 
 	public void setConfigPath(String configPath) {
 		this.configPath = configPath;
-	}
-
-	public String getEditorType() {
-		return editorType;
-	}
-
-	public void setEditorType(String editorType) {
-		this.editorType = editorType;
 	}
 
 	@Override

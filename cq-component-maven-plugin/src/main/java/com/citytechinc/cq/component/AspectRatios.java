@@ -13,16 +13,14 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.gradle
+package com.citytechinc.cq.component;
 
+import com.citytechinc.cq.component.xml.AbstractXmlElement;
 
+public class AspectRatios extends AbstractXmlElement {
 
-class ComponentPluginExtension {
-	String componentPathBase
-	String componentPathSuffix="content"
-	String defaultComponentGroup="Components"
-	String transformerName="camel-case"
-	boolean generateTouchUiDialogs=true
-	boolean generateClassicUiDialogs=true
-	//TODO: Implement excludedDependences
+	public AspectRatios(AspectRatiosParameters parameters) {
+		super(parameters);
+	}
+
 }

@@ -13,16 +13,18 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.gradle
+package com.citytechinc.cq.component.editconfig.inplaceediting.image;
 
+import com.citytechinc.cq.component.annotations.config.InPlaceEditor;
+import com.citytechinc.cq.component.editconfig.AbstractInPlaceEditorElement;
+import com.citytechinc.cq.component.editconfig.DefaultInPlaceEditorParameters;
 
+@InPlaceEditor(annotationClass = com.citytechinc.cq.component.editconfig.annotations.inplaceeditors.ImageEditor.class,
+	editorType = "image", makerClass = ImageEditorMaker.class)
+public class ImageEditor extends AbstractInPlaceEditorElement {
 
-class ComponentPluginExtension {
-	String componentPathBase
-	String componentPathSuffix="content"
-	String defaultComponentGroup="Components"
-	String transformerName="camel-case"
-	boolean generateTouchUiDialogs=true
-	boolean generateClassicUiDialogs=true
-	//TODO: Implement excludedDependences
+	public ImageEditor(DefaultInPlaceEditorParameters parameters) {
+		super(parameters);
+	}
+
 }

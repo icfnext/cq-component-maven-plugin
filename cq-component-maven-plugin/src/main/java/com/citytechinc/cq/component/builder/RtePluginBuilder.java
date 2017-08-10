@@ -21,7 +21,6 @@ import java.util.List;
 
 import org.codehaus.plexus.util.StringUtils;
 
-import com.citytechinc.cq.component.annotations.widgets.RichTextEditor;
 import com.citytechinc.cq.component.annotations.widgets.rte.Edit;
 import com.citytechinc.cq.component.annotations.widgets.rte.FindReplace;
 import com.citytechinc.cq.component.annotations.widgets.rte.Format;
@@ -57,10 +56,10 @@ public final class RtePluginBuilder {
 
 	private static final String ALL_FEATURES = "*";
 
-	private final RichTextEditor rteAnnotation;
+	private final RtePluginBuilderParameters rtePluginBuilderParameters;
 
-	public RtePluginBuilder(RichTextEditor rteAnnotation) {
-		this.rteAnnotation = rteAnnotation;
+	public RtePluginBuilder(RtePluginBuilderParameters rtePluginBuilderParameters) {
+		this.rtePluginBuilderParameters = rtePluginBuilderParameters;
 	}
 
 	public RtePlugins build() {
@@ -98,8 +97,9 @@ public final class RtePluginBuilder {
 	}
 
 	private RtePlugin buildSubSuperscriptPlugin() {
-		if (rteAnnotation.subsuperscript().length > 0) {
-			SubSuperscript subSuperscriptAnnotation = rteAnnotation.subsuperscript()[0];
+		if (rtePluginBuilderParameters.getSubsuperscript() != null
+			&& rtePluginBuilderParameters.getSubsuperscript().length > 0) {
+			SubSuperscript subSuperscriptAnnotation = rtePluginBuilderParameters.getSubsuperscript()[0];
 
 			List<String> features = new ArrayList<String>();
 
@@ -119,7 +119,7 @@ public final class RtePluginBuilder {
 	}
 
 	private RtePlugin buildSpellcheckPlugin() {
-		if (rteAnnotation.spellcheck().length > 0) {
+		if (rtePluginBuilderParameters.getSpellcheck() != null && rtePluginBuilderParameters.getSpellcheck().length > 0) {
 			List<String> features = new ArrayList<String>();
 
 			features.add("checktext");
@@ -133,8 +133,8 @@ public final class RtePluginBuilder {
 	}
 
 	private RtePlugin buildListsPlugin() {
-		if (rteAnnotation.lists().length > 0) {
-			Lists listsAnnotation = rteAnnotation.lists()[0];
+		if (rtePluginBuilderParameters.getLists() != null && rtePluginBuilderParameters.getLists().length > 0) {
+			Lists listsAnnotation = rtePluginBuilderParameters.getLists()[0];
 			List<String> features = new ArrayList<String>();
 
 			if (listsAnnotation.ordered()) {
@@ -160,8 +160,8 @@ public final class RtePluginBuilder {
 	}
 
 	private RtePlugin buildJustifyPlugin() {
-		if (rteAnnotation.justify().length > 0) {
-			Justify justifyAnnotation = rteAnnotation.justify()[0];
+		if (rtePluginBuilderParameters.getJustify() != null && rtePluginBuilderParameters.getJustify().length > 0) {
+			Justify justifyAnnotation = rtePluginBuilderParameters.getJustify()[0];
 			List<String> features = new ArrayList<String>();
 
 			if (justifyAnnotation.justifyleft()) {
@@ -186,7 +186,7 @@ public final class RtePluginBuilder {
 	}
 
 	private RtePlugin buildImagePlugin() {
-		if (rteAnnotation.image().length > 0) {
+		if (rtePluginBuilderParameters.getImage() != null && rtePluginBuilderParameters.getImage().length > 0) {
 			List<String> features = new ArrayList<String>();
 
 			features.add("image");
@@ -200,8 +200,8 @@ public final class RtePluginBuilder {
 	}
 
 	private RtePlugin buildFormatPlugin() {
-		if (rteAnnotation.format().length > 0) {
-			Format formatAnnotation = rteAnnotation.format()[0];
+		if (rtePluginBuilderParameters.getFormat() != null && rtePluginBuilderParameters.getFormat().length > 0) {
+			Format formatAnnotation = rtePluginBuilderParameters.getFormat()[0];
 			List<String> features = new ArrayList<String>();
 
 			if (formatAnnotation.bold()) {
@@ -226,8 +226,9 @@ public final class RtePluginBuilder {
 	}
 
 	private RtePlugin buildFindReplacePlugin() {
-		if (rteAnnotation.findreplace().length > 0) {
-			FindReplace findReplaceAnnotation = rteAnnotation.findreplace()[0];
+		if (rtePluginBuilderParameters.getFindreplace() != null
+			&& rtePluginBuilderParameters.getFindreplace().length > 0) {
+			FindReplace findReplaceAnnotation = rtePluginBuilderParameters.getFindreplace()[0];
 			List<String> features = new ArrayList<String>();
 
 			if (findReplaceAnnotation.find()) {
@@ -246,8 +247,8 @@ public final class RtePluginBuilder {
 	}
 
 	private RtePlugin buildEditPlugin() {
-		if (rteAnnotation.edit().length > 0) {
-			Edit[] editAnnotations = rteAnnotation.edit();
+		if (rtePluginBuilderParameters.getEdit() != null && rtePluginBuilderParameters.getEdit().length > 0) {
+			Edit[] editAnnotations = rtePluginBuilderParameters.getEdit();
 			Edit editAnnotation = editAnnotations[0];
 			String defaultPasteMode = editAnnotation.defaultPasteMode();
 
@@ -279,8 +280,8 @@ public final class RtePluginBuilder {
 	}
 
 	private RtePlugin buildUndoPlugin() {
-		if (rteAnnotation.undo().length > 0) {
-			Undo undoAnnotation = rteAnnotation.undo()[0];
+		if (rtePluginBuilderParameters.getUndo() != null && rtePluginBuilderParameters.getUndo().length > 0) {
+			Undo undoAnnotation = rtePluginBuilderParameters.getUndo()[0];
 			List<String> features = new ArrayList<String>();
 
 			int maxUndoSteps = undoAnnotation.maxUndoSteps();
@@ -305,16 +306,16 @@ public final class RtePluginBuilder {
 	}
 
 	private RtePlugin buildStylesRtePlugin() {
-		if (rteAnnotation.styles().length > 0) {
+		if (rtePluginBuilderParameters.getStyles() != null && rtePluginBuilderParameters.getStyles().length > 0) {
 			List<DialogElement> styleList = new ArrayList<DialogElement>();
 
-			for (int i = 0; i < rteAnnotation.styles().length; i++) {
+			for (int i = 0; i < rtePluginBuilderParameters.getStyles().length; i++) {
 				String styleFieldName = "style" + i;
 
 				RteStyleParameters styleParameters = new RteStyleParameters();
 				styleParameters.setFieldName(styleFieldName);
-				styleParameters.setCssName(rteAnnotation.styles()[i].cssName());
-				styleParameters.setText(rteAnnotation.styles()[i].text());
+				styleParameters.setCssName(rtePluginBuilderParameters.getStyles()[i].cssName());
+				styleParameters.setText(rtePluginBuilderParameters.getStyles()[i].text());
 				styleList.add(new RteStyle(styleParameters));
 			}
 
@@ -334,13 +335,13 @@ public final class RtePluginBuilder {
 	}
 
 	private RtePlugin buildParaFormatPlugin() {
-		if (rteAnnotation.paraformat().length > 0) {
+		if (rtePluginBuilderParameters.getParaformat() != null && rtePluginBuilderParameters.getParaformat().length > 0) {
 			List<DialogElement> formatList = new ArrayList<DialogElement>();
 
-			for (int i = 0; i < rteAnnotation.paraformat().length; i++) {
+			for (int i = 0; i < rtePluginBuilderParameters.getParaformat().length; i++) {
 				String formatFieldName = "format" + i;
 
-				ParaFormat curFormat = rteAnnotation.paraformat()[i];
+				ParaFormat curFormat = rtePluginBuilderParameters.getParaformat()[i];
 				RteParaFormatParameters paraParameters = new RteParaFormatParameters();
 				paraParameters.setFieldName(formatFieldName);
 				paraParameters.setTag(curFormat.tag());
@@ -364,8 +365,8 @@ public final class RtePluginBuilder {
 	}
 
 	private RtePlugin buildKeysPlugin() {
-		if (rteAnnotation.keys().length > 0) {
-			Keys keysAnnotation = rteAnnotation.keys()[0];
+		if (rtePluginBuilderParameters.getKeys() != null && rtePluginBuilderParameters.getKeys().length > 0) {
+			Keys keysAnnotation = rtePluginBuilderParameters.getKeys()[0];
 
 			KeysRtePluginParameters keysParameters = new KeysRtePluginParameters();
 			if (!keysAnnotation.tabSize().equals("")) {
@@ -378,8 +379,8 @@ public final class RtePluginBuilder {
 	}
 
 	private RtePlugin buildTablePlugin() {
-		if (rteAnnotation.table().length > 0) {
-			Table tableAnnotation = rteAnnotation.table()[0];
+		if (rtePluginBuilderParameters.getTable() != null && rtePluginBuilderParameters.getTable().length > 0) {
+			Table tableAnnotation = rtePluginBuilderParameters.getTable()[0];
 			List<String> features = new ArrayList<String>();
 
 			if (tableAnnotation.table()) {
@@ -479,8 +480,8 @@ public final class RtePluginBuilder {
 	}
 
 	private RtePlugin buildLinksPlugin() {
-		if (rteAnnotation.links().length > 0) {
-			Links linksAnnotation = rteAnnotation.links()[0];
+		if (rtePluginBuilderParameters.getLinks() != null && rtePluginBuilderParameters.getLinks().length > 0) {
+			Links linksAnnotation = rtePluginBuilderParameters.getLinks()[0];
 			List<String> features = new ArrayList<String>();
 
 			if (linksAnnotation.modifylink()) {
@@ -505,8 +506,8 @@ public final class RtePluginBuilder {
 	// http://dev.day.com/docs/en/cq/current/administering/configuring_rich_text_editor.html#Special
 	// Characters
 	private RtePlugin buildMiscToolsPlugin() {
-		if (rteAnnotation.misctools().length > 0) {
-			MiscTools miscToolsAnnotation = rteAnnotation.misctools()[0];
+		if (rtePluginBuilderParameters.getMisctools() != null && rtePluginBuilderParameters.getMisctools().length > 0) {
+			MiscTools miscToolsAnnotation = rtePluginBuilderParameters.getMisctools()[0];
 			List<String> features = new ArrayList<String>();
 
 			if (miscToolsAnnotation.specialchars()) {

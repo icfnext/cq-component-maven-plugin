@@ -13,16 +13,10 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.citytechinc.cq.component.gradle
+package com.citytechinc.cq.component.editconfig.maker;
 
+import com.citytechinc.cq.component.editconfig.InPlaceEditorElement;
 
-
-class ComponentPluginExtension {
-	String componentPathBase
-	String componentPathSuffix="content"
-	String defaultComponentGroup="Components"
-	String transformerName="camel-case"
-	boolean generateTouchUiDialogs=true
-	boolean generateClassicUiDialogs=true
-	//TODO: Implement excludedDependences
+public interface InPlaceEditorMaker {
+	public InPlaceEditorElement make() throws ClassNotFoundException, IllegalAccessException, InstantiationException;
 }

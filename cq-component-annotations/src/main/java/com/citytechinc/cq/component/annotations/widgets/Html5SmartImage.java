@@ -20,6 +20,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.citytechinc.cq.component.annotations.AspectRatio;
+
 /**
  * Represents a Widget of type CQ.html5.form.SmartImage in Classic UI
  *

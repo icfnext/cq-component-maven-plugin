@@ -15,6 +15,7 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.switchwidget;
 
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogType;
 import com.citytechinc.cq.component.touchuidialog.widget.DefaultTouchUIWidgetParameters;
 
 public class SwitchWidgetParameters extends DefaultTouchUIWidgetParameters {
@@ -58,6 +59,9 @@ public class SwitchWidgetParameters extends DefaultTouchUIWidgetParameters {
 
 	@Override
 	public String getResourceType() {
+		if(TouchUIDialogType.CORAL3.isOfType(getTouchUIDialogType())) {
+			return SwitchCoral3Widget.RESOURCE_TYPE;
+		}
 		return SwitchWidget.RESOURCE_TYPE;
 	}
 

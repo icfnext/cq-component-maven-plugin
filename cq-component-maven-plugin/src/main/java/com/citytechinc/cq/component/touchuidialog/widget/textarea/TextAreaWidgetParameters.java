@@ -15,6 +15,7 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.textarea;
 
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogType;
 import com.citytechinc.cq.component.touchuidialog.widget.DefaultTouchUIWidgetParameters;
 
 public class TextAreaWidgetParameters extends DefaultTouchUIWidgetParameters {
@@ -49,6 +50,9 @@ public class TextAreaWidgetParameters extends DefaultTouchUIWidgetParameters {
 
 	@Override
 	public String getResourceType() {
+		if(TouchUIDialogType.CORAL3.isOfType(getTouchUIDialogType())){
+			return TextAreaCoral3Widget.RESOURCE_TYPE;
+		}
 		return TextAreaWidget.RESOURCE_TYPE;
 	}
 

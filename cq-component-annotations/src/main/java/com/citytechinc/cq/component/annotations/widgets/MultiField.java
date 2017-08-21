@@ -52,4 +52,12 @@ public @interface MultiField {
 	 */
 	boolean orderable() default ORDERABLE_DEFAULT;
 
+	/**
+	 * Used for Touch UI Coral3 Only
+	 *
+	 * Set true to handle the form content value as composite.
+	 *
+	 * @return boolean
+	 */
+	boolean composite() default false;
 }

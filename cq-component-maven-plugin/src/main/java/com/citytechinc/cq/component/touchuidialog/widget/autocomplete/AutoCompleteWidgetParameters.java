@@ -15,12 +15,13 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.autocomplete;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogType;
 import com.citytechinc.cq.component.touchuidialog.widget.DefaultTouchUIWidgetParameters;
 import com.citytechinc.cq.component.xml.XmlElement;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AutoCompleteWidgetParameters extends DefaultTouchUIWidgetParameters {
 
@@ -29,6 +30,7 @@ public class AutoCompleteWidgetParameters extends DefaultTouchUIWidgetParameters
 	private TouchUIDialogElement datasource;
 	private TouchUIDialogElement values;
 	private TouchUIDialogElement options;
+	private boolean forceSelection;
 
 	// TODO: Look into the translateOptions mechanism
 
@@ -72,6 +74,14 @@ public class AutoCompleteWidgetParameters extends DefaultTouchUIWidgetParameters
 		this.options = options;
 	}
 
+	public boolean isForceSelection() {
+		return forceSelection;
+	}
+
+	public void setForceSelection(boolean forceSelection) {
+		this.forceSelection = forceSelection;
+	}
+
 	@Override
 	public List<? extends XmlElement> getContainedElements() {
 		List<XmlElement> allContainedElements = new ArrayList<XmlElement>();
@@ -95,6 +105,9 @@ public class AutoCompleteWidgetParameters extends DefaultTouchUIWidgetParameters
 
 	@Override
 	public String getResourceType() {
+		if(TouchUIDialogType.CORAL3.isOfType(getTouchUIDialogType())) {
+			return AutoCompleteCoral3Widget.RESOURCE_TYPE;
+		}
 		return AutoCompleteWidget.RESOURCE_TYPE;
 	}
 
@@ -102,5 +115,4 @@ public class AutoCompleteWidgetParameters extends DefaultTouchUIWidgetParameters
 	public void setResourceType(String resourceType) {
 		throw new UnsupportedOperationException("resourceType is Static for AutoCompleteWidget");
 	}
-
 }

@@ -15,15 +15,16 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.selection;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogType;
 import com.citytechinc.cq.component.touchuidialog.widget.DefaultTouchUIWidgetParameters;
 import com.citytechinc.cq.component.touchuidialog.widget.datasource.DataSource;
 import com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option;
 import com.citytechinc.cq.component.touchuidialog.widget.selection.options.Options;
 import com.citytechinc.cq.component.touchuidialog.widget.selection.options.OptionsParameters;
 import com.citytechinc.cq.component.xml.XmlElement;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SelectionFieldWidgetParameters extends DefaultTouchUIWidgetParameters {
 
@@ -91,6 +92,9 @@ public class SelectionFieldWidgetParameters extends DefaultTouchUIWidgetParamete
 
 	@Override
 	public String getResourceType() {
+		if(TouchUIDialogType.CORAL3.isOfType(getTouchUIDialogType())){
+			return SelectionFieldCoral3Widget.RESOURCE_TYPE;
+		}
 		return SelectionFieldWidget.RESOURCE_TYPE;
 	}
 

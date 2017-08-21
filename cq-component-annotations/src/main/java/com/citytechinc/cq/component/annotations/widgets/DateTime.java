@@ -41,6 +41,16 @@ public @interface DateTime {
 	String storedFormat() default "";
 
 	/**
+	 * For Touch-UI Coral3 only
+	 *
+	 * Similar to format but uses a different standard for specifying date
+	 * formats.
+	 *
+	 * @return String
+	 */
+	String valueFormat() default "YYYY-MM-DD[T]HH:mm:ss.000Z";
+
+	/**
 	 * For Touch-UI only
 	 *
 	 * Display format for the date selected

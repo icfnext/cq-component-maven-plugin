@@ -15,6 +15,7 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.textarea;
 
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogType;
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.widgets.TextArea;
@@ -40,7 +41,11 @@ public class TextAreaWidgetMaker extends AbstractTouchUIWidgetMaker<TextAreaWidg
 		widgetParameters.setCols(getColsForField(widgetAnnotation));
 		widgetParameters.setRows(getRowsForField(widgetAnnotation));
 		widgetParameters.setResize(getResizeForField(widgetAnnotation));
+		widgetParameters.setTouchUIDialogType(parameters.getTouchUIDialogType());
 
+		if(TouchUIDialogType.CORAL3.isOfType(widgetParameters.getTouchUIDialogType())){
+			return new TextAreaCoral3Widget(widgetParameters);
+		}
 		return new TextAreaWidget(widgetParameters);
 
 	}

@@ -15,20 +15,6 @@
  */
 package com.citytechinc.cq.component.touchuidialog.util;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtMember;
-import javassist.CtMethod;
-import javassist.NotFoundException;
-
-import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
-import org.codehaus.plexus.util.StringUtils;
-
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.IgnoreDialogField;
@@ -47,6 +33,15 @@ import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMake
 import com.citytechinc.cq.component.touchuidialog.widget.radiogroup.RadioGroupWidget;
 import com.citytechinc.cq.component.touchuidialog.widget.registry.TouchUIWidgetRegistry;
 import com.citytechinc.cq.component.touchuidialog.widget.selection.options.OptionParameters;
+import com.citytechinc.cq.component.xml.XmlElement;
+import javassist.*;
+import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
+import org.codehaus.plexus.util.StringUtils;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class TouchUIDialogUtil {
 	private static final String OPTION_FIELD_NAME_PREFIX = "option";
@@ -57,14 +52,14 @@ public class TouchUIDialogUtil {
 	public static List<TouchUIDialog> buildDialogsFromClassList(List<CtClass> classList, ClassLoader classLoader,
 		ClassPool classPool, TouchUIWidgetRegistry widgetRegistry, ComponentNameTransformer transformer,
 		File buildDirectory, String componentPathBase, String defaultComponentPathSuffix,
-		ZipArchiveOutputStream archiveStream, Set<String> reservedNames) throws TouchUIDialogGenerationException,
+		ZipArchiveOutputStream archiveStream, Set<String> reservedNames, String touchUIDialogType) throws TouchUIDialogGenerationException,
 		TouchUIDialogWriteException, ClassNotFoundException, NotFoundException, InvalidComponentClassException {
 
 		List<TouchUIDialog> dialogList = new ArrayList<TouchUIDialog>();
 
 		for (CtClass currentComponentClass : classList) {
 			TouchUIDialog currentDialog =
-				TouchUIDialogFactory.make(currentComponentClass, classLoader, classPool, widgetRegistry);
+				TouchUIDialogFactory.make(currentComponentClass, classLoader, classPool, widgetRegistry, touchUIDialogType);
 
 			if (currentDialog != null && isWidgetInComponentClass(currentComponentClass)) {
 				File currentDialogOutput =
@@ -104,7 +99,7 @@ public class TouchUIDialogUtil {
 	}
 
 	public static List<TouchUIWidgetMakerParameters> getWidgetMakerParametersForComponentClass(CtClass componentClass,
-		ClassLoader classLoader, ClassPool classPool, TouchUIWidgetRegistry widgetRegistry) throws NotFoundException,
+		ClassLoader classLoader, ClassPool classPool, TouchUIWidgetRegistry widgetRegistry, String touchUIDialogType) throws NotFoundException,
 		ClassNotFoundException, InvalidComponentClassException {
 
 		List<TouchUIWidgetMakerParameters> widgetMakerParametersList = new ArrayList<TouchUIWidgetMakerParameters>();
@@ -141,6 +136,7 @@ public class TouchUIDialogUtil {
 					touchUIWidgetMakerParameters.setClassPool(classPool);
 					touchUIWidgetMakerParameters.setUseDotSlashInName(true);
 					touchUIWidgetMakerParameters.setWidgetRegistry(widgetRegistry);
+					touchUIWidgetMakerParameters.setTouchUIDialogType(touchUIDialogType);
 					widgetMakerParametersList.add(touchUIWidgetMakerParameters);
 				}
 			}
@@ -271,4 +267,13 @@ public class TouchUIDialogUtil {
 
 	}
 
+	public static List<XmlElement> createContainedElements(XmlElement ... elements) {
+		List<XmlElement> containedElements = new ArrayList<XmlElement>();
+
+		for(XmlElement element : elements) {
+			containedElements.add(element);
+		}
+
+		return containedElements;
+	}
 }

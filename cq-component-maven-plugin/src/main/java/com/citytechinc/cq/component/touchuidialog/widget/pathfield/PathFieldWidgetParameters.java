@@ -15,6 +15,7 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.pathfield;
 
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogType;
 import com.citytechinc.cq.component.touchuidialog.widget.DefaultTouchUIWidgetParameters;
 
 public class PathFieldWidgetParameters extends DefaultTouchUIWidgetParameters {
@@ -24,6 +25,8 @@ public class PathFieldWidgetParameters extends DefaultTouchUIWidgetParameters {
 	private String optionLoaderRoot;
 	private String optionValueReader;
 	private String optionTitleReader;
+	private boolean forceSelection;
+	private String filter;
 
 	public String getRootPath() {
 		return rootPath;
@@ -65,8 +68,27 @@ public class PathFieldWidgetParameters extends DefaultTouchUIWidgetParameters {
 		this.optionTitleReader = optionTitleReader;
 	}
 
+	public boolean isForceSelection() {
+		return forceSelection;
+	}
+
+	public void setForceSelection(boolean forceSelection) {
+		this.forceSelection = forceSelection;
+	}
+
+	public String getFilter() {
+		return filter;
+	}
+
+	public void setFilter(String filter) {
+		this.filter = filter;
+	}
+
 	@Override
 	public String getResourceType() {
+		if(TouchUIDialogType.CORAL3.isOfType(getTouchUIDialogType())) {
+			return PathFieldCoral3Widget.RESOURCE_TYPE;
+		}
 		return PathFieldWidget.RESOURCE_TYPE;
 	}
 

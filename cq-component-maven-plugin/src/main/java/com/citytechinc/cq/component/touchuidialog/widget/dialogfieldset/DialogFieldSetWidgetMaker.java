@@ -25,6 +25,7 @@ import com.citytechinc.cq.component.dialog.util.DialogUtil;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElementComparator;
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogType;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
 import com.citytechinc.cq.component.touchuidialog.widget.factory.TouchUIWidgetFactory;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
@@ -54,6 +55,7 @@ public class DialogFieldSetWidgetMaker extends AbstractTouchUIWidgetMaker<Dialog
         widgetParameters.setName(null);
         widgetParameters.setRequired(true);
         widgetParameters.setText(getFieldLabelForField());
+        widgetParameters.setTouchUIDialogType(parameters.getTouchUIDialogType());
 
         String title = null;
 
@@ -72,6 +74,9 @@ public class DialogFieldSetWidgetMaker extends AbstractTouchUIWidgetMaker<Dialog
                     + parameters.getContainingClass().getName(), e);
         }
 
+	    if(TouchUIDialogType.CORAL3.isOfType(widgetParameters.getTouchUIDialogType())) {
+		    return new DialogFieldSetCoral3Widget(widgetParameters);
+	    }
         return new DialogFieldSetWidget(widgetParameters);
 
     }
@@ -128,6 +133,7 @@ public class DialogFieldSetWidgetMaker extends AbstractTouchUIWidgetMaker<Dialog
                     curFieldMember.setClassPool(parameters.getClassPool());
                     curFieldMember.setWidgetRegistry(parameters.getWidgetRegistry());
                     curFieldMember.setUseDotSlashInName(parameters.isUseDotSlashInName());
+                    curFieldMember.setTouchUIDialogType(parameters.getTouchUIDialogType());
 
                     TouchUIDialogElement currentDialogElement = TouchUIWidgetFactory.make(curFieldMember, -1);
 

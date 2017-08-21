@@ -15,13 +15,11 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.taginputfield;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.citytechinc.cq.component.annotations.TagNameSpace;
 import com.citytechinc.cq.component.annotations.widgets.TagInputField;
 import com.citytechinc.cq.component.touchuidialog.DefaultTouchUIDialogElementParameters;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElementParameters;
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogType;
 import com.citytechinc.cq.component.touchuidialog.widget.autocomplete.AutoCompleteWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.autocomplete.options.AutoCompleteOptions;
 import com.citytechinc.cq.component.touchuidialog.widget.autocomplete.values.AutoCompleteValues;
@@ -29,6 +27,9 @@ import com.citytechinc.cq.component.touchuidialog.widget.datasource.DataSource;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 import com.citytechinc.cq.component.touchuidialog.widget.taginputfield.datasource.TagsDataSource;
 import com.citytechinc.cq.component.touchuidialog.widget.taginputfield.datasource.TagsDataSourceParameters;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TagInputFieldWidgetMaker extends AutoCompleteWidgetMaker {
 
@@ -64,7 +65,11 @@ public class TagInputFieldWidgetMaker extends AutoCompleteWidgetMaker {
 	protected AutoCompleteOptions makeOptions() {
 		TouchUIDialogElementParameters optionsParameters = new DefaultTouchUIDialogElementParameters();
 
-		optionsParameters.setResourceType(TagInputFieldWidget.OPTIONS_RESOURCE_TYPE);
+		if(TouchUIDialogType.CORAL3.isOfType(parameters.getTouchUIDialogType())){
+			optionsParameters.setResourceType(TagInputFieldCoral3Widget.OPTIONS_RESOURCE_TYPE);
+		} else {
+			optionsParameters.setResourceType(TagInputFieldWidget.OPTIONS_RESOURCE_TYPE);
+		}
 		optionsParameters.setFieldName(TagInputFieldWidget.OPTIONS_FIELD_NAME);
 		optionsParameters.setPrimaryType("nt:unstructured");
 
@@ -75,7 +80,11 @@ public class TagInputFieldWidgetMaker extends AutoCompleteWidgetMaker {
 	protected AutoCompleteValues makeValues() {
 		TouchUIDialogElementParameters valuesParameters = new DefaultTouchUIDialogElementParameters();
 
-		valuesParameters.setResourceType(TagInputFieldWidget.VALUES_RESOURCE_TYPE);
+		if(TouchUIDialogType.CORAL3.isOfType(parameters.getTouchUIDialogType())){
+			valuesParameters.setResourceType(TagInputFieldCoral3Widget.VALUES_RESOURCE_TYPE);
+		} else {
+			valuesParameters.setResourceType(TagInputFieldWidget.VALUES_RESOURCE_TYPE);
+		}
 		valuesParameters.setFieldName(TagInputFieldWidget.VALUES_FIELD_NAME);
 		valuesParameters.setPrimaryType("nt:unstructured");
 

@@ -15,6 +15,7 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.pathfield;
 
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogType;
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.widgets.PathField;
@@ -40,7 +41,13 @@ public class PathFieldWidgetMaker extends AbstractTouchUIWidgetMaker<PathFieldWi
 		widgetParameters.setOptionLoaderRoot(getOptionLoaderRootForField(pathFieldAnnotation));
 		widgetParameters.setOptionValueReader(getOptionValueReaderForField(pathFieldAnnotation));
 		widgetParameters.setOptionTitleReader(getOptionTitleReaderForField(pathFieldAnnotation));
+		widgetParameters.setForceSelection(getForceSelectionForField(pathFieldAnnotation));
+		widgetParameters.setFilter(getFilterForField(pathFieldAnnotation));
+		widgetParameters.setTouchUIDialogType(parameters.getTouchUIDialogType());
 
+		if(TouchUIDialogType.CORAL3.isOfType(widgetParameters.getTouchUIDialogType())) {
+			return new PathFieldCoral3Widget(widgetParameters);
+		}
 		return new PathFieldWidget(widgetParameters);
 	}
 
@@ -80,4 +87,19 @@ public class PathFieldWidgetMaker extends AbstractTouchUIWidgetMaker<PathFieldWi
 		return null;
 	}
 
+	public boolean getForceSelectionForField(PathField annotation) {
+		if (annotation != null) {
+			return annotation.forceSelection();
+		}
+
+		return false;
+	}
+
+	public String getFilterForField(PathField annotation) {
+		if (annotation != null && StringUtils.isNotBlank(annotation.filter())) {
+			return annotation.filter();
+		}
+
+		return null;
+	}
 }

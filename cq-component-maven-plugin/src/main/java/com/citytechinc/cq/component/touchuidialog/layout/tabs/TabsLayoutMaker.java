@@ -15,22 +15,10 @@
  */
 package com.citytechinc.cq.component.touchuidialog.layout.tabs;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.codehaus.plexus.util.StringUtils;
-
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.Property;
 import com.citytechinc.cq.component.annotations.Tab;
-import com.citytechinc.cq.component.touchuidialog.DefaultTouchUIDialogElement;
-import com.citytechinc.cq.component.touchuidialog.DefaultTouchUIDialogElementParameters;
-import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
-import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElementComparator;
-import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElementParameters;
+import com.citytechinc.cq.component.touchuidialog.*;
 import com.citytechinc.cq.component.touchuidialog.container.Section;
 import com.citytechinc.cq.component.touchuidialog.container.SectionParameters;
 import com.citytechinc.cq.component.touchuidialog.container.items.Items;
@@ -49,6 +37,9 @@ import com.citytechinc.cq.component.touchuidialog.widget.factory.TouchUIWidgetFa
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 import com.citytechinc.cq.component.util.Constants;
 import com.citytechinc.cq.component.xml.XmlElement;
+import org.codehaus.plexus.util.StringUtils;
+
+import java.util.*;
 
 public class TabsLayoutMaker extends AbstractLayoutMaker {
 
@@ -175,7 +166,7 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
 			// Populate the content for each tab
 			List<TouchUIWidgetMakerParameters> widgetMakerParameters =
 				TouchUIDialogUtil.getWidgetMakerParametersForComponentClass(parameters.getComponentClass(),
-					parameters.getClassLoader(), parameters.getClassPool(), parameters.getWidgetRegistry());
+					parameters.getClassLoader(), parameters.getClassPool(), parameters.getWidgetRegistry(), parameters.getTouchUIDialogType());
 
 			for (TouchUIWidgetMakerParameters currentWidgetMakerParameters : widgetMakerParameters) {
 

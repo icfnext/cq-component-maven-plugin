@@ -15,19 +15,18 @@
  */
 package com.citytechinc.cq.component.maven;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.citytechinc.cq.component.annotations.Component;
+import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
+import com.citytechinc.cq.component.dialog.widget.WidgetRegistry;
+import com.citytechinc.cq.component.dialog.widget.impl.DefaultWidgetRegistry;
+import com.citytechinc.cq.component.editconfig.registry.DefaultInPlaceEditorRegistry;
+import com.citytechinc.cq.component.editconfig.registry.InPlaceEditorRegistry;
+import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
+import com.citytechinc.cq.component.maven.util.LogSingleton;
+import com.citytechinc.cq.component.touchuidialog.widget.registry.DefaultTouchUIWidgetRegistry;
+import com.citytechinc.cq.component.touchuidialog.widget.registry.TouchUIWidgetRegistry;
 import javassist.ClassPool;
 import javassist.CtClass;
-
-import javax.naming.ConfigurationException;
-
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
@@ -40,16 +39,10 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 import org.reflections.Reflections;
 
-import com.citytechinc.cq.component.annotations.Component;
-import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
-import com.citytechinc.cq.component.dialog.widget.WidgetRegistry;
-import com.citytechinc.cq.component.dialog.widget.impl.DefaultWidgetRegistry;
-import com.citytechinc.cq.component.editconfig.registry.DefaultInPlaceEditorRegistry;
-import com.citytechinc.cq.component.editconfig.registry.InPlaceEditorRegistry;
-import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
-import com.citytechinc.cq.component.maven.util.LogSingleton;
-import com.citytechinc.cq.component.touchuidialog.widget.registry.DefaultTouchUIWidgetRegistry;
-import com.citytechinc.cq.component.touchuidialog.widget.registry.TouchUIWidgetRegistry;
+import javax.naming.ConfigurationException;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.util.*;
 
 @Mojo(name = "component", defaultPhase = LifecyclePhase.PACKAGE, requiresDependencyResolution = ResolutionScope.COMPILE)
 public class ComponentMojo extends AbstractMojo {
@@ -79,6 +72,9 @@ public class ComponentMojo extends AbstractMojo {
 
 	@Parameter(defaultValue = "true")
 	private boolean generateTouchUiDialogs;
+
+	@Parameter(defaultValue = "false")
+	private boolean useCoral3Dialogs;
 
 	@Parameter(defaultValue = "true")
 	private boolean generateClassicUiDialogs;
@@ -126,7 +122,7 @@ public class ComponentMojo extends AbstractMojo {
 			ComponentMojoUtil.buildArchiveFileForProjectAndClassList(classList, widgetRegistry, touchUIWidgetRegistry,
 				inPlaceEditorRegistry, classLoader, classPool, new File(project.getBuild().getDirectory()),
 				componentPathBase, componentPathSuffix, defaultComponentGroup, getArchiveFileForProject(),
-				getTempArchiveFileForProject(), transformer, generateTouchUiDialogs, generateClassicUiDialogs);
+				getTempArchiveFileForProject(), transformer, generateTouchUiDialogs, useCoral3Dialogs, generateClassicUiDialogs);
 
 		} catch (Exception e) {
 			getLog().error(e.getMessage(), e);

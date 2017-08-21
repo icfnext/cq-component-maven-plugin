@@ -15,16 +15,6 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.maker;
 
-import java.lang.reflect.ParameterizedType;
-import java.util.HashMap;
-import java.util.Map;
-
-import javassist.CtClass;
-import javassist.CtField;
-import javassist.NotFoundException;
-
-import org.codehaus.plexus.util.StringUtils;
-
 import com.citytechinc.cq.component.annotations.Property;
 import com.citytechinc.cq.component.annotations.Property.RenderValue;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
@@ -32,6 +22,14 @@ import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
 import com.citytechinc.cq.component.touchuidialog.widget.TouchUIWidgetParameters;
 import com.citytechinc.cq.component.util.ComponentUtil;
+import javassist.CtClass;
+import javassist.CtField;
+import javassist.NotFoundException;
+import org.codehaus.plexus.util.StringUtils;
+
+import java.lang.reflect.ParameterizedType;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class AbstractTouchUIWidgetMaker<T extends TouchUIWidgetParameters> implements TouchUIWidgetMaker {
 

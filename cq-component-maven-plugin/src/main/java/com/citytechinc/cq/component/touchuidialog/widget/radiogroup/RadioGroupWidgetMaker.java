@@ -15,6 +15,7 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.radiogroup;
 
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogType;
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.widgets.Selection;
@@ -40,10 +41,13 @@ public class RadioGroupWidgetMaker extends AbstractTouchUIWidgetMaker<RadioGroup
 
 		widgetParameters.setText(getFieldLabelForField());
 		widgetParameters.setDataSource(getDataSourceForField(selectionField));
-
 		widgetParameters.setOptions(TouchUIDialogUtil.getOptionsForSelection(selectionField, getType(),
 			parameters.getClassLoader(), parameters.getClassPool()));
+		widgetParameters.setTouchUIDialogType(parameters.getTouchUIDialogType());
 
+		if(TouchUIDialogType.CORAL3.isOfType(widgetParameters.getTouchUIDialogType())) {
+			return new RadioGroupCoral3Widget(widgetParameters);
+		}
 		return new RadioGroupWidget(widgetParameters);
 	}
 

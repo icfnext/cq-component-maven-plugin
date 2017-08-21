@@ -18,11 +18,14 @@ package com.citytechinc.cq.component.touchuidialog.factory;
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialog;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogParameters;
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogType;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
 import com.citytechinc.cq.component.touchuidialog.layout.Layout;
+import com.citytechinc.cq.component.touchuidialog.layout.columns.fixedcolumns.FixedColumnsLayoutCoral3Maker;
 import com.citytechinc.cq.component.touchuidialog.layout.maker.LayoutMaker;
 import com.citytechinc.cq.component.touchuidialog.layout.maker.LayoutMakerParameters;
 import com.citytechinc.cq.component.touchuidialog.layout.maker.exceptions.LayoutMakerException;
+import com.citytechinc.cq.component.touchuidialog.layout.tabs.TabsLayoutCoral3Maker;
 import com.citytechinc.cq.component.touchuidialog.layout.tabs.TabsLayoutMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.registry.TouchUIWidgetRegistry;
 import com.citytechinc.cq.component.xml.XmlElement;
@@ -41,7 +44,7 @@ public class TouchUIDialogFactory {
 
 	@Nullable
 	public static TouchUIDialog make(CtClass componentClass, ClassLoader classLoader, ClassPool classPool,
-		TouchUIWidgetRegistry widgetRegistry) throws TouchUIDialogGenerationException {
+		TouchUIWidgetRegistry widgetRegistry, String touchUIDialogType) throws TouchUIDialogGenerationException {
 		try {
 
 			Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
@@ -69,7 +72,19 @@ public class TouchUIDialogFactory {
 			layoutMakerParameters.setClassLoader(classLoader);
 			layoutMakerParameters.setClassPool(classPool);
 			layoutMakerParameters.setWidgetRegistry(widgetRegistry);
-			LayoutMaker layoutMaker = new TabsLayoutMaker(layoutMakerParameters);
+			layoutMakerParameters.setTouchUIDialogType(touchUIDialogType);
+
+			LayoutMaker layoutMaker;
+
+			if(TouchUIDialogType.CORAL3.isOfType(touchUIDialogType)) {
+				if (componentAnnotation.tabs().length > 0) {
+					layoutMaker = new TabsLayoutCoral3Maker(layoutMakerParameters);
+				} else {
+					layoutMaker = new FixedColumnsLayoutCoral3Maker(layoutMakerParameters);
+				}
+			} else {
+				layoutMaker = new TabsLayoutMaker(layoutMakerParameters);
+			}
 
 			// Delegate the rest of the production to the LayoutMaker
 			Layout layout = layoutMaker.make();
@@ -95,5 +110,4 @@ public class TouchUIDialogFactory {
 			throw new TouchUIDialogGenerationException("Layout Maker Exception encountered producing Dialog Layout", e);
 		}
 	}
-
 }

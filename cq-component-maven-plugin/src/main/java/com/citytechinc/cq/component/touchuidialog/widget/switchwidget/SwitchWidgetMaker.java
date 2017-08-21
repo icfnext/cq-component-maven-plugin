@@ -15,6 +15,7 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.switchwidget;
 
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogType;
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.widgets.Switch;
@@ -39,7 +40,11 @@ public class SwitchWidgetMaker extends AbstractTouchUIWidgetMaker<SwitchWidgetPa
 		widgetParameters.setOffText(getOffTextForField(switchAnnotation));
 		widgetParameters.setChecked(getCheckedForField(switchAnnotation));
 		widgetParameters.setIgnoreData(getIgnoreDataField(switchAnnotation));
+		widgetParameters.setTouchUIDialogType(parameters.getTouchUIDialogType());
 
+		if(TouchUIDialogType.CORAL3.isOfType(widgetParameters.getTouchUIDialogType())) {
+			return new SwitchCoral3Widget(widgetParameters);
+		}
 		return new SwitchWidget(widgetParameters);
 	}
 

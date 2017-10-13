@@ -65,7 +65,7 @@
 			<item name="GitHub"
 				href="https://github.com/Citytechinc/cq-component-maven-plugin/" />
 			<item name="Java Doc" href="apidocs/index.html" />
-			<item name="ICF Olson" href="http://www.cityteicfolson.com" />
+			<item name="ICF Olson" href="http://www.icfolson.com" />
 		</menu>
 		<menu name="Basics" inherit="bottom">
 			<item name="Configuration" href="configuration.html" />

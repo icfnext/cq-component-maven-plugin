@@ -512,28 +512,37 @@ public class ComponentMojoUtil {
 	 * 
 	 * @param classPool
 	 * @param reflections
+	 * @param classes
 	 * @return A List of classes annotated as Components
 	 * @throws ClassNotFoundException
 	 * @throws NotFoundException
 	 * @throws MalformedURLException
 	 */
 	public static List<CtClass> getAllComponentAnnotations(ClassPool classPool, Reflections reflections,
-		Set<String> excludedClasses) throws ClassNotFoundException, NotFoundException, MalformedURLException {
+														   final Set<String> excludedClasses, Set<String> includedClasses) throws ClassNotFoundException, NotFoundException, MalformedURLException {
 		getLog().debug("Scanning for Components");
 
 		List<CtClass> classes = new ArrayList<CtClass>();
 
 		Set<Class<?>> annotatedClasses = reflections.getTypesAnnotatedWith(Component.class);
 
-		if (excludedClasses != null && !excludedClasses.isEmpty()) {
-			for (Class<?> c : annotatedClasses) {
-				if (!excludedClasses.contains(c.getName())) {
+		if (includedClasses.isEmpty()) {
+			if (!excludedClasses.isEmpty()) {
+				for (Class<?> c : annotatedClasses) {
+					if (!excludedClasses.contains(c.getName())) {
+						classes.add(classPool.getCtClass(c.getName()));
+					}
+				}
+			} else {
+				for (Class<?> c : annotatedClasses) {
 					classes.add(classPool.getCtClass(c.getName()));
 				}
 			}
 		} else {
 			for (Class<?> c : annotatedClasses) {
-				classes.add(classPool.getCtClass(c.getName()));
+				if (includedClasses.contains(c.getName())) {
+					classes.add(classPool.getCtClass(c.getName()));
+				}
 			}
 		}
 

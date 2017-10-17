@@ -18,6 +18,7 @@ package com.citytechinc.cq.component.maven;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -77,6 +78,9 @@ public class ComponentMojo extends AbstractMojo {
 	@Parameter(required = false)
 	private List<Dependency> excludeDependencies;
 
+	@Parameter
+	private List<Dependency> includeDependencies;
+
 	@Parameter(defaultValue = "true")
 	private boolean generateTouchUiDialogs;
 
@@ -103,7 +107,12 @@ public class ComponentMojo extends AbstractMojo {
 			Reflections reflections = ComponentMojoUtil.getReflections(classLoader);
 
 			List<CtClass> classList =
-				ComponentMojoUtil.getAllComponentAnnotations(classPool, reflections, getExcludedClasses());
+				ComponentMojoUtil.getAllComponentAnnotations(
+					classPool,
+					reflections,
+					getExcludedClasses(),
+					getIncludedClasses()
+				);
 
 			WidgetRegistry widgetRegistry =
 				new DefaultWidgetRegistry(classPool, classLoader, reflections, getAdditionalFeatures());
@@ -136,28 +145,52 @@ public class ComponentMojo extends AbstractMojo {
 	}
 
 	private Set<String> getExcludedClasses() throws DependencyResolutionRequiredException, MalformedURLException {
-
 		getLog().debug("Constructing set of excluded Class names");
-
-		List<String> excludedDependencyPaths = getExcludedDependencyPaths();
-
-		if (excludedDependencyPaths != null) {
-			ClassLoader exclusionClassLoader =
-				ComponentMojoUtil.getClassLoader(excludedDependencyPaths, this.getClass().getClassLoader());
-
-			Reflections reflections = ComponentMojoUtil.getReflections(exclusionClassLoader);
-
-			Set<String> excludedClassNames = reflections.getStore().getTypesAnnotatedWith(Component.class.getName());
-
-			return excludedClassNames;
+		if (!hasIncludeDependencies() && hasExcludeDependencies()) {
+			List<String> dependencyPaths = getDependencyPaths(excludeDependencies);
+			if (!dependencyPaths.isEmpty()) {
+				return getClassNames(dependencyPaths);
+			}
+		} else {
+			getLog().debug("Excluded Class names skipped");
 		}
+		return Collections.emptySet();
+	}
 
-		return null;
+	private Set<String> getIncludedClasses() throws DependencyResolutionRequiredException, MalformedURLException {
+		getLog().debug("Constructing set of included Class names");
+		if (hasIncludeDependencies()) {
+			List<String> dependencyPaths = getDependencyPaths(includeDependencies);
+			if (!dependencyPaths.isEmpty()) {
+				return getClassNames(dependencyPaths);
+			}
+		} else {
+			getLog().debug("Included Class names skipped");
+		}
+		return Collections.emptySet();
+	}
+
+	/**
+	 * Retrieve class names annotated with {@link Component} from specified dependency paths
+	 * @param dependencyPaths to obtain available class names
+	 * @return set of available class names
+	 * @throws MalformedURLException if error occurs
+	 */
+	private Set<String> getClassNames(List<String> dependencyPaths) throws MalformedURLException {
+		ClassLoader exclusionClassLoader =
+			ComponentMojoUtil.getClassLoader(dependencyPaths, this.getClass().getClassLoader());
+
+		Reflections reflections = ComponentMojoUtil.getReflections(exclusionClassLoader);
+
+		Set<String> excludedClassNames = reflections.getStore()
+			.getTypesAnnotatedWith(Component.class.getName());
+
+		return excludedClassNames;
 	}
 
 	@SuppressWarnings("unchecked")
-	private List<String> getExcludedDependencyPaths() throws DependencyResolutionRequiredException {
-		if (excludeDependencies != null && !excludeDependencies.isEmpty()) {
+	private List<String> getDependencyPaths(List<Dependency> dependencies) throws DependencyResolutionRequiredException {
+		if (dependencies != null && !dependencies.isEmpty()) {
 			getLog().debug("Exclusions Found");
 
 			List<Artifact> compileArtifacts = project.getCompileArtifacts();
@@ -166,7 +199,7 @@ public class ComponentMojo extends AbstractMojo {
 
 			Set<String> excludedArtifactIdentifiers = new HashSet<String>();
 
-			for (Dependency curDependency : excludeDependencies) {
+			for (Dependency curDependency : dependencies) {
 				excludedArtifactIdentifiers.add(curDependency.getGroupId() + ":" + curDependency.getArtifactId());
 			}
 
@@ -193,7 +226,7 @@ public class ComponentMojo extends AbstractMojo {
 			return excludedClasspathElements;
 		}
 
-		return null;
+		return Collections.emptyList();
 
 	}
 
@@ -221,5 +254,13 @@ public class ComponentMojo extends AbstractMojo {
 		}
 
 		return additionalFeatures;
+	}
+
+	private boolean hasIncludeDependencies(){
+		return includeDependencies != null && !includeDependencies.isEmpty();
+	}
+
+	private boolean hasExcludeDependencies(){
+		return excludeDependencies != null && !excludeDependencies.isEmpty();
 	}
 }

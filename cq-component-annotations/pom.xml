@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.citytechinc.cq.cq-component-plugin</groupId>
 		<artifactId>cq-component-plugin</artifactId>
-		<version>5.0.0</version>
+		<version>5.0.1</version>
 	</parent>
 
 	<artifactId>cq-component-annotations</artifactId>

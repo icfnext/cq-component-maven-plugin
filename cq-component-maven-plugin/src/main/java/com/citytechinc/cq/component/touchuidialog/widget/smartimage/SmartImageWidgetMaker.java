@@ -50,6 +50,7 @@ public class SmartImageWidgetMaker extends AbstractTouchUIWidgetMaker<SmartImage
 		widgetParameters.setText(getTextForField(smartImageAnnotation));
 		widgetParameters.setIcon(getIconForField(smartImageAnnotation));
 		widgetParameters.setMultiple(getMultipleForField(smartImageAnnotation));
+
 		widgetParameters.setUploadUrl(getUploadUrlForField(smartImageAnnotation));
 		widgetParameters.setUploadUrlBuilder(getUploadUrlBuilderForField(smartImageAnnotation));
 		widgetParameters.setSizeLimit(getSizeLimitForField(smartImageAnnotation));

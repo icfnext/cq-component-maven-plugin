@@ -31,6 +31,7 @@ public class FileUploadWidget extends AbstractTouchUIWidget {
 	private final String text;
 	private final String icon;
 	private final boolean multiple;
+	private final boolean allowUpload;
 	private final String uploadUrl;
 	private final String uploadUrlBuilder;
 	private final Long sizeLimit;
@@ -48,6 +49,7 @@ public class FileUploadWidget extends AbstractTouchUIWidget {
 		text = parameters.getText();
 		icon = parameters.getIcon();
 		multiple = parameters.isMultiple();
+		allowUpload = parameters.isAllowUpload();
 		uploadUrl = parameters.getUploadUrl();
 		uploadUrlBuilder = parameters.getUploadUrlBuilder();
 		sizeLimit = parameters.getSizeLimit();
@@ -70,6 +72,10 @@ public class FileUploadWidget extends AbstractTouchUIWidget {
 
 	public String getIcon() {
 		return icon;
+	}
+
+	public boolean isAllowUpload() {
+		return allowUpload;
 	}
 
 	public boolean isMultiple() {

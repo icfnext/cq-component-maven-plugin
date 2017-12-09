@@ -42,6 +42,7 @@ public class FileUploadWidgetMaker extends AbstractTouchUIWidgetMaker<FileUpload
 		widgetParameters.setText(getTextForField(smartFileAnnotation));
 		widgetParameters.setIcon(getIconForField(smartFileAnnotation));
 		widgetParameters.setMultiple(getMultipleForField(smartFileAnnotation));
+		widgetParameters.setAllowUpload(getAllowUploadForField(smartFileAnnotation));
 		widgetParameters.setUploadUrl(getUploadUrlForField(smartFileAnnotation));
 		widgetParameters.setUploadUrlBuilder(getUploadUrlBuilderForField(smartFileAnnotation));
 		widgetParameters.setSizeLimit(getSizeLimitForField(smartFileAnnotation));
@@ -77,6 +78,14 @@ public class FileUploadWidgetMaker extends AbstractTouchUIWidgetMaker<FileUpload
 		}
 
 		return null;
+	}
+
+	public boolean getAllowUploadForField(Html5SmartFile annotation) {
+		if (annotation != null) {
+			return annotation.allowUpload();
+		}
+
+		return false;
 	}
 
 	public boolean getMultipleForField(Html5SmartFile annotation) {

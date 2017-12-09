@@ -15,11 +15,11 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.fileupload;
 
-import java.util.List;
-
 import com.citytechinc.cq.component.annotations.config.TouchUIWidget;
 import com.citytechinc.cq.component.annotations.widgets.Html5SmartFile;
 import com.citytechinc.cq.component.touchuidialog.widget.AbstractTouchUIWidget;
+
+import java.util.List;
 
 @TouchUIWidget(annotationClass = Html5SmartFile.class, makerClass = FileUploadWidgetMaker.class,
 	resourceType = FileUploadWidget.RESOURCE_TYPE)
@@ -37,6 +37,8 @@ public class FileUploadWidget extends AbstractTouchUIWidget {
 	private final boolean autoStart;
 	private final boolean useHTML5;
 	private final String dropZone;
+	private final String fileNameParameter;
+	private final String fileReferenceParameter;
 	// TODO: Event handling ?
 	private final List<String> mimeTypes;
 
@@ -52,6 +54,8 @@ public class FileUploadWidget extends AbstractTouchUIWidget {
 		autoStart = parameters.isAutoStart();
 		useHTML5 = parameters.isUseHTML5();
 		dropZone = parameters.getDropZone();
+		fileNameParameter = parameters.getFileNameParameter();
+		fileReferenceParameter = parameters.getFileReferenceParameter();
 		mimeTypes = parameters.getMimeTypes();
 	}
 
@@ -94,6 +98,14 @@ public class FileUploadWidget extends AbstractTouchUIWidget {
 
 	public String getDropZone() {
 		return dropZone;
+	}
+
+	public String getFileNameParameter() {
+		return fileNameParameter;
+	}
+
+	public String getFileReferenceParameter() {
+		return fileReferenceParameter;
 	}
 
 	public List<String> getMimeTypes() {

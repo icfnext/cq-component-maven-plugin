@@ -15,9 +15,9 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.fileupload;
 
-import java.util.List;
-
 import com.citytechinc.cq.component.touchuidialog.widget.DefaultTouchUIWidgetParameters;
+
+import java.util.List;
 
 public class FileUploadWidgetParameters extends DefaultTouchUIWidgetParameters {
 
@@ -31,6 +31,8 @@ public class FileUploadWidgetParameters extends DefaultTouchUIWidgetParameters {
 	private boolean autoStart;
 	private boolean useHTML5;
 	private String dropZone;
+	private String fileNameParameter;
+	private String fileReferenceParameter;
 	// TODO: Event handling
 	private List<String> mimeTypes;
 
@@ -114,6 +116,22 @@ public class FileUploadWidgetParameters extends DefaultTouchUIWidgetParameters {
 
 	public void setDropZone(String dropZone) {
 		this.dropZone = dropZone;
+	}
+
+	public String getFileNameParameter() {
+		return fileNameParameter;
+	}
+
+	public void setFileNameParameter(String fileNameParameter) {
+		this.fileNameParameter = fileNameParameter;
+	}
+
+	public String getFileReferenceParameter() {
+		return fileReferenceParameter;
+	}
+
+	public void setFileReferenceParameter(String fileReferenceParameter) {
+		this.fileReferenceParameter = fileReferenceParameter;
 	}
 
 	public List<String> getMimeTypes() {

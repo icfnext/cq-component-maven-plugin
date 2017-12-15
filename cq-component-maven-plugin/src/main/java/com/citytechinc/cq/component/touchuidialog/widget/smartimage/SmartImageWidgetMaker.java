@@ -38,10 +38,6 @@ public class SmartImageWidgetMaker extends AbstractTouchUIWidgetMaker<SmartImage
 	@Override
 	public TouchUIDialogElement make(SmartImageWidgetParameters widgetParameters) throws ClassNotFoundException,
 		InvalidComponentFieldException, TouchUIDialogGenerationException {
-		LogSingleton
-			.getInstance()
-			.warn(
-				"There is no HTML5 Smart Image analog in the Touch UI. This field is being rendered as a fileupload however this is most likely not what you want. Use the image inline editor instead for this field.");
 
 		Html5SmartImage smartImageAnnotation = getAnnotation(Html5SmartImage.class);
 
@@ -147,21 +143,21 @@ public class SmartImageWidgetMaker extends AbstractTouchUIWidgetMaker<SmartImage
 
 		String overrideName = parameters.getDialogFieldConfig().getName();
 
-        if (StringUtils.isNotEmpty(overrideName)) {
-            sb.append(overrideName);
+		if (StringUtils.isNotEmpty(overrideName)) {
+			sb.append(overrideName);
 
-            if (!overrideName.endsWith("/")) {
-                sb.append("/");
-            }
-        } else {
-            if (parameters.isUseDotSlashInName()) {
-                sb.append("./");
-            }
+			if (!overrideName.endsWith("/")) {
+				sb.append("/");
+			}
+		} else {
+			if (parameters.isUseDotSlashInName()) {
+				sb.append("./");
+			}
 
-            if (StringUtils.isNotEmpty(getName()) && !annotation.isSelf()) {
-                sb.append(getName()).append("/");
-            }
-        }
+			if (StringUtils.isNotEmpty(getName()) && !annotation.isSelf()) {
+				sb.append(getName()).append("/");
+			}
+		}
 
 		return sb.toString();
 	}

@@ -30,6 +30,7 @@ public class TouchUIWidgetMakerParameters {
 	private String resourceType;
 	private boolean useDotSlashInName;
 	private TouchUIWidgetRegistry widgetRegistry;
+	private String relativePath;
 
 	public DialogFieldConfig getDialogFieldConfig() {
 		return dialogFieldConfig;
@@ -93,5 +94,13 @@ public class TouchUIWidgetMakerParameters {
 
 	public void setWidgetRegistry(TouchUIWidgetRegistry widgetRegistry) {
 		this.widgetRegistry = widgetRegistry;
+	}
+
+	public String getRelativePath() {
+		return relativePath;
+	}
+
+	public void setRelativePath(String relativePath) {
+		this.relativePath = relativePath;
 	}
 }

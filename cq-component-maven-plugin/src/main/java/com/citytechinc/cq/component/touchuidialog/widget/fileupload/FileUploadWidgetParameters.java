@@ -18,30 +18,34 @@ import java.util.List;
 
 public class FileUploadWidgetParameters extends DefaultTouchUIWidgetParameters {
 
-    private String title;
+	private String title;
 
-    private String text;
+	private String text;
 
-    private String icon;
+	private String icon;
 
-    private boolean multiple;
+	private boolean multiple;
 
-    private boolean allowUpload;
+	private boolean allowUpload;
 
-    private String uploadUrl;
+	private String uploadUrl;
 
-    private String uploadUrlBuilder;
+	private String uploadUrlBuilder;
 
-    private Long sizeLimit;
+	private Long sizeLimit;
 
-    private boolean autoStart;
+	private boolean autoStart;
 
-    private boolean useHTML5;
+	private boolean useHTML5;
 
-    private String dropZone;
+	private String dropZone;
 
-    // TODO: Event handling
-    private List<String> mimeTypes;
+	private String fileNameParameter;
+
+	private String fileReferenceParameter;
+
+	// TODO: Event handling
+	private List<String> mimeTypes;
 
     @Override
     public String getTitle() {
@@ -133,9 +137,25 @@ public class FileUploadWidgetParameters extends DefaultTouchUIWidgetParameters {
         this.dropZone = dropZone;
     }
 
-    public List<String> getMimeTypes() {
-        return mimeTypes;
-    }
+	public String getFileNameParameter() {
+		return fileNameParameter;
+	}
+
+	public void setFileNameParameter(String fileNameParameter) {
+		this.fileNameParameter = fileNameParameter;
+	}
+
+	public String getFileReferenceParameter() {
+		return fileReferenceParameter;
+	}
+
+	public void setFileReferenceParameter(String fileReferenceParameter) {
+		this.fileReferenceParameter = fileReferenceParameter;
+	}
+
+	public List<String> getMimeTypes() {
+		return mimeTypes;
+	}
 
     public void setMimeTypes(List<String> mimeTypes) {
         this.mimeTypes = mimeTypes;

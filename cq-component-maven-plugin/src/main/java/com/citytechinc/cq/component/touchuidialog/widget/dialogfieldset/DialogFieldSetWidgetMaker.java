@@ -104,6 +104,8 @@ public class DialogFieldSetWidgetMaker extends AbstractTouchUIWidgetMaker<Dialog
                     }
                 }
 
+
+
                 if (dialogFieldConfig != null && !dialogFieldConfig.isSuppressTouchUI()) {
                     if (StringUtils.isNotBlank(dialogFieldSetAnnotation.namePrefix())) {
                         String name = dialogFieldConfig.getName();
@@ -128,6 +130,7 @@ public class DialogFieldSetWidgetMaker extends AbstractTouchUIWidgetMaker<Dialog
                     curFieldMember.setClassPool(parameters.getClassPool());
                     curFieldMember.setWidgetRegistry(parameters.getWidgetRegistry());
                     curFieldMember.setUseDotSlashInName(parameters.isUseDotSlashInName());
+                    curFieldMember.setRelativePath(dialogFieldSetAnnotation.namePrefix());
 
                     TouchUIDialogElement currentDialogElement = TouchUIWidgetFactory.make(curFieldMember, -1);
 

@@ -15,17 +15,17 @@
  */
 package com.citytechinc.cq.component.touchuidialog.widget.fileupload;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.codehaus.plexus.util.StringUtils;
-
 import com.citytechinc.cq.component.annotations.widgets.Html5SmartFile;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
+import com.citytechinc.cq.component.util.NameUtil;
+import org.codehaus.plexus.util.StringUtils;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class FileUploadWidgetMaker extends AbstractTouchUIWidgetMaker<FileUploadWidgetParameters> {
 
@@ -49,6 +49,8 @@ public class FileUploadWidgetMaker extends AbstractTouchUIWidgetMaker<FileUpload
 		widgetParameters.setAutoStart(getAutoStartForField(smartFileAnnotation));
 		widgetParameters.setUseHTML5(getUseHTML5ForField(smartFileAnnotation));
 		widgetParameters.setDropZone(getDropZoneForField(smartFileAnnotation));
+		widgetParameters.setFileNameParameter(getFileNameParameterForField(smartFileAnnotation));
+		widgetParameters.setFileReferenceParameter(getFileReferenceParameterForField(smartFileAnnotation));
 		widgetParameters.setMimeTypes(getMimeTypesForField(smartFileAnnotation));
 
 		return new FileUploadWidget(widgetParameters);
@@ -96,7 +98,27 @@ public class FileUploadWidgetMaker extends AbstractTouchUIWidgetMaker<FileUpload
 
 	public String getFileNameParameterForField(Html5SmartFile annotation) {
 		if (annotation != null && StringUtils.isNotBlank(annotation.fileNameParameter())) {
-			return annotation.fileNameParameter();
+			String parameter = annotation.fileNameParameter();
+			String relativePath = parameters.getRelativePath();
+			if (relativePath != null) {
+				boolean useDotSlash = parameters.isUseDotSlashInName();
+				parameter = NameUtil.normalizeName(relativePath + parameter, useDotSlash);
+			}
+			return parameter;
+		}
+
+		return null;
+	}
+
+	public String getFileReferenceParameterForField(Html5SmartFile annotation) {
+		if (annotation != null && StringUtils.isNotBlank(annotation.fileNameParameter())) {
+			String parameter = annotation.fileReferenceParameter();
+			String relativePath = parameters.getRelativePath();
+			if (relativePath != null) {
+				boolean useDotSlash = parameters.isUseDotSlashInName();
+				parameter = NameUtil.normalizeName(relativePath + parameter, useDotSlash);
+			}
+			return parameter;
 		}
 
 		return null;

@@ -33,8 +33,7 @@ public class Popover extends AbstractTouchUIDialogElement {
 		return ref;
 	}
 
-	public String[] getItems() {
-		return items;
+	public Object getItems() {
+		return items.length == 1 ? items[0] : items;
 	}
-
 }

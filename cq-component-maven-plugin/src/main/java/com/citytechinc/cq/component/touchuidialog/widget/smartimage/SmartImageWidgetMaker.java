@@ -22,7 +22,6 @@ import org.codehaus.plexus.util.StringUtils;
 import com.citytechinc.cq.component.annotations.widgets.Html5SmartImage;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.html5smartimage.Html5SmartImageWidget;
-import com.citytechinc.cq.component.maven.util.LogSingleton;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
@@ -38,10 +37,6 @@ public class SmartImageWidgetMaker extends AbstractTouchUIWidgetMaker<SmartImage
 	@Override
 	public TouchUIDialogElement make(SmartImageWidgetParameters widgetParameters) throws ClassNotFoundException,
 		InvalidComponentFieldException, TouchUIDialogGenerationException {
-		LogSingleton
-			.getInstance()
-			.warn(
-				"There is no HTML5 Smart Image analog in the Touch UI. This field is being rendered as a fileupload however this is most likely not what you want. Use the image inline editor instead for this field.");
 
 		Html5SmartImage smartImageAnnotation = getAnnotation(Html5SmartImage.class);
 
@@ -147,21 +142,21 @@ public class SmartImageWidgetMaker extends AbstractTouchUIWidgetMaker<SmartImage
 
 		String overrideName = parameters.getDialogFieldConfig().getName();
 
-        if (StringUtils.isNotEmpty(overrideName)) {
-            sb.append(overrideName);
+		if (StringUtils.isNotEmpty(overrideName)) {
+			sb.append(overrideName);
 
-            if (!overrideName.endsWith("/")) {
-                sb.append("/");
-            }
-        } else {
-            if (parameters.isUseDotSlashInName()) {
-                sb.append("./");
-            }
+			if (!overrideName.endsWith("/")) {
+				sb.append("/");
+			}
+		} else {
+			if (parameters.isUseDotSlashInName()) {
+				sb.append("./");
+			}
 
-            if (StringUtils.isNotEmpty(getName()) && !annotation.isSelf()) {
-                sb.append(getName()).append("/");
-            }
-        }
+			if (StringUtils.isNotEmpty(getName()) && !annotation.isSelf()) {
+				sb.append(getName()).append("/");
+			}
+		}
 
 		return sb.toString();
 	}

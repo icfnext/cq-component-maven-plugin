@@ -241,6 +241,13 @@ public class TouchUIDialogUtil {
 
 	protected static final com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option
 		buildSelectionOptionForEnum(Selection selectionAnnotation, Enum<?> optionEnum, ClassPool classPool,
+		String fieldName) throws SecurityException, NoSuchFieldException, NotFoundException,
+		ClassNotFoundException {
+		return buildSelectionOptionForEnum(selectionAnnotation, optionEnum, classPool, fieldName, null);
+	}
+
+	protected static final com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option
+		buildSelectionOptionForEnum(Selection selectionAnnotation, Enum<?> optionEnum, ClassPool classPool,
 			String fieldName, String selectedValue) throws SecurityException, NoSuchFieldException, NotFoundException,
 		ClassNotFoundException {
 

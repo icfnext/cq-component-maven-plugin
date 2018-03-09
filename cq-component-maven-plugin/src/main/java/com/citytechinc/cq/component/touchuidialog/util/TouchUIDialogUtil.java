@@ -185,6 +185,13 @@ public class TouchUIDialogUtil {
 
 	}
 
+	@Deprecated
+	public static final List<com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option>
+		getOptionsForSelection(Selection selectionAnnotation, Class<?> type, ClassLoader classLoader, ClassPool classPool)
+		throws InvalidComponentFieldException {
+		return getOptionsForSelection(selectionAnnotation, null, type, classLoader, classPool);
+	}
+
 	public static final List<com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option>
 		getOptionsForSelection(Selection selectionAnnotation, DefaultTouchUIWidgetParameters widgetParameters,
 			Class<?> type, ClassLoader classLoader, ClassPool classPool) throws InvalidComponentFieldException {
@@ -224,7 +231,7 @@ public class TouchUIDialogUtil {
 		else if (type.isEnum()) {
 			int i = 0;
 			try {
-				String selectedValue = widgetParameters.getValue();
+				String selectedValue = widgetParameters == null ? null :  widgetParameters.getValue();
 
 				for (Object curEnumObject : classLoader.loadClass(type.getName()).getEnumConstants()) {
 					Enum<?> curEnum = (Enum<?>) curEnumObject;
@@ -239,6 +246,7 @@ public class TouchUIDialogUtil {
 		return options;
 	}
 
+	@Deprecated
 	protected static final com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option
 		buildSelectionOptionForEnum(Selection selectionAnnotation, Enum<?> optionEnum, ClassPool classPool,
 		String fieldName) throws SecurityException, NoSuchFieldException, NotFoundException,

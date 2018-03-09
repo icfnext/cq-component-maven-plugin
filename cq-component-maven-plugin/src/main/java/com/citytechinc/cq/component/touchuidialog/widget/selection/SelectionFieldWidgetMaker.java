@@ -74,7 +74,7 @@ public class SelectionFieldWidgetMaker extends AbstractTouchUIWidgetMaker<Select
 
         if(widgetParameters.getDataSource() == null) {
             widgetParameters.setOptions(TouchUIDialogUtil
-                .getOptionsForSelection(selectionField, getType(), parameters.getClassLoader(),
+                .getOptionsForSelection(selectionField, widgetParameters, getType(), parameters.getClassLoader(),
                     parameters.getClassPool()));
         }
 		return new SelectionFieldWidget(widgetParameters);

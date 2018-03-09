@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.citytechinc.cq.component.touchuidialog.widget.DefaultTouchUIWidgetParameters;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMember;
@@ -185,8 +186,8 @@ public class TouchUIDialogUtil {
 	}
 
 	public static final List<com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option>
-		getOptionsForSelection(Selection selectionAnnotation, Class<?> type, ClassLoader classLoader,
-			ClassPool classPool) throws InvalidComponentFieldException {
+		getOptionsForSelection(Selection selectionAnnotation, DefaultTouchUIWidgetParameters widgetParameters,
+			Class<?> type, ClassLoader classLoader, ClassPool classPool) throws InvalidComponentFieldException {
 		List<com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option> options =
 			new ArrayList<com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option>();
 
@@ -223,10 +224,12 @@ public class TouchUIDialogUtil {
 		else if (type.isEnum()) {
 			int i = 0;
 			try {
+				String selectedValue = widgetParameters.getValue();
+
 				for (Object curEnumObject : classLoader.loadClass(type.getName()).getEnumConstants()) {
 					Enum<?> curEnum = (Enum<?>) curEnumObject;
 					options.add(buildSelectionOptionForEnum(selectionAnnotation, curEnum, classPool,
-						OPTION_FIELD_NAME_PREFIX + (i++)));
+						OPTION_FIELD_NAME_PREFIX + (i++), selectedValue));
 				}
 			} catch (Exception e) {
 				throw new InvalidComponentFieldException("Error generating selection from enum", e);
@@ -238,7 +241,8 @@ public class TouchUIDialogUtil {
 
 	protected static final com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option
 		buildSelectionOptionForEnum(Selection selectionAnnotation, Enum<?> optionEnum, ClassPool classPool,
-			String fieldName) throws SecurityException, NoSuchFieldException, NotFoundException, ClassNotFoundException {
+			String fieldName, String selectedValue) throws SecurityException, NoSuchFieldException, NotFoundException,
+		ClassNotFoundException {
 
 		String text = optionEnum.name();
 		String value = optionEnum.name();
@@ -257,11 +261,12 @@ public class TouchUIDialogUtil {
 			if (StringUtils.isNotEmpty(optionAnnotation.value())) {
 				value = optionAnnotation.value();
 			}
-			parameters.setSelected(optionAnnotation.selected());
+			parameters.setSelected(selectedValue == null && optionAnnotation.selected());
 		}
 		parameters.setFieldName(fieldName);
 		parameters.setText(text);
 		parameters.setValue(value);
+		parameters.setSelected(value.equals(selectedValue));
 
 		if (Selection.RADIO.equals(selectionAnnotation.type())) {
 			parameters.setResourceType(RadioGroupWidget.RADIO_RESOURCE_TYPE);

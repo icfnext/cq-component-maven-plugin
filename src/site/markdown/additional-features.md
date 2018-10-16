@@ -12,6 +12,9 @@ Allows for RTEs as in-dialog widgets in the Touch UI.
 ### tagspickerwidget
 Uses the tags picker widget type for Tag Input Fields as opposed to the autocomplete widget type.
 
+### tagfieldwidget
+Uses the tag field widget type for Tag Input Fields as opposed to the autocomplete widget type.
+
 ### hiddenfieldwidget
 Allows the creation of hidden fields in Touch UI.
 

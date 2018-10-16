@@ -29,7 +29,7 @@ import com.citytechinc.cq.component.touchuidialog.widget.AbstractTouchUIWidget;
         resourceType = TagsPickerWidget.RESOURCE_TYPE, featureFlag = TagsPickerWidget.FEATURE_FLAG)
 public class TagsPickerWidget extends AbstractTouchUIWidget {
 
-    public static final String RESOURCE_TYPE = "cq/gui/components/common/tagspicker";
+    public static final String RESOURCE_TYPE = "cq/gui/components/coral/common/form/tagfield";
     public static final String FEATURE_FLAG = "tagspickerwidget";
 
     private String rootPath;

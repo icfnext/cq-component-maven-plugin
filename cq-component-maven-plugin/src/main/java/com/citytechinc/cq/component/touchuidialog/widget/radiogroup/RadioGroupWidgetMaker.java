@@ -41,7 +41,7 @@ public class RadioGroupWidgetMaker extends AbstractTouchUIWidgetMaker<RadioGroup
 		widgetParameters.setText(getFieldLabelForField());
 		widgetParameters.setDataSource(getDataSourceForField(selectionField));
 
-		widgetParameters.setOptions(TouchUIDialogUtil.getOptionsForSelection(selectionField, getType(),
+		widgetParameters.setOptions(TouchUIDialogUtil.getOptionsForSelection(selectionField, widgetParameters, getType(),
 			parameters.getClassLoader(), parameters.getClassPool()));
 
 		return new RadioGroupWidget(widgetParameters);

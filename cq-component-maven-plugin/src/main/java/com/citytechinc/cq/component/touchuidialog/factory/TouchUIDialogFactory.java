@@ -32,7 +32,6 @@ public class TouchUIDialogFactory {
     public static TouchUIDialog make(CtClass componentClass, ClassLoader classLoader, ClassPool classPool,
         TouchUIWidgetRegistry widgetRegistry, String touchUIDialogType) throws TouchUIDialogGenerationException {
         try {
-
             Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
             // If output of the Touch UI dialog is disabled, return null
@@ -87,12 +86,12 @@ public class TouchUIDialogFactory {
 
             // Add the extraClientLibs parameter
             String[] extraClientlibs = componentAnnotation.extraClientlibs();
+
             if (extraClientlibs.length > 0) {
                 parameters.setExtraClientlibs(componentAnnotation.extraClientlibs());
             }
 
             return new TouchUIDialog(parameters);
-
         } catch (ClassNotFoundException e) {
             throw new TouchUIDialogGenerationException(
                 "ClassNotFound exception encountered generating Touch UI Dialog", e);

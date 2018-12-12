@@ -30,7 +30,7 @@ public class TabParameters extends DefaultDialogElementParameters {
 
     @Override
     public String getFieldName() {
-        return getTitle().toLowerCase();
+        return getTitle();
     }
 
     @Override

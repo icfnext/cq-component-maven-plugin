@@ -1,16 +1,12 @@
 package com.citytechinc.cq.component.touchuidialog.widget.autocomplete;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.codehaus.plexus.util.StringUtils;
-
 import com.citytechinc.cq.component.annotations.Property;
 import com.citytechinc.cq.component.annotations.widgets.AutoComplete;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.touchuidialog.DefaultTouchUIDialogElementParameters;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElementParameters;
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogType;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
 import com.citytechinc.cq.component.touchuidialog.widget.autocomplete.options.AutoCompleteOptions;
 import com.citytechinc.cq.component.touchuidialog.widget.autocomplete.values.AutoCompleteValues;
@@ -18,6 +14,10 @@ import com.citytechinc.cq.component.touchuidialog.widget.datasource.DataSource;
 import com.citytechinc.cq.component.touchuidialog.widget.datasource.DataSourceParameters;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
+import org.codehaus.plexus.util.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class AutoCompleteWidgetMaker extends AbstractTouchUIWidgetMaker<AutoCompleteWidgetParameters> {
 
@@ -39,7 +39,12 @@ public class AutoCompleteWidgetMaker extends AbstractTouchUIWidgetMaker<AutoComp
 		widgetParameters.setDatasource(makeDataSource());
 		widgetParameters.setOptions(makeOptions());
 		widgetParameters.setValues(makeValues());
+		widgetParameters.setForceSelection(isForceSelection());
+		widgetParameters.setTouchUIDialogType(parameters.getTouchUIDialogType());
 
+		if(TouchUIDialogType.CORAL3.isOfType(widgetParameters.getTouchUIDialogType())) {
+			return new AutoCompleteCoral3Widget(widgetParameters);
+		}
 		return new AutoCompleteWidget(widgetParameters);
 	}
 
@@ -95,5 +100,12 @@ public class AutoCompleteWidgetMaker extends AbstractTouchUIWidgetMaker<AutoComp
 			return fieldAnnotation.mode();
 		}
 		return null;
+	}
+
+	protected boolean isForceSelection() {
+		if(fieldAnnotation != null) {
+			return fieldAnnotation.forceSelection();
+		}
+		return false;
 	}
 }

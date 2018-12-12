@@ -3,12 +3,15 @@ package com.citytechinc.cq.component.touchuidialog.factory;
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialog;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogParameters;
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogType;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
 import com.citytechinc.cq.component.touchuidialog.layout.Layout;
+import com.citytechinc.cq.component.touchuidialog.layout.columns.fixedcolumns.FixedColumnsLayoutCoral3Maker;
 import com.citytechinc.cq.component.touchuidialog.layout.columns.fixedcolumns.FixedColumnsLayoutMaker;
 import com.citytechinc.cq.component.touchuidialog.layout.maker.LayoutMaker;
 import com.citytechinc.cq.component.touchuidialog.layout.maker.LayoutMakerParameters;
 import com.citytechinc.cq.component.touchuidialog.layout.maker.exceptions.LayoutMakerException;
+import com.citytechinc.cq.component.touchuidialog.layout.tabs.TabsLayoutCoral3Maker;
 import com.citytechinc.cq.component.touchuidialog.layout.tabs.TabsLayoutMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.registry.TouchUIWidgetRegistry;
 import com.citytechinc.cq.component.xml.XmlElement;
@@ -27,8 +30,9 @@ public class TouchUIDialogFactory {
 
     @Nullable
     public static TouchUIDialog make(CtClass componentClass, ClassLoader classLoader, ClassPool classPool,
-        TouchUIWidgetRegistry widgetRegistry) throws TouchUIDialogGenerationException {
+        TouchUIWidgetRegistry widgetRegistry, String touchUIDialogType) throws TouchUIDialogGenerationException {
         try {
+
             Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
             // If output of the Touch UI dialog is disabled, return null
@@ -54,12 +58,22 @@ public class TouchUIDialogFactory {
             layoutMakerParameters.setClassLoader(classLoader);
             layoutMakerParameters.setClassPool(classPool);
             layoutMakerParameters.setWidgetRegistry(widgetRegistry);
+            layoutMakerParameters.setTouchUIDialogType(touchUIDialogType);
 
             LayoutMaker layoutMaker;
-            if (componentAnnotation.tabs().length > 0) {
-                layoutMaker = new TabsLayoutMaker(layoutMakerParameters);
+
+            if (TouchUIDialogType.CORAL3.isOfType(touchUIDialogType)) {
+                if (componentAnnotation.tabs().length > 0) {
+                    layoutMaker = new TabsLayoutCoral3Maker(layoutMakerParameters);
+                } else {
+                    layoutMaker = new FixedColumnsLayoutCoral3Maker(layoutMakerParameters);
+                }
             } else {
-                layoutMaker = new FixedColumnsLayoutMaker(layoutMakerParameters);
+                if (componentAnnotation.tabs().length > 0) {
+                    layoutMaker = new TabsLayoutMaker(layoutMakerParameters);
+                } else {
+                    layoutMaker = new FixedColumnsLayoutMaker(layoutMakerParameters);
+                }
             }
 
             // Delegate the rest of the production to the LayoutMaker

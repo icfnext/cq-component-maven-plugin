@@ -15,6 +15,7 @@ public class TouchUIWidgetMakerParameters {
 	private String resourceType;
 	private boolean useDotSlashInName;
 	private TouchUIWidgetRegistry widgetRegistry;
+	private String touchUIDialogType;
 
 	public DialogFieldConfig getDialogFieldConfig() {
 		return dialogFieldConfig;
@@ -78,5 +79,13 @@ public class TouchUIWidgetMakerParameters {
 
 	public void setWidgetRegistry(TouchUIWidgetRegistry widgetRegistry) {
 		this.widgetRegistry = widgetRegistry;
+	}
+
+	public String getTouchUIDialogType() {
+		return touchUIDialogType;
+	}
+
+	public void setTouchUIDialogType(String touchUIDialogType) {
+		this.touchUIDialogType = touchUIDialogType;
 	}
 }

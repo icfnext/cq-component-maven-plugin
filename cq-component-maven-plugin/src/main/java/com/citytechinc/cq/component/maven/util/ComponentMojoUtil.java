@@ -1,44 +1,5 @@
 package com.citytechinc.cq.component.maven.util;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javassist.CannotCompileException;
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtField;
-import javassist.CtMethod;
-import javassist.NotFoundException;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
-import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
-import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
-import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.util.StringUtils;
-import org.reflections.Reflections;
-import org.reflections.scanners.TypeAnnotationsScanner;
-import org.reflections.util.ClasspathHelper;
-import org.reflections.util.ConfigurationBuilder;
-
 import com.citytechinc.cq.classpool.ClassLoaderClassPool;
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.config.InPlaceEditor;
@@ -59,6 +20,7 @@ import com.citytechinc.cq.component.editconfig.maker.InPlaceEditorMaker;
 import com.citytechinc.cq.component.editconfig.registry.InPlaceEditorRegistry;
 import com.citytechinc.cq.component.editconfig.util.EditConfigUtil;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogType;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogWriteException;
 import com.citytechinc.cq.component.touchuidialog.util.TouchUIDialogUtil;
@@ -69,6 +31,31 @@ import com.citytechinc.cq.component.util.TouchUIWidgetConfigHolder;
 import com.citytechinc.cq.component.util.WidgetConfigHolder;
 import com.citytechinc.cq.component.xml.AbstractXmlElement;
 import com.citytechinc.cq.component.xml.XmlWriter;
+import javassist.*;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
+import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.util.StringUtils;
+import org.reflections.Reflections;
+import org.reflections.scanners.TypeAnnotationsScanner;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.*;
 
 public class ComponentMojoUtil {
 	private static final String OUTPUT_PATH = "tempComponentConfig";
@@ -181,7 +168,7 @@ public class ComponentMojoUtil {
 		TouchUIWidgetRegistry touchUIWidgetRegistry, InPlaceEditorRegistry inPlaceEditorRegistry,
 		ClassLoader classLoader, ClassPool classPool, File buildDirectory, String componentPathBase,
 		String defaultComponentPathSuffix, String defaultComponentGroup, File existingArchiveFile,
-		File tempArchiveFile, ComponentNameTransformer transformer, boolean generateTouchUiDialogs, boolean generateClassicUiDialogs)
+		File tempArchiveFile, ComponentNameTransformer transformer, boolean generateTouchUiDialogs, boolean useCoral3Dialogs, boolean generateClassicUiDialogs)
 		throws OutputFailureException, IOException, InvalidComponentClassException, InvalidComponentFieldException,
 		ParserConfigurationException, TransformerException, ClassNotFoundException, CannotCompileException,
 		NotFoundException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException,
@@ -240,9 +227,17 @@ public class ComponentMojoUtil {
 		}
 
 		if (generateTouchUiDialogs) {
+			String touchUIDialogType;
+
+			if(useCoral3Dialogs) {
+				touchUIDialogType = TouchUIDialogType.CORAL3.getType();
+			} else {
+				touchUIDialogType = TouchUIDialogType.CORAL2.getType();
+			}
+
 			TouchUIDialogUtil.buildDialogsFromClassList(classList, classLoader, classPool, touchUIWidgetRegistry,
-				transformer, buildDirectory, componentPathBase, defaultComponentPathSuffix, tempOutputStream,
-				existingArchiveEntryNames);
+					transformer, buildDirectory, componentPathBase, defaultComponentPathSuffix, tempOutputStream,
+					existingArchiveEntryNames, touchUIDialogType);
 		}
 
 		/*

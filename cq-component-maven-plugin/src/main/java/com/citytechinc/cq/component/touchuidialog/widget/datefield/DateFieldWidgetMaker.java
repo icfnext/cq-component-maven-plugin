@@ -1,5 +1,6 @@
 package com.citytechinc.cq.component.touchuidialog.widget.datefield;
 
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogType;
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.widgets.DateField;
@@ -20,9 +21,14 @@ public class DateFieldWidgetMaker extends AbstractTouchUIWidgetMaker<DateFieldWi
 
 		widgetParameters.setDisplayedFormat(getDisplayedFormatForField(annotation));
 		widgetParameters.setStoredFormat(getStoredFormatForField(annotation));
+		widgetParameters.setValueFormat(getValueFormatForField(annotation));
 		widgetParameters.setMinDate(getMinDateForField(annotation));
 		widgetParameters.setMaxDate(getMaxDateForField(annotation));
+		widgetParameters.setTouchUIDialogType(parameters.getTouchUIDialogType());
 
+		if(TouchUIDialogType.CORAL3.isOfType(widgetParameters.getTouchUIDialogType())) {
+			return new DateFieldCoral3Widget(widgetParameters);
+		}
 		return new DateFieldWidget(widgetParameters);
 	}
 
@@ -54,4 +60,7 @@ public class DateFieldWidgetMaker extends AbstractTouchUIWidgetMaker<DateFieldWi
 		return annotation.storedFormat();
 	}
 
+	protected String getValueFormatForField(DateField annotation) {
+		return annotation.valueFormat();
+	}
 }

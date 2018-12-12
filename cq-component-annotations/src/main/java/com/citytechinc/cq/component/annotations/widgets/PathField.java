@@ -21,6 +21,7 @@ public @interface PathField {
 	public static final String ROOT_PATH_DEFAULT = "/";
 	public static final String ROOT_TITLE_DEFAULT = "Websites";
 	public static final boolean SHOW_TITLE_IN_TREE_DEFAULT = true;
+	public static final String DEFAULT_FILTER_VALUE = "hierarchyNotFile";
 
 	/**
 	 * Used for Classic UI only
@@ -79,7 +80,7 @@ public @interface PathField {
 	boolean showTitleInTree() default SHOW_TITLE_IN_TREE_DEFAULT;
 
 	/**
-	 * Used for Touch UI only
+	 * Used for Coral 2 Touch UI only
 	 *
 	 * Javascript source code for an option loader callback function. Takes two
 	 * arguments: (path, callback). See the default option loader implementation
@@ -94,7 +95,7 @@ public @interface PathField {
 	String optionLoader() default "";
 
 	/**
-	 * Used for Touch UI only
+	 * Used for Coral 2 Touch UI only
 	 *
 	 * Javascript source code for callback function that gets an option value
 	 * object as parameter and should return a stringified value for this
@@ -105,7 +106,7 @@ public @interface PathField {
 	String optionValueReader() default "";
 
 	/**
-	 * Used for Touch UI only
+	 * Used for Coral 2 Touch UI only
 	 *
 	 * Javascript source code for callback function that gets an option value
 	 * object as parameter and should return a stringified title for this
@@ -115,4 +116,31 @@ public @interface PathField {
 	 */
 	String optionTitleReader() default "";
 
+	/**
+	 * Used for Coral 3 Touch UI only.
+	 *
+	 * Indicates if the user must only select from the list of given options. If it is not forced, the user can enter arbitrary value
+	 *
+	 * @return boolean
+	 */
+	boolean forceSelection() default false;
+
+	/**
+	 * Used for Coral 3 Touch UI only.
+	 *
+	 * The filter applied to suggestion and picker.
+	 *
+	 * The default value is hierarchyNotFile.
+	 *
+	 * <ul>
+	 *   Valid values are:
+	 *   <li>folder - Shows only nt:folder nodes</li>
+	 *   <li>hierarchy - Shows only nt:hierarchyNode nodes</li>
+	 *   <li>hierarchyNotFile - Shows only nt:hierarchyNode nodes that are not nt:file</li>
+	 *   <li>nosystem - Shows non-system nodes: !node.getName().startsWith("rep:") && !node.getName().equals("jcr:system")</li>
+	 * </ul>
+	 *
+	 * @return String
+	 */
+	String filter() default DEFAULT_FILTER_VALUE;
 }

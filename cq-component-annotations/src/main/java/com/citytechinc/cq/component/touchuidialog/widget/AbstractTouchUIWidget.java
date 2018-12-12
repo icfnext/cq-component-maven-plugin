@@ -34,6 +34,8 @@ public class AbstractTouchUIWidget extends AbstractTouchUIDialogElement {
 
     private final NameSpacedAttribute<Boolean> hideOnEdit;
 
+    private final NameSpacedAttribute<String> orderBefore;
+
     public AbstractTouchUIWidget(DefaultTouchUIWidgetParameters parameters) {
         super(parameters);
 
@@ -51,6 +53,8 @@ public class AbstractTouchUIWidget extends AbstractTouchUIDialogElement {
             new NameSpacedAttribute<Boolean>(Constants.CQ_NS_URI, Constants.CQ_NS_PREFIX, parameters.isShowOnCreate());
         this.hideOnEdit =
             new NameSpacedAttribute<Boolean>(Constants.CQ_NS_URI, Constants.CQ_NS_PREFIX, parameters.isHideOnEdit());
+        this.orderBefore = new NameSpacedAttribute<String>(Constants.SLING_NS_URI, Constants.SLING_NS_PREFIX,
+            parameters.getOrderBefore());
     }
 
     public String getName() {
@@ -111,5 +115,9 @@ public class AbstractTouchUIWidget extends AbstractTouchUIDialogElement {
 
     public NameSpacedAttribute<Boolean> getHideOnEdit() {
         return hideOnEdit;
+    }
+
+    public NameSpacedAttribute<String> getOrderBefore() {
+        return orderBefore;
     }
 }

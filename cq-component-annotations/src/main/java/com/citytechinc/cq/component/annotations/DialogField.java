@@ -186,4 +186,11 @@ public @interface DialogField {
      */
     boolean hideOnEdit() default false;
 
+    /**
+     * Applicable to Touch-UI only
+     * <p>
+     * Sets the sling:orderBefore property. This can be used when supertyping a
+     * resource to reorder the dialog fields.
+     */
+    String orderBefore() default "";
 }

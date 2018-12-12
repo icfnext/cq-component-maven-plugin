@@ -53,4 +53,8 @@ public interface TouchUIWidgetParameters extends TouchUIDialogElementParameters 
     boolean isHideOnEdit();
 
     void setHideOnEdit(boolean hideOnEdit);
+
+    String getOrderBefore();
+
+    void setOrderBefore(String orderBefore);
 }

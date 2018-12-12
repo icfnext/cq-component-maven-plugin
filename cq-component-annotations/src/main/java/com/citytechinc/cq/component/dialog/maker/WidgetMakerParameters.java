@@ -28,7 +28,6 @@ public class WidgetMakerParameters {
 
     /**
      * @param dialogField
-     * @param ctMember
      * @param containingClass
      * @param classLoader
      * @param classPool

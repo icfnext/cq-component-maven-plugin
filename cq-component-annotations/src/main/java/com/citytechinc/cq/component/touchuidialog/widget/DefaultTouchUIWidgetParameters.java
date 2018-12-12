@@ -31,6 +31,8 @@ public class DefaultTouchUIWidgetParameters extends DefaultTouchUIDialogElementP
 
     protected boolean hideOnEdit;
 
+    protected String orderBefore;
+
     public String getFieldLabel() {
         return fieldLabel;
     }
@@ -136,4 +138,11 @@ public class DefaultTouchUIWidgetParameters extends DefaultTouchUIDialogElementP
         this.hideOnEdit = hideOnEdit;
     }
 
+    public String getOrderBefore() {
+        return orderBefore;
+    }
+
+    public void setOrderBefore(final String orderBefore) {
+        this.orderBefore = orderBefore;
+    }
 }

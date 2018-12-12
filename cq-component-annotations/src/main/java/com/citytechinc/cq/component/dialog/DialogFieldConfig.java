@@ -53,6 +53,8 @@ public class DialogFieldConfig {
 
     private boolean hideDialogField;
 
+    private String orderBefore;
+
     public DialogFieldConfig(DialogField dialogField, CtMember member) {
         this.xtype = dialogField.xtype();
         this.resourceType = dialogField.resourceType();
@@ -73,9 +75,18 @@ public class DialogFieldConfig {
         this.disabled = dialogField.disabled();
         this.cssClass = dialogField.cssClass();
         this.suppressTouchUI = dialogField.suppressTouchUI();
-        this.setRenderReadOnly(dialogField.renderReadOnly());
-        this.setShowOnCreate(dialogField.showOnCreate());
-        this.setHideOnEdit(dialogField.hideOnEdit());
+        this.renderReadOnly = dialogField.renderReadOnly();
+        this.showOnCreate = dialogField.showOnCreate();
+        this.hideOnEdit = dialogField.hideOnEdit();
+        this.orderBefore = dialogField.orderBefore();
+    }
+
+    public String getOrderBefore() {
+        return orderBefore;
+    }
+
+    public void setOrderBefore(final String orderBefore) {
+        this.orderBefore = orderBefore;
     }
 
     public String getXtype() {

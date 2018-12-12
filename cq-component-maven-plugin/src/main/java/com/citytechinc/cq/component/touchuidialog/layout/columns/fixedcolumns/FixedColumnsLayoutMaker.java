@@ -1,21 +1,20 @@
 /**
- *    Copyright 2017 ICF Olson
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *        http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Copyright 2017 ICF Olson
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.citytechinc.cq.component.touchuidialog.layout.columns.fixedcolumns;
 
-import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.container.items.Items;
 import com.citytechinc.cq.component.touchuidialog.container.items.ItemsParameters;
@@ -41,14 +40,6 @@ public class FixedColumnsLayoutMaker extends AbstractLayoutMaker {
 
     @Override
     public Layout make() throws LayoutMakerException {
-
-        Component componentAnnotation = null;
-        try {
-            componentAnnotation = (Component) parameters.getComponentClass().getAnnotation(Component.class);
-        } catch (ClassNotFoundException e) {
-            throw new LayoutMakerException("Class Not Found Exception encountered looking up Component annotation", e);
-        }
-
         // Construct the FixedColumnsLayout Parameters
         FixedColumnsLayoutParameters layoutParameters = new FixedColumnsLayoutParameters();
 
@@ -73,16 +64,8 @@ public class FixedColumnsLayoutMaker extends AbstractLayoutMaker {
     }
 
     protected Items makeItems() throws LayoutMakerException {
-
         ItemsParameters itemsParameters = new ItemsParameters();
         itemsParameters.setFieldName("items");
-
-        Component componentAnnotation = null;
-        try {
-            componentAnnotation = (Component) parameters.getComponentClass().getAnnotation(Component.class);
-        } catch (ClassNotFoundException e) {
-            throw new LayoutMakerException("Class Not Found Exception encountered looking up Component annotation", e);
-        }
 
         ColumnParameters columnParameters = new ColumnParameters();
         columnParameters.setFieldName("column");
@@ -90,8 +73,8 @@ public class FixedColumnsLayoutMaker extends AbstractLayoutMaker {
         try {
             // Populate the column content
             List<TouchUIWidgetMakerParameters> widgetMakerParameters =
-                    TouchUIDialogUtil.getWidgetMakerParametersForComponentClass(parameters.getComponentClass(),
-                            parameters.getClassLoader(), parameters.getClassPool(), parameters.getWidgetRegistry());
+                TouchUIDialogUtil.getWidgetMakerParametersForComponentClass(parameters.getComponentClass(),
+                    parameters.getClassLoader(), parameters.getClassPool(), parameters.getWidgetRegistry());
 
             for (TouchUIWidgetMakerParameters currentWidgetMakerParameters : widgetMakerParameters) {
 
@@ -113,5 +96,4 @@ public class FixedColumnsLayoutMaker extends AbstractLayoutMaker {
 
         return new Items(itemsParameters);
     }
-
 }

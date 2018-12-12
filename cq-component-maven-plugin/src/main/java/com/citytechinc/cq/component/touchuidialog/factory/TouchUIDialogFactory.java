@@ -20,6 +20,7 @@ import com.citytechinc.cq.component.touchuidialog.TouchUIDialog;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogParameters;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
 import com.citytechinc.cq.component.touchuidialog.layout.Layout;
+import com.citytechinc.cq.component.touchuidialog.layout.columns.fixedcolumns.FixedColumnsLayoutMaker;
 import com.citytechinc.cq.component.touchuidialog.layout.maker.LayoutMaker;
 import com.citytechinc.cq.component.touchuidialog.layout.maker.LayoutMakerParameters;
 import com.citytechinc.cq.component.touchuidialog.layout.maker.exceptions.LayoutMakerException;
@@ -69,7 +70,14 @@ public class TouchUIDialogFactory {
 			layoutMakerParameters.setClassLoader(classLoader);
 			layoutMakerParameters.setClassPool(classPool);
 			layoutMakerParameters.setWidgetRegistry(widgetRegistry);
-			LayoutMaker layoutMaker = new TabsLayoutMaker(layoutMakerParameters);
+
+            LayoutMaker layoutMaker;
+            if (componentAnnotation.tabs().length > 0) {
+                layoutMaker = new TabsLayoutMaker(layoutMakerParameters);
+            }
+            else {
+                layoutMaker = new FixedColumnsLayoutMaker(layoutMakerParameters);
+            }
 
 			// Delegate the rest of the production to the LayoutMaker
 			Layout layout = layoutMaker.make();

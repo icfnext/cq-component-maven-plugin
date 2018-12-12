@@ -65,19 +65,9 @@ public class TabsLayoutCoral3Maker extends AbstractLayoutMaker {
     }
 
     protected Items makeItems() throws LayoutMakerException {
-        Component componentAnnotation;
-
-        try {
-            componentAnnotation = (Component) parameters.getComponentClass().getAnnotation(Component.class);
-        } catch (ClassNotFoundException e) {
-            throw new LayoutMakerException("Class Not Found Exception encountered looking up Component annotation", e);
-        }
-
-        // Determine the Tabs to create
-        // List<FixedColumnsLayoutElementParameters> tabParametersList = new ArrayList<FixedColumnsLayoutElementParameters>();
+        Component componentAnnotation = getComponentAnnotation();
 
         List<ContainerParameters> tabContainerParametersList = new ArrayList<ContainerParameters>();
-
         List<ColumnParameters> tabContentParametersList = new ArrayList<ColumnParameters>();
 
         for (Tab currentTabAnnotation : componentAnnotation.tabs()) {

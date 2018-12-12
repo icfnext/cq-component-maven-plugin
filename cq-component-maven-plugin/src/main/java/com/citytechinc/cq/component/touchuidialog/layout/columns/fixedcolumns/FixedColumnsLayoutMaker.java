@@ -63,8 +63,8 @@ public class FixedColumnsLayoutMaker extends AbstractLayoutMaker {
                     parameters.getTouchUIDialogType());
 
             for (TouchUIWidgetMakerParameters currentWidgetMakerParameters : widgetMakerParameters) {
-
                 TouchUIDialogElement currentElement = TouchUIWidgetFactory.make(currentWidgetMakerParameters, -1);
+
                 if (currentElement != null) {
                     currentElement.setRanking(currentWidgetMakerParameters.getDialogFieldConfig().getRanking());
                     columnParameters.addItem(currentElement);

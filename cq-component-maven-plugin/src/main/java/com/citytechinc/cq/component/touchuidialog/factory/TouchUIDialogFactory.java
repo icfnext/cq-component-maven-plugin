@@ -28,77 +28,77 @@ public class TouchUIDialogFactory {
     private TouchUIDialogFactory() {
     }
 
-	@Nullable
-	public static TouchUIDialog make(CtClass componentClass, ClassLoader classLoader, ClassPool classPool,
-		TouchUIWidgetRegistry widgetRegistry, String touchUIDialogType) throws TouchUIDialogGenerationException {
-		try {
+    @Nullable
+    public static TouchUIDialog make(CtClass componentClass, ClassLoader classLoader, ClassPool classPool,
+        TouchUIWidgetRegistry widgetRegistry, String touchUIDialogType) throws TouchUIDialogGenerationException {
+        try {
 
-			Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
+            Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
-			// If output of the Touch UI dialog is disabled, return null
-			if (componentAnnotation.suppressTouchUIDialog()) {
-				return null;
-			}
+            // If output of the Touch UI dialog is disabled, return null
+            if (componentAnnotation.suppressTouchUIDialog()) {
+                return null;
+            }
 
-			TouchUIDialogParameters parameters = new TouchUIDialogParameters();
+            TouchUIDialogParameters parameters = new TouchUIDialogParameters();
 
-			parameters.setTitle(componentAnnotation.value());
-			parameters.setFileName(componentAnnotation.touchFileName());
+            parameters.setTitle(componentAnnotation.value());
+            parameters.setFileName(componentAnnotation.touchFileName());
 
-			if (StringUtils.isNotBlank(componentAnnotation.helpPath())) {
-				parameters.setHelpPath(componentAnnotation.helpPath());
-			}
+            if (StringUtils.isNotBlank(componentAnnotation.helpPath())) {
+                parameters.setHelpPath(componentAnnotation.helpPath());
+            }
 
-			// Determine the LayoutMaker to use
-			// TODO: Make dynamic - currently we always use the tabs layout
-			// maker
-			LayoutMakerParameters layoutMakerParameters = new LayoutMakerParameters();
+            // Determine the LayoutMaker to use
+            // TODO: Make dynamic - currently we always use the tabs layout
+            // maker
+            LayoutMakerParameters layoutMakerParameters = new LayoutMakerParameters();
 
-			layoutMakerParameters.setComponentClass(componentClass);
-			layoutMakerParameters.setClassLoader(classLoader);
-			layoutMakerParameters.setClassPool(classPool);
-			layoutMakerParameters.setWidgetRegistry(widgetRegistry);
-			layoutMakerParameters.setTouchUIDialogType(touchUIDialogType);
+            layoutMakerParameters.setComponentClass(componentClass);
+            layoutMakerParameters.setClassLoader(classLoader);
+            layoutMakerParameters.setClassPool(classPool);
+            layoutMakerParameters.setWidgetRegistry(widgetRegistry);
+            layoutMakerParameters.setTouchUIDialogType(touchUIDialogType);
 
-			LayoutMaker layoutMaker;
+            LayoutMaker layoutMaker;
 
-			if(TouchUIDialogType.CORAL3.isOfType(touchUIDialogType)) {
-				if (componentAnnotation.tabs().length > 0) {
-					layoutMaker = new TabsLayoutCoral3Maker(layoutMakerParameters);
-				} else {
-					layoutMaker = new FixedColumnsLayoutCoral3Maker(layoutMakerParameters);
-				}
-			} else {
+            if (TouchUIDialogType.CORAL3.isOfType(touchUIDialogType)) {
+                if (componentAnnotation.tabs().length > 0) {
+                    layoutMaker = new TabsLayoutCoral3Maker(layoutMakerParameters);
+                } else {
+                    layoutMaker = new FixedColumnsLayoutCoral3Maker(layoutMakerParameters);
+                }
+            } else {
                 if (componentAnnotation.tabs().length > 0) {
                     layoutMaker = new TabsLayoutMaker(layoutMakerParameters);
                 } else {
                     layoutMaker = new FixedColumnsLayoutMaker(layoutMakerParameters);
                 }
-			}
+            }
 
-			// Delegate the rest of the production to the LayoutMaker
-			Layout layout = layoutMaker.make();
+            // Delegate the rest of the production to the LayoutMaker
+            Layout layout = layoutMaker.make();
 
-			// Add the generated Layout to the Dialog's contained elements
-			List<XmlElement> containedElements = new ArrayList<XmlElement>();
-			containedElements.add(layout);
+            // Add the generated Layout to the Dialog's contained elements
+            List<XmlElement> containedElements = new ArrayList<XmlElement>();
+            containedElements.add(layout);
 
-			parameters.setContainedElements(containedElements);
+            parameters.setContainedElements(containedElements);
 
-			// Add the extraClientLibs parameter
-			String[] extraClientlibs = componentAnnotation.extraClientlibs();
-			if(extraClientlibs.length > 0){
-				parameters.setExtraClientlibs(componentAnnotation.extraClientlibs());
-			}
+            // Add the extraClientLibs parameter
+            String[] extraClientlibs = componentAnnotation.extraClientlibs();
+            if (extraClientlibs.length > 0) {
+                parameters.setExtraClientlibs(componentAnnotation.extraClientlibs());
+            }
 
-			return new TouchUIDialog(parameters);
+            return new TouchUIDialog(parameters);
 
-		} catch (ClassNotFoundException e) {
-			throw new TouchUIDialogGenerationException(
-				"ClassNotFound exception encountered generating Touch UI Dialog", e);
-		} catch (LayoutMakerException e) {
-			throw new TouchUIDialogGenerationException("Layout Maker Exception encountered producing Dialog Layout", e);
-		}
-	}
+        } catch (ClassNotFoundException e) {
+            throw new TouchUIDialogGenerationException(
+                "ClassNotFound exception encountered generating Touch UI Dialog", e);
+        } catch (LayoutMakerException e) {
+            throw new TouchUIDialogGenerationException("Layout Maker Exception encountered producing Dialog Layout", e);
+        }
+    }
 
 }

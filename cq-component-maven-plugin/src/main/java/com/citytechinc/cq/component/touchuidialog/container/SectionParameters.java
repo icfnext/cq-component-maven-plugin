@@ -1,101 +1,105 @@
 package com.citytechinc.cq.component.touchuidialog.container;
 
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
+import com.citytechinc.cq.component.xml.XmlElement;
+import org.codehaus.plexus.util.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.codehaus.plexus.util.StringUtils;
-
-import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
-import com.citytechinc.cq.component.xml.XmlElement;
-
 public class SectionParameters extends ContainerParameters {
 
-	private String title;
-	private String path;
-	private TouchUIDialogElement renderCondition;
-	private boolean showOnCreate;
-	private boolean hideOnEdit;
-	private String nodeName;
-	private String orderBefore;
+    private String title;
 
-	@Override
-	public String getResourceType() {
-		if (StringUtils.isNotEmpty(path)) {
-			return Section.INCLUDE_RESOURCE_TYPE;
-		} else {
-			return Section.RESOURCE_TYPE;
-		}
-	}
+    private String path;
 
-	public String getTitle() {
-		return title;
-	}
+    private TouchUIDialogElement renderCondition;
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    private boolean showOnCreate;
 
-	public String getPath() {
-		return path;
-	}
+    private boolean hideOnEdit;
 
-	public void setPath(String path) {
-		this.path = path;
-	}
+    private String nodeName;
 
-	public TouchUIDialogElement getRenderCondition() {
-		return renderCondition;
-	}
+    private String orderBefore;
 
-	public void setRenderCondition(TouchUIDialogElement renderCondition) {
-		this.renderCondition = renderCondition;
-	}
+    @Override
+    public String getResourceType() {
+        if (StringUtils.isNotEmpty(path)) {
+            return Section.INCLUDE_RESOURCE_TYPE;
+        } else {
+            return Section.RESOURCE_TYPE;
+        }
+    }
 
-	@Override
-	public List<? extends XmlElement> getContainedElements() {
+    public String getTitle() {
+        return title;
+    }
 
-		List<XmlElement> elements = new ArrayList<XmlElement>();
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-		if (renderCondition != null) {
-			elements.add(renderCondition);
-		}
+    public String getPath() {
+        return path;
+    }
 
-		if (super.getContainedElements() != null) {
-			elements.addAll(super.getContainedElements());
-		}
+    public void setPath(String path) {
+        this.path = path;
+    }
 
-		return elements;
-	}
+    public TouchUIDialogElement getRenderCondition() {
+        return renderCondition;
+    }
 
-	public boolean isShowOnCreate() {
-		return showOnCreate;
-	}
+    public void setRenderCondition(TouchUIDialogElement renderCondition) {
+        this.renderCondition = renderCondition;
+    }
 
-	public void setShowOnCreate(boolean showOnCreate) {
-		this.showOnCreate = showOnCreate;
-	}
+    @Override
+    public List<? extends XmlElement> getContainedElements() {
+        List<XmlElement> elements = new ArrayList<XmlElement>();
 
-	public boolean isHideOnEdit() {
-		return hideOnEdit;
-	}
+        if (renderCondition != null) {
+            elements.add(renderCondition);
+        }
 
-	public void setHideOnEdit(boolean hideOnEdit) {
-		this.hideOnEdit = hideOnEdit;
-	}
+        if (super.getContainedElements() != null) {
+            elements.addAll(super.getContainedElements());
+        }
 
-	public String getNodeName() {
-		return nodeName;
-	}
+        return elements;
+    }
 
-	public void setNodeName(String nodeName) {
-		this.nodeName = nodeName;
-	}
+    public boolean isShowOnCreate() {
+        return showOnCreate;
+    }
 
-	public String getOrderBefore() {
-		return orderBefore;
-	}
+    public void setShowOnCreate(boolean showOnCreate) {
+        this.showOnCreate = showOnCreate;
+    }
 
-	public void setOrderBefore(String orderBefore) {
-		this.orderBefore = orderBefore;
-	}
+    public boolean isHideOnEdit() {
+        return hideOnEdit;
+    }
+
+    public void setHideOnEdit(boolean hideOnEdit) {
+        this.hideOnEdit = hideOnEdit;
+    }
+
+    public String getNodeName() {
+        return nodeName;
+    }
+
+    public void setNodeName(String nodeName) {
+        this.nodeName = nodeName;
+    }
+
+    public String getOrderBefore() {
+        return orderBefore;
+    }
+
+    public void setOrderBefore(String orderBefore) {
+        this.orderBefore = orderBefore;
+    }
 }

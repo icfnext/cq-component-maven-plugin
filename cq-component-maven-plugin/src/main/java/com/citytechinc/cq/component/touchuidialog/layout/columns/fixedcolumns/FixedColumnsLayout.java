@@ -5,8 +5,7 @@ import com.citytechinc.cq.component.touchuidialog.layout.Layout;
 
 public class FixedColumnsLayout extends Container implements Layout {
 
-	public FixedColumnsLayout(FixedColumnsLayoutParameters parameters) {
-		super(parameters);
-	}
-
+    public FixedColumnsLayout(FixedColumnsLayoutParameters parameters) {
+        super(parameters);
+    }
 }

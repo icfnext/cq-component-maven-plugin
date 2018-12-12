@@ -15,6 +15,8 @@ import com.citytechinc.cq.component.touchuidialog.container.items.ItemsParameter
 import com.citytechinc.cq.component.touchuidialog.layout.Layout;
 import com.citytechinc.cq.component.touchuidialog.layout.columns.Column;
 import com.citytechinc.cq.component.touchuidialog.layout.columns.ColumnParameters;
+import com.citytechinc.cq.component.touchuidialog.layout.columns.fixedcolumns.FixedColumnsLayoutElement;
+import com.citytechinc.cq.component.touchuidialog.layout.columns.fixedcolumns.FixedColumnsLayoutElementParameters;
 import com.citytechinc.cq.component.touchuidialog.layout.maker.AbstractLayoutMaker;
 import com.citytechinc.cq.component.touchuidialog.layout.maker.LayoutMakerParameters;
 import com.citytechinc.cq.component.touchuidialog.layout.maker.exceptions.LayoutMakerException;
@@ -178,14 +180,38 @@ public class TabsLayoutCoral3Maker extends AbstractLayoutMaker {
 
         // Add content to all tabs
         for (int i = 0; i < tabContainerParametersList.size(); i++) {
-            if (tabContentParametersList.get(i) != null) {
-                Collections.sort(tabContentParametersList.get(i).getItems(), new TouchUIDialogElementComparator());
+            ColumnParameters tabContentParameters = tabContentParametersList.get(i);
 
-                Column column = new Column(tabContentParametersList.get(i));
+            if (tabContentParameters != null) {
+                Collections.sort(tabContentParameters.getItems(), new TouchUIDialogElementComparator());
 
+                // actual dialog fields for tab
+                Column column = new Column(tabContentParameters);
+
+                // items within fixed columns
+                ItemsParameters fixedColumnsItemsParameters = new ItemsParameters();
+
+                fixedColumnsItemsParameters.setFieldName("items");
+                fixedColumnsItemsParameters.setContainedElements(TouchUIDialogUtil.createContainedElements(column));
+
+                Items fixedColumnsItems = new Items(fixedColumnsItemsParameters);
+
+                // add fixed columns wrapper element
+                FixedColumnsLayoutElementParameters fixedColumnsLayoutElementParameters = new FixedColumnsLayoutElementParameters();
+
+                fixedColumnsLayoutElementParameters.setContainedElements(
+                    TouchUIDialogUtil.createContainedElements(fixedColumnsItems));
+
+                fixedColumnsLayoutElementParameters.setTouchUIDialogType(parameters.getTouchUIDialogType());
+
+                FixedColumnsLayoutElement fixedColumnsLayoutElement = new FixedColumnsLayoutElement(
+                    fixedColumnsLayoutElementParameters);
+                fixedColumnsLayoutElement.setFieldName("columns");
+
+                // add items wrapper around fixed columns
                 ItemsParameters itemsParameters = new ItemsParameters();
                 itemsParameters.setFieldName("items");
-                itemsParameters.setContainedElements(TouchUIDialogUtil.createContainedElements(column));
+                itemsParameters.setContainedElements(Collections.singletonList(fixedColumnsLayoutElement));
                 Items items = new Items(itemsParameters);
 
                 tabContainerParametersList.get(i).setContainedElements(

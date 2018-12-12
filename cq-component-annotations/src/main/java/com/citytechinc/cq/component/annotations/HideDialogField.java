@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * Applicable to the Touch UI only
- *
+ * <p>
  * Hides dialog fields during the resource merger of the current dialog and the dialog of a resourceSuperType
  */
 @Retention(RetentionPolicy.CLASS)

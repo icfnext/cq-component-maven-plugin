@@ -4,23 +4,24 @@ import com.citytechinc.cq.component.dialog.AbstractDialogElement;
 
 public class RteParaFormat extends AbstractDialogElement {
 
-	public static final String PRIMARY_TYPE = "nt:unstructured";
+    public static final String PRIMARY_TYPE = "nt:unstructured";
 
-	private final String tag;
-	private final String description;
+    private final String tag;
 
-	public RteParaFormat(RteParaFormatParameters parameters) {
-		super(parameters);
+    private final String description;
 
-		this.tag = parameters.getTag();
-		this.description = parameters.getDescription();
-	}
+    public RteParaFormat(RteParaFormatParameters parameters) {
+        super(parameters);
 
-	public String getTag() {
-		return tag;
-	}
+        this.tag = parameters.getTag();
+        this.description = parameters.getDescription();
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getTag() {
+        return tag;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }

@@ -3,41 +3,44 @@ package com.citytechinc.cq.component.editconfig.droptargets;
 import com.citytechinc.cq.component.xml.DefaultXmlElementParameters;
 
 public class EditConfigDropTargetParameters extends DefaultXmlElementParameters {
-	private String[] accept;
-	private String[] groups;
-	private String propertyName;
 
-	public String[] getAccept() {
-		return accept;
-	}
+    private String[] accept;
 
-	public void setAccept(String[] accept) {
-		this.accept = accept;
-	}
+    private String[] groups;
 
-	public String[] getGroups() {
-		return groups;
-	}
+    private String propertyName;
 
-	public void setGroups(String[] groups) {
-		this.groups = groups;
-	}
+    public String[] getAccept() {
+        return accept;
+    }
 
-	public String getPropertyName() {
-		return propertyName;
-	}
+    public void setAccept(String[] accept) {
+        this.accept = accept;
+    }
 
-	public void setPropertyName(String propertyName) {
-		this.propertyName = propertyName;
-	}
+    public String[] getGroups() {
+        return groups;
+    }
 
-	@Override
-	public String getPrimaryType() {
-		return "cq:DropTargetConfig";
-	}
+    public void setGroups(String[] groups) {
+        this.groups = groups;
+    }
 
-	@Override
-	public void setPrimaryType(String primaryType) {
-		throw new UnsupportedOperationException("PrimaryType is Static for EditConfigActionConfig");
-	}
+    public String getPropertyName() {
+        return propertyName;
+    }
+
+    public void setPropertyName(String propertyName) {
+        this.propertyName = propertyName;
+    }
+
+    @Override
+    public String getPrimaryType() {
+        return "cq:DropTargetConfig";
+    }
+
+    @Override
+    public void setPrimaryType(String primaryType) {
+        throw new UnsupportedOperationException("PrimaryType is Static for EditConfigActionConfig");
+    }
 }

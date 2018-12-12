@@ -7,18 +7,18 @@ import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 
 public class HiddenWidgetMaker extends AbstractWidgetMaker<HiddenWidgetParameters> {
 
-	public HiddenWidgetMaker(WidgetMakerParameters parameters) {
-		super(parameters);
-	}
+    public HiddenWidgetMaker(WidgetMakerParameters parameters) {
+        super(parameters);
+    }
 
-	@Override
-	public DialogElement make(HiddenWidgetParameters parameters) throws ClassNotFoundException {
+    @Override
+    public DialogElement make(HiddenWidgetParameters parameters) throws ClassNotFoundException {
 
-		Hidden hiddenFieldAnnotation = getAnnotation(Hidden.class);
+        Hidden hiddenFieldAnnotation = getAnnotation(Hidden.class);
 
-		parameters.setValue(hiddenFieldAnnotation.value());
+        parameters.setValue(hiddenFieldAnnotation.value());
 
-		return new HiddenWidget(parameters);
+        return new HiddenWidget(parameters);
 
-	}
+    }
 }

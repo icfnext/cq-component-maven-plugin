@@ -1,30 +1,31 @@
 package com.citytechinc.cq.component.editconfig.maker;
 
+import com.citytechinc.cq.component.annotations.editconfig.InPlaceEditorConfig;
 import javassist.CtMember;
 
-import com.citytechinc.cq.component.annotations.editconfig.InPlaceEditorConfig;
-
 public class InPlaceEditorMakerParameters {
-	private InPlaceEditorConfig inPlaceEditorConfig;
-	private boolean setActive;
 
-	public InPlaceEditorConfig getInPlaceEditorConfig() {
-		return inPlaceEditorConfig;
-	}
+    private InPlaceEditorConfig inPlaceEditorConfig;
 
-	public void setInPlaceEditorConfig(InPlaceEditorConfig inPlaceEditorConfig) {
-		this.inPlaceEditorConfig = inPlaceEditorConfig;
-	}
+    private boolean setActive;
 
-	public boolean isSetActive() {
-		return setActive;
-	}
+    public InPlaceEditorConfig getInPlaceEditorConfig() {
+        return inPlaceEditorConfig;
+    }
 
-	public void setSetActive(boolean setActive) {
-		this.setActive = setActive;
-	}
+    public void setInPlaceEditorConfig(InPlaceEditorConfig inPlaceEditorConfig) {
+        this.inPlaceEditorConfig = inPlaceEditorConfig;
+    }
 
-	public CtMember getCtMember() {
-		return inPlaceEditorConfig.getMember();
-	}
+    public boolean isSetActive() {
+        return setActive;
+    }
+
+    public void setSetActive(boolean setActive) {
+        this.setActive = setActive;
+    }
+
+    public CtMember getCtMember() {
+        return inPlaceEditorConfig.getMember();
+    }
 }

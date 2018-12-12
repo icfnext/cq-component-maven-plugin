@@ -1,122 +1,134 @@
 package com.citytechinc.cq.component.touchuidialog.widget;
 
-import org.codehaus.plexus.util.StringUtils;
-
 import com.citytechinc.cq.component.touchuidialog.DefaultTouchUIDialogElementParameters;
 import com.citytechinc.cq.component.util.Constants;
+import org.codehaus.plexus.util.StringUtils;
 
 public class DefaultTouchUIWidgetParameters extends DefaultTouchUIDialogElementParameters implements
-	TouchUIWidgetParameters {
+    TouchUIWidgetParameters {
 
-	protected String name;
-	protected String title;
-	protected String fieldLabel;
-	protected String fieldDescription;
-	protected boolean required;
-	protected String value;
-	protected String defaultValue;
-	protected boolean disabled;
-	protected String cssClass;
-	protected boolean renderReadOnly;
-	protected boolean showOnCreate;
+    protected String name;
+
+    protected String title;
+
+    protected String fieldLabel;
+
+    protected String fieldDescription;
+
+    protected boolean required;
+
+    protected String value;
+
+    protected String defaultValue;
+
+    protected boolean disabled;
+
+    protected String cssClass;
+
+    protected boolean renderReadOnly;
+
+    protected boolean showOnCreate;
+
     protected boolean hideOnEdit;
 
-	public String getFieldLabel() {
-		return fieldLabel;
-	}
+    protected String orderBefore;
 
-	public void setFieldLabel(String fieldLabel) {
-		this.fieldLabel = fieldLabel;
-	}
+    public String getFieldLabel() {
+        return fieldLabel;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setFieldLabel(String fieldLabel) {
+        this.fieldLabel = fieldLabel;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	@Override
-	public String getPrimaryType() {
-		if (StringUtils.isBlank(super.getPrimaryType())) {
-			return Constants.NT_UNSTRUCTURED;
-		}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-		return super.getPrimaryType();
-	}
+    @Override
+    public String getPrimaryType() {
+        if (StringUtils.isBlank(super.getPrimaryType())) {
+            return Constants.NT_UNSTRUCTURED;
+        }
 
-	public String getFieldDescription() {
-		return fieldDescription;
-	}
+        return super.getPrimaryType();
+    }
 
-	public void setFieldDescription(String fieldDescription) {
-		this.fieldDescription = fieldDescription;
-	}
+    public String getFieldDescription() {
+        return fieldDescription;
+    }
 
-	public boolean isRequired() {
-		return required;
-	}
+    public void setFieldDescription(String fieldDescription) {
+        this.fieldDescription = fieldDescription;
+    }
 
-	public void setRequired(boolean required) {
-		this.required = required;
-	}
+    public boolean isRequired() {
+        return required;
+    }
 
-	public String getValue() {
-		return value;
-	}
+    public void setRequired(boolean required) {
+        this.required = required;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public String getValue() {
+        return value;
+    }
 
-	public String getDefaultValue() {
-		return defaultValue;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public void setDefaultValue(String defaultValue) {
-		this.defaultValue = defaultValue;
-	}
+    public String getDefaultValue() {
+        return defaultValue;
+    }
 
-	public boolean isDisabled() {
-		return disabled;
-	}
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
+    }
 
-	public void setDisabled(boolean disabled) {
-		this.disabled = disabled;
-	}
+    public boolean isDisabled() {
+        return disabled;
+    }
 
-	public String getCssClass() {
-		return cssClass;
-	}
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
 
-	public void setCssClass(String cssClass) {
-		this.cssClass = cssClass;
-	}
+    public String getCssClass() {
+        return cssClass;
+    }
 
-	public boolean isRenderReadOnly() {
-		return renderReadOnly;
-	}
+    public void setCssClass(String cssClass) {
+        this.cssClass = cssClass;
+    }
 
-	public void setRenderReadOnly(boolean renderReadOnly) {
-		this.renderReadOnly = renderReadOnly;
-	}
+    public boolean isRenderReadOnly() {
+        return renderReadOnly;
+    }
 
-	public boolean isShowOnCreate() {
-		return showOnCreate;
-	}
+    public void setRenderReadOnly(boolean renderReadOnly) {
+        this.renderReadOnly = renderReadOnly;
+    }
 
-	public void setShowOnCreate(boolean showOnCreate) {
-		this.showOnCreate = showOnCreate;
-	}
+    public boolean isShowOnCreate() {
+        return showOnCreate;
+    }
+
+    public void setShowOnCreate(boolean showOnCreate) {
+        this.showOnCreate = showOnCreate;
+    }
 
     public boolean isHideOnEdit() {
         return hideOnEdit;
@@ -126,4 +138,11 @@ public class DefaultTouchUIWidgetParameters extends DefaultTouchUIDialogElementP
         this.hideOnEdit = hideOnEdit;
     }
 
+    public String getOrderBefore() {
+        return orderBefore;
+    }
+
+    public void setOrderBefore(final String orderBefore) {
+        this.orderBefore = orderBefore;
+    }
 }

@@ -4,32 +4,33 @@ import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 import com.citytechinc.cq.component.util.Constants;
 
 public class TagInputFieldWidgetParameters extends DefaultWidgetParameters {
-	private boolean displayTitles;
 
-	public boolean isDisplayTitles() {
-		return displayTitles;
-	}
+    private boolean displayTitles;
 
-	public void setDisplayTitles(boolean displayTitles) {
-	}
+    public boolean isDisplayTitles() {
+        return displayTitles;
+    }
 
-	@Override
-	public String getPrimaryType() {
-		return Constants.CQ_WIDGET;
-	}
+    public void setDisplayTitles(boolean displayTitles) {
+    }
 
-	@Override
-	public void setPrimaryType(String primaryType) {
-		throw new UnsupportedOperationException("PrimaryType is Static for TagInputFieldWidget");
-	}
+    @Override
+    public String getPrimaryType() {
+        return Constants.CQ_WIDGET;
+    }
 
-	@Override
-	public String getXtype() {
-		return TagInputFieldWidget.XTYPE;
-	}
+    @Override
+    public void setPrimaryType(String primaryType) {
+        throw new UnsupportedOperationException("PrimaryType is Static for TagInputFieldWidget");
+    }
 
-	@Override
-	public void setXtype(String xtype) {
-		throw new UnsupportedOperationException("xtype is Static for TagInputFieldWidget");
-	}
+    @Override
+    public String getXtype() {
+        return TagInputFieldWidget.XTYPE;
+    }
+
+    @Override
+    public void setXtype(String xtype) {
+        throw new UnsupportedOperationException("xtype is Static for TagInputFieldWidget");
+    }
 }

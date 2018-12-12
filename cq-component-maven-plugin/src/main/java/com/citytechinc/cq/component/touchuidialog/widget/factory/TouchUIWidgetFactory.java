@@ -76,9 +76,9 @@ public class TouchUIWidgetFactory {
      * annotation if found.
      *
      * @param parameters The parameters identifying the Component member being
-     *            processed
+     * processed
      * @param rankingCeiling Widget configurations with rankings higher than the
-     *            ceiling will not be considered
+     * ceiling will not be considered
      * @return The determined widget configuration or null
      */
     @Nullable

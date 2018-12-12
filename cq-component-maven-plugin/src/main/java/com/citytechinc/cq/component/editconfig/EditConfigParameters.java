@@ -1,83 +1,90 @@
 package com.citytechinc.cq.component.editconfig;
 
-import java.util.List;
-
 import com.citytechinc.cq.component.xml.DefaultXmlElementParameters;
 
+import java.util.List;
+
 public class EditConfigParameters extends DefaultXmlElementParameters {
-	private static final String EDIT_CONFIG_PRIMARY_TYPE = "cq:EditConfig";
-	private List<String> actions;
-	private String dialogMode;
-	private String layout;
-	private String emptyText;
-	private Boolean inherit;
-	private Boolean disableTargeting;
 
-	public List<String> getActions() {
-		return actions;
-	}
+    private static final String EDIT_CONFIG_PRIMARY_TYPE = "cq:EditConfig";
 
-	public void setActions(List<String> actions) {
-		this.actions = actions;
-	}
+    private List<String> actions;
 
-	public String getDialogMode() {
-		return dialogMode;
-	}
+    private String dialogMode;
 
-	public void setDialogMode(String dialogMode) {
-		this.dialogMode = dialogMode;
-	}
+    private String layout;
 
-	public String getLayout() {
-		return layout;
-	}
+    private String emptyText;
 
-	public void setLayout(String layout) {
-		this.layout = layout;
-	}
+    private Boolean inherit;
 
-	public String getEmptyText() {
-		return emptyText;
-	}
+    private Boolean disableTargeting;
 
-	public void setEmptyText(String emptyText) {
-		this.emptyText = emptyText;
-	}
+    public List<String> getActions() {
+        return actions;
+    }
 
-	public Boolean getInherit() {
-		return inherit;
-	}
+    public void setActions(List<String> actions) {
+        this.actions = actions;
+    }
 
-	public void setInherit(Boolean inherit) {
-		this.inherit = inherit;
-	}
+    public String getDialogMode() {
+        return dialogMode;
+    }
 
-	public Boolean getDisableTargeting() {
-		return disableTargeting;
-	}
+    public void setDialogMode(String dialogMode) {
+        this.dialogMode = dialogMode;
+    }
 
-	public void setDisableTargeting(Boolean disableTargeting) {
-		this.disableTargeting = disableTargeting;
-	}
+    public String getLayout() {
+        return layout;
+    }
 
-	@Override
-	public String getFieldName() {
-		return "jcr:root";
-	}
+    public void setLayout(String layout) {
+        this.layout = layout;
+    }
 
-	@Override
-	public void setFieldName(String fieldName) {
-		throw new UnsupportedOperationException("fieldName is Static for EditConfig");
-	}
+    public String getEmptyText() {
+        return emptyText;
+    }
 
-	@Override
-	public String getPrimaryType() {
-		return EDIT_CONFIG_PRIMARY_TYPE;
-	}
+    public void setEmptyText(String emptyText) {
+        this.emptyText = emptyText;
+    }
 
-	@Override
-	public void setPrimaryType(String primaryType) {
-		throw new UnsupportedOperationException("PrimaryType is Static for EditConfig");
-	}
+    public Boolean getInherit() {
+        return inherit;
+    }
+
+    public void setInherit(Boolean inherit) {
+        this.inherit = inherit;
+    }
+
+    public Boolean getDisableTargeting() {
+        return disableTargeting;
+    }
+
+    public void setDisableTargeting(Boolean disableTargeting) {
+        this.disableTargeting = disableTargeting;
+    }
+
+    @Override
+    public String getFieldName() {
+        return "jcr:root";
+    }
+
+    @Override
+    public void setFieldName(String fieldName) {
+        throw new UnsupportedOperationException("fieldName is Static for EditConfig");
+    }
+
+    @Override
+    public String getPrimaryType() {
+        return EDIT_CONFIG_PRIMARY_TYPE;
+    }
+
+    @Override
+    public void setPrimaryType(String primaryType) {
+        throw new UnsupportedOperationException("PrimaryType is Static for EditConfig");
+    }
 }

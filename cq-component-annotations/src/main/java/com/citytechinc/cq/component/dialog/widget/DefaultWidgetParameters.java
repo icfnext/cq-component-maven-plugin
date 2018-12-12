@@ -1,89 +1,96 @@
 package com.citytechinc.cq.component.dialog.widget;
 
-import org.codehaus.plexus.util.StringUtils;
-
 import com.citytechinc.cq.component.dialog.DefaultDialogElementParameters;
 import com.citytechinc.cq.component.util.Constants;
+import org.codehaus.plexus.util.StringUtils;
 
 public class DefaultWidgetParameters extends DefaultDialogElementParameters implements WidgetParameters {
-	protected String xtype;
-	protected String fieldLabel;
-	protected String fieldDescription;
-	protected boolean allowBlank;
-	protected String defaultValue;
-	protected String name;
-	protected boolean hideLabel;
-	protected boolean disabled;
 
-	public String getXtype() {
-		return xtype;
-	}
+    protected String xtype;
 
-	public void setXtype(String xtype) {
-		this.xtype = xtype;
-	}
+    protected String fieldLabel;
 
-	public String getFieldLabel() {
-		return fieldLabel;
-	}
+    protected String fieldDescription;
 
-	public void setFieldLabel(String fieldLabel) {
-		this.fieldLabel = fieldLabel;
-	}
+    protected boolean allowBlank;
 
-	public String getFieldDescription() {
-		return fieldDescription;
-	}
+    protected String defaultValue;
 
-	public void setFieldDescription(String fieldDescription) {
-		this.fieldDescription = fieldDescription;
-	}
+    protected String name;
 
-	public boolean isAllowBlank() {
-		return allowBlank;
-	}
+    protected boolean hideLabel;
 
-	public void setAllowBlank(boolean allowBlank) {
-		this.allowBlank = allowBlank;
-	}
+    protected boolean disabled;
 
-	public String getDefaultValue() {
-		return defaultValue;
-	}
+    public String getXtype() {
+        return xtype;
+    }
 
-	public void setDefaultValue(String defaultValue) {
-		this.defaultValue = defaultValue;
-	}
+    public void setXtype(String xtype) {
+        this.xtype = xtype;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getFieldLabel() {
+        return fieldLabel;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setFieldLabel(String fieldLabel) {
+        this.fieldLabel = fieldLabel;
+    }
 
-	public boolean isHideLabel() {
-		return hideLabel;
-	}
+    public String getFieldDescription() {
+        return fieldDescription;
+    }
 
-	public void setHideLabel(boolean hideLabel) {
-		this.hideLabel = hideLabel;
-	}
+    public void setFieldDescription(String fieldDescription) {
+        this.fieldDescription = fieldDescription;
+    }
 
-	public boolean isDisabled() {
-		return disabled;
-	}
+    public boolean isAllowBlank() {
+        return allowBlank;
+    }
 
-	public void setDisabled(boolean disabled) {
-		this.disabled = disabled;
-	}
+    public void setAllowBlank(boolean allowBlank) {
+        this.allowBlank = allowBlank;
+    }
 
-	@Override
-	public String getPrimaryType() {
-		if (StringUtils.isEmpty(primaryType)) {
-			return Constants.CQ_WIDGET;
-		}
-		return primaryType;
-	}
+    public String getDefaultValue() {
+        return defaultValue;
+    }
+
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isHideLabel() {
+        return hideLabel;
+    }
+
+    public void setHideLabel(boolean hideLabel) {
+        this.hideLabel = hideLabel;
+    }
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
+    @Override
+    public String getPrimaryType() {
+        if (StringUtils.isEmpty(primaryType)) {
+            return Constants.CQ_WIDGET;
+        }
+        return primaryType;
+    }
 }

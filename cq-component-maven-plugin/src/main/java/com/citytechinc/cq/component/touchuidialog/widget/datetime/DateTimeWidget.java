@@ -5,17 +5,17 @@ import com.citytechinc.cq.component.annotations.widgets.DateTime;
 import com.citytechinc.cq.component.touchuidialog.widget.datefield.DateFieldWidget;
 
 @TouchUIWidget(annotationClass = DateTime.class, makerClass = DateTimeWidgetMaker.class,
-	resourceType = DateTimeWidget.RESOURCE_TYPE)
+    resourceType = DateTimeWidget.RESOURCE_TYPE)
 public class DateTimeWidget extends DateFieldWidget {
 
-	public static final String RESOURCE_TYPE = DateFieldWidget.RESOURCE_TYPE;
+    public static final String RESOURCE_TYPE = DateFieldWidget.RESOURCE_TYPE;
 
-	public DateTimeWidget(DateTimeWidgetParameters parameters) {
-		super(parameters);
-	}
+    public DateTimeWidget(DateTimeWidgetParameters parameters) {
+        super(parameters);
+    }
 
-	public String getType() {
-		return "datetime";
-	}
+    public String getType() {
+        return "datetime";
+    }
 
 }

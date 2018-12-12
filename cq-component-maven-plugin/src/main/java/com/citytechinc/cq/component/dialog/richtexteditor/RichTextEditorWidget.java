@@ -7,12 +7,12 @@ import com.citytechinc.cq.component.dialog.AbstractWidget;
 @Widget(annotationClass = RichTextEditor.class, makerClass = RichTextEditorMaker.class, xtype = "richtext")
 public class RichTextEditorWidget extends AbstractWidget {
 
-	public static final String XTYPE = "richtext";
+    public static final String XTYPE = "richtext";
 
-	public RichTextEditorWidget(RichTextEditorWidgetParameters parameters) {
+    public RichTextEditorWidget(RichTextEditorWidgetParameters parameters) {
 
-		super(parameters);
+        super(parameters);
 
-	}
+    }
 
 }

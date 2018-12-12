@@ -4,60 +4,64 @@ import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 import com.citytechinc.cq.component.util.Constants;
 
 public class NumberFieldWidgetParameters extends DefaultWidgetParameters {
-	private boolean allowDecimals;
-	private boolean allowNegative;
-	private int decimalPrecision;
-	private String decimalSeparator;
 
-	public boolean isAllowDecimals() {
-		return allowDecimals;
-	}
+    private boolean allowDecimals;
 
-	public void setAllowDecimals(boolean allowDecimals) {
-		this.allowDecimals = allowDecimals;
-	}
+    private boolean allowNegative;
 
-	public boolean isAllowNegative() {
-		return allowNegative;
-	}
+    private int decimalPrecision;
 
-	public void setAllowNegative(boolean allowNegative) {
-		this.allowNegative = allowNegative;
-	}
+    private String decimalSeparator;
 
-	public int getDecimalPrecision() {
-		return decimalPrecision;
-	}
+    public boolean isAllowDecimals() {
+        return allowDecimals;
+    }
 
-	public void setDecimalPrecision(int decimalPrecision) {
-		this.decimalPrecision = decimalPrecision;
-	}
+    public void setAllowDecimals(boolean allowDecimals) {
+        this.allowDecimals = allowDecimals;
+    }
 
-	public String getDecimalSeparator() {
-		return decimalSeparator;
-	}
+    public boolean isAllowNegative() {
+        return allowNegative;
+    }
 
-	public void setDecimalSeparator(String decimalSeparator) {
-		this.decimalSeparator = decimalSeparator;
-	}
+    public void setAllowNegative(boolean allowNegative) {
+        this.allowNegative = allowNegative;
+    }
 
-	@Override
-	public String getPrimaryType() {
-		return Constants.CQ_WIDGET;
-	}
+    public int getDecimalPrecision() {
+        return decimalPrecision;
+    }
 
-	@Override
-	public void setPrimaryType(String primaryType) {
-		throw new UnsupportedOperationException("PrimaryType is Static for NumberFieldWidget");
-	}
+    public void setDecimalPrecision(int decimalPrecision) {
+        this.decimalPrecision = decimalPrecision;
+    }
 
-	@Override
-	public String getXtype() {
-		return NumberFieldWidget.XTYPE;
-	}
+    public String getDecimalSeparator() {
+        return decimalSeparator;
+    }
 
-	@Override
-	public void setXtype(String xtype) {
-		throw new UnsupportedOperationException("xtype is Static for NumberFieldWidget");
-	}
+    public void setDecimalSeparator(String decimalSeparator) {
+        this.decimalSeparator = decimalSeparator;
+    }
+
+    @Override
+    public String getPrimaryType() {
+        return Constants.CQ_WIDGET;
+    }
+
+    @Override
+    public void setPrimaryType(String primaryType) {
+        throw new UnsupportedOperationException("PrimaryType is Static for NumberFieldWidget");
+    }
+
+    @Override
+    public String getXtype() {
+        return NumberFieldWidget.XTYPE;
+    }
+
+    @Override
+    public void setXtype(String xtype) {
+        throw new UnsupportedOperationException("xtype is Static for NumberFieldWidget");
+    }
 }

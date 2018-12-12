@@ -3,35 +3,38 @@ package com.citytechinc.cq.component.dialog;
 import com.citytechinc.cq.component.annotations.Listener;
 
 public class ListenersParameters extends DefaultDialogElementParameters {
-	public static final String FIELD_NAME = "listeners";
-	public static final String PRIMARY_TYPE = "nt:unstructured";
-	private Listener[] listenerAnnotations;
 
-	public Listener[] getListenerAnnotations() {
-		return listenerAnnotations;
-	}
+    public static final String FIELD_NAME = "listeners";
 
-	public void setListenerAnnotations(Listener[] listenerAnnotations) {
-		this.listenerAnnotations = listenerAnnotations;
-	}
+    public static final String PRIMARY_TYPE = "nt:unstructured";
 
-	@Override
-	public String getPrimaryType() {
-		return PRIMARY_TYPE;
-	}
+    private Listener[] listenerAnnotations;
 
-	@Override
-	public void setPrimaryType(String primaryType) {
-		throw new UnsupportedOperationException("PrimaryType is Static for ListenerParameters");
-	}
+    public Listener[] getListenerAnnotations() {
+        return listenerAnnotations;
+    }
 
-	@Override
-	public String getFieldName() {
-		return FIELD_NAME;
-	}
+    public void setListenerAnnotations(Listener[] listenerAnnotations) {
+        this.listenerAnnotations = listenerAnnotations;
+    }
 
-	@Override
-	public void setFieldName(String fieldName) {
-		throw new UnsupportedOperationException("FieldName is Static for ListenerParameters");
-	}
+    @Override
+    public String getPrimaryType() {
+        return PRIMARY_TYPE;
+    }
+
+    @Override
+    public void setPrimaryType(String primaryType) {
+        throw new UnsupportedOperationException("PrimaryType is Static for ListenerParameters");
+    }
+
+    @Override
+    public String getFieldName() {
+        return FIELD_NAME;
+    }
+
+    @Override
+    public void setFieldName(String fieldName) {
+        throw new UnsupportedOperationException("FieldName is Static for ListenerParameters");
+    }
 }

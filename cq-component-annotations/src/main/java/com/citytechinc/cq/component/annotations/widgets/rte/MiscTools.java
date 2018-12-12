@@ -5,8 +5,8 @@ package com.citytechinc.cq.component.annotations.widgets.rte;
  */
 public @interface MiscTools {
 
-	public boolean specialchars() default true;
+    boolean specialchars() default true;
 
-	public boolean sourceedit() default true;
+    boolean sourceedit() default true;
 
 }

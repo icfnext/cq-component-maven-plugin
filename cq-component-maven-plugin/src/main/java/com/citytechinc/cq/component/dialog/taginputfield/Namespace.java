@@ -4,21 +4,23 @@ import com.citytechinc.cq.component.dialog.AbstractDialogElement;
 
 public class Namespace extends AbstractDialogElement {
 
-	public static final String PRIMARY_TYPE = "nt:unstructured";
-	private final String name;
-	private final String maximum;
+    public static final String PRIMARY_TYPE = "nt:unstructured";
 
-	public Namespace(NamespaceParameters parameters) {
-		super(parameters);
-		this.name = parameters.getName();
-		this.maximum = parameters.getMaximum();
-	}
+    private final String name;
 
-	public String getName() {
-		return name;
-	}
+    private final String maximum;
 
-	public String getMaximum() {
-		return maximum;
-	}
+    public Namespace(NamespaceParameters parameters) {
+        super(parameters);
+        this.name = parameters.getName();
+        this.maximum = parameters.getMaximum();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getMaximum() {
+        return maximum;
+    }
 }

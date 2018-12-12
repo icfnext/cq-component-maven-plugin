@@ -1,45 +1,61 @@
 package com.citytechinc.cq.component.touchuidialog.widget.numberfield;
 
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogType;
 import com.citytechinc.cq.component.touchuidialog.widget.DefaultTouchUIWidgetParameters;
 
 public class NumberFieldWidgetParameters extends DefaultTouchUIWidgetParameters {
 
-	private Double min;
-	private Double max;
-	private Double step;
+    private Double min;
 
-	public Double getMin() {
-		return min;
-	}
+    private Double max;
 
-	public void setMin(Double min) {
-		this.min = min;
-	}
+    private Double step;
 
-	public Double getMax() {
-		return max;
-	}
+    private String typeHint;
 
-	public void setMax(Double max) {
-		this.max = max;
-	}
+    public Double getMin() {
+        return min;
+    }
 
-	public Double getStep() {
-		return step;
-	}
+    public void setMin(Double min) {
+        this.min = min;
+    }
 
-	public void setStep(Double step) {
-		this.step = step;
-	}
+    public Double getMax() {
+        return max;
+    }
 
-	@Override
-	public String getResourceType() {
-		return NumberFieldWidget.RESOURCE_TYPE;
-	}
+    public void setMax(Double max) {
+        this.max = max;
+    }
 
-	@Override
-	public void setResourceType(String resourceType) {
-		throw new UnsupportedOperationException("resourceType is Static for NumberFieldWidget");
-	}
+    public Double getStep() {
+        return step;
+    }
+
+    public void setStep(Double step) {
+        this.step = step;
+    }
+
+    public String getTypeHint() {
+        return typeHint;
+    }
+
+    public void setTypeHint(String typeHint) {
+        this.typeHint = typeHint;
+    }
+
+    @Override
+    public String getResourceType() {
+        if (TouchUIDialogType.CORAL3.isOfType(getTouchUIDialogType())) {
+            return NumberFieldCoral3Widget.RESOURCE_TYPE;
+        }
+        return NumberFieldWidget.RESOURCE_TYPE;
+    }
+
+    @Override
+    public void setResourceType(String resourceType) {
+        throw new UnsupportedOperationException("resourceType is Static for NumberFieldWidget");
+    }
 
 }

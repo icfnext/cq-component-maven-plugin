@@ -4,13 +4,14 @@ import java.util.List;
 import java.util.Map;
 
 public interface XmlElement {
-	public NameSpacedAttribute<String> getPrimaryType();
 
-	public String getNameSpace();
+    NameSpacedAttribute<String> getPrimaryType();
 
-	public String getFieldName();
+    String getNameSpace();
 
-	public Map<String, ?> getAdditionalProperties();
+    String getFieldName();
 
-	public List<? extends XmlElement> getContainedElements();
+    Map<String, ?> getAdditionalProperties();
+
+    List<? extends XmlElement> getContainedElements();
 }

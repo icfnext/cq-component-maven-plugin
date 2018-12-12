@@ -5,30 +5,33 @@ import com.citytechinc.cq.component.annotations.widgets.AutoComplete;
 import com.citytechinc.cq.component.touchuidialog.widget.AbstractTouchUIWidget;
 
 @TouchUIWidget(annotationClass = AutoComplete.class, makerClass = AutoCompleteWidgetMaker.class,
-	resourceType = AutoCompleteWidget.RESOURCE_TYPE)
+    resourceType = AutoCompleteWidget.RESOURCE_TYPE)
 public class AutoCompleteWidget extends AbstractTouchUIWidget {
 
-	public static final String RESOURCE_TYPE = "granite/ui/components/foundation/form/autocomplete";
-	public static final String VALUES_FIELD_NAME = "values";
-	public static final String OPTIONS_FIELD_NAME = "options";
+    public static final String RESOURCE_TYPE = "granite/ui/components/foundation/form/autocomplete";
 
-	protected final boolean multiple;
-	protected final String mode;
+    public static final String VALUES_FIELD_NAME = "values";
 
-	public AutoCompleteWidget(AutoCompleteWidgetParameters parameters) {
-		super(parameters);
+    public static final String OPTIONS_FIELD_NAME = "options";
 
-		multiple = parameters.isMultiple();
-		mode = parameters.getMode();
+    protected final boolean multiple;
 
-	}
+    protected final String mode;
 
-	public boolean isMultiple() {
-		return multiple;
-	}
+    public AutoCompleteWidget(AutoCompleteWidgetParameters parameters) {
+        super(parameters);
 
-	public String getMode() {
-		return mode;
-	}
+        multiple = parameters.isMultiple();
+        mode = parameters.getMode();
+
+    }
+
+    public boolean isMultiple() {
+        return multiple;
+    }
+
+    public String getMode() {
+        return mode;
+    }
 
 }

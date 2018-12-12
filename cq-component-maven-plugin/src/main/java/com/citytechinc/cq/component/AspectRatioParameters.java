@@ -3,60 +3,66 @@ package com.citytechinc.cq.component;
 import com.citytechinc.cq.component.xml.DefaultXmlElementParameters;
 
 public class AspectRatioParameters extends DefaultXmlElementParameters {
-	private static final String PRIMARY_TYPE = "nt:unstructured";
-	private Integer height;
-	private Integer width;
-	private Double ratio;
-	private String text;
-	private String name;
 
-	public Integer getHeight() {
-		return height;
-	}
+    private static final String PRIMARY_TYPE = "nt:unstructured";
 
-	public void setHeight(Integer height) {
-		this.height = height;
-	}
+    private Integer height;
 
-	public Integer getWidth() {
-		return width;
-	}
+    private Integer width;
 
-	public void setWidth(Integer width) {
-		this.width = width;
-	}
+    private Double ratio;
 
-	public Double getRatio() {
-		return ratio;
-	}
+    private String text;
 
-	public void setRatio(Double ratio) {
-		this.ratio = ratio;
-	}
+    private String name;
 
-	public String getText() {
-		return text;
-	}
+    public Integer getHeight() {
+        return height;
+    }
 
-	public void setText(String text) {
-		this.text = text;
-	}
+    public void setHeight(Integer height) {
+        this.height = height;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public Integer getWidth() {
+        return width;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setWidth(Integer width) {
+        this.width = width;
+    }
 
-	@Override
-	public String getPrimaryType() {
-		return PRIMARY_TYPE;
-	}
+    public Double getRatio() {
+        return ratio;
+    }
 
-	@Override
-	public void setPrimaryType(String primaryType) {
-		throw new UnsupportedOperationException("PrimaryType is Static for AspectRatio");
-	}
+    public void setRatio(Double ratio) {
+        this.ratio = ratio;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String getPrimaryType() {
+        return PRIMARY_TYPE;
+    }
+
+    @Override
+    public void setPrimaryType(String primaryType) {
+        throw new UnsupportedOperationException("PrimaryType is Static for AspectRatio");
+    }
 }

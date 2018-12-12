@@ -3,6 +3,7 @@ package com.citytechinc.cq.component.touchuidialog.widget.hidden;
 import com.citytechinc.cq.component.touchuidialog.widget.DefaultTouchUIWidgetParameters;
 
 public class HiddenWidgetParameters extends DefaultTouchUIWidgetParameters {
+
     private String value;
 
     public String getValue() {

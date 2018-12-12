@@ -4,51 +4,54 @@ import com.citytechinc.cq.component.touchuidialog.DefaultTouchUIDialogElementPar
 
 public class OptionParameters extends DefaultTouchUIDialogElementParameters {
 
-	private String name;
-	private String text;
-	private String value;
-	private boolean selected;
+    private String name;
 
-	public String getName() {
-		return name;
-	}
+    private String text;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    private String value;
 
-	public String getText() {
-		return text;
-	}
+    private boolean selected;
 
-	public void setText(String text) {
-		this.text = text;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getValue() {
-		return value;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public String getText() {
+        return text;
+    }
 
-	public boolean isSelected() {
-		return selected;
-	}
+    public void setText(String text) {
+        this.text = text;
+    }
 
-	public void setSelected(boolean selected) {
-		this.selected = selected;
-	}
+    public String getValue() {
+        return value;
+    }
 
-	@Override
-	public String getPrimaryType() {
-		return "nt:unstructured";
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	@Override
-	public void setPrimaryType(String primaryType) {
-		throw new UnsupportedOperationException("Primary Type is static for Option");
-	}
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    @Override
+    public String getPrimaryType() {
+        return "nt:unstructured";
+    }
+
+    @Override
+    public void setPrimaryType(String primaryType) {
+        throw new UnsupportedOperationException("Primary Type is static for Option");
+    }
 
 }

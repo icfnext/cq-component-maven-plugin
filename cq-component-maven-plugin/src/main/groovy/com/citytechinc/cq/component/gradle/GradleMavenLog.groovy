@@ -1,74 +1,76 @@
 package com.citytechinc.cq.component.gradle
+
 import org.apache.maven.plugin.logging.Log
 import org.slf4j.Logger
-class GradleMavenLog implements Log{
-	Logger log
 
-	GradleMavenLog(Logger log){
-		this.log=log
-	}
+class GradleMavenLog implements Log {
+    Logger log
 
-	public void debug(CharSequence charSequence) {
-		this.log.debug(charSequence)
-	}
+    GradleMavenLog(Logger log) {
+        this.log = log
+    }
 
-	public void debug(Throwable throwable) {
-		this.log.debug(throwable)
-	}
+    void debug(CharSequence charSequence) {
+        this.log.debug(charSequence)
+    }
 
-	public void debug(CharSequence charSequence, Throwable throwable) {
-		this.log.debug(charSequence, throwable)
-	}
+    void debug(Throwable throwable) {
+        this.log.debug(throwable)
+    }
 
-	public void error(CharSequence charSequence) {
-		this.log.error(charSequence)
-	}
+    void debug(CharSequence charSequence, Throwable throwable) {
+        this.log.debug(charSequence, throwable)
+    }
 
-	public void error(Throwable throwable) {
-		this.log.error(throwable)
-	}
+    void error(CharSequence charSequence) {
+        this.log.error(charSequence)
+    }
 
-	public void error(CharSequence charSequence, Throwable throwable) {
-		this.log.error(charSequence, throwable)
-	}
+    void error(Throwable throwable) {
+        this.log.error(throwable)
+    }
 
-	public void info(CharSequence charSequence) {
-		this.log.info(charSequence)
-	}
+    void error(CharSequence charSequence, Throwable throwable) {
+        this.log.error(charSequence, throwable)
+    }
 
-	public void info(Throwable throwable) {
-		this.log.info(throwable)
-	}
+    void info(CharSequence charSequence) {
+        this.log.info(charSequence)
+    }
 
-	public void info(CharSequence charSequence, Throwable throwable) {
-		this.log.info(charSequence, throwable)
-	}
+    void info(Throwable throwable) {
+        this.log.info(throwable)
+    }
 
-	public boolean isDebugEnabled() {
-		return this.log.debugEnabled
-	}
+    void info(CharSequence charSequence, Throwable throwable) {
+        this.log.info(charSequence, throwable)
+    }
 
-	public boolean isErrorEnabled() {
-		return this.log.errorEnabled
-	}
+    boolean isDebugEnabled() {
+        return this.log.debugEnabled
+    }
 
-	public boolean isInfoEnabled() {
-		return this.log.infoEnabled
-	}
+    boolean isErrorEnabled() {
+        return this.log.errorEnabled
+    }
 
-	public boolean isWarnEnabled() {
-		return this.log.warnEnabled
-	}
+    boolean isInfoEnabled() {
+        return this.log.infoEnabled
+    }
 
-	public void warn(CharSequence charSequence) {
-		this.log.warn(charSequence)
-	}
+    boolean isWarnEnabled() {
+        return this.log.warnEnabled
+    }
 
-	public void warn(Throwable throwable) {
-		this.log.warn(throwable)
-	}
+    void warn(CharSequence charSequence) {
+        this.log.warn(charSequence)
+    }
 
-	public void warn(CharSequence charSequence, Throwable throwable) {
-		this.log.warn(charSequence, throwable)
-	}
+    void warn(Throwable throwable) {
+        this.log.warn(throwable)
+    }
+
+    void warn(CharSequence charSequence, Throwable throwable) {
+        this.log.warn(charSequence, throwable)
+    }
 }

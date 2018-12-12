@@ -3,32 +3,34 @@ package com.citytechinc.cq.component.dialog.richtexteditor;
 import com.citytechinc.cq.component.dialog.DefaultDialogElementParameters;
 
 public class RteParaFormatParameters extends DefaultDialogElementParameters {
-	private String tag;
-	private String description;
 
-	public String getTag() {
-		return tag;
-	}
+    private String tag;
 
-	public void setTag(String tag) {
-		this.tag = tag;
-	}
+    private String description;
 
-	public String getDescription() {
-		return description;
-	}
+    public String getTag() {
+        return tag;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
 
-	@Override
-	public String getPrimaryType() {
-		return RteParaFormat.PRIMARY_TYPE;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	@Override
-	public void setPrimaryType(String primaryType) {
-		throw new UnsupportedOperationException("PrimaryType is Static for RteParaFormat");
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
+    public String getPrimaryType() {
+        return RteParaFormat.PRIMARY_TYPE;
+    }
+
+    @Override
+    public void setPrimaryType(String primaryType) {
+        throw new UnsupportedOperationException("PrimaryType is Static for RteParaFormat");
+    }
 }

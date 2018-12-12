@@ -1,96 +1,184 @@
 package com.citytechinc.cq.component.touchuidialog.container;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.DefaultTouchUIDialogElementParameters;
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogType;
 import com.citytechinc.cq.component.touchuidialog.container.items.Items;
 import com.citytechinc.cq.component.touchuidialog.container.items.ItemsParameters;
 import com.citytechinc.cq.component.touchuidialog.layout.LayoutElement;
 import com.citytechinc.cq.component.xml.XmlElement;
+import org.codehaus.plexus.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ContainerParameters extends DefaultTouchUIDialogElementParameters {
 
-	private LayoutElement layoutElement;
+    private String title;
 
-	protected List<TouchUIDialogElement> items;
+    private String path;
 
-	public ContainerParameters() {
-		items = new ArrayList<TouchUIDialogElement>();
-	}
+    private TouchUIDialogElement renderCondition;
 
-	@Override
-	public String getResourceType() {
-		return Container.RESOURCE_TYPE;
-	}
+    private boolean showOnCreate;
 
-	@Override
-	public void setResourceType(String resourceType) {
-		throw new UnsupportedOperationException("resource type is Static for Container");
-	}
+    private boolean hideOnEdit;
 
-	@Override
-	public String getPrimaryType() {
-		return Container.PRIMARY_TYPE;
-	}
+    private String orderBefore;
 
-	@Override
-	public void setPrimaryType(String primaryType) {
-		throw new UnsupportedOperationException("primary type is Static for Container");
-	}
+    private boolean margin;
 
-	public LayoutElement getLayoutElement() {
-		return layoutElement;
-	}
+    private boolean maximized;
 
-	public void setLayoutElement(LayoutElement layoutElement) {
-		this.layoutElement = layoutElement;
-	}
+    private LayoutElement layoutElement;
 
-	public List<TouchUIDialogElement> getItems() {
-		return items;
-	}
+    protected List<TouchUIDialogElement> items;
 
-	public Items getItemsElement() {
-		ItemsParameters itemsParameters = new ItemsParameters();
+    public ContainerParameters() {
+        items = new ArrayList<TouchUIDialogElement>();
+    }
 
-		itemsParameters.setFieldName("items");
+    @Override
+    public String getResourceType() {
+        if (StringUtils.isNotEmpty(path)) {
+            return Section.INCLUDE_RESOURCE_TYPE;
+        } else if (TouchUIDialogType.CORAL3.isOfType(getTouchUIDialogType())) {
+            return Container.RESOURCE_TYPE_CORAL3;
+        }
 
-		List<XmlElement> elements = new ArrayList<XmlElement>();
+        return Container.RESOURCE_TYPE;
+    }
 
-		if (!items.isEmpty()) {
-			elements.addAll(items);
-			itemsParameters.setContainedElements(elements);
-			return new Items(itemsParameters);
-		}
+    public boolean isMargin() {
+        return margin;
+    }
 
-		return null;
-	}
+    public boolean isMaximized() {
+        return maximized;
+    }
 
-	public void addItem(TouchUIDialogElement element) {
-		items.add(element);
-	}
+    public void setMargin(final boolean margin) {
+        this.margin = margin;
+    }
 
-	@Override
-	public List<? extends XmlElement> getContainedElements() {
+    public void setMaximized(final boolean maximized) {
+        this.maximized = maximized;
+    }
 
-		List<XmlElement> elements = new ArrayList<XmlElement>();
+    @Override
+    public void setResourceType(String resourceType) {
+        throw new UnsupportedOperationException("resource type is Static for Container");
+    }
 
-		if (layoutElement != null) {
-			elements.add(layoutElement);
-		}
+    @Override
+    public String getPrimaryType() {
+        return Container.PRIMARY_TYPE;
+    }
 
-		Items items = getItemsElement();
+    @Override
+    public void setPrimaryType(String primaryType) {
+        throw new UnsupportedOperationException("primary type is Static for Container");
+    }
 
-		if (items != null) {
-			elements.add(items);
-		}
-		if (super.getContainedElements() != null) {
-			elements.addAll(super.getContainedElements());
-		}
+    public String getTitle() {
+        return title;
+    }
 
-		return elements;
-	}
+    public void setTitle(final String title) {
+        this.title = title;
+    }
 
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(final String path) {
+        this.path = path;
+    }
+
+    public TouchUIDialogElement getRenderCondition() {
+        return renderCondition;
+    }
+
+    public void setRenderCondition(final TouchUIDialogElement renderCondition) {
+        this.renderCondition = renderCondition;
+    }
+
+    public boolean isShowOnCreate() {
+        return showOnCreate;
+    }
+
+    public void setShowOnCreate(final boolean showOnCreate) {
+        this.showOnCreate = showOnCreate;
+    }
+
+    public boolean isHideOnEdit() {
+        return hideOnEdit;
+    }
+
+    public void setHideOnEdit(final boolean hideOnEdit) {
+        this.hideOnEdit = hideOnEdit;
+    }
+
+    public String getOrderBefore() {
+        return orderBefore;
+    }
+
+    public void setOrderBefore(final String orderBefore) {
+        this.orderBefore = orderBefore;
+    }
+
+    public LayoutElement getLayoutElement() {
+        return layoutElement;
+    }
+
+    public void setLayoutElement(LayoutElement layoutElement) {
+        this.layoutElement = layoutElement;
+    }
+
+    public List<TouchUIDialogElement> getItems() {
+        return items;
+    }
+
+    public Items getItemsElement() {
+        ItemsParameters itemsParameters = new ItemsParameters();
+
+        itemsParameters.setFieldName("items");
+
+        if (!items.isEmpty()) {
+            itemsParameters.setContainedElements(items);
+            return new Items(itemsParameters);
+        }
+
+        return null;
+    }
+
+    public void addItem(TouchUIDialogElement element) {
+        items.add(element);
+    }
+
+    @Override
+    public List<? extends XmlElement> getContainedElements() {
+        List<XmlElement> elements = new ArrayList<XmlElement>();
+
+        if (layoutElement != null) {
+            elements.add(layoutElement);
+        }
+
+        if (renderCondition != null) {
+            elements.add(renderCondition);
+        }
+
+        Items items = getItemsElement();
+
+        if (items != null) {
+            elements.add(items);
+        }
+
+        if (super.getContainedElements() != null) {
+            elements.addAll(super.getContainedElements());
+        }
+
+        return elements;
+    }
 }

@@ -7,72 +7,72 @@ import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 
 public class PathFieldWidgetMaker extends AbstractWidgetMaker<PathFieldWidgetParameters> {
 
-	public PathFieldWidgetMaker(WidgetMakerParameters parameters) {
-		super(parameters);
-	}
+    public PathFieldWidgetMaker(WidgetMakerParameters parameters) {
+        super(parameters);
+    }
 
-	@Override
-	public DialogElement make(PathFieldWidgetParameters parameters) throws ClassNotFoundException {
+    @Override
+    public DialogElement make(PathFieldWidgetParameters parameters) throws ClassNotFoundException {
 
-		PathField pathFieldAnnotation = getAnnotation(PathField.class);
+        PathField pathFieldAnnotation = getAnnotation(PathField.class);
 
-		parameters.setEscapeAmp(getEscapeAmpForField(pathFieldAnnotation));
-		parameters.setHideTrigger(getHideTriggerForField(pathFieldAnnotation));
-		parameters.setParBrowse(getParBrowseForField(pathFieldAnnotation));
-		parameters.setRootPath(getRootPathForField(pathFieldAnnotation));
-		parameters.setRootTitle(getRootTitleForField(pathFieldAnnotation));
-		parameters.setShowTitleInTree(getShowTitleInTreeForField(pathFieldAnnotation));
+        parameters.setEscapeAmp(getEscapeAmpForField(pathFieldAnnotation));
+        parameters.setHideTrigger(getHideTriggerForField(pathFieldAnnotation));
+        parameters.setParBrowse(getParBrowseForField(pathFieldAnnotation));
+        parameters.setRootPath(getRootPathForField(pathFieldAnnotation));
+        parameters.setRootTitle(getRootTitleForField(pathFieldAnnotation));
+        parameters.setShowTitleInTree(getShowTitleInTreeForField(pathFieldAnnotation));
 
-		return new PathFieldWidget(parameters);
+        return new PathFieldWidget(parameters);
 
-	}
+    }
 
-	protected boolean getEscapeAmpForField(PathField annotation) {
-		if (annotation != null) {
-			return annotation.escapeAmp();
-		}
+    protected boolean getEscapeAmpForField(PathField annotation) {
+        if (annotation != null) {
+            return annotation.escapeAmp();
+        }
 
-		return PathField.ESCAPE_AMP_DEFAULT;
-	}
+        return PathField.ESCAPE_AMP_DEFAULT;
+    }
 
-	protected boolean getHideTriggerForField(PathField annotation) {
-		if (annotation != null) {
-			return annotation.hideTrigger();
-		}
+    protected boolean getHideTriggerForField(PathField annotation) {
+        if (annotation != null) {
+            return annotation.hideTrigger();
+        }
 
-		return PathField.HIDE_TRIGGER_DEFAULT;
-	}
+        return PathField.HIDE_TRIGGER_DEFAULT;
+    }
 
-	protected boolean getParBrowseForField(PathField annotation) {
-		if (annotation != null) {
-			return annotation.parBrowse();
-		}
+    protected boolean getParBrowseForField(PathField annotation) {
+        if (annotation != null) {
+            return annotation.parBrowse();
+        }
 
-		return PathField.PAR_BROWSE_DEFAULT;
-	}
+        return PathField.PAR_BROWSE_DEFAULT;
+    }
 
-	protected String getRootPathForField(PathField annotation) {
-		if (annotation != null) {
-			return annotation.rootPath();
-		}
+    protected String getRootPathForField(PathField annotation) {
+        if (annotation != null) {
+            return annotation.rootPath();
+        }
 
-		return PathField.ROOT_PATH_DEFAULT;
-	}
+        return PathField.ROOT_PATH_DEFAULT;
+    }
 
-	protected String getRootTitleForField(PathField annotation) {
-		if (annotation != null) {
-			return annotation.rootTitle();
-		}
+    protected String getRootTitleForField(PathField annotation) {
+        if (annotation != null) {
+            return annotation.rootTitle();
+        }
 
-		return PathField.ROOT_TITLE_DEFAULT;
-	}
+        return PathField.ROOT_TITLE_DEFAULT;
+    }
 
-	protected boolean getShowTitleInTreeForField(PathField annotation) {
-		if (annotation != null) {
-			return annotation.showTitleInTree();
-		}
+    protected boolean getShowTitleInTreeForField(PathField annotation) {
+        if (annotation != null) {
+            return annotation.showTitleInTree();
+        }
 
-		return PathField.SHOW_TITLE_IN_TREE_DEFAULT;
-	}
+        return PathField.SHOW_TITLE_IN_TREE_DEFAULT;
+    }
 
 }

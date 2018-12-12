@@ -5,33 +5,35 @@ import com.citytechinc.cq.component.annotations.widgets.NumberField;
 import com.citytechinc.cq.component.touchuidialog.widget.AbstractTouchUIWidget;
 
 @TouchUIWidget(annotationClass = NumberField.class, makerClass = NumberFieldWidgetMaker.class,
-	resourceType = NumberFieldWidget.RESOURCE_TYPE)
+    resourceType = NumberFieldWidget.RESOURCE_TYPE)
 public class NumberFieldWidget extends AbstractTouchUIWidget {
 
-	public static final String RESOURCE_TYPE = "granite/ui/components/foundation/form/numberfield";
+    public static final String RESOURCE_TYPE = "granite/ui/components/foundation/form/numberfield";
 
-	private final Double min;
-	private final Double max;
-	private final Double step;
+    private final Double min;
 
-	public NumberFieldWidget(NumberFieldWidgetParameters parameters) {
-		super(parameters);
+    private final Double max;
 
-		min = parameters.getMin();
-		max = parameters.getMax();
-		step = parameters.getStep();
-	}
+    private final Double step;
 
-	public Double getMin() {
-		return min;
-	}
+    public NumberFieldWidget(NumberFieldWidgetParameters parameters) {
+        super(parameters);
 
-	public Double getMax() {
-		return max;
-	}
+        min = parameters.getMin();
+        max = parameters.getMax();
+        step = parameters.getStep();
+    }
 
-	public Double getStep() {
-		return step;
-	}
+    public Double getMin() {
+        return min;
+    }
+
+    public Double getMax() {
+        return max;
+    }
+
+    public Double getStep() {
+        return step;
+    }
 
 }

@@ -1,46 +1,58 @@
 package com.citytechinc.cq.component.touchuidialog.layout.maker;
 
+import com.citytechinc.cq.component.touchuidialog.widget.registry.TouchUIWidgetRegistry;
 import javassist.ClassPool;
 import javassist.CtClass;
 
-import com.citytechinc.cq.component.touchuidialog.widget.registry.TouchUIWidgetRegistry;
-
 public class LayoutMakerParameters {
 
-	private CtClass componentClass;
-	private ClassLoader classLoader;
-	private ClassPool classPool;
-	private TouchUIWidgetRegistry widgetRegistry;
+    private CtClass componentClass;
 
-	public CtClass getComponentClass() {
-		return componentClass;
-	}
+    private ClassLoader classLoader;
 
-	public void setComponentClass(CtClass componentClass) {
-		this.componentClass = componentClass;
-	}
+    private ClassPool classPool;
 
-	public ClassLoader getClassLoader() {
-		return classLoader;
-	}
+    private TouchUIWidgetRegistry widgetRegistry;
 
-	public void setClassLoader(ClassLoader classLoader) {
-		this.classLoader = classLoader;
-	}
+    private String touchUIDialogType;
 
-	public ClassPool getClassPool() {
-		return classPool;
-	}
+    public CtClass getComponentClass() {
+        return componentClass;
+    }
 
-	public void setClassPool(ClassPool classPool) {
-		this.classPool = classPool;
-	}
+    public void setComponentClass(CtClass componentClass) {
+        this.componentClass = componentClass;
+    }
 
-	public TouchUIWidgetRegistry getWidgetRegistry() {
-		return widgetRegistry;
-	}
+    public ClassLoader getClassLoader() {
+        return classLoader;
+    }
 
-	public void setWidgetRegistry(TouchUIWidgetRegistry widgetRegistry) {
-		this.widgetRegistry = widgetRegistry;
-	}
+    public void setClassLoader(ClassLoader classLoader) {
+        this.classLoader = classLoader;
+    }
+
+    public ClassPool getClassPool() {
+        return classPool;
+    }
+
+    public void setClassPool(ClassPool classPool) {
+        this.classPool = classPool;
+    }
+
+    public TouchUIWidgetRegistry getWidgetRegistry() {
+        return widgetRegistry;
+    }
+
+    public void setWidgetRegistry(TouchUIWidgetRegistry widgetRegistry) {
+        this.widgetRegistry = widgetRegistry;
+    }
+
+    public String getTouchUIDialogType() {
+        return touchUIDialogType;
+    }
+
+    public void setTouchUIDialogType(String touchUIDialogType) {
+        this.touchUIDialogType = touchUIDialogType;
+    }
 }

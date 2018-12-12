@@ -66,16 +66,10 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
     }
 
     protected Items makeItems() throws LayoutMakerException {
-
         ItemsParameters itemsParameters = new ItemsParameters();
         itemsParameters.setFieldName("items");
 
-        Component componentAnnotation;
-        try {
-            componentAnnotation = (Component) parameters.getComponentClass().getAnnotation(Component.class);
-        } catch (ClassNotFoundException e) {
-            throw new LayoutMakerException("Class Not Found Exception encountered looking up Component annotation", e);
-        }
+        Component componentAnnotation = getComponentAnnotation();
 
         // Determine the Tabs to create
         List<SectionParameters> tabParametersList = new ArrayList<SectionParameters>();
@@ -133,7 +127,8 @@ public class TabsLayoutMaker extends AbstractLayoutMaker {
             // Populate the content for each tab
             List<TouchUIWidgetMakerParameters> widgetMakerParameters =
                 TouchUIDialogUtil.getWidgetMakerParametersForComponentClass(parameters.getComponentClass(),
-                    parameters.getClassLoader(), parameters.getClassPool(), parameters.getWidgetRegistry());
+                    parameters.getClassLoader(), parameters.getClassPool(), parameters.getWidgetRegistry(),
+                    parameters.getTouchUIDialogType());
 
             for (TouchUIWidgetMakerParameters currentWidgetMakerParameters : widgetMakerParameters) {
 

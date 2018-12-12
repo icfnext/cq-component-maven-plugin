@@ -7,34 +7,38 @@ import com.citytechinc.cq.component.dialog.AbstractWidget;
 @Widget(annotationClass = Selection.class, makerClass = SelectionWidgetMaker.class, xtype = SelectionWidget.XTYPE)
 public class SelectionWidget extends AbstractWidget {
 
-	public static final String XTYPE = "selection";
-	private final String type;
-	private final String options;
-	private final String optionsProvider;
-	private final String sortDir;
+    public static final String XTYPE = "selection";
 
-	public SelectionWidget(SelectionWidgetParameters parameters) {
-		super(parameters);
+    private final String type;
 
-		this.type = parameters.getType();
-		this.options = parameters.getOptions();
-		this.optionsProvider = parameters.getOptionsProvider();
-		this.sortDir = parameters.getSortDir();
-	}
+    private final String options;
 
-	public String getType() {
-		return type;
-	}
+    private final String optionsProvider;
 
-	public String getOptions() {
-		return options;
-	}
+    private final String sortDir;
 
-	public String getOptionsProvider() {
-		return optionsProvider;
-	}
+    public SelectionWidget(SelectionWidgetParameters parameters) {
+        super(parameters);
 
-	public String getSortDir() {
-		return sortDir;
-	}
+        this.type = parameters.getType();
+        this.options = parameters.getOptions();
+        this.optionsProvider = parameters.getOptionsProvider();
+        this.sortDir = parameters.getSortDir();
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getOptions() {
+        return options;
+    }
+
+    public String getOptionsProvider() {
+        return optionsProvider;
+    }
+
+    public String getSortDir() {
+        return sortDir;
+    }
 }

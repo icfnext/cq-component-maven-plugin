@@ -8,28 +8,28 @@ package com.citytechinc.cq.component.annotations;
  */
 public @interface HtmlTag {
 
-	/**
-	 * The DOM element type to be used when wrapping the component
-	 *
-	 * @return The DOM element type to be used when wrapping the component.
-	 *         Defaults to div
-	 */
-	public String tagName() default "div";
+    /**
+     * The DOM element type to be used when wrapping the component
+     *
+     * @return The DOM element type to be used when wrapping the component.
+     * Defaults to div
+     */
+    String tagName() default "div";
 
-	/**
-	 * The CSS Class to apply to the component wrapper. This will override the
-	 * classes applied by the wrapping mechanism but will be rendered in
-	 * addition to the cell name of the component.
-	 *
-	 * @return The CSS Class to apply to the component wrapper
-	 */
-	public String cssClass() default "";
+    /**
+     * The CSS Class to apply to the component wrapper. This will override the
+     * classes applied by the wrapping mechanism but will be rendered in
+     * addition to the cell name of the component.
+     *
+     * @return The CSS Class to apply to the component wrapper
+     */
+    String cssClass() default "";
 
-	/**
-	 * The ID to apply to the component wrapper.
-	 *
-	 * @return The ID to apply to the component wrapper
-	 */
-	public String id() default "";
+    /**
+     * The ID to apply to the component wrapper.
+     *
+     * @return The ID to apply to the component wrapper
+     */
+    String id() default "";
 
 }

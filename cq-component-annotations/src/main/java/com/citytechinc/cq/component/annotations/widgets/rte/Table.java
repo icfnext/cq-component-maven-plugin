@@ -5,30 +5,30 @@ package com.citytechinc.cq.component.annotations.widgets.rte;
  */
 public @interface Table {
 
-	public boolean table() default true;
+    boolean table() default true;
 
-	public boolean removetable() default true;
+    boolean removetable() default true;
 
-	public boolean insertrow() default true;
+    boolean insertrow() default true;
 
-	public boolean removerow() default true;
+    boolean removerow() default true;
 
-	public boolean insertcolumn() default true;
+    boolean insertcolumn() default true;
 
-	public boolean removecolumn() default true;
+    boolean removecolumn() default true;
 
-	public boolean cellprops() default true;
+    boolean cellprops() default true;
 
-	public boolean mergecells() default true;
+    boolean mergecells() default true;
 
-	public boolean splitcell() default true;
+    boolean splitcell() default true;
 
-	public boolean selectrow() default true;
+    boolean selectrow() default true;
 
-	public boolean selectcolumns() default true;
+    boolean selectcolumns() default true;
 
-	public Style[] tableStyles() default {};
+    Style[] tableStyles() default {};
 
-	public Style[] cellStyles() default {};
+    Style[] cellStyles() default {};
 
 }

@@ -1,24 +1,26 @@
 package com.citytechinc.cq.component.dialog.richtexteditor;
 
 public class KeysRtePluginParameters extends RtePluginParameters {
-	public static final String KEYS = "keys";
-	private String tabSize;
 
-	public String getTabSize() {
-		return tabSize;
-	}
+    public static final String KEYS = "keys";
 
-	public void setTabSize(String tabSize) {
-		this.tabSize = tabSize;
-	}
+    private String tabSize;
 
-	@Override
-	public String getFieldName() {
-		return KEYS;
-	}
+    public String getTabSize() {
+        return tabSize;
+    }
 
-	@Override
-	public void setFieldName(String fieldName) {
-		throw new UnsupportedOperationException("Field Name is static for KeysRtePlugin");
-	}
+    public void setTabSize(String tabSize) {
+        this.tabSize = tabSize;
+    }
+
+    @Override
+    public String getFieldName() {
+        return KEYS;
+    }
+
+    @Override
+    public void setFieldName(String fieldName) {
+        throw new UnsupportedOperationException("Field Name is static for KeysRtePlugin");
+    }
 }

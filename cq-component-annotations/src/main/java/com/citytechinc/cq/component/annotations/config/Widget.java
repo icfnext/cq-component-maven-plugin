@@ -1,12 +1,12 @@
 package com.citytechinc.cq.component.annotations.config;
 
+import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
+
 import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 
 /**
  * Used to indicate that a Class represents a Dialog Widget and makes explicit
@@ -17,49 +17,49 @@ import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.TYPE)
 public @interface Widget {
-	/**
-	 * <p>
-	 * The stacked annotation which will be used to indicate that a field is to
-	 * be populated by a Dialog Widget of this type. This would be the
-	 * annotation <em>stacked</em> under the
-	 * {@link com.citytechinc.cq.component.annotations.DialogField DialogField}
-	 * annotation on a given Component field.
-	 * </p>
-	 * <p>
-	 * The annotationClass list may be left empty in which case the Widget ties
-	 * together an xtype and WidgetMaker directly. The annotationClass list may
-	 * <em>not</em> contain more than one Annotation class.
-	 * </p>
-	 */
-	Class<? extends Annotation> annotationClass();
 
-	/**
-	 * The class responsible for making instances of the annotated Widget Class.
-	 */
-	Class<? extends AbstractWidgetMaker> makerClass();
+    /**
+     * <p>
+     * The stacked annotation which will be used to indicate that a field is to
+     * be populated by a Dialog Widget of this type. This would be the
+     * annotation <em>stacked</em> under the
+     * {@link com.citytechinc.cq.component.annotations.DialogField DialogField}
+     * annotation on a given Component field.
+     * </p>
+     * <p>
+     * The annotationClass list may be left empty in which case the Widget ties
+     * together an xtype and WidgetMaker directly. The annotationClass list may
+     * <em>not</em> contain more than one Annotation class.
+     * </p>
+     */
+    Class<? extends Annotation> annotationClass();
 
-	/**
-	 * The xtype which will be rendered to the Dialog for a field populated by a
-	 * Dialog Widget of this type.
-	 */
-	String xtype();
+    /**
+     * The class responsible for making instances of the annotated Widget Class.
+     */
+    Class<? extends AbstractWidgetMaker> makerClass();
 
-	/**
-	 * Used in the rare cases where multiple annotations will be stacked under a
-	 * {@link com.citytechinc.cq.component.annotations.DialogField DialogField}
-	 * annotation. In such cases, ranking indicates which annotation will be
-	 * used in looking up an appropriate Widget type and Maker for the field in
-	 * question. A Widget with a higher ranking will take precedence over one
-	 * with a lower ranking. In the case of equal ranking values behavior can
-	 * not be guaranteed.
-	 */
-	int ranking() default -1;
+    /**
+     * The xtype which will be rendered to the Dialog for a field populated by a
+     * Dialog Widget of this type.
+     */
+    String xtype();
 
-	/**
-	 * Feature flag which can be configured in a POMs additionalFeatures configuration
-	 * indicating the inclusion of this widget in the widget registry during dialog rendering.
-	 * If left empty the widget will always be included.
-	 *
-	 */
-	String featureFlag() default "";
+    /**
+     * Used in the rare cases where multiple annotations will be stacked under a
+     * {@link com.citytechinc.cq.component.annotations.DialogField DialogField}
+     * annotation. In such cases, ranking indicates which annotation will be
+     * used in looking up an appropriate Widget type and Maker for the field in
+     * question. A Widget with a higher ranking will take precedence over one
+     * with a lower ranking. In the case of equal ranking values behavior can
+     * not be guaranteed.
+     */
+    int ranking() default -1;
+
+    /**
+     * Feature flag which can be configured in a POMs additionalFeatures configuration
+     * indicating the inclusion of this widget in the widget registry during dialog rendering.
+     * If left empty the widget will always be included.
+     */
+    String featureFlag() default "";
 }

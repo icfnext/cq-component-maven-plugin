@@ -1,9 +1,5 @@
 package com.citytechinc.cq.component.touchuidialog.widget.smartimage;
 
-import java.util.Arrays;
-
-import org.codehaus.plexus.util.StringUtils;
-
 import com.citytechinc.cq.component.annotations.widgets.Html5SmartImage;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.html5smartimage.Html5SmartImageWidget;
@@ -11,138 +7,142 @@ import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.exceptions.TouchUIDialogGenerationException;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
+import org.codehaus.plexus.util.StringUtils;
+
+import java.util.Arrays;
 
 public class SmartImageWidgetMaker extends AbstractTouchUIWidgetMaker<SmartImageWidgetParameters> {
-	private static final String[] MIME_TYPES = { "image" };
 
-	public SmartImageWidgetMaker(TouchUIWidgetMakerParameters parameters) {
-		super(parameters);
-	}
+    private static final String[] MIME_TYPES = { "image" };
 
-	@Override
-	public TouchUIDialogElement make(SmartImageWidgetParameters widgetParameters) throws ClassNotFoundException,
-		InvalidComponentFieldException, TouchUIDialogGenerationException {
+    public SmartImageWidgetMaker(TouchUIWidgetMakerParameters parameters) {
+        super(parameters);
+    }
 
-		Html5SmartImage smartImageAnnotation = getAnnotation(Html5SmartImage.class);
+    @Override
+    public TouchUIDialogElement make(SmartImageWidgetParameters widgetParameters) throws ClassNotFoundException,
+        InvalidComponentFieldException, TouchUIDialogGenerationException {
 
-		widgetParameters.setName(getNameAsPrefix(smartImageAnnotation) + Html5SmartImageWidget.NAME_SUFFIX);
-		widgetParameters.setTitle(getTitleForField(smartImageAnnotation));
-		widgetParameters.setText(getTextForField(smartImageAnnotation));
-		widgetParameters.setIcon(getIconForField(smartImageAnnotation));
-		widgetParameters.setMultiple(getMultipleForField(smartImageAnnotation));
+        Html5SmartImage smartImageAnnotation = getAnnotation(Html5SmartImage.class);
 
-		widgetParameters.setUploadUrl(getUploadUrlForField(smartImageAnnotation));
-		widgetParameters.setUploadUrlBuilder(getUploadUrlBuilderForField(smartImageAnnotation));
-		widgetParameters.setSizeLimit(getSizeLimitForField(smartImageAnnotation));
-		widgetParameters.setAutoStart(getAutoStartForField(smartImageAnnotation));
-		widgetParameters.setUseHTML5(getUseHTML5ForField(smartImageAnnotation));
-		widgetParameters.setDropZone(getDropZoneForField(smartImageAnnotation));
-		widgetParameters.setMimeTypes(Arrays.asList(MIME_TYPES));
+        widgetParameters.setName(getNameAsPrefix(smartImageAnnotation) + Html5SmartImageWidget.NAME_SUFFIX);
+        widgetParameters.setTitle(getTitleForField(smartImageAnnotation));
+        widgetParameters.setText(getTextForField(smartImageAnnotation));
+        widgetParameters.setIcon(getIconForField(smartImageAnnotation));
+        widgetParameters.setMultiple(getMultipleForField(smartImageAnnotation));
 
-		return new SmartImageWidget(widgetParameters);
-	}
+        widgetParameters.setUploadUrl(getUploadUrlForField(smartImageAnnotation));
+        widgetParameters.setUploadUrlBuilder(getUploadUrlBuilderForField(smartImageAnnotation));
+        widgetParameters.setSizeLimit(getSizeLimitForField(smartImageAnnotation));
+        widgetParameters.setAutoStart(getAutoStartForField(smartImageAnnotation));
+        widgetParameters.setUseHTML5(getUseHTML5ForField(smartImageAnnotation));
+        widgetParameters.setDropZone(getDropZoneForField(smartImageAnnotation));
+        widgetParameters.setMimeTypes(Arrays.asList(MIME_TYPES));
 
-	public String getTitleForField(Html5SmartImage annotation) {
-		if (annotation != null && StringUtils.isNotBlank(annotation.title())) {
-			return annotation.title();
-		}
+        return new SmartImageWidget(widgetParameters);
+    }
 
-		return null;
-	}
+    public String getTitleForField(Html5SmartImage annotation) {
+        if (annotation != null && StringUtils.isNotBlank(annotation.title())) {
+            return annotation.title();
+        }
 
-	public String getTextForField(Html5SmartImage annotation) {
-		if (annotation != null && StringUtils.isNotBlank(annotation.text())) {
-			return annotation.text();
-		}
+        return null;
+    }
 
-		return null;
-	}
+    public String getTextForField(Html5SmartImage annotation) {
+        if (annotation != null && StringUtils.isNotBlank(annotation.text())) {
+            return annotation.text();
+        }
 
-	public String getIconForField(Html5SmartImage annotation) {
-		if (annotation != null && StringUtils.isNotBlank(annotation.icon())) {
-			return annotation.icon();
-		}
+        return null;
+    }
 
-		return null;
-	}
+    public String getIconForField(Html5SmartImage annotation) {
+        if (annotation != null && StringUtils.isNotBlank(annotation.icon())) {
+            return annotation.icon();
+        }
 
-	public boolean getMultipleForField(Html5SmartImage annotation) {
-		if (annotation != null) {
-			return annotation.multiple();
-		}
+        return null;
+    }
 
-		return false;
-	}
+    public boolean getMultipleForField(Html5SmartImage annotation) {
+        if (annotation != null) {
+            return annotation.multiple();
+        }
 
-	public String getUploadUrlForField(Html5SmartImage annotation) {
-		if (annotation != null && StringUtils.isNotBlank(annotation.uploadUrl())) {
-			return annotation.touchUIUploadUrl();
-		}
+        return false;
+    }
 
-		return null;
-	}
+    public String getUploadUrlForField(Html5SmartImage annotation) {
+        if (annotation != null && StringUtils.isNotBlank(annotation.uploadUrl())) {
+            return annotation.touchUIUploadUrl();
+        }
 
-	public String getUploadUrlBuilderForField(Html5SmartImage annotation) {
-		if (annotation != null && StringUtils.isNotBlank(annotation.uploadUrlBuilder())) {
-			return annotation.uploadUrlBuilder();
-		}
+        return null;
+    }
 
-		return null;
-	}
+    public String getUploadUrlBuilderForField(Html5SmartImage annotation) {
+        if (annotation != null && StringUtils.isNotBlank(annotation.uploadUrlBuilder())) {
+            return annotation.uploadUrlBuilder();
+        }
 
-	public Long getSizeLimitForField(Html5SmartImage annotation) {
-		if (annotation != null && annotation.sizeLimit() != 0) {
-			return Long.valueOf(annotation.sizeLimit());
-		}
+        return null;
+    }
 
-		return null;
-	}
+    public Long getSizeLimitForField(Html5SmartImage annotation) {
+        if (annotation != null && annotation.sizeLimit() != 0) {
+            return Long.valueOf(annotation.sizeLimit());
+        }
 
-	public boolean getAutoStartForField(Html5SmartImage annotation) {
-		if (annotation != null) {
-			return annotation.autoStart();
-		}
+        return null;
+    }
 
-		return false;
-	}
+    public boolean getAutoStartForField(Html5SmartImage annotation) {
+        if (annotation != null) {
+            return annotation.autoStart();
+        }
 
-	public boolean getUseHTML5ForField(Html5SmartImage annotation) {
-		if (annotation != null) {
-			return annotation.useHtml5();
-		}
+        return false;
+    }
 
-		return true;
-	}
+    public boolean getUseHTML5ForField(Html5SmartImage annotation) {
+        if (annotation != null) {
+            return annotation.useHtml5();
+        }
 
-	public String getDropZoneForField(Html5SmartImage annotation) {
-		if (annotation != null && StringUtils.isNotBlank(annotation.dropZone())) {
-			return annotation.dropZone();
-		}
+        return true;
+    }
 
-		return null;
-	}
+    public String getDropZoneForField(Html5SmartImage annotation) {
+        if (annotation != null && StringUtils.isNotBlank(annotation.dropZone())) {
+            return annotation.dropZone();
+        }
 
-	private String getNameAsPrefix(Html5SmartImage annotation) {
-		StringBuilder sb = new StringBuilder();
+        return null;
+    }
 
-		String overrideName = parameters.getDialogFieldConfig().getName();
+    private String getNameAsPrefix(Html5SmartImage annotation) {
+        StringBuilder sb = new StringBuilder();
 
-		if (StringUtils.isNotEmpty(overrideName)) {
-			sb.append(overrideName);
+        String overrideName = parameters.getDialogFieldConfig().getName();
 
-			if (!overrideName.endsWith("/")) {
-				sb.append("/");
-			}
-		} else {
-			if (parameters.isUseDotSlashInName()) {
-				sb.append("./");
-			}
+        if (StringUtils.isNotEmpty(overrideName)) {
+            sb.append(overrideName);
 
-			if (StringUtils.isNotEmpty(getName()) && !annotation.isSelf()) {
-				sb.append(getName()).append("/");
-			}
-		}
+            if (!overrideName.endsWith("/")) {
+                sb.append("/");
+            }
+        } else {
+            if (parameters.isUseDotSlashInName()) {
+                sb.append("./");
+            }
 
-		return sb.toString();
-	}
+            if (StringUtils.isNotEmpty(getName()) && !annotation.isSelf()) {
+                sb.append(getName()).append("/");
+            }
+        }
+
+        return sb.toString();
+    }
 }

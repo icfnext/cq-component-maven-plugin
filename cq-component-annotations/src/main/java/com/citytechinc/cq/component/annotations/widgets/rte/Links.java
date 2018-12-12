@@ -5,10 +5,10 @@ package com.citytechinc.cq.component.annotations.widgets.rte;
  */
 public @interface Links {
 
-	public boolean modifylink() default true;
+    boolean modifylink() default true;
 
-	public boolean unlink() default true;
+    boolean unlink() default true;
 
-	public boolean anchor() default true;
+    boolean anchor() default true;
 
 }

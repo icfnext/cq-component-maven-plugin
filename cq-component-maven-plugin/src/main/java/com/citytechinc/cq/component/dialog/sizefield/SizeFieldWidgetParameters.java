@@ -4,87 +4,94 @@ import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 import com.citytechinc.cq.component.util.Constants;
 
 public class SizeFieldWidgetParameters extends DefaultWidgetParameters {
-	private String heightParameter;
-	private String heightPrefix;
-	private String heightSuffix;
-	private String widthParameter;
-	private String widthPrefix;
-	private String widthSuffix;
-	private int fieldWidth;
 
-	public String getHeightParameter() {
-		return heightParameter;
-	}
+    private String heightParameter;
 
-	public void setHeightParameter(String heightParameter) {
-		this.heightParameter = heightParameter;
-	}
+    private String heightPrefix;
 
-	public String getHeightPrefix() {
-		return heightPrefix;
-	}
+    private String heightSuffix;
 
-	public void setHeightPrefix(String heightPrefix) {
-		this.heightPrefix = heightPrefix;
-	}
+    private String widthParameter;
 
-	public String getHeightSuffix() {
-		return heightSuffix;
-	}
+    private String widthPrefix;
 
-	public void setHeightSuffix(String heightSuffix) {
-		this.heightSuffix = heightSuffix;
-	}
+    private String widthSuffix;
 
-	public String getWidthParameter() {
-		return widthParameter;
-	}
+    private int fieldWidth;
 
-	public void setWidthParameter(String widthParameter) {
-		this.widthParameter = widthParameter;
-	}
+    public String getHeightParameter() {
+        return heightParameter;
+    }
 
-	public String getWidthPrefix() {
-		return widthPrefix;
-	}
+    public void setHeightParameter(String heightParameter) {
+        this.heightParameter = heightParameter;
+    }
 
-	public void setWidthPrefix(String widthPrefix) {
-		this.widthPrefix = widthPrefix;
-	}
+    public String getHeightPrefix() {
+        return heightPrefix;
+    }
 
-	public String getWidthSuffix() {
-		return widthSuffix;
-	}
+    public void setHeightPrefix(String heightPrefix) {
+        this.heightPrefix = heightPrefix;
+    }
 
-	public void setWidthSuffix(String widthSuffix) {
-		this.widthSuffix = widthSuffix;
-	}
+    public String getHeightSuffix() {
+        return heightSuffix;
+    }
 
-	public int getFieldWidth() {
-		return fieldWidth;
-	}
+    public void setHeightSuffix(String heightSuffix) {
+        this.heightSuffix = heightSuffix;
+    }
 
-	public void setFieldWidth(int fieldWidth) {
-		this.fieldWidth = fieldWidth;
-	}
+    public String getWidthParameter() {
+        return widthParameter;
+    }
 
-	@Override
-	public String getPrimaryType() {
-		return Constants.CQ_WIDGET;
-	}
+    public void setWidthParameter(String widthParameter) {
+        this.widthParameter = widthParameter;
+    }
 
-	@Override
-	public void setPrimaryType(String primaryType) {
-		throw new UnsupportedOperationException("PrimaryType is Static for SizeFieldWidget");
-	}
+    public String getWidthPrefix() {
+        return widthPrefix;
+    }
 
-	@Override
-	public String getXtype() {
-		return SizeFieldWidget.XTYPE;
-	}
+    public void setWidthPrefix(String widthPrefix) {
+        this.widthPrefix = widthPrefix;
+    }
 
-	@Override
-	public void setXtype(String xtype) {
-		throw new UnsupportedOperationException("xtype is Static for SizeFieldWidget");
-	}
+    public String getWidthSuffix() {
+        return widthSuffix;
+    }
+
+    public void setWidthSuffix(String widthSuffix) {
+        this.widthSuffix = widthSuffix;
+    }
+
+    public int getFieldWidth() {
+        return fieldWidth;
+    }
+
+    public void setFieldWidth(int fieldWidth) {
+        this.fieldWidth = fieldWidth;
+    }
+
+    @Override
+    public String getPrimaryType() {
+        return Constants.CQ_WIDGET;
+    }
+
+    @Override
+    public void setPrimaryType(String primaryType) {
+        throw new UnsupportedOperationException("PrimaryType is Static for SizeFieldWidget");
+    }
+
+    @Override
+    public String getXtype() {
+        return SizeFieldWidget.XTYPE;
+    }
+
+    @Override
+    public void setXtype(String xtype) {
+        throw new UnsupportedOperationException("xtype is Static for SizeFieldWidget");
+    }
 }

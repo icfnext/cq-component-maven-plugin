@@ -5,76 +5,85 @@ import com.citytechinc.cq.component.annotations.widgets.Html5SmartFile;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
 
 @Widget(annotationClass = Html5SmartFile.class, makerClass = Html5SmartFileWidgetMaker.class,
-	xtype = Html5SmartFileWidget.XTYPE)
+    xtype = Html5SmartFileWidget.XTYPE)
 public class Html5SmartFileWidget extends AbstractWidget {
 
-	public static final String XTYPE = "html5smartfile";
+    public static final String XTYPE = "html5smartfile";
 
-	private final boolean allowFileNameEditing;
-	private final boolean allowFileReference;
-	private final boolean allowUpload;
-	private final String ddAccept;
-	private final String ddGroups;
-	private final String fileNameParameter;
-	private final String fileReferenceParameter;
-	private final String mimeTypes;
-	private final String mimeTypesDescription;
-	private final int sizeLimit;
+    private final boolean allowFileNameEditing;
 
-	public Html5SmartFileWidget(Html5SmartFileWidgetParameters parameters) {
-		super(parameters);
+    private final boolean allowFileReference;
 
-		this.allowFileNameEditing = parameters.isAllowFileNameEditing();
-		this.allowFileReference = parameters.isAllowFileReference();
-		this.allowUpload = parameters.isAllowUpload();
-		this.ddAccept = parameters.getDdAccept();
-		this.ddGroups = parameters.getDdGroups();
-		this.fileNameParameter = parameters.getFileNameParameter();
-		this.fileReferenceParameter = parameters.getFileReferenceParameter();
-		this.mimeTypes = parameters.getMimeTypes();
-		this.mimeTypesDescription = parameters.getMimeTypesDescription();
-		this.sizeLimit = parameters.getSizeLimit();
+    private final boolean allowUpload;
 
-	}
+    private final String ddAccept;
 
-	public boolean isAllowFileNameEditing() {
-		return allowFileNameEditing;
-	}
+    private final String ddGroups;
 
-	public boolean isAllowFileReference() {
-		return allowFileReference;
-	}
+    private final String fileNameParameter;
 
-	public boolean isAllowUpload() {
-		return allowUpload;
-	}
+    private final String fileReferenceParameter;
 
-	public String getDdAccept() {
-		return ddAccept;
-	}
+    private final String mimeTypes;
 
-	public String getDdGroups() {
-		return ddGroups;
-	}
+    private final String mimeTypesDescription;
 
-	public String getFileNameParameter() {
-		return fileNameParameter;
-	}
+    private final int sizeLimit;
 
-	public String getFileReferenceParameter() {
-		return fileReferenceParameter;
-	}
+    public Html5SmartFileWidget(Html5SmartFileWidgetParameters parameters) {
+        super(parameters);
 
-	public String getMimeTypes() {
-		return mimeTypes;
-	}
+        this.allowFileNameEditing = parameters.isAllowFileNameEditing();
+        this.allowFileReference = parameters.isAllowFileReference();
+        this.allowUpload = parameters.isAllowUpload();
+        this.ddAccept = parameters.getDdAccept();
+        this.ddGroups = parameters.getDdGroups();
+        this.fileNameParameter = parameters.getFileNameParameter();
+        this.fileReferenceParameter = parameters.getFileReferenceParameter();
+        this.mimeTypes = parameters.getMimeTypes();
+        this.mimeTypesDescription = parameters.getMimeTypesDescription();
+        this.sizeLimit = parameters.getSizeLimit();
 
-	public String getMimeTypesDescription() {
-		return mimeTypesDescription;
-	}
+    }
 
-	public int getSizeLimit() {
-		return sizeLimit;
-	}
+    public boolean isAllowFileNameEditing() {
+        return allowFileNameEditing;
+    }
+
+    public boolean isAllowFileReference() {
+        return allowFileReference;
+    }
+
+    public boolean isAllowUpload() {
+        return allowUpload;
+    }
+
+    public String getDdAccept() {
+        return ddAccept;
+    }
+
+    public String getDdGroups() {
+        return ddGroups;
+    }
+
+    public String getFileNameParameter() {
+        return fileNameParameter;
+    }
+
+    public String getFileReferenceParameter() {
+        return fileReferenceParameter;
+    }
+
+    public String getMimeTypes() {
+        return mimeTypes;
+    }
+
+    public String getMimeTypesDescription() {
+        return mimeTypesDescription;
+    }
+
+    public int getSizeLimit() {
+        return sizeLimit;
+    }
 
 }

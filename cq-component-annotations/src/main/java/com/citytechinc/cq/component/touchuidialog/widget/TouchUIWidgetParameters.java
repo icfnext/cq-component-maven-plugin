@@ -4,53 +4,57 @@ import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElementParameters
 
 public interface TouchUIWidgetParameters extends TouchUIDialogElementParameters {
 
-	public String getFieldLabel();
+    String getFieldLabel();
 
-	public void setFieldLabel(String fieldLabel);
+    void setFieldLabel(String fieldLabel);
 
-	public String getName();
+    String getName();
 
-	public void setName(String name);
+    void setName(String name);
 
-	public String getTitle();
+    String getTitle();
 
-	public void setTitle(String title);
+    void setTitle(String title);
 
-	public String getPrimaryType();
+    String getPrimaryType();
 
-	public String getFieldDescription();
+    String getFieldDescription();
 
-	public void setFieldDescription(String fieldDescription);
+    void setFieldDescription(String fieldDescription);
 
-	public boolean isRequired();
+    boolean isRequired();
 
-	public void setRequired(boolean required);
+    void setRequired(boolean required);
 
-	public String getValue();
+    String getValue();
 
-	public void setValue(String value);
+    void setValue(String value);
 
-	public String getDefaultValue();
+    String getDefaultValue();
 
-	public void setDefaultValue(String defaultValue);
+    void setDefaultValue(String defaultValue);
 
-	public boolean isDisabled();
+    boolean isDisabled();
 
-	public void setDisabled(boolean disabled);
+    void setDisabled(boolean disabled);
 
-	public String getCssClass();
+    String getCssClass();
 
-	public void setCssClass(String cssClass);
+    void setCssClass(String cssClass);
 
-	public boolean isRenderReadOnly();
+    boolean isRenderReadOnly();
 
-	public void setRenderReadOnly(boolean renderReadOnly);
+    void setRenderReadOnly(boolean renderReadOnly);
 
-	public boolean isShowOnCreate();
+    boolean isShowOnCreate();
 
-	public void setShowOnCreate(boolean showOnCreate);
+    void setShowOnCreate(boolean showOnCreate);
 
-    public boolean isHideOnEdit();
+    boolean isHideOnEdit();
 
-    public void setHideOnEdit(boolean hideOnEdit);
+    void setHideOnEdit(boolean hideOnEdit);
+
+    String getOrderBefore();
+
+    void setOrderBefore(String orderBefore);
 }

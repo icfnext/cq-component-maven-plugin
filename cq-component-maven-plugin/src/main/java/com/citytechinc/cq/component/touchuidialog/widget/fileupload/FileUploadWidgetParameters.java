@@ -1,5 +1,6 @@
 package com.citytechinc.cq.component.touchuidialog.widget.fileupload;
 
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogType;
 import com.citytechinc.cq.component.touchuidialog.widget.DefaultTouchUIWidgetParameters;
 
 import java.util.List;
@@ -8,13 +9,19 @@ public class FileUploadWidgetParameters extends DefaultTouchUIWidgetParameters {
 
     private String title;
 
+    private boolean async;
+
     private String text;
+
+    private boolean hideText;
 
     private String icon;
 
-    private boolean multiple;
+    private String iconSize;
 
-    private boolean allowUpload;
+    private String size;
+
+    private boolean multiple;
 
     private String uploadUrl;
 
@@ -31,6 +38,12 @@ public class FileUploadWidgetParameters extends DefaultTouchUIWidgetParameters {
     // TODO: Event handling
     private List<String> mimeTypes;
 
+    private boolean allowUpload;
+
+    private String fileNameParameter;
+
+    private String fileReferenceParameter;
+
     @Override
     public String getTitle() {
         return title;
@@ -41,12 +54,28 @@ public class FileUploadWidgetParameters extends DefaultTouchUIWidgetParameters {
         this.title = title;
     }
 
+    public boolean isAsync() {
+        return async;
+    }
+
+    public void setAsync(boolean async) {
+        this.async = async;
+    }
+
     public String getText() {
         return text;
     }
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public boolean isHideText() {
+        return hideText;
+    }
+
+    public void setHideText(boolean hideText) {
+        this.hideText = hideText;
     }
 
     public String getIcon() {
@@ -57,20 +86,28 @@ public class FileUploadWidgetParameters extends DefaultTouchUIWidgetParameters {
         this.icon = icon;
     }
 
+    public String getIconSize() {
+        return iconSize;
+    }
+
+    public void setIconSize(String iconSize) {
+        this.iconSize = iconSize;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
     public boolean isMultiple() {
         return multiple;
     }
 
     public void setMultiple(boolean multiple) {
         this.multiple = multiple;
-    }
-
-    public boolean isAllowUpload() {
-        return allowUpload;
-    }
-
-    public void setAllowUpload(boolean allowUpload) {
-        this.allowUpload = allowUpload;
     }
 
     public String getUploadUrl() {
@@ -129,8 +166,35 @@ public class FileUploadWidgetParameters extends DefaultTouchUIWidgetParameters {
         this.mimeTypes = mimeTypes;
     }
 
+    public boolean isAllowUpload() {
+        return allowUpload;
+    }
+
+    public void setAllowUpload(boolean allowUpload) {
+        this.allowUpload = allowUpload;
+    }
+
+    public String getFileNameParameter() {
+        return fileNameParameter;
+    }
+
+    public void setFileNameParameter(String fileNameParameter) {
+        this.fileNameParameter = fileNameParameter;
+    }
+
+    public String getFileReferenceParameter() {
+        return fileReferenceParameter;
+    }
+
+    public void setFileReferenceParameter(String fileReferenceParameter) {
+        this.fileReferenceParameter = fileReferenceParameter;
+    }
+
     @Override
     public String getResourceType() {
+        if (TouchUIDialogType.CORAL3.isOfType(getTouchUIDialogType())) {
+            return FileUploadCoral3Widget.RESOURCE_TYPE;
+        }
         return FileUploadWidget.RESOURCE_TYPE;
     }
 
@@ -138,5 +202,4 @@ public class FileUploadWidgetParameters extends DefaultTouchUIWidgetParameters {
     public void setResourceType(String resourceType) {
         throw new UnsupportedOperationException("resourceType is Static for FileUploadWidget");
     }
-
 }

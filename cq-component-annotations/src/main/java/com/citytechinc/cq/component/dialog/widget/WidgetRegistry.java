@@ -1,8 +1,8 @@
 package com.citytechinc.cq.component.dialog.widget;
 
-import java.util.Set;
-
 import com.citytechinc.cq.component.util.WidgetConfigHolder;
+
+import java.util.Set;
 
 /**
  * The WidgetRegistry exposes lookup mechanisms for Widget definitions based on
@@ -10,17 +10,15 @@ import com.citytechinc.cq.component.util.WidgetConfigHolder;
  */
 public interface WidgetRegistry {
 
-	/**
-	 *
-	 * @param annotation
-	 * @return The Widget Configuration associated with the specified annotation
-	 */
-	public WidgetConfigHolder getWidgetForAnnotation(Class<?> annotation);
+    /**
+     * @param annotation
+     * @return The Widget Configuration associated with the specified annotation
+     */
+    WidgetConfigHolder getWidgetForAnnotation(Class<?> annotation);
 
-	/**
-	 *
-	 * @return A set of all known Widget annotations
-	 */
-	public Set<Class<?>> getRegisteredAnnotations();
+    /**
+     * @return A set of all known Widget annotations
+     */
+    Set<Class<?>> getRegisteredAnnotations();
 
 }

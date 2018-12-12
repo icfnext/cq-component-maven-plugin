@@ -4,48 +4,50 @@ import com.citytechinc.cq.component.xml.DefaultXmlElementParameters;
 
 public class HtmlTagParameters extends DefaultXmlElementParameters {
 
-	private static final String CONTENT_PRIMARY_TYPE = "nt:unstructured";
+    private static final String CONTENT_PRIMARY_TYPE = "nt:unstructured";
 
-	private String tagName;
-	private String cssClass;
-	private String id;
+    private String tagName;
 
-	@Override
-	public String getPrimaryType() {
-		return CONTENT_PRIMARY_TYPE;
-	}
+    private String cssClass;
 
-	@Override
-	public String getFieldName() {
-		return "cq:htmlTag";
-	}
+    private String id;
 
-	@Override
-	public void setFieldName(String fieldName) {
-		throw new UnsupportedOperationException("fieldName is Static for Html Tag");
-	}
+    @Override
+    public String getPrimaryType() {
+        return CONTENT_PRIMARY_TYPE;
+    }
 
-	public String getTagName() {
-		return tagName;
-	}
+    @Override
+    public String getFieldName() {
+        return "cq:htmlTag";
+    }
 
-	public void setTagName(String tagName) {
-		this.tagName = tagName;
-	}
+    @Override
+    public void setFieldName(String fieldName) {
+        throw new UnsupportedOperationException("fieldName is Static for Html Tag");
+    }
 
-	public String getCssClass() {
-		return cssClass;
-	}
+    public String getTagName() {
+        return tagName;
+    }
 
-	public void setCssClass(String cssClass) {
-		this.cssClass = cssClass;
-	}
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
+    }
 
-	public String getId() {
-		return id;
-	}
+    public String getCssClass() {
+        return cssClass;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void setCssClass(String cssClass) {
+        this.cssClass = cssClass;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }

@@ -6,9 +6,10 @@ import com.citytechinc.cq.component.dialog.AbstractWidget;
 
 @Widget(annotationClass = DateTime.class, makerClass = DateTimeWidgetMaker.class, xtype = DateTimeWidget.XTYPE)
 public class DateTimeWidget extends AbstractWidget {
-	public static final String XTYPE = "datetime";
 
-	public DateTimeWidget(DateTimeWidgetParameters parameters) {
-		super(parameters);
-	}
+    public static final String XTYPE = "datetime";
+
+    public DateTimeWidget(DateTimeWidgetParameters parameters) {
+        super(parameters);
+    }
 }

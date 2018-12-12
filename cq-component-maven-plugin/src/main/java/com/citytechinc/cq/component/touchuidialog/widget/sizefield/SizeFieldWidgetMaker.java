@@ -16,7 +16,9 @@ public class SizeFieldWidgetMaker extends AbstractTouchUIWidgetMaker<SizeFieldWi
     }
 
     @Override
-    protected TouchUIDialogElement make(SizeFieldWidgetParameters parameters) throws ClassNotFoundException, InvalidComponentFieldException, TouchUIDialogGenerationException, IllegalAccessException, InstantiationException {
+    protected TouchUIDialogElement make(SizeFieldWidgetParameters parameters)
+        throws ClassNotFoundException, InvalidComponentFieldException, TouchUIDialogGenerationException,
+        IllegalAccessException, InstantiationException {
 
         SizeField sizeField = getAnnotation(SizeField.class);
 
@@ -26,30 +28,25 @@ public class SizeFieldWidgetMaker extends AbstractTouchUIWidgetMaker<SizeFieldWi
         if (this.parameters.isUseDotSlashInName()) {
             if (sizeField.heightParameter().startsWith("./")) {
                 heightParameters.setName(sizeField.heightParameter());
-            }
-            else {
+            } else {
                 heightParameters.setName("./" + sizeField.heightParameter());
             }
 
             if (sizeField.widthParameter().startsWith("./")) {
                 widthParameters.setName(sizeField.widthParameter());
-            }
-            else {
+            } else {
                 widthParameters.setName("./" + sizeField.widthParameter());
             }
-        }
-        else {
+        } else {
             if (sizeField.heightParameter().startsWith("./")) {
                 heightParameters.setName(sizeField.heightParameter().substring(2));
-            }
-            else {
+            } else {
                 heightParameters.setName(sizeField.heightParameter());
             }
 
             if (sizeField.widthParameter().startsWith("./")) {
                 widthParameters.setName(sizeField.widthParameter().substring(2));
-            }
-            else {
+            } else {
                 widthParameters.setName(sizeField.widthParameter());
             }
         }

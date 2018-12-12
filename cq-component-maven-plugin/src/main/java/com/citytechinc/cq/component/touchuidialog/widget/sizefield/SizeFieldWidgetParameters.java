@@ -10,6 +10,7 @@ import java.util.List;
 public class SizeFieldWidgetParameters extends DefaultTouchUIWidgetParameters {
 
     protected NumberFieldWidget width;
+
     protected NumberFieldWidget height;
 
     public void setWidth(NumberFieldWidget width) {

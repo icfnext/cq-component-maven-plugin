@@ -4,49 +4,54 @@ import java.util.List;
 import java.util.Map;
 
 public class DefaultXmlElementParameters implements XmlElementParameters {
-	protected String primaryType;
-	protected String fieldName;
-	protected Map<String, ?> additionalProperties;
-	protected List<? extends XmlElement> containedElements;
-	protected String nameSpace;
 
-	public String getPrimaryType() {
-		return primaryType;
-	}
+    protected String primaryType;
 
-	public void setPrimaryType(String primaryType) {
-		this.primaryType = primaryType;
-	}
+    protected String fieldName;
 
-	public String getFieldName() {
-		return fieldName;
-	}
+    protected Map<String, ?> additionalProperties;
 
-	public void setFieldName(String fieldName) {
-		this.fieldName = fieldName;
-	}
+    protected List<? extends XmlElement> containedElements;
 
-	public Map<String, ?> getAdditionalProperties() {
-		return additionalProperties;
-	}
+    protected String nameSpace;
 
-	public void setAdditionalProperties(Map<String, ?> additionalProperties) {
-		this.additionalProperties = additionalProperties;
-	}
+    public String getPrimaryType() {
+        return primaryType;
+    }
 
-	public List<? extends XmlElement> getContainedElements() {
-		return containedElements;
-	}
+    public void setPrimaryType(String primaryType) {
+        this.primaryType = primaryType;
+    }
 
-	public void setContainedElements(List<? extends XmlElement> containedElements) {
-		this.containedElements = containedElements;
-	}
+    public String getFieldName() {
+        return fieldName;
+    }
 
-	public String getNameSpace() {
-		return nameSpace;
-	}
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
+    }
 
-	public void setNameSpace(String nameSpace) {
-		this.nameSpace = nameSpace;
-	}
+    public Map<String, ?> getAdditionalProperties() {
+        return additionalProperties;
+    }
+
+    public void setAdditionalProperties(Map<String, ?> additionalProperties) {
+        this.additionalProperties = additionalProperties;
+    }
+
+    public List<? extends XmlElement> getContainedElements() {
+        return containedElements;
+    }
+
+    public void setContainedElements(List<? extends XmlElement> containedElements) {
+        this.containedElements = containedElements;
+    }
+
+    public String getNameSpace() {
+        return nameSpace;
+    }
+
+    public void setNameSpace(String nameSpace) {
+        this.nameSpace = nameSpace;
+    }
 }

@@ -13,30 +13,32 @@ import java.lang.annotation.Target;
 @Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface Property {
 
-	/**
-	 * The name of the property on the field
-	 *
-	 * @return String
-	 */
-	String name();
+    /**
+     * The name of the property on the field
+     *
+     * @return String
+     */
+    String name();
 
-	/**
-	 * The value of the property on the field
-	 *
-	 * @return String
-	 */
-	String value();
-	
-	enum RenderValue {
-		BOTH, CLASSIC, TOUCH
-	}
-	
-	/**
-	 * When used in DialogField.additionalProperties this field will determine 
-	 * whether this property should be rendered for touch UI, classic UI, or both.
-	 *
-	 * @return RenderValue
-	 */
-	RenderValue renderIn() default RenderValue.BOTH;
+    /**
+     * The value of the property on the field
+     *
+     * @return String
+     */
+    String value();
+
+    enum RenderValue {
+        BOTH,
+        CLASSIC,
+        TOUCH
+    }
+
+    /**
+     * When used in DialogField.additionalProperties this field will determine
+     * whether this property should be rendered for touch UI, classic UI, or both.
+     *
+     * @return RenderValue
+     */
+    RenderValue renderIn() default RenderValue.BOTH;
 
 }

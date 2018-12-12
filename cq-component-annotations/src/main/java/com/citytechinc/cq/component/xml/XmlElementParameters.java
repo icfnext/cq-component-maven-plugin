@@ -5,24 +5,24 @@ import java.util.Map;
 
 public interface XmlElementParameters {
 
-	public abstract String getPrimaryType();
+    String getPrimaryType();
 
-	public abstract void setPrimaryType(String primaryType);
+    void setPrimaryType(String primaryType);
 
-	public abstract String getFieldName();
+    String getFieldName();
 
-	public abstract void setFieldName(String fieldName);
+    void setFieldName(String fieldName);
 
-	public abstract Map<String, ?> getAdditionalProperties();
+    Map<String, ?> getAdditionalProperties();
 
-	public abstract void setAdditionalProperties(Map<String, ?> additionalProperties);
+    void setAdditionalProperties(Map<String, ?> additionalProperties);
 
-	public abstract List<? extends XmlElement> getContainedElements();
+    List<? extends XmlElement> getContainedElements();
 
-	public abstract void setContainedElements(List<? extends XmlElement> containedElements);
+    void setContainedElements(List<? extends XmlElement> containedElements);
 
-	public abstract String getNameSpace();
+    String getNameSpace();
 
-	public abstract void setNameSpace(String nameSpace);
+    void setNameSpace(String nameSpace);
 
 }

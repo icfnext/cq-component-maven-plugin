@@ -5,9 +5,9 @@ package com.citytechinc.cq.component.annotations.widgets.rte;
  */
 public @interface Undo {
 
-	public boolean undo() default true;
+    boolean undo() default true;
 
-	public boolean redo() default true;
+    boolean redo() default true;
 
-	public int maxUndoSteps() default 50;
+    int maxUndoSteps() default 50;
 }

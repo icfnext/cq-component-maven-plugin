@@ -3,32 +3,34 @@ package com.citytechinc.cq.component.touchuidialog.widget.richtexteditor;
 import com.citytechinc.cq.component.touchuidialog.DefaultTouchUIDialogElementParameters;
 
 public class PopoverParameters extends DefaultTouchUIDialogElementParameters {
-	private String ref;
-	private String[] items;
 
-	@Override
-	public String getPrimaryType() {
-		return Popover.PRIMARY_TYPE;
-	}
+    private String ref;
 
-	@Override
-	public void setPrimaryType(String primaryType) {
-		throw new UnsupportedOperationException("PrimaryType is Static for Popover");
-	}
+    private String[] items;
 
-	public String getRef() {
-		return ref;
-	}
+    @Override
+    public String getPrimaryType() {
+        return Popover.PRIMARY_TYPE;
+    }
 
-	public void setRef(String ref) {
-		this.ref = ref;
-	}
+    @Override
+    public void setPrimaryType(String primaryType) {
+        throw new UnsupportedOperationException("PrimaryType is Static for Popover");
+    }
 
-	public String[] getItems() {
-		return items;
-	}
+    public String getRef() {
+        return ref;
+    }
 
-	public void setItems(String[] items) {
-		this.items = items;
-	}
+    public void setRef(String ref) {
+        this.ref = ref;
+    }
+
+    public String[] getItems() {
+        return items;
+    }
+
+    public void setItems(String[] items) {
+        this.items = items;
+    }
 }

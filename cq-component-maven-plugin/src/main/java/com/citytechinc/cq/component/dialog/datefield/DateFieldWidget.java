@@ -6,29 +6,32 @@ import com.citytechinc.cq.component.dialog.AbstractWidget;
 
 @Widget(annotationClass = DateField.class, makerClass = DateFieldWidgetMaker.class, xtype = DateFieldWidget.XTYPE)
 public class DateFieldWidget extends AbstractWidget {
-	public static final String XTYPE = "datefield";
 
-	private final int startDay;
-	private final boolean showToday;
-	private final String format;
+    public static final String XTYPE = "datefield";
 
-	public DateFieldWidget(DateFieldWidgetParameters parameters) {
-		super(parameters);
-		this.startDay = parameters.getStartDay();
-		this.showToday = parameters.isShowToday();
-		this.format = parameters.getFormat();
-	}
+    private final int startDay;
 
-	public int getStartDay() {
-		return startDay;
-	}
+    private final boolean showToday;
 
-	public boolean isShowToday() {
-		return showToday;
-	}
+    private final String format;
 
-	public String getFormat() {
-		return format;
-	}
+    public DateFieldWidget(DateFieldWidgetParameters parameters) {
+        super(parameters);
+        this.startDay = parameters.getStartDay();
+        this.showToday = parameters.isShowToday();
+        this.format = parameters.getFormat();
+    }
+
+    public int getStartDay() {
+        return startDay;
+    }
+
+    public boolean isShowToday() {
+        return showToday;
+    }
+
+    public String getFormat() {
+        return format;
+    }
 
 }

@@ -1,11 +1,12 @@
 package com.citytechinc.cq.component.annotations.editconfig;
 
 public @interface DropTarget {
-	String nodeName();
 
-	String[] accept();
+    String nodeName();
 
-	String[] groups();
+    String[] accept();
 
-	String propertyName();
+    String[] groups();
+
+    String propertyName();
 }

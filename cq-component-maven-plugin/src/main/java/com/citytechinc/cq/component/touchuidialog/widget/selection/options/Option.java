@@ -4,34 +4,37 @@ import com.citytechinc.cq.component.touchuidialog.AbstractTouchUIDialogElement;
 
 public class Option extends AbstractTouchUIDialogElement {
 
-	private final String name;
-	private final String text;
-	private final String value;
-	private final boolean selected;
+    private final String name;
 
-	public Option(OptionParameters parameters) {
-		super(parameters);
+    private final String text;
 
-		name = parameters.getName();
-		text = parameters.getText();
-		value = parameters.getValue();
-		selected = parameters.isSelected();
-	}
+    private final String value;
 
-	public String getName() {
-		return name;
-	}
+    private final boolean selected;
 
-	public String getText() {
-		return text;
-	}
+    public Option(OptionParameters parameters) {
+        super(parameters);
 
-	public String getValue() {
-		return value;
-	}
+        name = parameters.getName();
+        text = parameters.getText();
+        value = parameters.getValue();
+        selected = parameters.isSelected();
+    }
 
-	public boolean isSelected() {
-		return selected;
-	}
+    public String getName() {
+        return name;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
 
 }

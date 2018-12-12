@@ -9,9 +9,9 @@ import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 @Widget(annotationClass = TextArea.class, makerClass = DefaultWidgetMaker.class, xtype = TextAreaWidget.XTYPE)
 public class TextAreaWidget extends AbstractWidget {
 
-	public static final String XTYPE = "textarea";
+    public static final String XTYPE = "textarea";
 
-	public TextAreaWidget(DefaultWidgetParameters parameters) {
-		super(parameters);
-	}
+    public TextAreaWidget(DefaultWidgetParameters parameters) {
+        super(parameters);
+    }
 }

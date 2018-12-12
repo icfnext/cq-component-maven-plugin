@@ -1,27 +1,19 @@
 /**
- *    Copyright 2017 ICF Olson
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *        http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Copyright 2017 ICF Olson
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.citytechinc.cq.component.touchuidialog.layout.tabs;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.Property;
@@ -49,183 +41,163 @@ import com.citytechinc.cq.component.touchuidialog.widget.factory.TouchUIWidgetFa
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 import com.citytechinc.cq.component.util.Constants;
 import com.citytechinc.cq.component.xml.XmlElement;
+import org.codehaus.plexus.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TabsLayoutMaker extends AbstractLayoutMaker {
 
-	public TabsLayoutMaker(LayoutMakerParameters parameters) {
-		super(parameters);
-	}
+    public TabsLayoutMaker(LayoutMakerParameters parameters) {
+        super(parameters);
+    }
 
-	@Override
-	public Layout make() throws LayoutMakerException {
+    @Override
+    public Layout make() throws LayoutMakerException {
+        // Construct the TabsLayout Parameters
+        TabsLayoutParameters layoutParameters = new TabsLayoutParameters();
 
-		// Construct the TabsLayout Parameters
-		TabsLayoutParameters layoutParameters = new TabsLayoutParameters();
+        // Construct the appropriate Layout Element
+        TabsLayoutElementParameters tabsLayoutElementParameters = new TabsLayoutElementParameters();
+        tabsLayoutElementParameters.setType("nav");
+        TabsLayoutElement layoutElement = new TabsLayoutElement(tabsLayoutElementParameters);
 
-		// Construct the appropriate Layout Element
-		TabsLayoutElementParameters tabsLayoutElementParameters = new TabsLayoutElementParameters();
-		TabsLayoutElement layoutElement = new TabsLayoutElement(tabsLayoutElementParameters);
+        // Add the Layout element and Items to the contained elements list
+        List<XmlElement> containedElements = new ArrayList<XmlElement>();
+        containedElements.add(layoutElement);
+        containedElements.add(makeItems());
 
-		// TODO: Some of the example tab layouts use a type of 'nav'. Determine
-		// what this does and if it is appropriate to set type here
+        layoutParameters.setContainedElements(containedElements);
 
-		// Add the Layout element and Items to the contained elements list
-		List<XmlElement> containedElements = new ArrayList<XmlElement>();
-		containedElements.add(layoutElement);
-		containedElements.add(makeItems());
+        // TODO: Determine how to set this - in the case of nested layouts this
+        // won't always be "content"
+        layoutParameters.setFieldName("content");
 
-		layoutParameters.setContainedElements(containedElements);
+        return new TabsLayout(layoutParameters);
 
-		// TODO: Determine how to set this - in the case of nested layouts this
-		// won't always be "content"
-		layoutParameters.setFieldName("content");
+    }
 
-		return new TabsLayout(layoutParameters);
+    protected Items makeItems() throws LayoutMakerException {
 
-	}
+        ItemsParameters itemsParameters = new ItemsParameters();
+        itemsParameters.setFieldName("items");
 
-	protected Items makeItems() throws LayoutMakerException {
+        Component componentAnnotation;
+        try {
+            componentAnnotation = (Component) parameters.getComponentClass().getAnnotation(Component.class);
+        } catch (ClassNotFoundException e) {
+            throw new LayoutMakerException("Class Not Found Exception encountered looking up Component annotation", e);
+        }
 
-		ItemsParameters itemsParameters = new ItemsParameters();
-		itemsParameters.setFieldName("items");
+        // Determine the Tabs to create
+        List<SectionParameters> tabParametersList = new ArrayList<SectionParameters>();
+        List<ColumnParameters> tabContentParametersList = new ArrayList<ColumnParameters>();
+        for (Tab currentTabAnnotation : componentAnnotation.tabs()) {
+            if (StringUtils.isNotEmpty(currentTabAnnotation.title())
+                && StringUtils.isNotEmpty(currentTabAnnotation.touchUIPath())) {
+                throw new LayoutMakerException("Tabs can have only a path or a title");
+            }
+            if (StringUtils.isNotEmpty(currentTabAnnotation.title())
+                || StringUtils.isNotEmpty(currentTabAnnotation.touchUIPath())) {
+                SectionParameters currentTabParameters = new SectionParameters();
+                if (StringUtils.isNotEmpty(currentTabAnnotation.title())) {
+                    currentTabParameters.setTitle(currentTabAnnotation.title());
+                    currentTabParameters.setNodeName(currentTabAnnotation.touchUINodeName());
+                    LayoutElement currentTabLayoutElement =
+                        new FixedColumnsLayoutElement(new FixedColumnsLayoutElementParameters());
+                    currentTabParameters.setLayoutElement(currentTabLayoutElement);
+                    ColumnParameters tabContentParameters = new ColumnParameters();
+                    tabContentParameters.setFieldName("column");
+                    tabContentParametersList.add(tabContentParameters);
+                }
 
-		Component componentAnnotation = null;
-		try {
-			componentAnnotation = (Component) parameters.getComponentClass().getAnnotation(Component.class);
-		} catch (ClassNotFoundException e) {
-			throw new LayoutMakerException("Class Not Found Exception encountered looking up Component annotation", e);
-		}
+                if (StringUtils.isNotEmpty(currentTabAnnotation.touchUIPath())) {
+                    currentTabParameters.setPath(currentTabAnnotation.touchUIPath());
+                    tabContentParametersList.add(null);
+                }
+                if (StringUtils.isNotEmpty(currentTabAnnotation.renderConditionResourceType())) {
+                    TouchUIDialogElementParameters renderParameters = new DefaultTouchUIDialogElementParameters();
+                    renderParameters.setFieldName("rendercondition");
+                    renderParameters.setPrimaryType(Constants.NT_UNSTRUCTURED);
+                    renderParameters.setResourceType(currentTabAnnotation.renderConditionResourceType());
+                    Map<String, String> additionalPropertiesMap = new HashMap<String, String>();
+                    for (Property property : currentTabAnnotation.renderConditionProperties()) {
+                        additionalPropertiesMap.put(property.name(), property.value());
+                    }
+                    renderParameters.setAdditionalProperties(additionalPropertiesMap);
+                    DefaultTouchUIDialogElement renderConditionElement =
+                        new DefaultTouchUIDialogElement(renderParameters);
+                    currentTabParameters.setRenderCondition(renderConditionElement);
+                }
+                currentTabParameters.setShowOnCreate(currentTabAnnotation.showOnCreate());
+                currentTabParameters.setHideOnEdit(currentTabAnnotation.hideOnEdit());
+                if (StringUtils.isNotEmpty(currentTabAnnotation.orderBefore())) {
+                    currentTabParameters.setOrderBefore(currentTabAnnotation.orderBefore());
+                }
+                tabParametersList.add(currentTabParameters);
+            } else {
+                tabContentParametersList.add(null);
+                tabParametersList.add(null);
+            }
+        }
 
-		// Determine the Tabs to create
-		List<SectionParameters> tabParametersList = new ArrayList<SectionParameters>();
-		List<ColumnParameters> tabContentParametersList = new ArrayList<ColumnParameters>();
-		if (componentAnnotation.tabs().length > 0) {
-			for (Tab currentTabAnnotation : componentAnnotation.tabs()) {
-				if (StringUtils.isNotEmpty(currentTabAnnotation.title())
-					&& StringUtils.isNotEmpty(currentTabAnnotation.touchUIPath())) {
-					throw new LayoutMakerException("Tabs can have only a path or a title");
-				}
-				if (StringUtils.isNotEmpty(currentTabAnnotation.title())
-					|| StringUtils.isNotEmpty(currentTabAnnotation.touchUIPath())) {
-					SectionParameters currentTabParameters = new SectionParameters();
-					if (StringUtils.isNotEmpty(currentTabAnnotation.title())) {
-						currentTabParameters.setTitle(currentTabAnnotation.title());
-						currentTabParameters.setNodeName(currentTabAnnotation.touchUINodeName());
-						LayoutElement currentTabLayoutElement =
-							new FixedColumnsLayoutElement(new FixedColumnsLayoutElementParameters());
-						currentTabParameters.setLayoutElement(currentTabLayoutElement);
-						ColumnParameters tabContentParameters = new ColumnParameters();
-						tabContentParameters.setFieldName("column");
-						tabContentParametersList.add(tabContentParameters);
-					}
+        try {
+            // Populate the content for each tab
+            List<TouchUIWidgetMakerParameters> widgetMakerParameters =
+                TouchUIDialogUtil.getWidgetMakerParametersForComponentClass(parameters.getComponentClass(),
+                    parameters.getClassLoader(), parameters.getClassPool(), parameters.getWidgetRegistry());
 
-					if (StringUtils.isNotEmpty(currentTabAnnotation.touchUIPath())) {
-						currentTabParameters.setPath(currentTabAnnotation.touchUIPath());
-						tabContentParametersList.add(null);
-					}
-					if (StringUtils.isNotEmpty(currentTabAnnotation.renderConditionResourceType())) {
-						TouchUIDialogElementParameters renderParameters = new DefaultTouchUIDialogElementParameters();
-						renderParameters.setFieldName("rendercondition");
-						renderParameters.setPrimaryType(Constants.NT_UNSTRUCTURED);
-						renderParameters.setResourceType(currentTabAnnotation.renderConditionResourceType());
-						Map<String, String> additionalPropertiesMap = new HashMap<String, String>();
-						for (Property property : currentTabAnnotation.renderConditionProperties()) {
-							additionalPropertiesMap.put(property.name(), property.value());
-						}
-						renderParameters.setAdditionalProperties(additionalPropertiesMap);
-						DefaultTouchUIDialogElement renderConditionElement =
-							new DefaultTouchUIDialogElement(renderParameters);
-						currentTabParameters.setRenderCondition(renderConditionElement);
-					}
-					currentTabParameters.setShowOnCreate(currentTabAnnotation.showOnCreate());
-					currentTabParameters.setHideOnEdit(currentTabAnnotation.hideOnEdit());
-					if (StringUtils.isNotEmpty(currentTabAnnotation.orderBefore())) {
-						currentTabParameters.setOrderBefore(currentTabAnnotation.orderBefore());
-					}
-					tabParametersList.add(currentTabParameters);
-				} else {
-					tabContentParametersList.add(null);
-					tabParametersList.add(null);
-				}
-			}
-		} else {
-			SectionParameters currentTabParameters = new SectionParameters();
+            for (TouchUIWidgetMakerParameters currentWidgetMakerParameters : widgetMakerParameters) {
 
-			currentTabParameters.setTitle(componentAnnotation.value());
+                TouchUIDialogElement currentElement = TouchUIWidgetFactory.make(currentWidgetMakerParameters, -1);
+                if (currentElement != null) {
+                    currentElement.setRanking(currentWidgetMakerParameters.getDialogFieldConfig().getRanking());
 
-			// Determine the layout to use for the Tab
-			// TODO: This probably needs to allow for dynamic in tab layout at
-			// some point
-			LayoutElement currentTabLayoutElement =
-				new FixedColumnsLayoutElement(new FixedColumnsLayoutElementParameters());
-			currentTabParameters.setLayoutElement(currentTabLayoutElement);
+                    if (currentWidgetMakerParameters.getDialogFieldConfig().getTab() <= tabParametersList.size()) {
+                        tabContentParametersList.get(currentWidgetMakerParameters.getDialogFieldConfig().getTab() - 1)
+                            .addItem(currentElement);
+                    } else {
+                        throw new LayoutMakerException("Field "
+                            + currentWidgetMakerParameters.getDialogFieldConfig().getName() + " of class "
+                            + currentWidgetMakerParameters.getClass().getName() + " placed in non-existant tab "
+                            + currentWidgetMakerParameters.getDialogFieldConfig().getTab());
+                    }
+                }
 
-			// Based on the layout set up container parameters to match the tab
-			// parameters
-			// TODO: This probably needs to allow for dynamic in tab layout at
-			// some point
-			ColumnParameters tabContentParameters = new ColumnParameters();
-			tabContentParameters.setFieldName("column");
+            }
+        } catch (Exception e) {
+            throw new LayoutMakerException("Exception encountered while constructing widgets for layout", e);
+        }
 
-			tabContentParametersList.add(tabContentParameters);
-			tabParametersList.add(currentTabParameters);
-		}
+        // Add content to all the tabs
+        for (int i = 0; i < tabParametersList.size(); i++) {
+            if (tabContentParametersList.get(i) != null) {
+                Collections.sort(tabContentParametersList.get(i).getItems(), new TouchUIDialogElementComparator());
+                tabParametersList.get(i).addItem(new Column(tabContentParametersList.get(i)));
+            }
+        }
 
-		try {
-			// Populate the content for each tab
-			List<TouchUIWidgetMakerParameters> widgetMakerParameters =
-				TouchUIDialogUtil.getWidgetMakerParametersForComponentClass(parameters.getComponentClass(),
-					parameters.getClassLoader(), parameters.getClassPool(), parameters.getWidgetRegistry());
+        // Create all the Tabs
+        List<Section> tabs = new ArrayList<Section>();
+        for (int i = 0; i < tabParametersList.size(); i++) {
+            if (tabParametersList.get(i) != null) {
+                SectionParameters currentSectionParameters = tabParametersList.get(i);
+                if (StringUtils.isNotEmpty(tabParametersList.get(i).getNodeName())) {
+                    currentSectionParameters.setFieldName(tabParametersList.get(i).getNodeName());
+                } else if (StringUtils.isNotEmpty(tabParametersList.get(i).getTitle())) {
+                    currentSectionParameters.setFieldName(tabParametersList.get(i).getTitle());
+                } else {
+                    currentSectionParameters.setFieldName("tab_" + i);
+                }
+                tabs.add(new Section(currentSectionParameters));
+            }
+        }
 
-			for (TouchUIWidgetMakerParameters currentWidgetMakerParameters : widgetMakerParameters) {
+        itemsParameters.setContainedElements(tabs);
 
-				TouchUIDialogElement currentElement = TouchUIWidgetFactory.make(currentWidgetMakerParameters, -1);
-				if (currentElement != null) {
-					currentElement.setRanking(currentWidgetMakerParameters.getDialogFieldConfig().getRanking());
-
-					if (currentWidgetMakerParameters.getDialogFieldConfig().getTab() <= tabParametersList.size()) {
-						tabContentParametersList.get(currentWidgetMakerParameters.getDialogFieldConfig().getTab() - 1)
-							.addItem(currentElement);
-					} else {
-						throw new LayoutMakerException("Field "
-							+ currentWidgetMakerParameters.getDialogFieldConfig().getName() + " of class "
-							+ currentWidgetMakerParameters.getClass().getName() + " placed in non-existant tab "
-							+ currentWidgetMakerParameters.getDialogFieldConfig().getTab());
-					}
-				}
-
-			}
-		} catch (Exception e) {
-			throw new LayoutMakerException("Exception encountered while constructing widgets for layout", e);
-		}
-
-		// Add content to all the tabs
-		for (int i = 0; i < tabParametersList.size(); i++) {
-			if (tabContentParametersList.get(i) != null) {
-				Collections.sort(tabContentParametersList.get(i).getItems(), new TouchUIDialogElementComparator());
-				tabParametersList.get(i).addItem(new Column(tabContentParametersList.get(i)));
-			}
-		}
-
-		// Create all the Tabs
-		List<Section> tabs = new ArrayList<Section>();
-		for (int i = 0; i < tabParametersList.size(); i++) {
-			if (tabParametersList.get(i) != null) {
-				SectionParameters currentSectionParameters = tabParametersList.get(i);
-				if (StringUtils.isNotEmpty(tabParametersList.get(i).getNodeName())) {
-					currentSectionParameters.setFieldName(tabParametersList.get(i).getNodeName());
-				} else if (StringUtils.isNotEmpty(tabParametersList.get(i).getTitle())) {
-					currentSectionParameters.setFieldName(tabParametersList.get(i).getTitle());
-				} else {
-					currentSectionParameters.setFieldName("tab_" + i);
-				}
-				tabs.add(new Section(currentSectionParameters));
-			}
-		}
-
-		itemsParameters.setContainedElements(tabs);
-
-		return new Items(itemsParameters);
-
-	}
+        return new Items(itemsParameters);
+    }
 }

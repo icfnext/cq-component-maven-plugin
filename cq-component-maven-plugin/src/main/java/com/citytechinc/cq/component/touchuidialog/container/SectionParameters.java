@@ -60,10 +60,6 @@ public class SectionParameters extends ContainerParameters {
     public List<? extends XmlElement> getContainedElements() {
         List<XmlElement> elements = new ArrayList<XmlElement>();
 
-        if (renderCondition != null) {
-            elements.add(renderCondition);
-        }
-
         if (super.getContainedElements() != null) {
             elements.addAll(super.getContainedElements());
         }

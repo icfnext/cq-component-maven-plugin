@@ -165,6 +165,10 @@ public class ContainerParameters extends DefaultTouchUIDialogElementParameters {
             elements.add(layoutElement);
         }
 
+        if (renderCondition != null) {
+            elements.add(renderCondition);
+        }
+
         Items items = getItemsElement();
 
         if (items != null) {

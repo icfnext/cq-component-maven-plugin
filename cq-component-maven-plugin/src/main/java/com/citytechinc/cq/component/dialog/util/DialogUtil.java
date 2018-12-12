@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import com.citytechinc.cq.component.annotations.*;
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -37,11 +38,6 @@ import javax.xml.transform.TransformerException;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.codehaus.plexus.util.StringUtils;
 
-import com.citytechinc.cq.component.annotations.DialogField;
-import com.citytechinc.cq.component.annotations.DialogFieldOverride;
-import com.citytechinc.cq.component.annotations.IgnoreDialogField;
-import com.citytechinc.cq.component.annotations.Listener;
-import com.citytechinc.cq.component.annotations.Property;
 import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
 import com.citytechinc.cq.component.dialog.Dialog;
 import com.citytechinc.cq.component.dialog.DialogFieldConfig;
@@ -223,6 +219,12 @@ public class DialogUtil {
 							superClassMethod);
 				} else if (superClassMethod.hasAnnotation(DialogFieldOverride.class)) {
 					mergeDialogFields(dialogFieldConfig, superClassMethod);
+					//TODO: Evaluate if we want to allow overriding of an already hidden field
+					if (dialogFieldConfig != null) {
+						dialogFieldConfig.setHideDialogField(false);
+					}
+				} else if (superClassMethod.hasAnnotation(HideDialogField.class) && dialogFieldConfig != null) {
+					dialogFieldConfig.setHideDialogField(true);
 				}
 			} catch (NotFoundException e) {
 			}

@@ -220,4 +220,41 @@ public @interface Html5SmartFile {
 	 * @return String
 	 */
 	public String icon() default "";
+
+	/**
+	 * Used for Touch UI Coral3 Only
+	 *
+	 * Set true to upload the files asynchronously
+	 *
+	 * @return boolean
+	 */
+	public boolean async() default false;
+
+	/**
+	 * Used for Touch UI Coral3 Only
+	 *
+	 * Visually hide the text. It is RECOMMENDED that every button has a text for a11y purpose.
+	 * Use this property to hide it visually, while still making it available for a11y.
+	 *
+	 * @return boolean
+	 */
+	public boolean hideText() default false;
+
+	/**
+	 * Used for Touch UI Coral3 Only
+	 *
+	 * The size of the icon - XS, S, M, L
+	 *
+	 * @return String
+	 */
+	public String iconSize() default "S";
+
+	/**
+	 * Used for Touch UI Coral3 Only
+	 *
+	 * The size of the button - M, L
+	 *
+	 * @return String
+	 */
+	public String size() default "M";
 }

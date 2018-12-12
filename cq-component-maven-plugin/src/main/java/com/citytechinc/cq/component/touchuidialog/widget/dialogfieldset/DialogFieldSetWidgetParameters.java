@@ -1,6 +1,7 @@
 package com.citytechinc.cq.component.touchuidialog.widget.dialogfieldset;
 
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogType;
 import com.citytechinc.cq.component.touchuidialog.container.items.Items;
 import com.citytechinc.cq.component.touchuidialog.container.items.ItemsParameters;
 import com.citytechinc.cq.component.touchuidialog.widget.DefaultTouchUIWidgetParameters;
@@ -84,6 +85,9 @@ public class DialogFieldSetWidgetParameters extends DefaultTouchUIWidgetParamete
 
     @Override
     public String getResourceType() {
+	    if(TouchUIDialogType.CORAL3.isOfType(getTouchUIDialogType())) {
+		    return DialogFieldSetCoral3Widget.RESOURCE_TYPE;
+	    }
         return DialogFieldSetWidget.RESOURCE_TYPE;
     }
 
@@ -91,5 +95,4 @@ public class DialogFieldSetWidgetParameters extends DefaultTouchUIWidgetParamete
     public void setResourceType(String resourceType) {
         throw new UnsupportedOperationException("resourceType is Static for DialogFieldSetWidget");
     }
-
 }

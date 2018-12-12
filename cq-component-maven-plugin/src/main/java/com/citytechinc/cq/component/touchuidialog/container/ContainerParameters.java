@@ -1,14 +1,15 @@
 package com.citytechinc.cq.component.touchuidialog.container;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
 import com.citytechinc.cq.component.touchuidialog.DefaultTouchUIDialogElementParameters;
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogType;
 import com.citytechinc.cq.component.touchuidialog.container.items.Items;
 import com.citytechinc.cq.component.touchuidialog.container.items.ItemsParameters;
 import com.citytechinc.cq.component.touchuidialog.layout.LayoutElement;
 import com.citytechinc.cq.component.xml.XmlElement;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ContainerParameters extends DefaultTouchUIDialogElementParameters {
 
@@ -22,6 +23,9 @@ public class ContainerParameters extends DefaultTouchUIDialogElementParameters {
 
 	@Override
 	public String getResourceType() {
+		if(TouchUIDialogType.CORAL3.isOfType(getTouchUIDialogType())) {
+			return Container.RESOURCE_TYPE_CORAL3;
+		}
 		return Container.RESOURCE_TYPE;
 	}
 

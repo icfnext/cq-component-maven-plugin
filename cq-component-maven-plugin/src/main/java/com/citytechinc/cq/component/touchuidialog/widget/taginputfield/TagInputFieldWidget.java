@@ -4,7 +4,6 @@ import com.citytechinc.cq.component.annotations.config.TouchUIWidget;
 import com.citytechinc.cq.component.annotations.widgets.TagInputField;
 import com.citytechinc.cq.component.touchuidialog.widget.autocomplete.AutoCompleteWidget;
 import com.citytechinc.cq.component.touchuidialog.widget.autocomplete.AutoCompleteWidgetParameters;
-import com.citytechinc.cq.component.touchuidialog.widget.tagspicker.TagsPickerWidget;
 
 @TouchUIWidget(annotationClass = TagInputField.class, makerClass = TagInputFieldWidgetMaker.class,
 	resourceType = TagInputFieldWidget.RESOURCE_TYPE)

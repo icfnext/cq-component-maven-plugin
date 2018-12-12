@@ -1,5 +1,6 @@
 package com.citytechinc.cq.component.touchuidialog.widget.selection;
 
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogType;
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.widgets.Selection;
@@ -56,12 +57,17 @@ public class SelectionFieldWidgetMaker extends AbstractTouchUIWidgetMaker<Select
 
 		widgetParameters.setMultiple(getMultipleForField(selectionField));
 		widgetParameters.setDataSource(getDataSourceForField(selectionField));
+		widgetParameters.setTouchUIDialogType(parameters.getTouchUIDialogType());
 
         if(widgetParameters.getDataSource() == null) {
             widgetParameters.setOptions(TouchUIDialogUtil
                 .getOptionsForSelection(selectionField, widgetParameters, getType(), parameters.getClassLoader(),
                     parameters.getClassPool()));
         }
+
+        if(TouchUIDialogType.CORAL3.isOfType(widgetParameters.getTouchUIDialogType())) {
+        	return new SelectionFieldCoral3Widget(widgetParameters);
+		}
 		return new SelectionFieldWidget(widgetParameters);
 	}
 

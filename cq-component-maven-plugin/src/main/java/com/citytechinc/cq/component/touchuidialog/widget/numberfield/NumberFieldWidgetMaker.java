@@ -1,5 +1,6 @@
 package com.citytechinc.cq.component.touchuidialog.widget.numberfield;
 
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogType;
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.widgets.NumberField;
@@ -22,7 +23,12 @@ public class NumberFieldWidgetMaker extends AbstractTouchUIWidgetMaker<NumberFie
 		widgetParameters.setMin(getMinForField(numberField));
 		widgetParameters.setMax(getMaxForField(numberField));
 		widgetParameters.setStep(getStepForField(numberField));
+		widgetParameters.setTypeHint(getTypeHintForField(numberField));
+		widgetParameters.setTouchUIDialogType(parameters.getTouchUIDialogType());
 
+		if(TouchUIDialogType.CORAL3.isOfType(widgetParameters.getTouchUIDialogType())) {
+			return new NumberFieldCoral3Widget(widgetParameters);
+		}
 		return new NumberFieldWidget(widgetParameters);
 	}
 
@@ -66,5 +72,13 @@ public class NumberFieldWidgetMaker extends AbstractTouchUIWidgetMaker<NumberFie
 						+ ". Non-integer steps will cause the increment and decrement buttons of the number field to misbehave.");
 		}
 		return step;
+	}
+
+	protected String getTypeHintForField(NumberField annotation) {
+		if (StringUtils.isNotBlank(annotation.typeHint())) {
+			return annotation.typeHint();
+		}
+
+		return null;
 	}
 }

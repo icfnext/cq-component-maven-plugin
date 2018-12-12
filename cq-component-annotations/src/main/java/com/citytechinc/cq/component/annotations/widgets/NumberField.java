@@ -86,4 +86,12 @@ public @interface NumberField {
 	 */
 	double step() default 1;
 
+	/**
+	 * Used for Coral 3 Touch UI Only
+	 *
+	 * The value of SlingPostServlet @TypeHint
+	 *
+	 * @return String
+	 */
+	String typeHint() default "";
 }

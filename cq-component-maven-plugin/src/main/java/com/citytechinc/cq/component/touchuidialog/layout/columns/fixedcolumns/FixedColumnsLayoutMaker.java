@@ -59,7 +59,8 @@ public class FixedColumnsLayoutMaker extends AbstractLayoutMaker {
             // Populate the column content
             List<TouchUIWidgetMakerParameters> widgetMakerParameters =
                 TouchUIDialogUtil.getWidgetMakerParametersForComponentClass(parameters.getComponentClass(),
-                    parameters.getClassLoader(), parameters.getClassPool(), parameters.getWidgetRegistry());
+                    parameters.getClassLoader(), parameters.getClassPool(), parameters.getWidgetRegistry(),
+                    parameters.getTouchUIDialogType());
 
             for (TouchUIWidgetMakerParameters currentWidgetMakerParameters : widgetMakerParameters) {
 

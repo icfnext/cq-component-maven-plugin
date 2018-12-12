@@ -1,5 +1,6 @@
 package com.citytechinc.cq.component.touchuidialog.widget.checkbox;
 
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogType;
 import org.codehaus.plexus.util.StringUtils;
 
 import com.citytechinc.cq.component.annotations.widgets.CheckBox;
@@ -24,7 +25,11 @@ public class CheckboxWidgetMaker extends AbstractTouchUIWidgetMaker<CheckboxWidg
 		widgetParameters.setText(getTextForField(checkboxAnnotation));
 		widgetParameters.setTitle(getTitleForField(checkboxAnnotation));
 		widgetParameters.setChecked(getCheckedForField(checkboxAnnotation));
+		widgetParameters.setTouchUIDialogType(parameters.getTouchUIDialogType());
 
+		if(TouchUIDialogType.CORAL3.isOfType(widgetParameters.getTouchUIDialogType())) {
+			return new CheckboxCoral3Widget(widgetParameters);
+		}
 		return new CheckboxWidget(widgetParameters);
 	}
 
@@ -51,5 +56,4 @@ public class CheckboxWidgetMaker extends AbstractTouchUIWidgetMaker<CheckboxWidg
 
 		return new boolean[0];
 	}
-
 }

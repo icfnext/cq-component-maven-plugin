@@ -87,6 +87,42 @@ Numberfield saved as ./quantity
     @NumberField(allowNegative=false, allowDecimals=true)
     private Double quantity;
 
+Composite Multifield (CoralUI 3 only) saved as ./compositeMultifield
+
+    @DialogField(fieldLabel = "Composite Multifield")
+    @MultiField(composite = true)
+    protected List<ContactData> compositeMultifield;
+        
+    // ContactData class example
+    public class ContactData {
+        @DialogField(fieldLabel = "First Name")
+        @TextField
+        private String firstName;
+        
+        @DialogField(fieldLabel = "Last Name")
+        @TextField
+        private String lastName;
+        
+        @DialogField(fieldLabel = "Phone Number")
+        @TextField
+        private String phoneNumber;
+        
+        @DialogField
+        @MultiFieldChildResource
+        private Address address;
+    }
+        
+    // Address class example
+    public class Address {
+        @DialogField(fieldLabel = "Street Name", name = "./address/streetName")
+        @TextField
+        private String streetName;
+        
+        @DialogField(fieldLabel = "Street Number", name = "./address/streetNumber")
+        @TextField
+        private String streetNumber;
+    }
+
 ### In Place Editors
 In Place Editor specific annotations are used to configure in place editors inside the cq:editConfig.xml.  If multiple in place editor annotations are found for a given class, a hybrid in place editor is configured using the provided individual configurations.
 
@@ -184,6 +220,11 @@ Generation of the Touch UI dialogs can be suppressed at a project, component, or
 project level set the `generateTouchUiDialogs` POM configuration to `false`.  To suppress generation at a component 
 level, set the `suppressTouchUIDialog` attribute of the `@Component` annotation to `false`.  To suppress generation at 
 a field level, set the `suppressTouchUI` attribute of the `@DialogField` annotation to `false`. 
+
+### Enabling Touch UI CoralUI 3 Dialogs
+
+Generation of the Touch UI CoralUI 3 dialogs can be enabled at a project level. In order to enable it,
+set the `useCoral3Dialogs` POM configuration to `true`. CoralUI 3 dialogs are currently tested with AEM 6.3.
 
 ### Disabling Classic UI 
 

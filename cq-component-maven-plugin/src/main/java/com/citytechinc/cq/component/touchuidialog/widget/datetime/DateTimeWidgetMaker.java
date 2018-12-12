@@ -1,11 +1,11 @@
 package com.citytechinc.cq.component.touchuidialog.widget.datetime;
 
-import org.codehaus.plexus.util.StringUtils;
-
 import com.citytechinc.cq.component.annotations.widgets.DateTime;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogType;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.AbstractTouchUIWidgetMaker;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
+import org.codehaus.plexus.util.StringUtils;
 
 public class DateTimeWidgetMaker extends AbstractTouchUIWidgetMaker<DateTimeWidgetParameters> {
 
@@ -21,9 +21,15 @@ public class DateTimeWidgetMaker extends AbstractTouchUIWidgetMaker<DateTimeWidg
 
 		widgetParameters.setDisplayedFormat(getDisplayedFormatForField(annotation));
 		widgetParameters.setStoredFormat(getStoredFormatForField(annotation));
+		widgetParameters.setValueFormat(getValueFormatForField(annotation));
 		widgetParameters.setMinDate(getMinDateForField(annotation));
 		widgetParameters.setMaxDate(getMaxDateForField(annotation));
+		widgetParameters.setTouchUIDialogType(parameters.getTouchUIDialogType());
 
+
+		if(TouchUIDialogType.CORAL3.isOfType(widgetParameters.getTouchUIDialogType())) {
+			return new DateTimeCoral3Widget(widgetParameters);
+		}
 		return new DateTimeWidget(widgetParameters);
 	}
 
@@ -59,4 +65,7 @@ public class DateTimeWidgetMaker extends AbstractTouchUIWidgetMaker<DateTimeWidg
 		return null;
 	}
 
+	protected String getValueFormatForField(DateTime annotation) {
+		return annotation.valueFormat();
+	}
 }

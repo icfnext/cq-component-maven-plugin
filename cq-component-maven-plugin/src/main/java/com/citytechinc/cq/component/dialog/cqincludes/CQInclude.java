@@ -4,31 +4,33 @@ import com.citytechinc.cq.component.dialog.AbstractDialogElement;
 import com.citytechinc.cq.component.dialog.TabbableDialogElement;
 
 public class CQInclude extends AbstractDialogElement implements TabbableDialogElement {
-	private static final String XTYPE = "cqinclude";
-	private final String path;
 
-	public CQInclude(CQIncludeParameters parameters) {
-		super(parameters);
-		this.path = parameters.getPath();
-	}
+    private static final String XTYPE = "cqinclude";
 
-	public String getPath() {
-		return path;
-	}
+    private final String path;
 
-	public String getXtype() {
-		return XTYPE;
-	}
+    public CQInclude(CQIncludeParameters parameters) {
+        super(parameters);
+        this.path = parameters.getPath();
+    }
 
-	public Boolean isTab() {
-		return true;
-	}
+    public String getPath() {
+        return path;
+    }
 
-	public void setTitle(String title) {
+    public String getXtype() {
+        return XTYPE;
+    }
 
-	}
+    public Boolean isTab() {
+        return true;
+    }
 
-	public String getTitle() {
-		return null;
-	}
+    public void setTitle(String title) {
+
+    }
+
+    public String getTitle() {
+        return null;
+    }
 }

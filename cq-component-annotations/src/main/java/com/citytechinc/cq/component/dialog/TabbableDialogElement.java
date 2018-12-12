@@ -6,25 +6,23 @@ package com.citytechinc.cq.component.dialog;
  */
 public interface TabbableDialogElement {
 
-	/**
-	 * Indicates whether an instance of the Tabbable element is to be rendered
-	 * within a Tab or as a tab.
-	 *
-	 * @return True if the Dialog Element should be rendered as a Tab, false if
-	 *         the Dialog Element should be rendered inside an existing Tab.
-	 */
-	public Boolean isTab();
+    /**
+     * Indicates whether an instance of the Tabbable element is to be rendered
+     * within a Tab or as a tab.
+     *
+     * @return True if the Dialog Element should be rendered as a Tab, false if
+     * the Dialog Element should be rendered inside an existing Tab.
+     */
+    Boolean isTab();
 
-	/**
-	 *
-	 * @return The title of the tab to be rendered to an author dialog
-	 */
-	public String getTitle();
+    /**
+     * @return The title of the tab to be rendered to an author dialog
+     */
+    String getTitle();
 
-	/**
-	 *
-	 * @param title The title of the tab to be rendered to an author dialog
-	 */
-	public void setTitle(String title);
+    /**
+     * @param title The title of the tab to be rendered to an author dialog
+     */
+    void setTitle(String title);
 
 }

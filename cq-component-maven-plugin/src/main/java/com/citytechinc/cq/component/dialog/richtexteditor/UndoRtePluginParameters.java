@@ -1,24 +1,26 @@
 package com.citytechinc.cq.component.dialog.richtexteditor;
 
 public class UndoRtePluginParameters extends RtePluginParameters {
-	public static final String UNDO = "undo";
-	private int maxUndoSteps;
 
-	public int getMaxUndoSteps() {
-		return maxUndoSteps;
-	}
+    public static final String UNDO = "undo";
 
-	public void setMaxUndoSteps(int maxUndoSteps) {
-		this.maxUndoSteps = maxUndoSteps;
-	}
+    private int maxUndoSteps;
 
-	@Override
-	public String getFieldName() {
-		return UNDO;
-	}
+    public int getMaxUndoSteps() {
+        return maxUndoSteps;
+    }
 
-	@Override
-	public void setFieldName(String fieldName) {
-		throw new UnsupportedOperationException("Field Name is static for UndoRTEPlugin");
-	}
+    public void setMaxUndoSteps(int maxUndoSteps) {
+        this.maxUndoSteps = maxUndoSteps;
+    }
+
+    @Override
+    public String getFieldName() {
+        return UNDO;
+    }
+
+    @Override
+    public void setFieldName(String fieldName) {
+        throw new UnsupportedOperationException("Field Name is static for UndoRTEPlugin");
+    }
 }

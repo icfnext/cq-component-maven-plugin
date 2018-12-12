@@ -1,37 +1,40 @@
 package com.citytechinc.cq.component.dialog.factory;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.Listeners;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TabHolder {
-	private final List<DialogElement> elements = new ArrayList<DialogElement>();
-	private String title;
-	private Listeners listeners;
 
-	public List<DialogElement> getElements() {
-		return elements;
-	}
+    private final List<DialogElement> elements = new ArrayList<DialogElement>();
 
-	public void addElement(DialogElement element) {
-		elements.add(element);
-	}
+    private String title;
 
-	public Listeners getListeners() {
-		return listeners;
-	}
+    private Listeners listeners;
 
-	public String getTitle() {
-		return title;
-	}
+    public List<DialogElement> getElements() {
+        return elements;
+    }
 
-	public void setListeners(Listeners listeners) {
-		this.listeners = listeners;
-	}
+    public void addElement(DialogElement element) {
+        elements.add(element);
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public Listeners getListeners() {
+        return listeners;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setListeners(Listeners listeners) {
+        this.listeners = listeners;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }

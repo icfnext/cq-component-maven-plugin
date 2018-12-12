@@ -4,33 +4,34 @@ import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 import com.citytechinc.cq.component.util.Constants;
 
 public class HiddenWidgetParameters extends DefaultWidgetParameters {
-	private String value;
 
-	public String getValue() {
-		return value;
-	}
+    private String value;
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public String getValue() {
+        return value;
+    }
 
-	@Override
-	public String getPrimaryType() {
-		return Constants.CQ_WIDGET;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	@Override
-	public void setPrimaryType(String primaryType) {
-		throw new UnsupportedOperationException("PrimaryType is Static for HiddenWidget");
-	}
+    @Override
+    public String getPrimaryType() {
+        return Constants.CQ_WIDGET;
+    }
 
-	@Override
-	public String getXtype() {
-		return HiddenWidget.XTYPE;
-	}
+    @Override
+    public void setPrimaryType(String primaryType) {
+        throw new UnsupportedOperationException("PrimaryType is Static for HiddenWidget");
+    }
 
-	@Override
-	public void setXtype(String xtype) {
-		throw new UnsupportedOperationException("xtype is Static for HiddenWidget");
-	}
+    @Override
+    public String getXtype() {
+        return HiddenWidget.XTYPE;
+    }
+
+    @Override
+    public void setXtype(String xtype) {
+        throw new UnsupportedOperationException("xtype is Static for HiddenWidget");
+    }
 }

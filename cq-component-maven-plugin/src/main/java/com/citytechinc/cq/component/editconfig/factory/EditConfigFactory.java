@@ -1,20 +1,5 @@
 package com.citytechinc.cq.component.editconfig.factory;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtMember;
-import javassist.CtMethod;
-import javassist.NotFoundException;
-
-import org.codehaus.plexus.util.StringUtils;
-
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.IgnoreInPlaceEditor;
 import com.citytechinc.cq.component.annotations.Listener;
@@ -51,308 +36,322 @@ import com.citytechinc.cq.component.util.InPlaceEditorConfigHolder;
 import com.citytechinc.cq.component.xml.DefaultXmlElement;
 import com.citytechinc.cq.component.xml.DefaultXmlElementParameters;
 import com.citytechinc.cq.component.xml.XmlElement;
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.CtMember;
+import javassist.CtMethod;
+import javassist.NotFoundException;
+import org.codehaus.plexus.util.StringUtils;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class EditConfigFactory {
-	private static final String ACTION_CONFIG_FIELD_NAME = "actionConfig";
 
-	private EditConfigFactory() {
-	}
+    private static final String ACTION_CONFIG_FIELD_NAME = "actionConfig";
 
-	public static EditConfig make(CtClass componentClass, InPlaceEditorRegistry inPlaceEditorRegistry,
-		ClassLoader classLoader, ClassPool classPool) throws InvalidComponentClassException, ClassNotFoundException,
-		NotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException,
-		InvocationTargetException, NoSuchMethodException, SecurityException {
+    private EditConfigFactory() {
+    }
 
-		Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
+    public static EditConfig make(CtClass componentClass, InPlaceEditorRegistry inPlaceEditorRegistry,
+        ClassLoader classLoader, ClassPool classPool) throws InvalidComponentClassException, ClassNotFoundException,
+        NotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException,
+        InvocationTargetException, NoSuchMethodException, SecurityException {
 
-		if (componentAnnotation == null) {
-			throw new InvalidComponentClassException("Class provided is not property annotated");
-		}
-		EditConfigParameters parameters = new EditConfigParameters();
+        Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
 
-		String title = getTitleForEditConfig(componentClass, componentAnnotation);
-		parameters.setActions(getActionsForEditConfig(componentAnnotation, title));
+        if (componentAnnotation == null) {
+            throw new InvalidComponentClassException("Class provided is not property annotated");
+        }
+        EditConfigParameters parameters = new EditConfigParameters();
 
-		parameters.setDialogMode(getDialogModeForEditConfig(componentAnnotation));
+        String title = getTitleForEditConfig(componentClass, componentAnnotation);
+        parameters.setActions(getActionsForEditConfig(componentAnnotation, title));
 
-		parameters.setLayout(getLayoutForEditConfig(componentAnnotation));
-		parameters.setEmptyText(getEmptyTextForEditConfig(componentAnnotation));
-		parameters.setInherit(getInheritForEditConfig(componentAnnotation));
-		parameters.setDisableTargeting(getDisableTargingForEditConfig(componentAnnotation));
+        parameters.setDialogMode(getDialogModeForEditConfig(componentAnnotation));
 
-		List<XmlElement> editConfigChildren = new ArrayList<XmlElement>();
+        parameters.setLayout(getLayoutForEditConfig(componentAnnotation));
+        parameters.setEmptyText(getEmptyTextForEditConfig(componentAnnotation));
+        parameters.setInherit(getInheritForEditConfig(componentAnnotation));
+        parameters.setDisableTargeting(getDisableTargingForEditConfig(componentAnnotation));
 
-		EditConfigListeners ecl = getListenersForEditConfig(componentAnnotation);
-		if (ecl != null) {
-			editConfigChildren.add(ecl);
-		}
+        List<XmlElement> editConfigChildren = new ArrayList<XmlElement>();
 
-		EditConfigActionConfigs ecac = getActionConfigsForEditConfig(componentAnnotation);
-		if (ecac != null) {
-			editConfigChildren.add(ecac);
-		}
+        EditConfigListeners ecl = getListenersForEditConfig(componentAnnotation);
+        if (ecl != null) {
+            editConfigChildren.add(ecl);
+        }
 
-		InPlaceEditorElement ecipe =
-			getInPlaceEditingForEditConfig(componentClass, componentAnnotation, inPlaceEditorRegistry);
-		if (ecipe != null) {
-			editConfigChildren.add(ecipe);
-		}
+        EditConfigActionConfigs ecac = getActionConfigsForEditConfig(componentAnnotation);
+        if (ecac != null) {
+            editConfigChildren.add(ecac);
+        }
 
-		EditConfigFormParameters ecfp = getFormParametersForEditConfig(componentAnnotation);
-		if (ecfp != null) {
-			editConfigChildren.add(ecfp);
-		}
+        InPlaceEditorElement ecipe =
+            getInPlaceEditingForEditConfig(componentClass, componentAnnotation, inPlaceEditorRegistry);
+        if (ecipe != null) {
+            editConfigChildren.add(ecipe);
+        }
 
-		EditConfigDropTargets ecdt = getDropTargetsForEditConfig(componentAnnotation);
-		if (ecdt != null) {
-			editConfigChildren.add(ecdt);
-		}
+        EditConfigFormParameters ecfp = getFormParametersForEditConfig(componentAnnotation);
+        if (ecfp != null) {
+            editConfigChildren.add(ecfp);
+        }
 
-		parameters.setContainedElements(editConfigChildren);
-		return new EditConfig(parameters);
-	}
+        EditConfigDropTargets ecdt = getDropTargetsForEditConfig(componentAnnotation);
+        if (ecdt != null) {
+            editConfigChildren.add(ecdt);
+        }
 
-	private static Boolean getDisableTargingForEditConfig(Component componentAnnotation) {
-		return componentAnnotation.disableTargeting();
-	}
+        parameters.setContainedElements(editConfigChildren);
+        return new EditConfig(parameters);
+    }
 
-	private static boolean getInheritForEditConfig(Component componentAnnotation) {
-		return componentAnnotation.editConfigInherit();
-	}
+    private static Boolean getDisableTargingForEditConfig(Component componentAnnotation) {
+        return componentAnnotation.disableTargeting();
+    }
 
-	private static String getEmptyTextForEditConfig(Component componentAnnotation) {
-		return componentAnnotation.emptyText();
-	}
+    private static boolean getInheritForEditConfig(Component componentAnnotation) {
+        return componentAnnotation.editConfigInherit();
+    }
 
-	private static String getTitleForEditConfig(CtClass componentClass, Component componentAnnotation) {
-		if (StringUtils.isNotEmpty(componentAnnotation.value())) {
-			return componentAnnotation.value();
-		}
+    private static String getEmptyTextForEditConfig(Component componentAnnotation) {
+        return componentAnnotation.emptyText();
+    }
 
-		return componentClass.getSimpleName();
-	}
+    private static String getTitleForEditConfig(CtClass componentClass, Component componentAnnotation) {
+        if (StringUtils.isNotEmpty(componentAnnotation.value())) {
+            return componentAnnotation.value();
+        }
 
-	private static List<String> getActionsForEditConfig(Component componentAnnotation, String title) {
-		List<String> actions = Arrays.asList(componentAnnotation.actions());
+        return componentClass.getSimpleName();
+    }
 
-		if (!actions.isEmpty()) {
-			return actions;
-		}
+    private static List<String> getActionsForEditConfig(Component componentAnnotation, String title) {
+        List<String> actions = Arrays.asList(componentAnnotation.actions());
 
-		return null;
-	}
+        if (!actions.isEmpty()) {
+            return actions;
+        }
 
-	private static String getDialogModeForEditConfig(Component componentAnnotation) {
-		if (StringUtils.isNotEmpty(componentAnnotation.dialogMode())) {
-			return componentAnnotation.dialogMode();
-		}
+        return null;
+    }
 
-		return "floating";
-	}
+    private static String getDialogModeForEditConfig(Component componentAnnotation) {
+        if (StringUtils.isNotEmpty(componentAnnotation.dialogMode())) {
+            return componentAnnotation.dialogMode();
+        }
 
-	private static String getLayoutForEditConfig(Component componentAnnotation) {
-		if (StringUtils.isNotEmpty(componentAnnotation.layout())) {
-			return componentAnnotation.layout();
-		}
+        return "floating";
+    }
 
-		return "editbar";
-	}
+    private static String getLayoutForEditConfig(Component componentAnnotation) {
+        if (StringUtils.isNotEmpty(componentAnnotation.layout())) {
+            return componentAnnotation.layout();
+        }
 
-	private static EditConfigFormParameters getFormParametersForEditConfig(Component componentAnnotation) {
-		if (componentAnnotation.formParameters().length > 0) {
-			Map<String, String> formParameters = new HashMap<String, String>();
+        return "editbar";
+    }
 
-			for (FormParameter formParameter : componentAnnotation.formParameters()) {
-				formParameters.put(formParameter.name(), formParameter.value());
-			}
+    private static EditConfigFormParameters getFormParametersForEditConfig(Component componentAnnotation) {
+        if (componentAnnotation.formParameters().length > 0) {
+            Map<String, String> formParameters = new HashMap<String, String>();
 
-			EditConfigFormParametersParameters parameters = new EditConfigFormParametersParameters();
-			parameters.setAdditionalProperties(formParameters);
+            for (FormParameter formParameter : componentAnnotation.formParameters()) {
+                formParameters.put(formParameter.name(), formParameter.value());
+            }
 
-			return new EditConfigFormParameters(parameters);
-		}
-		return null;
-	}
+            EditConfigFormParametersParameters parameters = new EditConfigFormParametersParameters();
+            parameters.setAdditionalProperties(formParameters);
 
-	private static InPlaceEditorElement getInPlaceEditingForEditConfig(CtClass componentClass,
-		Component componentAnnotation, InPlaceEditorRegistry inPlaceEditorRegistry) throws NotFoundException,
-		ClassNotFoundException, InvalidComponentClassException, InstantiationException, IllegalAccessException,
-		IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		if (!StringUtils.isEmpty(componentAnnotation.inPlaceEditingConfigPath())
-			|| !StringUtils.isEmpty(componentAnnotation.inPlaceEditingEditorType())) {
-			EditConfigInPlaceEditingParameters parameters = new EditConfigInPlaceEditingParameters();
-			if (!StringUtils.isEmpty(componentAnnotation.inPlaceEditingConfigPath())) {
-				parameters.setConfigPath(componentAnnotation.inPlaceEditingConfigPath());
-			}
-			if (!StringUtils.isEmpty(componentAnnotation.inPlaceEditingEditorType())) {
-				parameters.setEditorType(componentAnnotation.inPlaceEditingEditorType());
-			}
-			parameters.setActive(componentAnnotation.inPlaceEditingActive());
-			return new EditConfigInPlaceEditing(parameters);
-		} else {
-			List<InPlaceEditorConfig> inPlaceEditorConfigs = new ArrayList<InPlaceEditorConfig>();
-			List<CtMember> fieldsAndMethods = new ArrayList<CtMember>();
-			fieldsAndMethods.addAll(ComponentMojoUtil.collectFields(componentClass));
-			fieldsAndMethods.addAll(ComponentMojoUtil.collectMethods(componentClass));
+            return new EditConfigFormParameters(parameters);
+        }
+        return null;
+    }
 
-			for (CtMember member : fieldsAndMethods) {
-				if (!member.hasAnnotation(IgnoreInPlaceEditor.class)) {
-					InPlaceEditorConfig inPlaceEditorConfig = null;
-					if (member instanceof CtMethod) {
-						inPlaceEditorConfig =
-							EditConfigUtil.getInPlaceEditorFromSuperClasses((CtMethod) member,
-								inPlaceEditorRegistry.getRegisteredAnnotations());
-					} else {
-						for (Class<?> annotationClass : inPlaceEditorRegistry.getRegisteredAnnotations()) {
-							Object ipeAnnotation = member.getAnnotation(annotationClass);
-							if (ipeAnnotation != null) {
-								if (inPlaceEditorConfig == null) {
-									inPlaceEditorConfig =
-										new InPlaceEditorConfig(ipeAnnotation, member, annotationClass);
-								}
-							}
-						}
-					}
-					if (inPlaceEditorConfig != null) {
-						inPlaceEditorConfigs.add(inPlaceEditorConfig);
-					}
-				}
-			}
-			if (inPlaceEditorConfigs.size() > 0) {
-				if (inPlaceEditorConfigs.size() == 1) {
-					InPlaceEditorConfigHolder ipeConfigHolder =
-						inPlaceEditorRegistry.getInPlaceEditorForAnnotation(inPlaceEditorConfigs.get(0)
-							.getAnnotationClass());
-					InPlaceEditorMakerParameters ipeMakerParameters = new InPlaceEditorMakerParameters();
-					ipeMakerParameters.setInPlaceEditorConfig(inPlaceEditorConfigs.get(0));
-					ipeMakerParameters.setSetActive(true);
-					InPlaceEditorElement ipeElement =
-						ipeConfigHolder.getMakerClass().getConstructor(InPlaceEditorMakerParameters.class)
-							.newInstance(ipeMakerParameters).make();
-					ConfigElement configElement = ipeElement.getConfigElement();
-					if (configElement != null) {
-						configElement.setFieldName("config");
-						ipeElement.setContainedElements(Arrays.asList(new XmlElement[] { configElement }));
-						ipeElement.setConfigElement(null);
-					}
-					return ipeElement;
-				} else {
-					List<InPlaceEditorElement> childEditors = new ArrayList<InPlaceEditorElement>();
-					List<ConfigElement> configElements = new ArrayList<ConfigElement>();
-					for (InPlaceEditorConfig ipeConfig : inPlaceEditorConfigs) {
-						InPlaceEditorConfigHolder ipeConfigHolder =
-							inPlaceEditorRegistry.getInPlaceEditorForAnnotation(ipeConfig.getAnnotationClass());
-						InPlaceEditorMakerParameters ipeMakerParameters = new InPlaceEditorMakerParameters();
-						ipeMakerParameters.setInPlaceEditorConfig(ipeConfig);
-						InPlaceEditorElement ipeElement =
-							ipeConfigHolder.getMakerClass().getConstructor(InPlaceEditorMakerParameters.class)
-								.newInstance(ipeMakerParameters).make();
-						ConfigElement configElement = ipeElement.getConfigElement();
-						if (configElement != null) {
-							configElement.setFieldName(ipeElement.getFieldName());
-							configElements.add(configElement);
-							ipeElement.setConfigElement(null);
-							childEditors.add(ipeElement);
-						}
-					}
-					DefaultXmlElementParameters cqChildEditorsParameters = new DefaultXmlElementParameters();
-					cqChildEditorsParameters.setContainedElements(childEditors);
-					cqChildEditorsParameters.setNameSpace(Constants.CQ_NS_URI);
-					cqChildEditorsParameters.setPrimaryType(Constants.NT_UNSTRUCTURED);
-					cqChildEditorsParameters.setFieldName("cq:childEditors");
-					DefaultXmlElement cqChildEditorsElement = new DefaultXmlElement(cqChildEditorsParameters);
+    private static InPlaceEditorElement getInPlaceEditingForEditConfig(CtClass componentClass,
+        Component componentAnnotation, InPlaceEditorRegistry inPlaceEditorRegistry) throws NotFoundException,
+        ClassNotFoundException, InvalidComponentClassException, InstantiationException, IllegalAccessException,
+        IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+        if (!StringUtils.isEmpty(componentAnnotation.inPlaceEditingConfigPath())
+            || !StringUtils.isEmpty(componentAnnotation.inPlaceEditingEditorType())) {
+            EditConfigInPlaceEditingParameters parameters = new EditConfigInPlaceEditingParameters();
+            if (!StringUtils.isEmpty(componentAnnotation.inPlaceEditingConfigPath())) {
+                parameters.setConfigPath(componentAnnotation.inPlaceEditingConfigPath());
+            }
+            if (!StringUtils.isEmpty(componentAnnotation.inPlaceEditingEditorType())) {
+                parameters.setEditorType(componentAnnotation.inPlaceEditingEditorType());
+            }
+            parameters.setActive(componentAnnotation.inPlaceEditingActive());
+            return new EditConfigInPlaceEditing(parameters);
+        } else {
+            List<InPlaceEditorConfig> inPlaceEditorConfigs = new ArrayList<InPlaceEditorConfig>();
+            List<CtMember> fieldsAndMethods = new ArrayList<CtMember>();
+            fieldsAndMethods.addAll(ComponentMojoUtil.collectFields(componentClass));
+            fieldsAndMethods.addAll(ComponentMojoUtil.collectMethods(componentClass));
 
-					DefaultXmlElementParameters configParameters = new DefaultXmlElementParameters();
-					configParameters.setContainedElements(configElements);
-					configParameters.setPrimaryType(Constants.NT_UNSTRUCTURED);
-					configParameters.setFieldName("config");
-					DefaultXmlElement configElement = new DefaultXmlElement(configParameters);
+            for (CtMember member : fieldsAndMethods) {
+                if (!member.hasAnnotation(IgnoreInPlaceEditor.class)) {
+                    InPlaceEditorConfig inPlaceEditorConfig = null;
+                    if (member instanceof CtMethod) {
+                        inPlaceEditorConfig =
+                            EditConfigUtil.getInPlaceEditorFromSuperClasses((CtMethod) member,
+                                inPlaceEditorRegistry.getRegisteredAnnotations());
+                    } else {
+                        for (Class<?> annotationClass : inPlaceEditorRegistry.getRegisteredAnnotations()) {
+                            Object ipeAnnotation = member.getAnnotation(annotationClass);
+                            if (ipeAnnotation != null) {
+                                if (inPlaceEditorConfig == null) {
+                                    inPlaceEditorConfig =
+                                        new InPlaceEditorConfig(ipeAnnotation, member, annotationClass);
+                                }
+                            }
+                        }
+                    }
+                    if (inPlaceEditorConfig != null) {
+                        inPlaceEditorConfigs.add(inPlaceEditorConfig);
+                    }
+                }
+            }
+            if (inPlaceEditorConfigs.size() > 0) {
+                if (inPlaceEditorConfigs.size() == 1) {
+                    InPlaceEditorConfigHolder ipeConfigHolder =
+                        inPlaceEditorRegistry.getInPlaceEditorForAnnotation(inPlaceEditorConfigs.get(0)
+                            .getAnnotationClass());
+                    InPlaceEditorMakerParameters ipeMakerParameters = new InPlaceEditorMakerParameters();
+                    ipeMakerParameters.setInPlaceEditorConfig(inPlaceEditorConfigs.get(0));
+                    ipeMakerParameters.setSetActive(true);
+                    InPlaceEditorElement ipeElement =
+                        ipeConfigHolder.getMakerClass().getConstructor(InPlaceEditorMakerParameters.class)
+                            .newInstance(ipeMakerParameters).make();
+                    ConfigElement configElement = ipeElement.getConfigElement();
+                    if (configElement != null) {
+                        configElement.setFieldName("config");
+                        ipeElement.setContainedElements(Arrays.asList(new XmlElement[]{ configElement }));
+                        ipeElement.setConfigElement(null);
+                    }
+                    return ipeElement;
+                } else {
+                    List<InPlaceEditorElement> childEditors = new ArrayList<InPlaceEditorElement>();
+                    List<ConfigElement> configElements = new ArrayList<ConfigElement>();
+                    for (InPlaceEditorConfig ipeConfig : inPlaceEditorConfigs) {
+                        InPlaceEditorConfigHolder ipeConfigHolder =
+                            inPlaceEditorRegistry.getInPlaceEditorForAnnotation(ipeConfig.getAnnotationClass());
+                        InPlaceEditorMakerParameters ipeMakerParameters = new InPlaceEditorMakerParameters();
+                        ipeMakerParameters.setInPlaceEditorConfig(ipeConfig);
+                        InPlaceEditorElement ipeElement =
+                            ipeConfigHolder.getMakerClass().getConstructor(InPlaceEditorMakerParameters.class)
+                                .newInstance(ipeMakerParameters).make();
+                        ConfigElement configElement = ipeElement.getConfigElement();
+                        if (configElement != null) {
+                            configElement.setFieldName(ipeElement.getFieldName());
+                            configElements.add(configElement);
+                            ipeElement.setConfigElement(null);
+                            childEditors.add(ipeElement);
+                        }
+                    }
+                    DefaultXmlElementParameters cqChildEditorsParameters = new DefaultXmlElementParameters();
+                    cqChildEditorsParameters.setContainedElements(childEditors);
+                    cqChildEditorsParameters.setNameSpace(Constants.CQ_NS_URI);
+                    cqChildEditorsParameters.setPrimaryType(Constants.NT_UNSTRUCTURED);
+                    cqChildEditorsParameters.setFieldName("cq:childEditors");
+                    DefaultXmlElement cqChildEditorsElement = new DefaultXmlElement(cqChildEditorsParameters);
 
-					EditConfigInPlaceEditingParameters parameters = new EditConfigInPlaceEditingParameters();
-					parameters.setEditorType("hybrid");
-					parameters.setActive(true);
-					EditConfigInPlaceEditing editConfig = new EditConfigInPlaceEditing(parameters);
-					editConfig.setContainedElements(Arrays.asList(new XmlElement[] { cqChildEditorsElement,
-						configElement }));
-					return editConfig;
-				}
-			}
-		}
-		return null;
-	}
+                    DefaultXmlElementParameters configParameters = new DefaultXmlElementParameters();
+                    configParameters.setContainedElements(configElements);
+                    configParameters.setPrimaryType(Constants.NT_UNSTRUCTURED);
+                    configParameters.setFieldName("config");
+                    DefaultXmlElement configElement = new DefaultXmlElement(configParameters);
 
-	private static EditConfigListeners getListenersForEditConfig(Component componentAnnotation) {
-		if (componentAnnotation.listeners().length > 0) {
-			Map<String, String> listeners = new HashMap<String, String>();
+                    EditConfigInPlaceEditingParameters parameters = new EditConfigInPlaceEditingParameters();
+                    parameters.setEditorType("hybrid");
+                    parameters.setActive(true);
+                    EditConfigInPlaceEditing editConfig = new EditConfigInPlaceEditing(parameters);
+                    editConfig.setContainedElements(Arrays.asList(new XmlElement[]{ cqChildEditorsElement,
+                        configElement }));
+                    return editConfig;
+                }
+            }
+        }
+        return null;
+    }
 
-			for (Listener listener : componentAnnotation.listeners()) {
-				listeners.put(listener.name(), listener.value());
-			}
+    private static EditConfigListeners getListenersForEditConfig(Component componentAnnotation) {
+        if (componentAnnotation.listeners().length > 0) {
+            Map<String, String> listeners = new HashMap<String, String>();
 
-			EditConfigListenersParameters parameters = new EditConfigListenersParameters();
-			parameters.setListeners(listeners);
+            for (Listener listener : componentAnnotation.listeners()) {
+                listeners.put(listener.name(), listener.value());
+            }
 
-			return new EditConfigListeners(parameters);
-		}
-		return null;
-	}
+            EditConfigListenersParameters parameters = new EditConfigListenersParameters();
+            parameters.setListeners(listeners);
 
-	private static EditConfigActionConfigs getActionConfigsForEditConfig(Component componentAnnotation) {
-		if (componentAnnotation.actionConfigs().length > 0) {
+            return new EditConfigListeners(parameters);
+        }
+        return null;
+    }
 
-			List<EditConfigActionConfig> actionConfigs = new ArrayList<EditConfigActionConfig>();
+    private static EditConfigActionConfigs getActionConfigsForEditConfig(Component componentAnnotation) {
+        if (componentAnnotation.actionConfigs().length > 0) {
 
-			int counter = 0;
-			for (ActionConfig actionConfig : componentAnnotation.actionConfigs()) {
-				EditConfigActionConfigParameters params = new EditConfigActionConfigParameters();
-				if (!StringUtils.isEmpty(actionConfig.handler())) {
-					params.setHandler(actionConfig.handler());
-				}
-				if (!StringUtils.isEmpty(actionConfig.text())) {
-					params.setText(actionConfig.text());
-				}
-				if (!StringUtils.isEmpty(actionConfig.xtype())) {
-					params.setXtype(actionConfig.xtype());
-				}
-				if (actionConfig.additionalProperties().length > 0) {
-					Map<String, String> additionalProperties = new HashMap<String, String>();
-					for (ActionConfigProperty acp : actionConfig.additionalProperties()) {
-						additionalProperties.put(acp.name(), acp.value());
-					}
-					params.setAdditionalProperties(additionalProperties);
-				}
-				params.setFieldName(ACTION_CONFIG_FIELD_NAME + counter);
-				actionConfigs.add(new EditConfigActionConfig(params));
-				counter++;
-			}
+            List<EditConfigActionConfig> actionConfigs = new ArrayList<EditConfigActionConfig>();
 
-			EditConfigActionConfigsParameters parameters = new EditConfigActionConfigsParameters();
-			parameters.setContainedElements(actionConfigs);
+            int counter = 0;
+            for (ActionConfig actionConfig : componentAnnotation.actionConfigs()) {
+                EditConfigActionConfigParameters params = new EditConfigActionConfigParameters();
+                if (!StringUtils.isEmpty(actionConfig.handler())) {
+                    params.setHandler(actionConfig.handler());
+                }
+                if (!StringUtils.isEmpty(actionConfig.text())) {
+                    params.setText(actionConfig.text());
+                }
+                if (!StringUtils.isEmpty(actionConfig.xtype())) {
+                    params.setXtype(actionConfig.xtype());
+                }
+                if (actionConfig.additionalProperties().length > 0) {
+                    Map<String, String> additionalProperties = new HashMap<String, String>();
+                    for (ActionConfigProperty acp : actionConfig.additionalProperties()) {
+                        additionalProperties.put(acp.name(), acp.value());
+                    }
+                    params.setAdditionalProperties(additionalProperties);
+                }
+                params.setFieldName(ACTION_CONFIG_FIELD_NAME + counter);
+                actionConfigs.add(new EditConfigActionConfig(params));
+                counter++;
+            }
 
-			return new EditConfigActionConfigs(parameters);
-		}
-		return null;
-	}
+            EditConfigActionConfigsParameters parameters = new EditConfigActionConfigsParameters();
+            parameters.setContainedElements(actionConfigs);
 
-	private static EditConfigDropTargets getDropTargetsForEditConfig(Component componentAnnotation) {
-		if (componentAnnotation.dropTargets().length > 0) {
+            return new EditConfigActionConfigs(parameters);
+        }
+        return null;
+    }
 
-			List<EditConfigDropTarget> dropTargets = new ArrayList<EditConfigDropTarget>();
+    private static EditConfigDropTargets getDropTargetsForEditConfig(Component componentAnnotation) {
+        if (componentAnnotation.dropTargets().length > 0) {
 
-			for (DropTarget dropTargetConfig : componentAnnotation.dropTargets()) {
-				EditConfigDropTargetParameters params = new EditConfigDropTargetParameters();
-				params.setFieldName(dropTargetConfig.nodeName());
-				params.setGroups(dropTargetConfig.groups());
-				params.setAccept(dropTargetConfig.accept());
-				params.setPropertyName(dropTargetConfig.propertyName());
-				dropTargets.add(new EditConfigDropTarget(params));
-			}
+            List<EditConfigDropTarget> dropTargets = new ArrayList<EditConfigDropTarget>();
 
-			EditConfigDropTargetsParameters parameters = new EditConfigDropTargetsParameters();
-			parameters.setContainedElements(dropTargets);
+            for (DropTarget dropTargetConfig : componentAnnotation.dropTargets()) {
+                EditConfigDropTargetParameters params = new EditConfigDropTargetParameters();
+                params.setFieldName(dropTargetConfig.nodeName());
+                params.setGroups(dropTargetConfig.groups());
+                params.setAccept(dropTargetConfig.accept());
+                params.setPropertyName(dropTargetConfig.propertyName());
+                dropTargets.add(new EditConfigDropTarget(params));
+            }
 
-			return new EditConfigDropTargets(parameters);
-		}
-		return null;
-	}
+            EditConfigDropTargetsParameters parameters = new EditConfigDropTargetsParameters();
+            parameters.setContainedElements(dropTargets);
+
+            return new EditConfigDropTargets(parameters);
+        }
+        return null;
+    }
 }

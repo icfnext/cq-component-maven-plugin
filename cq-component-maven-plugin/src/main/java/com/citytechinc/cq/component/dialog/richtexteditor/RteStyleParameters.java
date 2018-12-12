@@ -3,32 +3,34 @@ package com.citytechinc.cq.component.dialog.richtexteditor;
 import com.citytechinc.cq.component.dialog.DefaultDialogElementParameters;
 
 public class RteStyleParameters extends DefaultDialogElementParameters {
-	private String cssName;
-	private String text;
 
-	public String getCssName() {
-		return cssName;
-	}
+    private String cssName;
 
-	public void setCssName(String cssName) {
-		this.cssName = cssName;
-	}
+    private String text;
 
-	public String getText() {
-		return text;
-	}
+    public String getCssName() {
+        return cssName;
+    }
 
-	public void setText(String text) {
-		this.text = text;
-	}
+    public void setCssName(String cssName) {
+        this.cssName = cssName;
+    }
 
-	@Override
-	public String getPrimaryType() {
-		return RteStyle.PRIMARY_TYPE;
-	}
+    public String getText() {
+        return text;
+    }
 
-	@Override
-	public void setPrimaryType(String primaryType) {
-		throw new UnsupportedOperationException("PrimaryType is Static for RteStyle");
-	}
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    @Override
+    public String getPrimaryType() {
+        return RteStyle.PRIMARY_TYPE;
+    }
+
+    @Override
+    public void setPrimaryType(String primaryType) {
+        throw new UnsupportedOperationException("PrimaryType is Static for RteStyle");
+    }
 }

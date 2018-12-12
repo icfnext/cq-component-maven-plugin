@@ -8,7 +8,7 @@ public interface TouchUIDialogElementParameters extends XmlElementParameters {
 
     void setResourceType(String resourceType);
 
-	String getTouchUIDialogType();
+    String getTouchUIDialogType();
 
-	void setTouchUIDialogType(String touchUIDialogType);
+    void setTouchUIDialogType(String touchUIDialogType);
 }

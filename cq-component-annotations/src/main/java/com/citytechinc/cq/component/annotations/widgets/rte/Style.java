@@ -5,8 +5,8 @@ package com.citytechinc.cq.component.annotations.widgets.rte;
  */
 public @interface Style {
 
-	public String cssName();
+    String cssName();
 
-	public String text();
+    String text();
 
 }

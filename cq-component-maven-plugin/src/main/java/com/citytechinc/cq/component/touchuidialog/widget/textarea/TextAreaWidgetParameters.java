@@ -5,44 +5,46 @@ import com.citytechinc.cq.component.touchuidialog.widget.DefaultTouchUIWidgetPar
 
 public class TextAreaWidgetParameters extends DefaultTouchUIWidgetParameters {
 
-	private Integer cols;
-	private Integer rows;
-	private String resize;
+    private Integer cols;
 
-	public Integer getCols() {
-		return cols;
-	}
+    private Integer rows;
 
-	public void setCols(Integer cols) {
-		this.cols = cols;
-	}
+    private String resize;
 
-	public Integer getRows() {
-		return rows;
-	}
+    public Integer getCols() {
+        return cols;
+    }
 
-	public void setRows(Integer rows) {
-		this.rows = rows;
-	}
+    public void setCols(Integer cols) {
+        this.cols = cols;
+    }
 
-	public String getResize() {
-		return resize;
-	}
+    public Integer getRows() {
+        return rows;
+    }
 
-	public void setResize(String resize) {
-		this.resize = resize;
-	}
+    public void setRows(Integer rows) {
+        this.rows = rows;
+    }
 
-	@Override
-	public String getResourceType() {
-		if(TouchUIDialogType.CORAL3.isOfType(getTouchUIDialogType())){
-			return TextAreaCoral3Widget.RESOURCE_TYPE;
-		}
-		return TextAreaWidget.RESOURCE_TYPE;
-	}
+    public String getResize() {
+        return resize;
+    }
 
-	@Override
-	public void setResourceType(String resourceType) {
-		throw new UnsupportedOperationException("resourceType is Static for TextAreaWidget");
-	}
+    public void setResize(String resize) {
+        this.resize = resize;
+    }
+
+    @Override
+    public String getResourceType() {
+        if (TouchUIDialogType.CORAL3.isOfType(getTouchUIDialogType())) {
+            return TextAreaCoral3Widget.RESOURCE_TYPE;
+        }
+        return TextAreaWidget.RESOURCE_TYPE;
+    }
+
+    @Override
+    public void setResourceType(String resourceType) {
+        throw new UnsupportedOperationException("resourceType is Static for TextAreaWidget");
+    }
 }

@@ -4,37 +4,38 @@ import com.citytechinc.cq.component.dialog.DefaultDialogElementParameters;
 import com.citytechinc.cq.component.util.Constants;
 
 public class TabParameters extends DefaultDialogElementParameters {
-	private String title;
 
-	public String getTitle() {
-		if (title == null) {
-			return "";
-		}
-		return title;
-	}
+    private String title;
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public String getTitle() {
+        if (title == null) {
+            return "";
+        }
+        return title;
+    }
 
-	@Override
-	public void setPrimaryType(String primaryType) {
-		throw new UnsupportedOperationException("PrimaryType is Static for HiddenWidget");
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	@Override
-	public String getPrimaryType() {
-		return Constants.CQ_WIDGET;
-	}
+    @Override
+    public void setPrimaryType(String primaryType) {
+        throw new UnsupportedOperationException("PrimaryType is Static for HiddenWidget");
+    }
 
-	@Override
-	public String getFieldName() {
-		return getTitle();
-	}
+    @Override
+    public String getPrimaryType() {
+        return Constants.CQ_WIDGET;
+    }
 
-	@Override
-	public void setFieldName(String fieldName) {
-		throw new UnsupportedOperationException("FieldNAme is based on title for Tab");
-	}
+    @Override
+    public String getFieldName() {
+        return getTitle();
+    }
+
+    @Override
+    public void setFieldName(String fieldName) {
+        throw new UnsupportedOperationException("FieldNAme is based on title for Tab");
+    }
 
 }

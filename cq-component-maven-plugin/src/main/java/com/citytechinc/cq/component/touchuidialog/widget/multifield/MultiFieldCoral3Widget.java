@@ -5,21 +5,22 @@ import com.citytechinc.cq.component.annotations.widgets.MultiField;
 import com.citytechinc.cq.component.touchuidialog.widget.AbstractTouchUIWidget;
 
 @TouchUIWidget(annotationClass = MultiField.class, makerClass = MultiFieldWidgetMaker.class,
-	resourceType = MultiFieldCoral3Widget.RESOURCE_TYPE, ranking = MultiFieldCoral3Widget.RANKING)
+    resourceType = MultiFieldCoral3Widget.RESOURCE_TYPE, ranking = MultiFieldCoral3Widget.RANKING)
 public class MultiFieldCoral3Widget extends AbstractTouchUIWidget {
 
-	public static final String RESOURCE_TYPE = "granite/ui/components/coral/foundation/form/multifield";
-	public static final int RANKING = 1000000;
+    public static final String RESOURCE_TYPE = "granite/ui/components/coral/foundation/form/multifield";
 
-	protected final boolean composite;
+    public static final int RANKING = 1000000;
 
-	public MultiFieldCoral3Widget(MultiFieldWidgetParameters parameters) {
-		super(parameters);
+    protected final boolean composite;
 
-		composite = parameters.isComposite();
-	}
+    public MultiFieldCoral3Widget(MultiFieldWidgetParameters parameters) {
+        super(parameters);
 
-	public boolean isComposite() {
-		return composite;
-	}
+        composite = parameters.isComposite();
+    }
+
+    public boolean isComposite() {
+        return composite;
+    }
 }

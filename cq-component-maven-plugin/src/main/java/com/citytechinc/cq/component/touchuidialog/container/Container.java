@@ -49,7 +49,6 @@ public class Container extends AbstractTouchUIDialogElement {
     }
 
 
-
     public boolean isMargin() {
         return margin;
     }

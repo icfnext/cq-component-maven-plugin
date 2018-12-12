@@ -4,26 +4,27 @@ import com.citytechinc.cq.component.dialog.DefaultDialogElementParameters;
 import com.citytechinc.cq.component.util.Constants;
 
 public class CQIncludeParameters extends DefaultDialogElementParameters {
-	private String path;
 
-	public String getPath() {
-		if (path == null) {
-			return "";
-		}
-		return path;
-	}
+    private String path;
 
-	public void setPath(String path) {
-		this.path = path;
-	}
+    public String getPath() {
+        if (path == null) {
+            return "";
+        }
+        return path;
+    }
 
-	@Override
-	public void setPrimaryType(String primaryType) {
-		throw new UnsupportedOperationException("PrimaryType is Static for CQInclude");
-	}
+    public void setPath(String path) {
+        this.path = path;
+    }
 
-	@Override
-	public String getPrimaryType() {
-		return Constants.CQ_WIDGET;
-	}
+    @Override
+    public void setPrimaryType(String primaryType) {
+        throw new UnsupportedOperationException("PrimaryType is Static for CQInclude");
+    }
+
+    @Override
+    public String getPrimaryType() {
+        return Constants.CQ_WIDGET;
+    }
 }

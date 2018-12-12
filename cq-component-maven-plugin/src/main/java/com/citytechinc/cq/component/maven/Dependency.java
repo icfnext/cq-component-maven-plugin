@@ -2,15 +2,16 @@ package com.citytechinc.cq.component.maven;
 
 public class Dependency {
 
-	private String artifactId;
-	private String groupId;
+    private String artifactId;
 
-	public String getGroupId() {
-		return groupId;
-	}
+    private String groupId;
 
-	public String getArtifactId() {
-		return artifactId;
-	}
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public String getArtifactId() {
+        return artifactId;
+    }
 
 }

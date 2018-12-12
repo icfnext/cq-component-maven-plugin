@@ -8,24 +8,25 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.CLASS)
 @Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface AspectRatio {
-	/**
-	 * The text to display for the aspect ratio
-	 * 
-	 * @return String
-	 */
-	String text();
 
-	/**
-	 * The width part of the aspect ratio
-	 * 
-	 * @return int
-	 */
-	int width();
+    /**
+     * The text to display for the aspect ratio
+     *
+     * @return String
+     */
+    String text();
 
-	/**
-	 * The height part of the aspect ratio
-	 * 
-	 * @return int
-	 */
-	int height();
+    /**
+     * The width part of the aspect ratio
+     *
+     * @return int
+     */
+    int width();
+
+    /**
+     * The height part of the aspect ratio
+     *
+     * @return int
+     */
+    int height();
 }

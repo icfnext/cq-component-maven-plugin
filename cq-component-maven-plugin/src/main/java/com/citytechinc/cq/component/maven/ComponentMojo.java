@@ -27,180 +27,187 @@ import org.reflections.Reflections;
 import javax.naming.ConfigurationException;
 import java.io.File;
 import java.net.MalformedURLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Mojo(name = "component", defaultPhase = LifecyclePhase.PACKAGE, requiresDependencyResolution = ResolutionScope.COMPILE)
 public class ComponentMojo extends AbstractMojo {
-	private static final String TEMP_FILENAME_SUFFIX = "-temp";
-	private static final String PACKAGE_EXTENSION = ".zip";
 
-	@Parameter(property = "aem.package.fileName", defaultValue = "${project.build.finalName}")
-	private String packageFileName;
+    private static final String TEMP_FILENAME_SUFFIX = "-temp";
 
-	@Parameter(defaultValue = "${project}")
-	private MavenProject project;
+    private static final String PACKAGE_EXTENSION = ".zip";
 
-	@Parameter
-	private String componentPathBase;
+    @Parameter(property = "aem.package.fileName", defaultValue = "${project.build.finalName}")
+    private String packageFileName;
 
-	@Parameter(defaultValue = "content")
-	private String componentPathSuffix;
+    @Parameter(defaultValue = "${project}")
+    private MavenProject project;
 
-	@Parameter(defaultValue = "Components")
-	private String defaultComponentGroup;
+    @Parameter
+    private String componentPathBase;
 
-	@Parameter(defaultValue = "camel-case")
-	private String transformerName;
+    @Parameter(defaultValue = "content")
+    private String componentPathSuffix;
 
-	@Parameter(required = false)
-	private List<Dependency> excludeDependencies;
+    @Parameter(defaultValue = "Components")
+    private String defaultComponentGroup;
 
-	@Parameter(defaultValue = "true")
-	private boolean generateTouchUiDialogs;
+    @Parameter(defaultValue = "camel-case")
+    private String transformerName;
 
-	@Parameter(defaultValue = "false")
-	private boolean useCoral3Dialogs;
+    @Parameter(required = false)
+    private List<Dependency> excludeDependencies;
 
-	@Parameter(defaultValue = "true")
-	private boolean generateClassicUiDialogs;
+    @Parameter(defaultValue = "true")
+    private boolean generateTouchUiDialogs;
 
-	@Parameter(required = false)
-	private List<String> additionalFeatures;
+    @Parameter(defaultValue = "false")
+    private boolean useCoral3Dialogs;
 
-	@Override
-	public void execute() throws MojoExecutionException, MojoFailureException {
-		LogSingleton.getInstance().setLogger(getLog());
+    @Parameter(defaultValue = "true")
+    private boolean generateClassicUiDialogs;
 
-		try {
+    @Parameter(required = false)
+    private List<String> additionalFeatures;
 
-			@SuppressWarnings("unchecked")
-			List<String> classpathElements = project.getCompileClasspathElements();
+    @Override
+    public void execute() throws MojoExecutionException, MojoFailureException {
+        LogSingleton.getInstance().setLogger(getLog());
 
-			ClassLoader classLoader =
-				ComponentMojoUtil.getClassLoader(classpathElements, this.getClass().getClassLoader());
+        try {
 
-			ClassPool classPool = ComponentMojoUtil.getClassPool(classLoader);
+            @SuppressWarnings("unchecked")
+            List<String> classpathElements = project.getCompileClasspathElements();
 
-			Reflections reflections = ComponentMojoUtil.getReflections(classLoader);
+            ClassLoader classLoader =
+                ComponentMojoUtil.getClassLoader(classpathElements, this.getClass().getClassLoader());
 
-			List<CtClass> classList =
-				ComponentMojoUtil.getAllComponentAnnotations(classPool, reflections, getExcludedClasses());
+            ClassPool classPool = ComponentMojoUtil.getClassPool(classLoader);
 
-			WidgetRegistry widgetRegistry =
-				new DefaultWidgetRegistry(classPool, classLoader, reflections, getAdditionalFeatures());
+            Reflections reflections = ComponentMojoUtil.getReflections(classLoader);
 
-			TouchUIWidgetRegistry touchUIWidgetRegistry =
-				new DefaultTouchUIWidgetRegistry(classPool, classLoader, reflections, getAdditionalFeatures());
+            List<CtClass> classList =
+                ComponentMojoUtil.getAllComponentAnnotations(classPool, reflections, getExcludedClasses());
 
-			InPlaceEditorRegistry inPlaceEditorRegistry =
-				new DefaultInPlaceEditorRegistry(classPool, classLoader, reflections);
+            WidgetRegistry widgetRegistry =
+                new DefaultWidgetRegistry(classPool, classLoader, reflections, getAdditionalFeatures());
 
-			Map<String, ComponentNameTransformer> transformers =
-				ComponentMojoUtil.getAllTransformers(classPool, reflections);
+            TouchUIWidgetRegistry touchUIWidgetRegistry =
+                new DefaultTouchUIWidgetRegistry(classPool, classLoader, reflections, getAdditionalFeatures());
 
-			ComponentNameTransformer transformer = transformers.get(transformerName);
+            InPlaceEditorRegistry inPlaceEditorRegistry =
+                new DefaultInPlaceEditorRegistry(classPool, classLoader, reflections);
 
-			if (transformer == null) {
-				throw new ConfigurationException("The configured transformer wasn't found");
-			}
+            Map<String, ComponentNameTransformer> transformers =
+                ComponentMojoUtil.getAllTransformers(classPool, reflections);
 
-			ComponentMojoUtil.buildArchiveFileForProjectAndClassList(classList, widgetRegistry, touchUIWidgetRegistry,
-				inPlaceEditorRegistry, classLoader, classPool, new File(project.getBuild().getDirectory()),
-				componentPathBase, componentPathSuffix, defaultComponentGroup, getArchiveFileForProject(),
-				getTempArchiveFileForProject(), transformer, generateTouchUiDialogs, useCoral3Dialogs, generateClassicUiDialogs);
+            ComponentNameTransformer transformer = transformers.get(transformerName);
 
-		} catch (Exception e) {
-			getLog().error(e.getMessage(), e);
-			throw new MojoExecutionException(e.getMessage(), e);
-		}
+            if (transformer == null) {
+                throw new ConfigurationException("The configured transformer wasn't found");
+            }
 
-	}
+            ComponentMojoUtil.buildArchiveFileForProjectAndClassList(classList, widgetRegistry, touchUIWidgetRegistry,
+                inPlaceEditorRegistry, classLoader, classPool, new File(project.getBuild().getDirectory()),
+                componentPathBase, componentPathSuffix, defaultComponentGroup, getArchiveFileForProject(),
+                getTempArchiveFileForProject(), transformer, generateTouchUiDialogs, useCoral3Dialogs,
+                generateClassicUiDialogs);
 
-	private Set<String> getExcludedClasses() throws DependencyResolutionRequiredException, MalformedURLException {
+        } catch (Exception e) {
+            getLog().error(e.getMessage(), e);
+            throw new MojoExecutionException(e.getMessage(), e);
+        }
 
-		getLog().debug("Constructing set of excluded Class names");
+    }
 
-		List<String> excludedDependencyPaths = getExcludedDependencyPaths();
+    private Set<String> getExcludedClasses() throws DependencyResolutionRequiredException, MalformedURLException {
 
-		if (excludedDependencyPaths != null) {
-			ClassLoader exclusionClassLoader =
-				ComponentMojoUtil.getClassLoader(excludedDependencyPaths, this.getClass().getClassLoader());
+        getLog().debug("Constructing set of excluded Class names");
 
-			Reflections reflections = ComponentMojoUtil.getReflections(exclusionClassLoader);
+        List<String> excludedDependencyPaths = getExcludedDependencyPaths();
 
-			Set<String> excludedClassNames = reflections.getStore().getTypesAnnotatedWith(Component.class.getName());
+        if (excludedDependencyPaths != null) {
+            ClassLoader exclusionClassLoader =
+                ComponentMojoUtil.getClassLoader(excludedDependencyPaths, this.getClass().getClassLoader());
 
-			return excludedClassNames;
-		}
+            Reflections reflections = ComponentMojoUtil.getReflections(exclusionClassLoader);
 
-		return null;
-	}
+            Set<String> excludedClassNames = reflections.getStore().getTypesAnnotatedWith(Component.class.getName());
 
-	@SuppressWarnings("unchecked")
-	private List<String> getExcludedDependencyPaths() throws DependencyResolutionRequiredException {
-		if (excludeDependencies != null && !excludeDependencies.isEmpty()) {
-			getLog().debug("Exclusions Found");
+            return excludedClassNames;
+        }
 
-			List<Artifact> compileArtifacts = project.getCompileArtifacts();
+        return null;
+    }
 
-			List<String> excludedClasspathElements = new ArrayList<String>();
+    @SuppressWarnings("unchecked")
+    private List<String> getExcludedDependencyPaths() throws DependencyResolutionRequiredException {
+        if (excludeDependencies != null && !excludeDependencies.isEmpty()) {
+            getLog().debug("Exclusions Found");
 
-			Set<String> excludedArtifactIdentifiers = new HashSet<String>();
+            List<Artifact> compileArtifacts = project.getCompileArtifacts();
 
-			for (Dependency curDependency : excludeDependencies) {
-				excludedArtifactIdentifiers.add(curDependency.getGroupId() + ":" + curDependency.getArtifactId());
-			}
+            List<String> excludedClasspathElements = new ArrayList<String>();
 
-			for (Artifact curArtifact : compileArtifacts) {
-				String referenceIdentifier = curArtifact.getGroupId() + ":" + curArtifact.getArtifactId();
+            Set<String> excludedArtifactIdentifiers = new HashSet<String>();
 
-				if (excludedArtifactIdentifiers.contains(referenceIdentifier)) {
-					MavenProject identifiedProject =
-						(MavenProject) project.getProjectReferences().get(referenceIdentifier);
-					if (identifiedProject != null) {
-						excludedClasspathElements.add(identifiedProject.getBuild().getOutputDirectory());
-						getLog().debug("Excluding " + identifiedProject.getBuild().getOutputDirectory());
-					} else {
-						File file = curArtifact.getFile();
-						if (file == null) {
-							throw new DependencyResolutionRequiredException(curArtifact);
-						}
-						excludedClasspathElements.add(file.getPath());
-						getLog().debug("Excluding " + file.getPath());
-					}
-				}
-			}
+            for (Dependency curDependency : excludeDependencies) {
+                excludedArtifactIdentifiers.add(curDependency.getGroupId() + ":" + curDependency.getArtifactId());
+            }
 
-			return excludedClasspathElements;
-		}
+            for (Artifact curArtifact : compileArtifacts) {
+                String referenceIdentifier = curArtifact.getGroupId() + ":" + curArtifact.getArtifactId();
 
-		return null;
+                if (excludedArtifactIdentifiers.contains(referenceIdentifier)) {
+                    MavenProject identifiedProject =
+                        (MavenProject) project.getProjectReferences().get(referenceIdentifier);
+                    if (identifiedProject != null) {
+                        excludedClasspathElements.add(identifiedProject.getBuild().getOutputDirectory());
+                        getLog().debug("Excluding " + identifiedProject.getBuild().getOutputDirectory());
+                    } else {
+                        File file = curArtifact.getFile();
+                        if (file == null) {
+                            throw new DependencyResolutionRequiredException(curArtifact);
+                        }
+                        excludedClasspathElements.add(file.getPath());
+                        getLog().debug("Excluding " + file.getPath());
+                    }
+                }
+            }
 
-	}
+            return excludedClasspathElements;
+        }
 
-	private File getArchiveFileForProject() {
-		File buildDirectory = new File(project.getBuild().getDirectory());
+        return null;
 
-		getLog().debug("Archive file name configured to be " + packageFileName + PACKAGE_EXTENSION);
+    }
 
-		return new File(buildDirectory, packageFileName + PACKAGE_EXTENSION);
-	}
+    private File getArchiveFileForProject() {
+        File buildDirectory = new File(project.getBuild().getDirectory());
 
-	private File getTempArchiveFileForProject() {
-		File buildDirectory = new File(project.getBuild().getDirectory());
+        getLog().debug("Archive file name configured to be " + packageFileName + PACKAGE_EXTENSION);
 
-		String tempPackageFileName = packageFileName + TEMP_FILENAME_SUFFIX + PACKAGE_EXTENSION;
+        return new File(buildDirectory, packageFileName + PACKAGE_EXTENSION);
+    }
 
-		getLog().debug("Temp archive file name configured to be " + tempPackageFileName);
+    private File getTempArchiveFileForProject() {
+        File buildDirectory = new File(project.getBuild().getDirectory());
 
-		return new File(buildDirectory, tempPackageFileName);
-	}
+        String tempPackageFileName = packageFileName + TEMP_FILENAME_SUFFIX + PACKAGE_EXTENSION;
 
-	private List<String> getAdditionalFeatures() {
-		if (additionalFeatures == null) {
-			return new ArrayList<String>();
-		}
+        getLog().debug("Temp archive file name configured to be " + tempPackageFileName);
 
-		return additionalFeatures;
-	}
+        return new File(buildDirectory, tempPackageFileName);
+    }
+
+    private List<String> getAdditionalFeatures() {
+        if (additionalFeatures == null) {
+            return new ArrayList<String>();
+        }
+
+        return additionalFeatures;
+    }
 }

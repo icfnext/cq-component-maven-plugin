@@ -5,54 +5,57 @@ import com.citytechinc.cq.component.touchuidialog.widget.DefaultTouchUIWidgetPar
 
 public class NumberFieldWidgetParameters extends DefaultTouchUIWidgetParameters {
 
-	private Double min;
-	private Double max;
-	private Double step;
-	private String typeHint;
+    private Double min;
 
-	public Double getMin() {
-		return min;
-	}
+    private Double max;
 
-	public void setMin(Double min) {
-		this.min = min;
-	}
+    private Double step;
 
-	public Double getMax() {
-		return max;
-	}
+    private String typeHint;
 
-	public void setMax(Double max) {
-		this.max = max;
-	}
+    public Double getMin() {
+        return min;
+    }
 
-	public Double getStep() {
-		return step;
-	}
+    public void setMin(Double min) {
+        this.min = min;
+    }
 
-	public void setStep(Double step) {
-		this.step = step;
-	}
+    public Double getMax() {
+        return max;
+    }
 
-	public String getTypeHint() {
-		return typeHint;
-	}
+    public void setMax(Double max) {
+        this.max = max;
+    }
 
-	public void setTypeHint(String typeHint) {
-		this.typeHint = typeHint;
-	}
+    public Double getStep() {
+        return step;
+    }
 
-	@Override
-	public String getResourceType() {
-		if(TouchUIDialogType.CORAL3.isOfType(getTouchUIDialogType())) {
-			return NumberFieldCoral3Widget.RESOURCE_TYPE;
-		}
-		return NumberFieldWidget.RESOURCE_TYPE;
-	}
+    public void setStep(Double step) {
+        this.step = step;
+    }
 
-	@Override
-	public void setResourceType(String resourceType) {
-		throw new UnsupportedOperationException("resourceType is Static for NumberFieldWidget");
-	}
+    public String getTypeHint() {
+        return typeHint;
+    }
+
+    public void setTypeHint(String typeHint) {
+        this.typeHint = typeHint;
+    }
+
+    @Override
+    public String getResourceType() {
+        if (TouchUIDialogType.CORAL3.isOfType(getTouchUIDialogType())) {
+            return NumberFieldCoral3Widget.RESOURCE_TYPE;
+        }
+        return NumberFieldWidget.RESOURCE_TYPE;
+    }
+
+    @Override
+    public void setResourceType(String resourceType) {
+        throw new UnsupportedOperationException("resourceType is Static for NumberFieldWidget");
+    }
 
 }

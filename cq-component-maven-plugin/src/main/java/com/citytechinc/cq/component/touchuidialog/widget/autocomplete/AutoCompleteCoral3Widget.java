@@ -5,32 +5,34 @@ import com.citytechinc.cq.component.annotations.widgets.AutoComplete;
 import com.citytechinc.cq.component.touchuidialog.widget.AbstractTouchUIWidget;
 
 @TouchUIWidget(annotationClass = AutoComplete.class, makerClass = AutoCompleteWidgetMaker.class,
-	resourceType = AutoCompleteCoral3Widget.RESOURCE_TYPE)
+    resourceType = AutoCompleteCoral3Widget.RESOURCE_TYPE)
 public class AutoCompleteCoral3Widget extends AbstractTouchUIWidget {
 
-	public static final String RESOURCE_TYPE = "granite/ui/components/coral/foundation/form/autocomplete";
+    public static final String RESOURCE_TYPE = "granite/ui/components/coral/foundation/form/autocomplete";
 
-	protected final boolean multiple;
-	protected final String mode;
-	protected final boolean forceSelection;
+    protected final boolean multiple;
 
-	public AutoCompleteCoral3Widget(AutoCompleteWidgetParameters parameters) {
-		super(parameters);
+    protected final String mode;
 
-		multiple = parameters.isMultiple();
-		mode = parameters.getMode();
-		forceSelection = parameters.isForceSelection();
-	}
+    protected final boolean forceSelection;
 
-	public boolean isMultiple() {
-		return multiple;
-	}
+    public AutoCompleteCoral3Widget(AutoCompleteWidgetParameters parameters) {
+        super(parameters);
 
-	public String getMode() {
-		return mode;
-	}
+        multiple = parameters.isMultiple();
+        mode = parameters.getMode();
+        forceSelection = parameters.isForceSelection();
+    }
 
-	public boolean isForceSelection(){
-		return forceSelection;
-	}
+    public boolean isMultiple() {
+        return multiple;
+    }
+
+    public String getMode() {
+        return mode;
+    }
+
+    public boolean isForceSelection() {
+        return forceSelection;
+    }
 }

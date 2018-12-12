@@ -9,63 +9,63 @@ import org.codehaus.plexus.util.StringUtils;
 
 public class DateTimeWidgetMaker extends AbstractTouchUIWidgetMaker<DateTimeWidgetParameters> {
 
-	public DateTimeWidgetMaker(TouchUIWidgetMakerParameters parameters) throws ClassNotFoundException {
-		super(parameters);
-	}
+    public DateTimeWidgetMaker(TouchUIWidgetMakerParameters parameters) throws ClassNotFoundException {
+        super(parameters);
+    }
 
-	@Override
-	public TouchUIDialogElement make(DateTimeWidgetParameters widgetParameters) throws ClassNotFoundException {
+    @Override
+    public TouchUIDialogElement make(DateTimeWidgetParameters widgetParameters) throws ClassNotFoundException {
 
-		// Date field specific stuff
-		DateTime annotation = getAnnotation(DateTime.class);
+        // Date field specific stuff
+        DateTime annotation = getAnnotation(DateTime.class);
 
-		widgetParameters.setDisplayedFormat(getDisplayedFormatForField(annotation));
-		widgetParameters.setStoredFormat(getStoredFormatForField(annotation));
-		widgetParameters.setValueFormat(getValueFormatForField(annotation));
-		widgetParameters.setMinDate(getMinDateForField(annotation));
-		widgetParameters.setMaxDate(getMaxDateForField(annotation));
-		widgetParameters.setTouchUIDialogType(parameters.getTouchUIDialogType());
+        widgetParameters.setDisplayedFormat(getDisplayedFormatForField(annotation));
+        widgetParameters.setStoredFormat(getStoredFormatForField(annotation));
+        widgetParameters.setValueFormat(getValueFormatForField(annotation));
+        widgetParameters.setMinDate(getMinDateForField(annotation));
+        widgetParameters.setMaxDate(getMaxDateForField(annotation));
+        widgetParameters.setTouchUIDialogType(parameters.getTouchUIDialogType());
 
 
-		if(TouchUIDialogType.CORAL3.isOfType(widgetParameters.getTouchUIDialogType())) {
-			return new DateTimeCoral3Widget(widgetParameters);
-		}
-		return new DateTimeWidget(widgetParameters);
-	}
+        if (TouchUIDialogType.CORAL3.isOfType(widgetParameters.getTouchUIDialogType())) {
+            return new DateTimeCoral3Widget(widgetParameters);
+        }
+        return new DateTimeWidget(widgetParameters);
+    }
 
-	protected String getMinDateForField(DateTime annotation) {
-		if (StringUtils.isNotBlank(annotation.minDate())) {
-			return annotation.minDate();
-		}
+    protected String getMinDateForField(DateTime annotation) {
+        if (StringUtils.isNotBlank(annotation.minDate())) {
+            return annotation.minDate();
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	protected String getMaxDateForField(DateTime annotation) {
-		if (StringUtils.isNotBlank(annotation.maxDate())) {
-			return annotation.maxDate();
-		}
+    protected String getMaxDateForField(DateTime annotation) {
+        if (StringUtils.isNotBlank(annotation.maxDate())) {
+            return annotation.maxDate();
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	protected String getDisplayedFormatForField(DateTime annotation) {
-		if (StringUtils.isNotBlank(annotation.displayedFormat())) {
-			return annotation.displayedFormat();
-		}
+    protected String getDisplayedFormatForField(DateTime annotation) {
+        if (StringUtils.isNotBlank(annotation.displayedFormat())) {
+            return annotation.displayedFormat();
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	protected String getStoredFormatForField(DateTime annotation) {
-		if (StringUtils.isNotBlank(annotation.storedFormat())) {
-			return annotation.storedFormat();
-		}
+    protected String getStoredFormatForField(DateTime annotation) {
+        if (StringUtils.isNotBlank(annotation.storedFormat())) {
+            return annotation.storedFormat();
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	protected String getValueFormatForField(DateTime annotation) {
-		return annotation.valueFormat();
-	}
+    protected String getValueFormatForField(DateTime annotation) {
+        return annotation.valueFormat();
+    }
 }

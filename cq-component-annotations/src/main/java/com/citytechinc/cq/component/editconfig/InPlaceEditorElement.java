@@ -1,17 +1,18 @@
 package com.citytechinc.cq.component.editconfig;
 
-import java.util.List;
-
 import com.citytechinc.cq.component.xml.XmlElement;
 
+import java.util.List;
+
 public interface InPlaceEditorElement extends XmlElement {
-	Boolean getActive();
 
-	String getEditorType();
+    Boolean getActive();
 
-	ConfigElement getConfigElement();
+    String getEditorType();
 
-	void setConfigElement(ConfigElement configElement);
+    ConfigElement getConfigElement();
 
-	void setContainedElements(List<XmlElement> containedElements);
+    void setConfigElement(ConfigElement configElement);
+
+    void setContainedElements(List<XmlElement> containedElements);
 }

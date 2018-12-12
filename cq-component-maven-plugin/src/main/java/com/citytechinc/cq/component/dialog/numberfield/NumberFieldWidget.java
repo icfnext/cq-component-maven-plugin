@@ -6,35 +6,39 @@ import com.citytechinc.cq.component.dialog.AbstractWidget;
 
 @Widget(annotationClass = NumberField.class, makerClass = NumberFieldWidgetMaker.class, xtype = NumberFieldWidget.XTYPE)
 public class NumberFieldWidget extends AbstractWidget {
-	public static final String XTYPE = "numberfield";
 
-	private final boolean allowDecimals;
-	private final boolean allowNegative;
-	private final int decimalPrecision;
-	private final String decimalSeparator;
+    public static final String XTYPE = "numberfield";
 
-	public NumberFieldWidget(NumberFieldWidgetParameters parameters) {
-		super(parameters);
-		this.allowDecimals = parameters.isAllowDecimals();
-		this.allowNegative = parameters.isAllowNegative();
-		this.decimalPrecision = parameters.getDecimalPrecision();
-		this.decimalSeparator = parameters.getDecimalSeparator();
-	}
+    private final boolean allowDecimals;
 
-	public boolean isAllowDecimals() {
-		return allowDecimals;
-	}
+    private final boolean allowNegative;
 
-	public boolean isAllowNegative() {
-		return allowNegative;
-	}
+    private final int decimalPrecision;
 
-	public int getDecimalPrecision() {
-		return decimalPrecision;
-	}
+    private final String decimalSeparator;
 
-	public String getDecimalSeparator() {
-		return decimalSeparator;
-	}
+    public NumberFieldWidget(NumberFieldWidgetParameters parameters) {
+        super(parameters);
+        this.allowDecimals = parameters.isAllowDecimals();
+        this.allowNegative = parameters.isAllowNegative();
+        this.decimalPrecision = parameters.getDecimalPrecision();
+        this.decimalSeparator = parameters.getDecimalSeparator();
+    }
+
+    public boolean isAllowDecimals() {
+        return allowDecimals;
+    }
+
+    public boolean isAllowNegative() {
+        return allowNegative;
+    }
+
+    public int getDecimalPrecision() {
+        return decimalPrecision;
+    }
+
+    public String getDecimalSeparator() {
+        return decimalSeparator;
+    }
 
 }

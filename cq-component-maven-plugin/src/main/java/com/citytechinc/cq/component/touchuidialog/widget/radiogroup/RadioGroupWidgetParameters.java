@@ -13,77 +13,79 @@ import java.util.List;
 
 public class RadioGroupWidgetParameters extends DefaultTouchUIWidgetParameters {
 
-	private List<Option> options;
-	private DataSource dataSource;
-	private String text;
+    private List<Option> options;
 
-	public String getText() {
-		return text;
-	}
+    private DataSource dataSource;
 
-	public void setText(String text) {
-		this.text = text;
-	}
+    private String text;
 
-	public Options getOptions() {
-		if (options != null) {
-			OptionsParameters optionsParameters = new OptionsParameters();
-			optionsParameters.setOptions(options);
-			return new Options(optionsParameters);
-		}
+    public String getText() {
+        return text;
+    }
 
-		return null;
-	}
+    public void setText(String text) {
+        this.text = text;
+    }
 
-	public void addOption(Option option) {
-		if (options == null) {
-			options = new ArrayList<Option>();
-		}
+    public Options getOptions() {
+        if (options != null) {
+            OptionsParameters optionsParameters = new OptionsParameters();
+            optionsParameters.setOptions(options);
+            return new Options(optionsParameters);
+        }
 
-		options.add(option);
-	}
+        return null;
+    }
 
-	public void setOptions(List<Option> options) {
-		this.options = options;
-	}
+    public void addOption(Option option) {
+        if (options == null) {
+            options = new ArrayList<Option>();
+        }
 
-	public DataSource getDataSource() {
-		return dataSource;
-	}
+        options.add(option);
+    }
 
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-	}
+    public void setOptions(List<Option> options) {
+        this.options = options;
+    }
 
-	@Override
-	public List<? extends XmlElement> getContainedElements() {
-		List<XmlElement> allContainedElements = new ArrayList<XmlElement>();
+    public DataSource getDataSource() {
+        return dataSource;
+    }
 
-		if (getOptions() != null) {
-			allContainedElements.add(getOptions());
-		}
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
-		if (getDataSource() != null) {
-			allContainedElements.add(getDataSource());
-		}
+    @Override
+    public List<? extends XmlElement> getContainedElements() {
+        List<XmlElement> allContainedElements = new ArrayList<XmlElement>();
 
-		if (containedElements != null) {
-			allContainedElements.addAll(containedElements);
-		}
+        if (getOptions() != null) {
+            allContainedElements.add(getOptions());
+        }
 
-		return allContainedElements;
-	}
+        if (getDataSource() != null) {
+            allContainedElements.add(getDataSource());
+        }
 
-	@Override
-	public String getResourceType() {
-		if(TouchUIDialogType.CORAL3.isOfType(getTouchUIDialogType())) {
-			return RadioGroupCoral3Widget.RESOURCE_TYPE;
-		}
-		return RadioGroupWidget.RESOURCE_TYPE;
-	}
+        if (containedElements != null) {
+            allContainedElements.addAll(containedElements);
+        }
 
-	@Override
-	public void setResourceType(String resourceType) {
-		throw new UnsupportedOperationException("resourceType is Static for RadioGroupWidget");
-	}
+        return allContainedElements;
+    }
+
+    @Override
+    public String getResourceType() {
+        if (TouchUIDialogType.CORAL3.isOfType(getTouchUIDialogType())) {
+            return RadioGroupCoral3Widget.RESOURCE_TYPE;
+        }
+        return RadioGroupWidget.RESOURCE_TYPE;
+    }
+
+    @Override
+    public void setResourceType(String resourceType) {
+        throw new UnsupportedOperationException("resourceType is Static for RadioGroupWidget");
+    }
 }

@@ -4,19 +4,20 @@ import com.citytechinc.cq.component.touchuidialog.layout.AbstractLayoutElement;
 
 public class TabsLayoutElement extends AbstractLayoutElement {
 
-	public static final String RESOURCE_TYPE = "granite/ui/components/foundation/layouts/tabs";
-	public static final String RESOURCE_TYPE_CORAL3 = "granite/ui/components/coral/foundation/tabs";
+    public static final String RESOURCE_TYPE = "granite/ui/components/foundation/layouts/tabs";
 
-	private String type;
+    public static final String RESOURCE_TYPE_CORAL3 = "granite/ui/components/coral/foundation/tabs";
 
-	public TabsLayoutElement(TabsLayoutElementParameters parameters) {
-		super(parameters);
+    private String type;
 
-		this.type = parameters.getType();
-	}
+    public TabsLayoutElement(TabsLayoutElementParameters parameters) {
+        super(parameters);
 
-	public String getType() {
-		return type;
-	}
+        this.type = parameters.getType();
+    }
+
+    public String getType() {
+        return type;
+    }
 
 }

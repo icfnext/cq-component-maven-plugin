@@ -10,94 +10,99 @@ import java.util.List;
 
 public class AutoCompleteWidgetParameters extends DefaultTouchUIWidgetParameters {
 
-	private boolean multiple;
-	private String mode;
-	private TouchUIDialogElement datasource;
-	private TouchUIDialogElement values;
-	private TouchUIDialogElement options;
-	private boolean forceSelection;
+    private boolean multiple;
 
-	// TODO: Look into the translateOptions mechanism
+    private String mode;
 
-	public boolean isMultiple() {
-		return multiple;
-	}
+    private TouchUIDialogElement datasource;
 
-	public void setMultiple(boolean multiple) {
-		this.multiple = multiple;
-	}
+    private TouchUIDialogElement values;
 
-	public String getMode() {
-		return mode;
-	}
+    private TouchUIDialogElement options;
 
-	public void setMode(String mode) {
-		this.mode = mode;
-	}
+    private boolean forceSelection;
 
-	public TouchUIDialogElement getDatasource() {
-		return datasource;
-	}
+    // TODO: Look into the translateOptions mechanism
 
-	public void setDatasource(TouchUIDialogElement datasource) {
-		this.datasource = datasource;
-	}
+    public boolean isMultiple() {
+        return multiple;
+    }
 
-	public TouchUIDialogElement getValues() {
-		return values;
-	}
+    public void setMultiple(boolean multiple) {
+        this.multiple = multiple;
+    }
 
-	public void setValues(TouchUIDialogElement values) {
-		this.values = values;
-	}
+    public String getMode() {
+        return mode;
+    }
 
-	public TouchUIDialogElement getOptions() {
-		return options;
-	}
+    public void setMode(String mode) {
+        this.mode = mode;
+    }
 
-	public void setOptions(TouchUIDialogElement options) {
-		this.options = options;
-	}
+    public TouchUIDialogElement getDatasource() {
+        return datasource;
+    }
 
-	public boolean isForceSelection() {
-		return forceSelection;
-	}
+    public void setDatasource(TouchUIDialogElement datasource) {
+        this.datasource = datasource;
+    }
 
-	public void setForceSelection(boolean forceSelection) {
-		this.forceSelection = forceSelection;
-	}
+    public TouchUIDialogElement getValues() {
+        return values;
+    }
 
-	@Override
-	public List<? extends XmlElement> getContainedElements() {
-		List<XmlElement> allContainedElements = new ArrayList<XmlElement>();
+    public void setValues(TouchUIDialogElement values) {
+        this.values = values;
+    }
 
-		if (getDatasource() != null) {
-			allContainedElements.add(getDatasource());
-		}
-		if (getOptions() != null) {
-			allContainedElements.add(getOptions());
-		}
-		if (getValues() != null) {
-			allContainedElements.add(getValues());
-		}
+    public TouchUIDialogElement getOptions() {
+        return options;
+    }
 
-		if (containedElements != null) {
-			allContainedElements.addAll(containedElements);
-		}
+    public void setOptions(TouchUIDialogElement options) {
+        this.options = options;
+    }
 
-		return allContainedElements;
-	}
+    public boolean isForceSelection() {
+        return forceSelection;
+    }
 
-	@Override
-	public String getResourceType() {
-		if(TouchUIDialogType.CORAL3.isOfType(getTouchUIDialogType())) {
-			return AutoCompleteCoral3Widget.RESOURCE_TYPE;
-		}
-		return AutoCompleteWidget.RESOURCE_TYPE;
-	}
+    public void setForceSelection(boolean forceSelection) {
+        this.forceSelection = forceSelection;
+    }
 
-	@Override
-	public void setResourceType(String resourceType) {
-		throw new UnsupportedOperationException("resourceType is Static for AutoCompleteWidget");
-	}
+    @Override
+    public List<? extends XmlElement> getContainedElements() {
+        List<XmlElement> allContainedElements = new ArrayList<XmlElement>();
+
+        if (getDatasource() != null) {
+            allContainedElements.add(getDatasource());
+        }
+        if (getOptions() != null) {
+            allContainedElements.add(getOptions());
+        }
+        if (getValues() != null) {
+            allContainedElements.add(getValues());
+        }
+
+        if (containedElements != null) {
+            allContainedElements.addAll(containedElements);
+        }
+
+        return allContainedElements;
+    }
+
+    @Override
+    public String getResourceType() {
+        if (TouchUIDialogType.CORAL3.isOfType(getTouchUIDialogType())) {
+            return AutoCompleteCoral3Widget.RESOURCE_TYPE;
+        }
+        return AutoCompleteWidget.RESOURCE_TYPE;
+    }
+
+    @Override
+    public void setResourceType(String resourceType) {
+        throw new UnsupportedOperationException("resourceType is Static for AutoCompleteWidget");
+    }
 }

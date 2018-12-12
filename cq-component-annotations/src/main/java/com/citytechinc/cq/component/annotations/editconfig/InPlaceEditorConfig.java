@@ -3,37 +3,40 @@ package com.citytechinc.cq.component.annotations.editconfig;
 import javassist.CtMember;
 
 public class InPlaceEditorConfig {
-	private Object inPlaceEditorAnnotation;
-	private CtMember member;
-	private Class<?> annotationClass;
 
-	public InPlaceEditorConfig(Object inPlaceEditorAnnotation, CtMember member, Class<?> annotationClass) {
-		this.inPlaceEditorAnnotation = inPlaceEditorAnnotation;
-		this.member = member;
-		this.annotationClass = annotationClass;
-	}
+    private Object inPlaceEditorAnnotation;
 
-	public Object getInPlaceEditorAnnotation() {
-		return inPlaceEditorAnnotation;
-	}
+    private CtMember member;
 
-	public void setInPlaceEditorAnnotation(Object inPlaceEditorAnnotation) {
-		this.inPlaceEditorAnnotation = inPlaceEditorAnnotation;
-	}
+    private Class<?> annotationClass;
 
-	public CtMember getMember() {
-		return member;
-	}
+    public InPlaceEditorConfig(Object inPlaceEditorAnnotation, CtMember member, Class<?> annotationClass) {
+        this.inPlaceEditorAnnotation = inPlaceEditorAnnotation;
+        this.member = member;
+        this.annotationClass = annotationClass;
+    }
 
-	public void setMember(CtMember member) {
-		this.member = member;
-	}
+    public Object getInPlaceEditorAnnotation() {
+        return inPlaceEditorAnnotation;
+    }
 
-	public Class<?> getAnnotationClass() {
-		return annotationClass;
-	}
+    public void setInPlaceEditorAnnotation(Object inPlaceEditorAnnotation) {
+        this.inPlaceEditorAnnotation = inPlaceEditorAnnotation;
+    }
 
-	public void setAnnotationClass(Class<?> annotationClass) {
-		this.annotationClass = annotationClass;
-	}
+    public CtMember getMember() {
+        return member;
+    }
+
+    public void setMember(CtMember member) {
+        this.member = member;
+    }
+
+    public Class<?> getAnnotationClass() {
+        return annotationClass;
+    }
+
+    public void setAnnotationClass(Class<?> annotationClass) {
+        this.annotationClass = annotationClass;
+    }
 }

@@ -4,24 +4,25 @@ import com.citytechinc.cq.component.dialog.AbstractDialogElement;
 
 public class RteStyle extends AbstractDialogElement {
 
-	public static final String PRIMARY_TYPE = "nt:unstructured";
+    public static final String PRIMARY_TYPE = "nt:unstructured";
 
-	private final String cssName;
-	private final String text;
+    private final String cssName;
 
-	public RteStyle(RteStyleParameters parameters) {
-		super(parameters);
+    private final String text;
 
-		this.cssName = parameters.getCssName();
-		this.text = parameters.getText();
-	}
+    public RteStyle(RteStyleParameters parameters) {
+        super(parameters);
 
-	public String getCssName() {
-		return cssName;
-	}
+        this.cssName = parameters.getCssName();
+        this.text = parameters.getText();
+    }
 
-	public String getText() {
-		return text;
-	}
+    public String getCssName() {
+        return cssName;
+    }
+
+    public String getText() {
+        return text;
+    }
 
 }

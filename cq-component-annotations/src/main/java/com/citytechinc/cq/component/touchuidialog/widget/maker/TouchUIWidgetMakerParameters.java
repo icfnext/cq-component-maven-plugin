@@ -1,91 +1,96 @@
 package com.citytechinc.cq.component.touchuidialog.widget.maker;
 
+import com.citytechinc.cq.component.dialog.DialogFieldConfig;
+import com.citytechinc.cq.component.touchuidialog.widget.registry.TouchUIWidgetRegistry;
 import javassist.ClassPool;
 import javassist.CtMember;
 
-import com.citytechinc.cq.component.dialog.DialogFieldConfig;
-import com.citytechinc.cq.component.touchuidialog.widget.registry.TouchUIWidgetRegistry;
-
 public class TouchUIWidgetMakerParameters {
 
-	private DialogFieldConfig dialogFieldConfig;
-	private Class<?> containingClass;
-	private ClassLoader classLoader;
-	private ClassPool classPool;
-	private String resourceType;
-	private boolean useDotSlashInName;
-	private TouchUIWidgetRegistry widgetRegistry;
-	private String touchUIDialogType;
+    private DialogFieldConfig dialogFieldConfig;
 
-	public DialogFieldConfig getDialogFieldConfig() {
-		return dialogFieldConfig;
-	}
+    private Class<?> containingClass;
 
-	public void setDialogFieldConfig(DialogFieldConfig dialogFieldConfig) {
-		this.dialogFieldConfig = dialogFieldConfig;
-	}
+    private ClassLoader classLoader;
 
-	public Class<?> getContainingClass() {
-		return containingClass;
-	}
+    private ClassPool classPool;
 
-	public void setContainingClass(Class<?> containingClass) {
-		this.containingClass = containingClass;
-	}
+    private String resourceType;
 
-	public ClassLoader getClassLoader() {
-		return classLoader;
-	}
+    private boolean useDotSlashInName;
 
-	public void setClassLoader(ClassLoader classLoader) {
-		this.classLoader = classLoader;
-	}
+    private TouchUIWidgetRegistry widgetRegistry;
 
-	public ClassPool getClassPool() {
-		return classPool;
-	}
+    private String touchUIDialogType;
 
-	public void setClassPool(ClassPool classPool) {
-		this.classPool = classPool;
-	}
+    public DialogFieldConfig getDialogFieldConfig() {
+        return dialogFieldConfig;
+    }
 
-	public String getResourceType() {
-		return resourceType;
-	}
+    public void setDialogFieldConfig(DialogFieldConfig dialogFieldConfig) {
+        this.dialogFieldConfig = dialogFieldConfig;
+    }
 
-	public void setResourceType(String resourceType) {
-		this.resourceType = resourceType;
-	}
+    public Class<?> getContainingClass() {
+        return containingClass;
+    }
 
-	public boolean isUseDotSlashInName() {
-		return useDotSlashInName;
-	}
+    public void setContainingClass(Class<?> containingClass) {
+        this.containingClass = containingClass;
+    }
 
-	public void setUseDotSlashInName(boolean useDotSlashInName) {
-		this.useDotSlashInName = useDotSlashInName;
-	}
+    public ClassLoader getClassLoader() {
+        return classLoader;
+    }
 
-	/**
-	 *
-	 * @return The CtMember representing the Widget
-	 */
-	public CtMember getCtMember() {
-		return dialogFieldConfig.getMember();
-	}
+    public void setClassLoader(ClassLoader classLoader) {
+        this.classLoader = classLoader;
+    }
 
-	public TouchUIWidgetRegistry getWidgetRegistry() {
-		return widgetRegistry;
-	}
+    public ClassPool getClassPool() {
+        return classPool;
+    }
 
-	public void setWidgetRegistry(TouchUIWidgetRegistry widgetRegistry) {
-		this.widgetRegistry = widgetRegistry;
-	}
+    public void setClassPool(ClassPool classPool) {
+        this.classPool = classPool;
+    }
 
-	public String getTouchUIDialogType() {
-		return touchUIDialogType;
-	}
+    public String getResourceType() {
+        return resourceType;
+    }
 
-	public void setTouchUIDialogType(String touchUIDialogType) {
-		this.touchUIDialogType = touchUIDialogType;
-	}
+    public void setResourceType(String resourceType) {
+        this.resourceType = resourceType;
+    }
+
+    public boolean isUseDotSlashInName() {
+        return useDotSlashInName;
+    }
+
+    public void setUseDotSlashInName(boolean useDotSlashInName) {
+        this.useDotSlashInName = useDotSlashInName;
+    }
+
+    /**
+     * @return The CtMember representing the Widget
+     */
+    public CtMember getCtMember() {
+        return dialogFieldConfig.getMember();
+    }
+
+    public TouchUIWidgetRegistry getWidgetRegistry() {
+        return widgetRegistry;
+    }
+
+    public void setWidgetRegistry(TouchUIWidgetRegistry widgetRegistry) {
+        this.widgetRegistry = widgetRegistry;
+    }
+
+    public String getTouchUIDialogType() {
+        return touchUIDialogType;
+    }
+
+    public void setTouchUIDialogType(String touchUIDialogType) {
+        this.touchUIDialogType = touchUIDialogType;
+    }
 }

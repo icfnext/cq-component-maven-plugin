@@ -2,19 +2,19 @@ package com.citytechinc.cq.component.dialog.richtexteditor;
 
 public class EditRtePlugin extends RtePlugin {
 
-	public static final String EDIT = "edit";
+    public static final String EDIT = "edit";
 
-	private final String defaultPasteMode;
+    private final String defaultPasteMode;
 
-	public EditRtePlugin(EditRtePluginParameters parameters) {
+    public EditRtePlugin(EditRtePluginParameters parameters) {
 
-		super(parameters);
+        super(parameters);
 
-		this.defaultPasteMode = parameters.getDefaultPasteMode();
+        this.defaultPasteMode = parameters.getDefaultPasteMode();
 
-	}
+    }
 
-	public String getDefaultPasteMode() {
-		return defaultPasteMode;
-	}
+    public String getDefaultPasteMode() {
+        return defaultPasteMode;
+    }
 }

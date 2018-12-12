@@ -4,51 +4,54 @@ import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 import com.citytechinc.cq.component.util.Constants;
 
 public class DateFieldWidgetParameters extends DefaultWidgetParameters {
-	private int startDay;
-	private boolean showToday;
-	private String format;
 
-	public int getStartDay() {
-		return startDay;
-	}
+    private int startDay;
 
-	public void setStartDay(int startDay) {
-		this.startDay = startDay;
-	}
+    private boolean showToday;
 
-	public boolean isShowToday() {
-		return showToday;
-	}
+    private String format;
 
-	public void setShowToday(boolean showToday) {
-		this.showToday = showToday;
-	}
+    public int getStartDay() {
+        return startDay;
+    }
 
-	public String getFormat() {
-		return format;
-	}
+    public void setStartDay(int startDay) {
+        this.startDay = startDay;
+    }
 
-	public void setFormat(String format) {
-		this.format = format;
-	}
+    public boolean isShowToday() {
+        return showToday;
+    }
 
-	@Override
-	public String getPrimaryType() {
-		return Constants.CQ_WIDGET;
-	}
+    public void setShowToday(boolean showToday) {
+        this.showToday = showToday;
+    }
 
-	@Override
-	public void setPrimaryType(String primaryType) {
-		throw new UnsupportedOperationException("PrimaryType is Static for DateFieldWidget");
-	}
+    public String getFormat() {
+        return format;
+    }
 
-	@Override
-	public String getXtype() {
-		return DateFieldWidget.XTYPE;
-	}
+    public void setFormat(String format) {
+        this.format = format;
+    }
 
-	@Override
-	public void setXtype(String xtype) {
-		throw new UnsupportedOperationException("xtype is Static for DateFieldWidget");
-	}
+    @Override
+    public String getPrimaryType() {
+        return Constants.CQ_WIDGET;
+    }
+
+    @Override
+    public void setPrimaryType(String primaryType) {
+        throw new UnsupportedOperationException("PrimaryType is Static for DateFieldWidget");
+    }
+
+    @Override
+    public String getXtype() {
+        return DateFieldWidget.XTYPE;
+    }
+
+    @Override
+    public void setXtype(String xtype) {
+        throw new UnsupportedOperationException("xtype is Static for DateFieldWidget");
+    }
 }

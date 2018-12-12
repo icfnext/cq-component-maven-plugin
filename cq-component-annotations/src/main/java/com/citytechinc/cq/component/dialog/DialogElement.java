@@ -3,9 +3,10 @@ package com.citytechinc.cq.component.dialog;
 import com.citytechinc.cq.component.xml.XmlElement;
 
 public interface DialogElement extends XmlElement {
-	public void setRanking(double ranking);
 
-	public double getRanking();
+    void setRanking(double ranking);
 
-	public void setFieldName(String fieldName);
+    double getRanking();
+
+    void setFieldName(String fieldName);
 }

@@ -1,13 +1,5 @@
 package com.citytechinc.cq.component.dialog.factory;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Set;
-
-import javassist.CannotCompileException;
-import javassist.NotFoundException;
-
-import org.codehaus.plexus.util.StringUtils;
-
 import com.citytechinc.cq.component.dialog.DialogElement;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.maker.WidgetMaker;
@@ -15,130 +7,141 @@ import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 import com.citytechinc.cq.component.dialog.maker.impl.DefaultWidgetMaker;
 import com.citytechinc.cq.component.maven.util.LogSingleton;
 import com.citytechinc.cq.component.util.WidgetConfigHolder;
+import javassist.CannotCompileException;
+import javassist.NotFoundException;
+import org.codehaus.plexus.util.StringUtils;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.Set;
 
 public class WidgetFactory {
 
-	public static final String TEXTFIELD_XTYPE = "textfield";
-	public static final String NUMBERFIELD_XTYPE = "numberfield";
-	public static final String PATHFIELD_XTYPE = "pathfield";
-	public static final String SELECTION_XTYPE = "selection";
-	public static final String MULTIFIELD_XTYPE = "multifield";
-	public static final String HTML5SMARTIMAGE_XTYPE = "html5smartimage";
+    public static final String TEXTFIELD_XTYPE = "textfield";
 
-	private WidgetFactory() {
-	}
+    public static final String NUMBERFIELD_XTYPE = "numberfield";
 
-	public static DialogElement make(WidgetMakerParameters parameters, int rankingCeiling)
-		throws InvalidComponentFieldException, ClassNotFoundException, CannotCompileException, NotFoundException,
-		SecurityException, NoSuchFieldException, InstantiationException, IllegalAccessException,
-		IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
+    public static final String PATHFIELD_XTYPE = "pathfield";
 
-		WidgetMakerContext widgetMakerContext = getWidgetMakerForField(parameters, rankingCeiling);
+    public static final String SELECTION_XTYPE = "selection";
 
-		if (widgetMakerContext != null) {
-			parameters.setXtype(widgetMakerContext.getXtype());
-			WidgetMaker widgetMaker =
-				widgetMakerContext.getWidgetMaker().getConstructor(WidgetMakerParameters.class).newInstance(parameters);
+    public static final String MULTIFIELD_XTYPE = "multifield";
 
-			return widgetMaker.make();
-		}
+    public static final String HTML5SMARTIMAGE_XTYPE = "html5smartimage";
 
-		return null;
-	}
+    private WidgetFactory() {
+    }
 
-	private static final WidgetMakerContext
-		getWidgetMakerForField(WidgetMakerParameters parameters, int rankingCeiling) throws ClassNotFoundException,
-			InstantiationException, IllegalAccessException, InvalidComponentFieldException {
+    public static DialogElement make(WidgetMakerParameters parameters, int rankingCeiling)
+        throws InvalidComponentFieldException, ClassNotFoundException, CannotCompileException, NotFoundException,
+        SecurityException, NoSuchFieldException, InstantiationException, IllegalAccessException,
+        IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
 
-		WidgetConfigHolder widget = getWidgetConfig(parameters, rankingCeiling);
+        WidgetMakerContext widgetMakerContext = getWidgetMakerForField(parameters, rankingCeiling);
 
-		if (widget != null && widget.hasMakerClass()) {
-			return new WidgetMakerContext(widget.getMakerClass(), widget.getXtype());
-		}
+        if (widgetMakerContext != null) {
+            parameters.setXtype(widgetMakerContext.getXtype());
+            WidgetMaker widgetMaker =
+                widgetMakerContext.getWidgetMaker().getConstructor(WidgetMakerParameters.class).newInstance(parameters);
 
-		if (widget != null && widget.hasXtype()) {
-			return new WidgetMakerContext(DefaultWidgetMaker.class, widget.getXtype());
-		}
+            return widgetMaker.make();
+        }
 
-		String xtype = getXTypeForField(parameters);
+        return null;
+    }
 
-		if (StringUtils.isNotEmpty(xtype)) {
-			widget = getWidgetConfigByXtype(xtype, parameters, rankingCeiling);
-			if (widget != null && widget.hasMakerClass()) {
-				return new WidgetMakerContext(widget.getMakerClass(), widget.getXtype());
-			}
-			return new WidgetMakerContext(DefaultWidgetMaker.class, xtype);
-		}
-		return null;
-	}
+    private static final WidgetMakerContext
+    getWidgetMakerForField(WidgetMakerParameters parameters, int rankingCeiling) throws ClassNotFoundException,
+        InstantiationException, IllegalAccessException, InvalidComponentFieldException {
 
-	private static final String getXTypeForField(WidgetMakerParameters parameters)
-		throws InvalidComponentFieldException {
+        WidgetConfigHolder widget = getWidgetConfig(parameters, rankingCeiling);
 
-		if (StringUtils.isNotEmpty(parameters.getDialogFieldConfig().getXtype())) {
-			return parameters.getDialogFieldConfig().getXtype();
-		}
+        if (widget != null && widget.hasMakerClass()) {
+            return new WidgetMakerContext(widget.getMakerClass(), widget.getXtype());
+        }
 
-		return null;
-	}
+        if (widget != null && widget.hasXtype()) {
+            return new WidgetMakerContext(DefaultWidgetMaker.class, widget.getXtype());
+        }
 
-	public static WidgetConfigHolder getWidgetConfig(WidgetMakerParameters parameters, int rankCeiling)
-		throws ClassNotFoundException {
+        String xtype = getXTypeForField(parameters);
 
-		LogSingleton LOG = LogSingleton.getInstance();
+        if (StringUtils.isNotEmpty(xtype)) {
+            widget = getWidgetConfigByXtype(xtype, parameters, rankingCeiling);
+            if (widget != null && widget.hasMakerClass()) {
+                return new WidgetMakerContext(widget.getMakerClass(), widget.getXtype());
+            }
+            return new WidgetMakerContext(DefaultWidgetMaker.class, xtype);
+        }
+        return null;
+    }
 
-		WidgetConfigHolder highestRankedWidget = null;
+    private static final String getXTypeForField(WidgetMakerParameters parameters)
+        throws InvalidComponentFieldException {
 
-		Set<Class<?>> registeredAnnotations = parameters.getWidgetRegistry().getRegisteredAnnotations();
+        if (StringUtils.isNotEmpty(parameters.getDialogFieldConfig().getXtype())) {
+            return parameters.getDialogFieldConfig().getXtype();
+        }
 
-		for (Class<?> curRegisteredAnnotation : registeredAnnotations) {
-			LOG.debug("Checking for known annotation " + curRegisteredAnnotation);
-			if (parameters.getCtMember().hasAnnotation(curRegisteredAnnotation)) {
-				WidgetConfigHolder curPotential =
-					parameters.getWidgetRegistry().getWidgetForAnnotation(curRegisteredAnnotation);
-				if (rankCeiling < 0 || curPotential.getRanking() < rankCeiling) {
-					LOG.debug("Match found in the registry with ranking " + curPotential.getRanking());
-					if (highestRankedWidget == null || curPotential.getRanking() > highestRankedWidget.getRanking()) {
-						highestRankedWidget = curPotential;
-					}
-				}
-			}
-		}
+        return null;
+    }
 
-		if (highestRankedWidget != null) {
-			return highestRankedWidget;
-		}
+    public static WidgetConfigHolder getWidgetConfig(WidgetMakerParameters parameters, int rankCeiling)
+        throws ClassNotFoundException {
 
-		return null;
+        LogSingleton LOG = LogSingleton.getInstance();
 
-	}
+        WidgetConfigHolder highestRankedWidget = null;
 
-	public static WidgetConfigHolder getWidgetConfigByXtype(String xtype, WidgetMakerParameters parameters,
-		int rankCeiling) {
-		LogSingleton LOG = LogSingleton.getInstance();
+        Set<Class<?>> registeredAnnotations = parameters.getWidgetRegistry().getRegisteredAnnotations();
 
-		WidgetConfigHolder highestRankedWidget = null;
+        for (Class<?> curRegisteredAnnotation : registeredAnnotations) {
+            LOG.debug("Checking for known annotation " + curRegisteredAnnotation);
+            if (parameters.getCtMember().hasAnnotation(curRegisteredAnnotation)) {
+                WidgetConfigHolder curPotential =
+                    parameters.getWidgetRegistry().getWidgetForAnnotation(curRegisteredAnnotation);
+                if (rankCeiling < 0 || curPotential.getRanking() < rankCeiling) {
+                    LOG.debug("Match found in the registry with ranking " + curPotential.getRanking());
+                    if (highestRankedWidget == null || curPotential.getRanking() > highestRankedWidget.getRanking()) {
+                        highestRankedWidget = curPotential;
+                    }
+                }
+            }
+        }
 
-		Set<Class<?>> registeredAnnotations = parameters.getWidgetRegistry().getRegisteredAnnotations();
+        if (highestRankedWidget != null) {
+            return highestRankedWidget;
+        }
 
-		for (Class<?> curRegisteredAnnotation : registeredAnnotations) {
-			LOG.debug("Checking for known annotation " + curRegisteredAnnotation);
-			WidgetConfigHolder curPotential =
-				parameters.getWidgetRegistry().getWidgetForAnnotation(curRegisteredAnnotation);
-			if (curPotential.getXtype().equals(xtype) && rankCeiling < 0 || curPotential.getRanking() < rankCeiling) {
-				LOG.debug("Match found in the registry with ranking " + curPotential.getRanking());
-				if (highestRankedWidget == null || curPotential.getRanking() > highestRankedWidget.getRanking()) {
-					highestRankedWidget = curPotential;
-				}
-			}
+        return null;
 
-		}
+    }
 
-		if (highestRankedWidget != null) {
-			return highestRankedWidget;
-		}
+    public static WidgetConfigHolder getWidgetConfigByXtype(String xtype, WidgetMakerParameters parameters,
+        int rankCeiling) {
+        LogSingleton LOG = LogSingleton.getInstance();
 
-		return null;
-	}
+        WidgetConfigHolder highestRankedWidget = null;
+
+        Set<Class<?>> registeredAnnotations = parameters.getWidgetRegistry().getRegisteredAnnotations();
+
+        for (Class<?> curRegisteredAnnotation : registeredAnnotations) {
+            LOG.debug("Checking for known annotation " + curRegisteredAnnotation);
+            WidgetConfigHolder curPotential =
+                parameters.getWidgetRegistry().getWidgetForAnnotation(curRegisteredAnnotation);
+            if (curPotential.getXtype().equals(xtype) && rankCeiling < 0 || curPotential.getRanking() < rankCeiling) {
+                LOG.debug("Match found in the registry with ranking " + curPotential.getRanking());
+                if (highestRankedWidget == null || curPotential.getRanking() > highestRankedWidget.getRanking()) {
+                    highestRankedWidget = curPotential;
+                }
+            }
+
+        }
+
+        if (highestRankedWidget != null) {
+            return highestRankedWidget;
+        }
+
+        return null;
+    }
 
 }

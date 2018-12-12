@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * Represents a Widget of type CQ.Ext.form.TextField in Classic UI
- *
+ * <p>
  * Represents a Widget of type granite/ui/components/foundation/form/textfield
  * in Touch UI
  */

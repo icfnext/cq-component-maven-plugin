@@ -85,9 +85,9 @@ public class DialogFieldSetWidgetParameters extends DefaultTouchUIWidgetParamete
 
     @Override
     public String getResourceType() {
-	    if(TouchUIDialogType.CORAL3.isOfType(getTouchUIDialogType())) {
-		    return DialogFieldSetCoral3Widget.RESOURCE_TYPE;
-	    }
+        if (TouchUIDialogType.CORAL3.isOfType(getTouchUIDialogType())) {
+            return DialogFieldSetCoral3Widget.RESOURCE_TYPE;
+        }
         return DialogFieldSetWidget.RESOURCE_TYPE;
     }
 

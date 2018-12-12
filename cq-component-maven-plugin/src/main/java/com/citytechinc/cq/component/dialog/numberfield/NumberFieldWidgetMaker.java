@@ -7,54 +7,54 @@ import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 
 public class NumberFieldWidgetMaker extends AbstractWidgetMaker<NumberFieldWidgetParameters> {
 
-	public NumberFieldWidgetMaker(WidgetMakerParameters parameters) {
-		super(parameters);
-	}
+    public NumberFieldWidgetMaker(WidgetMakerParameters parameters) {
+        super(parameters);
+    }
 
-	@Override
-	public DialogElement make(NumberFieldWidgetParameters parameters) throws ClassNotFoundException {
+    @Override
+    public DialogElement make(NumberFieldWidgetParameters parameters) throws ClassNotFoundException {
 
-		NumberField numberFieldAnnotation = getAnnotation(NumberField.class);
+        NumberField numberFieldAnnotation = getAnnotation(NumberField.class);
 
-		parameters.setAllowDecimals(getAllowDecimalsForField(numberFieldAnnotation));
-		parameters.setAllowNegative(getAllowNegativeForField(numberFieldAnnotation));
-		parameters.setDecimalPrecision(getDecimalPrecisionForField(numberFieldAnnotation));
-		parameters.setDecimalSeparator(getDecimalSeparatorForField(numberFieldAnnotation));
+        parameters.setAllowDecimals(getAllowDecimalsForField(numberFieldAnnotation));
+        parameters.setAllowNegative(getAllowNegativeForField(numberFieldAnnotation));
+        parameters.setDecimalPrecision(getDecimalPrecisionForField(numberFieldAnnotation));
+        parameters.setDecimalSeparator(getDecimalSeparatorForField(numberFieldAnnotation));
 
-		return new NumberFieldWidget(parameters);
+        return new NumberFieldWidget(parameters);
 
-	}
+    }
 
-	protected boolean getAllowDecimalsForField(NumberField annotation) {
-		if (annotation != null) {
-			return annotation.allowDecimals();
-		}
+    protected boolean getAllowDecimalsForField(NumberField annotation) {
+        if (annotation != null) {
+            return annotation.allowDecimals();
+        }
 
-		return NumberField.ALLOW_DECIMALS_DEFAULT;
-	}
+        return NumberField.ALLOW_DECIMALS_DEFAULT;
+    }
 
-	protected boolean getAllowNegativeForField(NumberField annotation) {
-		if (annotation != null) {
-			return annotation.allowNegative();
-		}
+    protected boolean getAllowNegativeForField(NumberField annotation) {
+        if (annotation != null) {
+            return annotation.allowNegative();
+        }
 
-		return NumberField.ALLOW_NEGATIVE_DEFAULT;
-	}
+        return NumberField.ALLOW_NEGATIVE_DEFAULT;
+    }
 
-	protected int getDecimalPrecisionForField(NumberField annotation) {
-		if (annotation != null) {
-			return annotation.decimalPrecision();
-		}
+    protected int getDecimalPrecisionForField(NumberField annotation) {
+        if (annotation != null) {
+            return annotation.decimalPrecision();
+        }
 
-		return NumberField.DECIMAL_PRECISION_DEFAULT;
-	}
+        return NumberField.DECIMAL_PRECISION_DEFAULT;
+    }
 
-	protected String getDecimalSeparatorForField(NumberField annotation) {
-		if (annotation != null) {
-			return annotation.decimalSeparator();
-		}
+    protected String getDecimalSeparatorForField(NumberField annotation) {
+        if (annotation != null) {
+            return annotation.decimalSeparator();
+        }
 
-		return NumberField.DECIMAL_SEPARATOR_DEFAULT;
-	}
+        return NumberField.DECIMAL_SEPARATOR_DEFAULT;
+    }
 
 }

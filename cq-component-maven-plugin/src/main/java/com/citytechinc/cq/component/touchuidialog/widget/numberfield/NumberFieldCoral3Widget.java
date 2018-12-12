@@ -5,39 +5,42 @@ import com.citytechinc.cq.component.annotations.widgets.NumberField;
 import com.citytechinc.cq.component.touchuidialog.widget.AbstractTouchUIWidget;
 
 @TouchUIWidget(annotationClass = NumberField.class, makerClass = NumberFieldWidgetMaker.class,
-	resourceType = NumberFieldCoral3Widget.RESOURCE_TYPE)
+    resourceType = NumberFieldCoral3Widget.RESOURCE_TYPE)
 public class NumberFieldCoral3Widget extends AbstractTouchUIWidget {
 
-	public static final String RESOURCE_TYPE = "granite/ui/components/coral/foundation/form/numberfield";
+    public static final String RESOURCE_TYPE = "granite/ui/components/coral/foundation/form/numberfield";
 
-	private final Double min;
-	private final Double max;
-	private final Double step;
-	private final String typeHint;
+    private final Double min;
 
-	public NumberFieldCoral3Widget(NumberFieldWidgetParameters parameters) {
-		super(parameters);
+    private final Double max;
 
-		min = parameters.getMin();
-		max = parameters.getMax();
-		step = parameters.getStep();
-		typeHint = parameters.getTypeHint();
-	}
+    private final Double step;
 
-	public Double getMin() {
-		return min;
-	}
+    private final String typeHint;
 
-	public Double getMax() {
-		return max;
-	}
+    public NumberFieldCoral3Widget(NumberFieldWidgetParameters parameters) {
+        super(parameters);
 
-	public Double getStep() {
-		return step;
-	}
+        min = parameters.getMin();
+        max = parameters.getMax();
+        step = parameters.getStep();
+        typeHint = parameters.getTypeHint();
+    }
 
-	public String getTypeHint() {
-		return typeHint;
-	}
+    public Double getMin() {
+        return min;
+    }
+
+    public Double getMax() {
+        return max;
+    }
+
+    public Double getStep() {
+        return step;
+    }
+
+    public String getTypeHint() {
+        return typeHint;
+    }
 
 }

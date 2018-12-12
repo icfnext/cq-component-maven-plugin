@@ -5,6 +5,6 @@ package com.citytechinc.cq.component.annotations.widgets.rte;
  */
 public @interface Keys {
 
-	public String tabSize() default "";
+    String tabSize() default "";
 
 }

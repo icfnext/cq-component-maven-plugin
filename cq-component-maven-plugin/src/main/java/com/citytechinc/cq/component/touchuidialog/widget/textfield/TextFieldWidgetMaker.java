@@ -7,17 +7,17 @@ import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMake
 
 public class TextFieldWidgetMaker extends AbstractTouchUIWidgetMaker<TextFieldWidgetParameters> {
 
-	public TextFieldWidgetMaker(TouchUIWidgetMakerParameters parameters) {
-		super(parameters);
-	}
+    public TextFieldWidgetMaker(TouchUIWidgetMakerParameters parameters) {
+        super(parameters);
+    }
 
-	@Override
-	public TouchUIDialogElement make(TextFieldWidgetParameters widgetParameters) {
-		widgetParameters.setTouchUIDialogType(parameters.getTouchUIDialogType());
+    @Override
+    public TouchUIDialogElement make(TextFieldWidgetParameters widgetParameters) {
+        widgetParameters.setTouchUIDialogType(parameters.getTouchUIDialogType());
 
-		if(TouchUIDialogType.CORAL3.isOfType(widgetParameters.getTouchUIDialogType())) {
-			return new TextFieldCoral3Widget(widgetParameters);
-		}
-		return new TextFieldWidget(widgetParameters);
-	}
+        if (TouchUIDialogType.CORAL3.isOfType(widgetParameters.getTouchUIDialogType())) {
+            return new TextFieldCoral3Widget(widgetParameters);
+        }
+        return new TextFieldWidget(widgetParameters);
+    }
 }

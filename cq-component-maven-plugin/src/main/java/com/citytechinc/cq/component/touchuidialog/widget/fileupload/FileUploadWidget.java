@@ -7,99 +7,112 @@ import com.citytechinc.cq.component.touchuidialog.widget.AbstractTouchUIWidget;
 import java.util.List;
 
 @TouchUIWidget(annotationClass = Html5SmartFile.class, makerClass = FileUploadWidgetMaker.class,
-	resourceType = FileUploadWidget.RESOURCE_TYPE)
+    resourceType = FileUploadWidget.RESOURCE_TYPE)
 public class FileUploadWidget extends AbstractTouchUIWidget {
 
-	public static final String RESOURCE_TYPE = "granite/ui/components/foundation/form/fileupload";
+    public static final String RESOURCE_TYPE = "granite/ui/components/foundation/form/fileupload";
 
-	private final String title;
-	private final String text;
-	private final String icon;
-	private final boolean multiple;
-	private final boolean allowUpload;
-	private final String uploadUrl;
-	private final String uploadUrlBuilder;
-	private final Long sizeLimit;
-	private final boolean autoStart;
-	private final boolean useHTML5;
-	private final String dropZone;
-	// TODO: Event handling ?
-	private final List<String> mimeTypes;
-	private final String fileNameParameter;
-	private final String fileReferenceParameter;
+    private final String title;
 
-	public FileUploadWidget(FileUploadWidgetParameters parameters) {
-		super(parameters);
-		title = parameters.getTitle();
-		text = parameters.getText();
-		icon = parameters.getIcon();
-		multiple = parameters.isMultiple();
-		allowUpload = parameters.isAllowUpload();
-		uploadUrl = parameters.getUploadUrl();
-		uploadUrlBuilder = parameters.getUploadUrlBuilder();
-		sizeLimit = parameters.getSizeLimit();
-		autoStart = parameters.isAutoStart();
-		useHTML5 = parameters.isUseHTML5();
-		dropZone = parameters.getDropZone();
-		mimeTypes = parameters.getMimeTypes();
-		fileNameParameter = parameters.getFileNameParameter();
-		fileReferenceParameter = parameters.getFileReferenceParameter();
-	}
+    private final String text;
 
-	@Override
-	public String getTitle() {
-		return title;
-	}
+    private final String icon;
 
-	public String getText() {
-		return text;
-	}
+    private final boolean multiple;
 
-	public String getIcon() {
-		return icon;
-	}
+    private final boolean allowUpload;
 
-	public boolean isAllowUpload() {
-		return allowUpload;
-	}
+    private final String uploadUrl;
 
-	public boolean isMultiple() {
-		return multiple;
-	}
+    private final String uploadUrlBuilder;
 
-	public String getUploadUrl() {
-		return uploadUrl;
-	}
+    private final Long sizeLimit;
 
-	public String getUploadUrlBuilder() {
-		return uploadUrlBuilder;
-	}
+    private final boolean autoStart;
 
-	public Long getSizeLimit() {
-		return sizeLimit;
-	}
+    private final boolean useHTML5;
 
-	public boolean isAutoStart() {
-		return autoStart;
-	}
+    private final String dropZone;
 
-	public boolean isUseHTML5() {
-		return useHTML5;
-	}
+    // TODO: Event handling ?
+    private final List<String> mimeTypes;
 
-	public String getDropZone() {
-		return dropZone;
-	}
+    private final String fileNameParameter;
 
-	public List<String> getMimeTypes() {
-		return mimeTypes;
-	}
+    private final String fileReferenceParameter;
 
-	public String getFileNameParameter() {
-		return fileNameParameter;
-	}
+    public FileUploadWidget(FileUploadWidgetParameters parameters) {
+        super(parameters);
+        title = parameters.getTitle();
+        text = parameters.getText();
+        icon = parameters.getIcon();
+        multiple = parameters.isMultiple();
+        allowUpload = parameters.isAllowUpload();
+        uploadUrl = parameters.getUploadUrl();
+        uploadUrlBuilder = parameters.getUploadUrlBuilder();
+        sizeLimit = parameters.getSizeLimit();
+        autoStart = parameters.isAutoStart();
+        useHTML5 = parameters.isUseHTML5();
+        dropZone = parameters.getDropZone();
+        mimeTypes = parameters.getMimeTypes();
+        fileNameParameter = parameters.getFileNameParameter();
+        fileReferenceParameter = parameters.getFileReferenceParameter();
+    }
 
-	public String getFileReferenceParameter() {
-		return fileReferenceParameter;
-	}
+    @Override
+    public String getTitle() {
+        return title;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public boolean isAllowUpload() {
+        return allowUpload;
+    }
+
+    public boolean isMultiple() {
+        return multiple;
+    }
+
+    public String getUploadUrl() {
+        return uploadUrl;
+    }
+
+    public String getUploadUrlBuilder() {
+        return uploadUrlBuilder;
+    }
+
+    public Long getSizeLimit() {
+        return sizeLimit;
+    }
+
+    public boolean isAutoStart() {
+        return autoStart;
+    }
+
+    public boolean isUseHTML5() {
+        return useHTML5;
+    }
+
+    public String getDropZone() {
+        return dropZone;
+    }
+
+    public List<String> getMimeTypes() {
+        return mimeTypes;
+    }
+
+    public String getFileNameParameter() {
+        return fileNameParameter;
+    }
+
+    public String getFileReferenceParameter() {
+        return fileReferenceParameter;
+    }
 }

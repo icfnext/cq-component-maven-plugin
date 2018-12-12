@@ -2,12 +2,12 @@ package com.citytechinc.cq.component.dialog;
 
 public interface DialogElementParameters {
 
-	public abstract double getRanking();
+    double getRanking();
 
-	public abstract void setRanking(double ranking);
+    void setRanking(double ranking);
 
-	public abstract Listeners getListeners();
+    Listeners getListeners();
 
-	public abstract void setListeners(Listeners listeners);
+    void setListeners(Listeners listeners);
 
 }

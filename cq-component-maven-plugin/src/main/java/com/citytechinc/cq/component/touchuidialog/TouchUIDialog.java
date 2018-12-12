@@ -5,42 +5,46 @@ import com.citytechinc.cq.component.xml.NameSpacedAttribute;
 
 public class TouchUIDialog extends AbstractTouchUIDialogElement {
 
-	public static final String RESOURCE_TYPE = "cq/gui/components/authoring/dialog";
-	public static final String PRIMARY_TYPE = "nt:unstructured";
+    public static final String RESOURCE_TYPE = "cq/gui/components/authoring/dialog";
 
-	private String fileName;
-	private NameSpacedAttribute<String> title;
-	private String helpPath;
-	private String[] extraClientlibs;
+    public static final String PRIMARY_TYPE = "nt:unstructured";
 
-	public TouchUIDialog(TouchUIDialogParameters parameters) {
-		super(parameters);
+    private String fileName;
 
-		this.fileName = parameters.getFileName();
-		this.title =
-			new NameSpacedAttribute<String>(Constants.JCR_NS_URI, Constants.JCR_NS_PREFIX, parameters.getTitle());
-		this.helpPath = parameters.getHelpPath();
-		this.extraClientlibs = parameters.getExtraClientlibs();
-	}
+    private NameSpacedAttribute<String> title;
 
-	public String getFileName() {
-		return fileName + ".xml";
-	}
+    private String helpPath;
 
-	public NameSpacedAttribute<String> getTitle() {
-		return title;
-	}
+    private String[] extraClientlibs;
 
-	public String getHelpPath() {
-		return helpPath;
-	}
+    public TouchUIDialog(TouchUIDialogParameters parameters) {
+        super(parameters);
 
-	public String getMode() {
-		return "edit";
-	}
+        this.fileName = parameters.getFileName();
+        this.title =
+            new NameSpacedAttribute<String>(Constants.JCR_NS_URI, Constants.JCR_NS_PREFIX, parameters.getTitle());
+        this.helpPath = parameters.getHelpPath();
+        this.extraClientlibs = parameters.getExtraClientlibs();
+    }
 
-	public String[] getExtraClientlibs() {
-		return extraClientlibs;
-	}
+    public String getFileName() {
+        return fileName + ".xml";
+    }
+
+    public NameSpacedAttribute<String> getTitle() {
+        return title;
+    }
+
+    public String getHelpPath() {
+        return helpPath;
+    }
+
+    public String getMode() {
+        return "edit";
+    }
+
+    public String[] getExtraClientlibs() {
+        return extraClientlibs;
+    }
 
 }

@@ -9,9 +9,9 @@ import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 @Widget(annotationClass = TextField.class, makerClass = DefaultWidgetMaker.class, xtype = TextFieldWidget.XTYPE)
 public class TextFieldWidget extends AbstractWidget {
 
-	public static final String XTYPE = "textfield";
+    public static final String XTYPE = "textfield";
 
-	public TextFieldWidget(DefaultWidgetParameters parameters) {
-		super(parameters);
-	}
+    public TextFieldWidget(DefaultWidgetParameters parameters) {
+        super(parameters);
+    }
 }

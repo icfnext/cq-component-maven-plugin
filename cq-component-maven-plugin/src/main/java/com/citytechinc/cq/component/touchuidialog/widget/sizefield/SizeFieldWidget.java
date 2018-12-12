@@ -5,7 +5,7 @@ import com.citytechinc.cq.component.annotations.widgets.SizeField;
 import com.citytechinc.cq.component.touchuidialog.widget.AbstractTouchUIWidget;
 
 @TouchUIWidget(annotationClass = SizeField.class, makerClass = SizeFieldWidgetMaker.class,
-        resourceType = SizeFieldWidget.RESOURCE_TYPE)
+    resourceType = SizeFieldWidget.RESOURCE_TYPE)
 public class SizeFieldWidget extends AbstractTouchUIWidget {
 
     public static final String RESOURCE_TYPE = "cq/gui/components/authoring/dialog/sizefield";

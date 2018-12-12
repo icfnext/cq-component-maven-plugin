@@ -8,17 +8,17 @@ import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 
 public class DefaultWidgetMaker extends AbstractWidgetMaker<DefaultWidgetParameters> {
 
-	public DefaultWidgetMaker(WidgetMakerParameters parameters) {
-		super(parameters);
-	}
+    public DefaultWidgetMaker(WidgetMakerParameters parameters) {
+        super(parameters);
+    }
 
-	@Override
-	public DialogElement make(DefaultWidgetParameters widgetParameters) {
+    @Override
+    public DialogElement make(DefaultWidgetParameters widgetParameters) {
 
-		widgetParameters.setXtype(parameters.getXtype());
+        widgetParameters.setXtype(parameters.getXtype());
 
-		return new SimpleWidget(widgetParameters);
+        return new SimpleWidget(widgetParameters);
 
-	}
+    }
 
 }

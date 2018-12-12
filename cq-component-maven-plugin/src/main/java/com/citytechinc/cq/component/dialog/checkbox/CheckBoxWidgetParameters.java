@@ -4,42 +4,44 @@ import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 import com.citytechinc.cq.component.util.Constants;
 
 public class CheckBoxWidgetParameters extends DefaultWidgetParameters {
-	private String inputValue;
-	private boolean checked;
 
-	public String getInputValue() {
-		return inputValue;
-	}
+    private String inputValue;
 
-	public void setInputValue(String inputValue) {
-		this.inputValue = inputValue;
-	}
+    private boolean checked;
 
-	public boolean isChecked() {
-		return checked;
-	}
+    public String getInputValue() {
+        return inputValue;
+    }
 
-	public void setChecked(boolean checked) {
-		this.checked = checked;
-	}
+    public void setInputValue(String inputValue) {
+        this.inputValue = inputValue;
+    }
 
-	@Override
-	public String getPrimaryType() {
-		return Constants.CQ_WIDGET;
-	}
+    public boolean isChecked() {
+        return checked;
+    }
 
-	@Override
-	public void setPrimaryType(String primaryType) {
-		throw new UnsupportedOperationException("PrimaryType is Static for CheckBoxWidget");
-	}
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
 
-	@Override
-	public String getXtype() {
-		return CheckBoxWidget.XTYPE;
-	}
+    @Override
+    public String getPrimaryType() {
+        return Constants.CQ_WIDGET;
+    }
 
-	@Override
-	public void setXtype(String xtype) {
-		throw new UnsupportedOperationException("xtype is Static for CheckBoxWidget");
-	}
+    @Override
+    public void setPrimaryType(String primaryType) {
+        throw new UnsupportedOperationException("PrimaryType is Static for CheckBoxWidget");
+    }
+
+    @Override
+    public String getXtype() {
+        return CheckBoxWidget.XTYPE;
+    }
+
+    @Override
+    public void setXtype(String xtype) {
+        throw new UnsupportedOperationException("xtype is Static for CheckBoxWidget");
+    }
 }

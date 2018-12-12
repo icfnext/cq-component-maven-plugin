@@ -12,34 +12,34 @@ import java.lang.annotation.Target;
 @Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface Option {
 
-	/**
-	 * Author facing text for the selection option.
-	 *
-	 * @return String
-	 */
-	String text() default "";
+    /**
+     * Author facing text for the selection option.
+     *
+     * @return String
+     */
+    String text() default "";
 
-	/**
-	 * Value of the selection option.
-	 *
-	 * @return String
-	 */
-	String value() default "";
+    /**
+     * Value of the selection option.
+     *
+     * @return String
+     */
+    String value() default "";
 
-	/**
-	 * QTip of the selection option.
-	 *
-	 * @return String
-	 */
-	String qtip() default "";
+    /**
+     * QTip of the selection option.
+     *
+     * @return String
+     */
+    String qtip() default "";
 
-	/**
-	 * Used for Touch UI only
-	 *
-	 * Indicates that this option is the default selection
-	 *
-	 * @return boolean
-	 */
-	boolean selected() default false;
+    /**
+     * Used for Touch UI only
+     * <p>
+     * Indicates that this option is the default selection
+     *
+     * @return boolean
+     */
+    boolean selected() default false;
 
 }

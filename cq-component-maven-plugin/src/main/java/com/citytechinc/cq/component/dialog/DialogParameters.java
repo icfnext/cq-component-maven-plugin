@@ -1,94 +1,103 @@
 package com.citytechinc.cq.component.dialog;
 
+import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 import org.codehaus.plexus.util.StringUtils;
 
-import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
-
 public class DialogParameters extends DefaultWidgetParameters {
-	private static final String DEFAULT_TITLE = "Dialog";
-	private static final String DEFAULT_FILE_NAME = "dialog";
-	private static final String XTYPE = "dialog";
-	private static final String PRIMARY_TYPE = "cq:Dialog";
-	private static final String FIELD_NAME = "jcr:root";
-	private String title;
-	private String activeTab;
-	private String fileName;
-	private Integer width;
-	private Integer height;
 
-	public String getTitle() {
-		if (StringUtils.isEmpty(title)) {
-			return DEFAULT_TITLE;
-		}
-		return title;
-	}
+    private static final String DEFAULT_TITLE = "Dialog";
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    private static final String DEFAULT_FILE_NAME = "dialog";
 
-	public String getActiveTab() {
-		return activeTab;
-	}
+    private static final String XTYPE = "dialog";
 
-	public void setActiveTab(String activeTab) {
-		this.activeTab = activeTab;
-	}
+    private static final String PRIMARY_TYPE = "cq:Dialog";
 
-	public String getFileName() {
-		if (StringUtils.isEmpty(fileName)) {
-			return DEFAULT_FILE_NAME;
-		}
-		return fileName;
-	}
+    private static final String FIELD_NAME = "jcr:root";
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
+    private String title;
 
-	public Integer getWidth() {
-		return width;
-	}
+    private String activeTab;
 
-	public void setWidth(Integer width) {
-		this.width = width;
-	}
+    private String fileName;
 
-	public Integer getHeight() {
-		return height;
-	}
+    private Integer width;
 
-	public void setHeight(Integer height) {
-		this.height = height;
-	}
+    private Integer height;
 
-	@Override
-	public String getPrimaryType() {
-		return PRIMARY_TYPE;
-	}
+    public String getTitle() {
+        if (StringUtils.isEmpty(title)) {
+            return DEFAULT_TITLE;
+        }
+        return title;
+    }
 
-	@Override
-	public void setPrimaryType(String primaryType) {
-		throw new UnsupportedOperationException("PrimaryType is Static for Dialog");
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	@Override
-	public String getXtype() {
-		return XTYPE;
-	}
+    public String getActiveTab() {
+        return activeTab;
+    }
 
-	@Override
-	public void setXtype(String xtype) {
-		throw new UnsupportedOperationException("xtype is Static for Dialog");
-	}
+    public void setActiveTab(String activeTab) {
+        this.activeTab = activeTab;
+    }
 
-	@Override
-	public String getFieldName() {
-		return FIELD_NAME;
-	}
+    public String getFileName() {
+        if (StringUtils.isEmpty(fileName)) {
+            return DEFAULT_FILE_NAME;
+        }
+        return fileName;
+    }
 
-	@Override
-	public void setFieldName(String fieldName) {
-		throw new UnsupportedOperationException("field name is Static for Dialog");
-	}
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public Integer getWidth() {
+        return width;
+    }
+
+    public void setWidth(Integer width) {
+        this.width = width;
+    }
+
+    public Integer getHeight() {
+        return height;
+    }
+
+    public void setHeight(Integer height) {
+        this.height = height;
+    }
+
+    @Override
+    public String getPrimaryType() {
+        return PRIMARY_TYPE;
+    }
+
+    @Override
+    public void setPrimaryType(String primaryType) {
+        throw new UnsupportedOperationException("PrimaryType is Static for Dialog");
+    }
+
+    @Override
+    public String getXtype() {
+        return XTYPE;
+    }
+
+    @Override
+    public void setXtype(String xtype) {
+        throw new UnsupportedOperationException("xtype is Static for Dialog");
+    }
+
+    @Override
+    public String getFieldName() {
+        return FIELD_NAME;
+    }
+
+    @Override
+    public void setFieldName(String fieldName) {
+        throw new UnsupportedOperationException("field name is Static for Dialog");
+    }
 }

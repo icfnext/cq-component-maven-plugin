@@ -4,69 +4,74 @@ import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 import com.citytechinc.cq.component.util.Constants;
 
 public class DialogFieldSetWidgetParameters extends DefaultWidgetParameters {
-	private boolean collapseFirst;
-	private boolean collapsible;
-	private boolean collapsed;
-	private boolean border;
-	private String title;
 
-	public boolean isCollapseFirst() {
-		return collapseFirst;
-	}
+    private boolean collapseFirst;
 
-	public void setCollapseFirst(boolean collapseFirst) {
-		this.collapseFirst = collapseFirst;
-	}
+    private boolean collapsible;
 
-	public boolean isCollapsible() {
-		return collapsible;
-	}
+    private boolean collapsed;
 
-	public void setCollapsible(boolean collapsible) {
-		this.collapsible = collapsible;
-	}
+    private boolean border;
 
-	public boolean isCollapsed() {
-		return collapsed;
-	}
+    private String title;
 
-	public void setCollapsed(boolean collapsed) {
-		this.collapsed = collapsed;
-	}
+    public boolean isCollapseFirst() {
+        return collapseFirst;
+    }
 
-	public boolean isBorder() {
-		return border;
-	}
+    public void setCollapseFirst(boolean collapseFirst) {
+        this.collapseFirst = collapseFirst;
+    }
 
-	public void setBorder(boolean border) {
-		this.border = border;
-	}
+    public boolean isCollapsible() {
+        return collapsible;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public void setCollapsible(boolean collapsible) {
+        this.collapsible = collapsible;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public boolean isCollapsed() {
+        return collapsed;
+    }
 
-	@Override
-	public String getPrimaryType() {
-		return Constants.CQ_WIDGET;
-	}
+    public void setCollapsed(boolean collapsed) {
+        this.collapsed = collapsed;
+    }
 
-	@Override
-	public void setPrimaryType(String primaryType) {
-		throw new UnsupportedOperationException("PrimaryType is Static for DialogFieldSetWidget");
-	}
+    public boolean isBorder() {
+        return border;
+    }
 
-	@Override
-	public String getXtype() {
-		return DialogFieldSetWidget.XTYPE;
-	}
+    public void setBorder(boolean border) {
+        this.border = border;
+    }
 
-	@Override
-	public void setXtype(String xtype) {
-		throw new UnsupportedOperationException("xtype is Static for DialogFieldSetWidget");
-	}
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    @Override
+    public String getPrimaryType() {
+        return Constants.CQ_WIDGET;
+    }
+
+    @Override
+    public void setPrimaryType(String primaryType) {
+        throw new UnsupportedOperationException("PrimaryType is Static for DialogFieldSetWidget");
+    }
+
+    @Override
+    public String getXtype() {
+        return DialogFieldSetWidget.XTYPE;
+    }
+
+    @Override
+    public void setXtype(String xtype) {
+        throw new UnsupportedOperationException("xtype is Static for DialogFieldSetWidget");
+    }
 }

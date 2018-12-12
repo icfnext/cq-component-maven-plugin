@@ -4,7 +4,7 @@ import com.citytechinc.cq.component.dialog.AbstractDialogElement;
 
 public class WidgetCollection extends AbstractDialogElement {
 
-	public WidgetCollection(WidgetCollectionParameters parameters) {
-		super(parameters);
-	}
+    public WidgetCollection(WidgetCollectionParameters parameters) {
+        super(parameters);
+    }
 }

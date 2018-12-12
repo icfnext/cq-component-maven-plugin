@@ -1,23 +1,23 @@
 package com.citytechinc.cq.component.touchuidialog.widget.taginputfield.datasource;
 
-import java.util.List;
-
 import com.citytechinc.cq.component.touchuidialog.widget.datasource.DataSource;
+
+import java.util.List;
 
 public class TagsDataSource extends DataSource {
 
-	public static final String RESOURCE_TYPE = "cq/gui/components/common/datasources/tags";
+    public static final String RESOURCE_TYPE = "cq/gui/components/common/datasources/tags";
 
-	private final List<String> namespaces;
+    private final List<String> namespaces;
 
-	public TagsDataSource(TagsDataSourceParameters parameters) {
-		super(parameters);
+    public TagsDataSource(TagsDataSourceParameters parameters) {
+        super(parameters);
 
-		namespaces = parameters.getNamespaces();
-	}
+        namespaces = parameters.getNamespaces();
+    }
 
-	public List<String> getNamespaces() {
-		return namespaces;
-	}
+    public List<String> getNamespaces() {
+        return namespaces;
+    }
 
 }

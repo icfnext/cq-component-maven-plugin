@@ -5,25 +5,28 @@ import com.citytechinc.cq.component.annotations.widgets.MultiField;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
 
 @Widget(annotationClass = MultiField.class, makerClass = MultifieldWidgetMaker.class, xtype = MultiFieldWidget.XTYPE,
-	ranking = MultiFieldWidget.RANKING)
+    ranking = MultiFieldWidget.RANKING)
 public class MultiFieldWidget extends AbstractWidget {
-	public static final int RANKING = 1000000;
-	public static final String XTYPE = "multifield";
 
-	private final boolean orderable;
-	private final String addItemLabel;
+    public static final int RANKING = 1000000;
 
-	public MultiFieldWidget(MultiFieldWidgetParameters parameters) {
-		super(parameters);
-		this.orderable = parameters.isOrderable();
-		this.addItemLabel = parameters.getAddItemLabel();
-	}
+    public static final String XTYPE = "multifield";
 
-	public boolean isOrderable() {
-		return orderable;
-	}
+    private final boolean orderable;
 
-	public String getAddItemLabel() {
-		return addItemLabel;
-	}
+    private final String addItemLabel;
+
+    public MultiFieldWidget(MultiFieldWidgetParameters parameters) {
+        super(parameters);
+        this.orderable = parameters.isOrderable();
+        this.addItemLabel = parameters.getAddItemLabel();
+    }
+
+    public boolean isOrderable() {
+        return orderable;
+    }
+
+    public String getAddItemLabel() {
+        return addItemLabel;
+    }
 }

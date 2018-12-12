@@ -4,20 +4,21 @@ import com.citytechinc.cq.component.touchuidialog.widget.AbstractTouchUIWidget;
 
 public class RadioGroupWidget extends AbstractTouchUIWidget {
 
-	public static final String RESOURCE_TYPE = "granite/ui/components/foundation/form/radiogroup";
-	public static final String RADIO_RESOURCE_TYPE = "granite/ui/components/foundation/form/radio";
+    public static final String RESOURCE_TYPE = "granite/ui/components/foundation/form/radiogroup";
 
-	private final String text;
+    public static final String RADIO_RESOURCE_TYPE = "granite/ui/components/foundation/form/radio";
 
-	public RadioGroupWidget(RadioGroupWidgetParameters parameters) {
+    private final String text;
 
-		super(parameters);
+    public RadioGroupWidget(RadioGroupWidgetParameters parameters) {
 
-		text = parameters.getText();
+        super(parameters);
 
-	}
+        text = parameters.getText();
 
-	public String getText() {
-		return text;
-	}
+    }
+
+    public String getText() {
+        return text;
+    }
 }

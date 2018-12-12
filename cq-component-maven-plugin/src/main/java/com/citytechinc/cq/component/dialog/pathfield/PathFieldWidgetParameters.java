@@ -4,78 +4,84 @@ import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 import com.citytechinc.cq.component.util.Constants;
 
 public class PathFieldWidgetParameters extends DefaultWidgetParameters {
-	private boolean escapeAmp;
-	private boolean hideTrigger;
-	private boolean parBrowse;
-	private String rootPath;
-	private String rootTitle;
-	private boolean showTitleInTree;
 
-	public boolean isEscapeAmp() {
-		return escapeAmp;
-	}
+    private boolean escapeAmp;
 
-	public void setEscapeAmp(boolean escapeAmp) {
-		this.escapeAmp = escapeAmp;
-	}
+    private boolean hideTrigger;
 
-	public boolean isHideTrigger() {
-		return hideTrigger;
-	}
+    private boolean parBrowse;
 
-	public void setHideTrigger(boolean hideTrigger) {
-		this.hideTrigger = hideTrigger;
-	}
+    private String rootPath;
 
-	public boolean isParBrowse() {
-		return parBrowse;
-	}
+    private String rootTitle;
 
-	public void setParBrowse(boolean parBrowse) {
-		this.parBrowse = parBrowse;
-	}
+    private boolean showTitleInTree;
 
-	public String getRootPath() {
-		return rootPath;
-	}
+    public boolean isEscapeAmp() {
+        return escapeAmp;
+    }
 
-	public void setRootPath(String rootPath) {
-		this.rootPath = rootPath;
-	}
+    public void setEscapeAmp(boolean escapeAmp) {
+        this.escapeAmp = escapeAmp;
+    }
 
-	public String getRootTitle() {
-		return rootTitle;
-	}
+    public boolean isHideTrigger() {
+        return hideTrigger;
+    }
 
-	public void setRootTitle(String rootTitle) {
-		this.rootTitle = rootTitle;
-	}
+    public void setHideTrigger(boolean hideTrigger) {
+        this.hideTrigger = hideTrigger;
+    }
 
-	public boolean isShowTitleInTree() {
-		return showTitleInTree;
-	}
+    public boolean isParBrowse() {
+        return parBrowse;
+    }
 
-	public void setShowTitleInTree(boolean showTitleInTree) {
-		this.showTitleInTree = showTitleInTree;
-	}
+    public void setParBrowse(boolean parBrowse) {
+        this.parBrowse = parBrowse;
+    }
 
-	@Override
-	public String getPrimaryType() {
-		return Constants.CQ_WIDGET;
-	}
+    public String getRootPath() {
+        return rootPath;
+    }
 
-	@Override
-	public void setPrimaryType(String primaryType) {
-		throw new UnsupportedOperationException("PrimaryType is Static for PathFieldWidget");
-	}
+    public void setRootPath(String rootPath) {
+        this.rootPath = rootPath;
+    }
 
-	@Override
-	public String getXtype() {
-		return PathFieldWidget.XTYPE;
-	}
+    public String getRootTitle() {
+        return rootTitle;
+    }
 
-	@Override
-	public void setXtype(String xtype) {
-		throw new UnsupportedOperationException("xtype is Static for PathFieldWidget");
-	}
+    public void setRootTitle(String rootTitle) {
+        this.rootTitle = rootTitle;
+    }
+
+    public boolean isShowTitleInTree() {
+        return showTitleInTree;
+    }
+
+    public void setShowTitleInTree(boolean showTitleInTree) {
+        this.showTitleInTree = showTitleInTree;
+    }
+
+    @Override
+    public String getPrimaryType() {
+        return Constants.CQ_WIDGET;
+    }
+
+    @Override
+    public void setPrimaryType(String primaryType) {
+        throw new UnsupportedOperationException("PrimaryType is Static for PathFieldWidget");
+    }
+
+    @Override
+    public String getXtype() {
+        return PathFieldWidget.XTYPE;
+    }
+
+    @Override
+    public void setXtype(String xtype) {
+        throw new UnsupportedOperationException("xtype is Static for PathFieldWidget");
+    }
 }

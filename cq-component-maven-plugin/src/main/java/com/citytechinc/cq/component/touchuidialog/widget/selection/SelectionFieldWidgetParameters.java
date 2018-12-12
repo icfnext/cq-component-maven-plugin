@@ -13,79 +13,80 @@ import java.util.List;
 
 public class SelectionFieldWidgetParameters extends DefaultTouchUIWidgetParameters {
 
-	private boolean multiple;
+    private boolean multiple;
 
-	private List<Option> options;
-	private DataSource dataSource;
+    private List<Option> options;
 
-	public boolean isMultiple() {
-		return multiple;
-	}
+    private DataSource dataSource;
 
-	public void setMultiple(boolean multiple) {
-		this.multiple = multiple;
-	}
+    public boolean isMultiple() {
+        return multiple;
+    }
 
-	public Options getOptions() {
-		if (options != null) {
-			OptionsParameters optionsParameters = new OptionsParameters();
-			optionsParameters.setOptions(options);
-			return new Options(optionsParameters);
-		}
+    public void setMultiple(boolean multiple) {
+        this.multiple = multiple;
+    }
 
-		return null;
-	}
+    public Options getOptions() {
+        if (options != null) {
+            OptionsParameters optionsParameters = new OptionsParameters();
+            optionsParameters.setOptions(options);
+            return new Options(optionsParameters);
+        }
 
-	public void addOption(Option option) {
-		if (options == null) {
-			options = new ArrayList<Option>();
-		}
+        return null;
+    }
 
-		options.add(option);
-	}
+    public void addOption(Option option) {
+        if (options == null) {
+            options = new ArrayList<Option>();
+        }
 
-	public void setOptions(List<Option> options) {
-		this.options = options;
-	}
+        options.add(option);
+    }
 
-	public DataSource getDataSource() {
-		return dataSource;
-	}
+    public void setOptions(List<Option> options) {
+        this.options = options;
+    }
 
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-	}
+    public DataSource getDataSource() {
+        return dataSource;
+    }
 
-	@Override
-	public List<? extends XmlElement> getContainedElements() {
-		List<XmlElement> allContainedElements = new ArrayList<XmlElement>();
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
-		if (getOptions() != null) {
-			allContainedElements.add(getOptions());
-		}
+    @Override
+    public List<? extends XmlElement> getContainedElements() {
+        List<XmlElement> allContainedElements = new ArrayList<XmlElement>();
 
-		if (getDataSource() != null) {
-			allContainedElements.add(getDataSource());
-		}
+        if (getOptions() != null) {
+            allContainedElements.add(getOptions());
+        }
 
-		if (containedElements != null) {
-			allContainedElements.addAll(containedElements);
-		}
+        if (getDataSource() != null) {
+            allContainedElements.add(getDataSource());
+        }
 
-		return allContainedElements;
-	}
+        if (containedElements != null) {
+            allContainedElements.addAll(containedElements);
+        }
 
-	@Override
-	public String getResourceType() {
-		if(TouchUIDialogType.CORAL3.isOfType(getTouchUIDialogType())){
-			return SelectionFieldCoral3Widget.RESOURCE_TYPE;
-		}
-		return SelectionFieldWidget.RESOURCE_TYPE;
-	}
+        return allContainedElements;
+    }
 
-	@Override
-	public void setResourceType(String resourceType) {
-		throw new UnsupportedOperationException("resourceType is Static for SelectionFieldWidget");
-	}
+    @Override
+    public String getResourceType() {
+        if (TouchUIDialogType.CORAL3.isOfType(getTouchUIDialogType())) {
+            return SelectionFieldCoral3Widget.RESOURCE_TYPE;
+        }
+        return SelectionFieldWidget.RESOURCE_TYPE;
+    }
+
+    @Override
+    public void setResourceType(String resourceType) {
+        throw new UnsupportedOperationException("resourceType is Static for SelectionFieldWidget");
+    }
 
 }

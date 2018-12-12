@@ -6,30 +6,31 @@ import com.citytechinc.cq.component.xml.NameSpacedAttribute;
 
 public abstract class AbstractTouchUIDialogElement extends AbstractXmlElement implements TouchUIDialogElement {
 
-	private NameSpacedAttribute<String> resourceType;
-	private double ranking;
+    private NameSpacedAttribute<String> resourceType;
 
-	public AbstractTouchUIDialogElement(TouchUIDialogElementParameters parameters) {
-		super(parameters);
+    private double ranking;
 
-		resourceType =
-			new NameSpacedAttribute<String>(Constants.SLING_NS_URI, Constants.SLING_NS_PREFIX, "resourceType",
-				parameters.getResourceType());
-	}
+    public AbstractTouchUIDialogElement(TouchUIDialogElementParameters parameters) {
+        super(parameters);
 
-	public double getRanking() {
-		return ranking;
-	}
+        resourceType =
+            new NameSpacedAttribute<String>(Constants.SLING_NS_URI, Constants.SLING_NS_PREFIX, "resourceType",
+                parameters.getResourceType());
+    }
 
-	public void setRanking(double ranking) {
-		this.ranking = ranking;
-	}
+    public double getRanking() {
+        return ranking;
+    }
 
-	public NameSpacedAttribute<String> getSlingResourceType() {
-		return resourceType;
-	}
+    public void setRanking(double ranking) {
+        this.ranking = ranking;
+    }
 
-	public void setFieldName(String fieldName) {
-		this.fieldName = fieldName;
-	}
+    public NameSpacedAttribute<String> getSlingResourceType() {
+        return resourceType;
+    }
+
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
+    }
 }

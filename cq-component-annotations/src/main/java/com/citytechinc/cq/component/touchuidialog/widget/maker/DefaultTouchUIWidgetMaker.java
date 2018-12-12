@@ -8,17 +8,17 @@ import com.citytechinc.cq.component.touchuidialog.widget.SimpleTouchUIWidget;
 
 public class DefaultTouchUIWidgetMaker extends AbstractTouchUIWidgetMaker<DefaultTouchUIWidgetParameters> {
 
-	public DefaultTouchUIWidgetMaker(TouchUIWidgetMakerParameters parameters) {
-		super(parameters);
-	}
+    public DefaultTouchUIWidgetMaker(TouchUIWidgetMakerParameters parameters) {
+        super(parameters);
+    }
 
-	@Override
-	public TouchUIDialogElement make(DefaultTouchUIWidgetParameters widgetParameters) throws ClassNotFoundException,
-		InvalidComponentFieldException, TouchUIDialogGenerationException {
-		widgetParameters.setResourceType(parameters.getResourceType());
+    @Override
+    public TouchUIDialogElement make(DefaultTouchUIWidgetParameters widgetParameters) throws ClassNotFoundException,
+        InvalidComponentFieldException, TouchUIDialogGenerationException {
+        widgetParameters.setResourceType(parameters.getResourceType());
 
-		return new SimpleTouchUIWidget(widgetParameters);
+        return new SimpleTouchUIWidget(widgetParameters);
 
-	}
+    }
 
 }

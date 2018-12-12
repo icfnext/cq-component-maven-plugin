@@ -5,33 +5,36 @@ import com.citytechinc.cq.component.editconfig.maker.InPlaceEditorMaker;
 
 public class InPlaceEditorConfigHolder {
 
-	private final Class<?> annotationClass;
-	private final Class<? extends InPlaceEditorElement> inPlaceEditorClass;
-	private final Class<? extends InPlaceEditorMaker> makerClass;
-	private final String editorType;
+    private final Class<?> annotationClass;
 
-	public InPlaceEditorConfigHolder(Class<?> annotationClass,
-		Class<? extends InPlaceEditorElement> inPlaceEditorClass, Class<? extends InPlaceEditorMaker> makerClass,
-		String editorType) {
-		this.annotationClass = annotationClass;
-		this.inPlaceEditorClass = inPlaceEditorClass;
-		this.makerClass = makerClass;
-		this.editorType = editorType;
-	}
+    private final Class<? extends InPlaceEditorElement> inPlaceEditorClass;
 
-	public Class<?> getAnnotationClass() {
-		return annotationClass;
-	}
+    private final Class<? extends InPlaceEditorMaker> makerClass;
 
-	public Class<? extends InPlaceEditorElement> getInPlaceEditorClass() {
-		return inPlaceEditorClass;
-	}
+    private final String editorType;
 
-	public Class<? extends InPlaceEditorMaker> getMakerClass() {
-		return makerClass;
-	}
+    public InPlaceEditorConfigHolder(Class<?> annotationClass,
+        Class<? extends InPlaceEditorElement> inPlaceEditorClass, Class<? extends InPlaceEditorMaker> makerClass,
+        String editorType) {
+        this.annotationClass = annotationClass;
+        this.inPlaceEditorClass = inPlaceEditorClass;
+        this.makerClass = makerClass;
+        this.editorType = editorType;
+    }
 
-	public String getEditorType() {
-		return editorType;
-	}
+    public Class<?> getAnnotationClass() {
+        return annotationClass;
+    }
+
+    public Class<? extends InPlaceEditorElement> getInPlaceEditorClass() {
+        return inPlaceEditorClass;
+    }
+
+    public Class<? extends InPlaceEditorMaker> getMakerClass() {
+        return makerClass;
+    }
+
+    public String getEditorType() {
+        return editorType;
+    }
 }

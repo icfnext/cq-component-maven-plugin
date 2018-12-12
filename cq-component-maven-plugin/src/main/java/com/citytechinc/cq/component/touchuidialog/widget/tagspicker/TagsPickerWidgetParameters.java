@@ -5,6 +5,7 @@ import com.citytechinc.cq.component.touchuidialog.widget.DefaultTouchUIWidgetPar
 public class TagsPickerWidgetParameters extends DefaultTouchUIWidgetParameters {
 
     private String tagsPath;
+
     private String rootPath;
 
     @Override

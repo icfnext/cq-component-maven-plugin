@@ -5,18 +5,19 @@ import com.citytechinc.cq.component.annotations.widgets.TagInputField;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
 
 @Widget(annotationClass = TagInputField.class, makerClass = TagInputFieldWidgetMaker.class,
-	xtype = TagInputFieldWidget.XTYPE)
+    xtype = TagInputFieldWidget.XTYPE)
 public class TagInputFieldWidget extends AbstractWidget {
-	public static final String XTYPE = "tags";
 
-	private final boolean displayTitles;
+    public static final String XTYPE = "tags";
 
-	public TagInputFieldWidget(TagInputFieldWidgetParameters parameters) {
-		super(parameters);
-		this.displayTitles = parameters.isDisplayTitles();
-	}
+    private final boolean displayTitles;
 
-	public boolean isDisplayTitles() {
-		return displayTitles;
-	}
+    public TagInputFieldWidget(TagInputFieldWidgetParameters parameters) {
+        super(parameters);
+        this.displayTitles = parameters.isDisplayTitles();
+    }
+
+    public boolean isDisplayTitles() {
+        return displayTitles;
+    }
 }

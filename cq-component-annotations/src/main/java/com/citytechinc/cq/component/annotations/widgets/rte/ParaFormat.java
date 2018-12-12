@@ -5,8 +5,8 @@ package com.citytechinc.cq.component.annotations.widgets.rte;
  */
 public @interface ParaFormat {
 
-	public String tag();
+    String tag();
 
-	public String description();
+    String description();
 
 }

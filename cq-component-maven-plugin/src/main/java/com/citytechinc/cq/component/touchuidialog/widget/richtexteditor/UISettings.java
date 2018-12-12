@@ -4,11 +4,12 @@ import com.citytechinc.cq.component.touchuidialog.AbstractTouchUIDialogElement;
 
 public class UISettings extends AbstractTouchUIDialogElement {
 
-	public static final String PRIMARY_TYPE = "nt:unstructured";
-	public static final String FIELD_NAME = "uiSettings";
+    public static final String PRIMARY_TYPE = "nt:unstructured";
 
-	public UISettings(UISettingsParameters parameters) {
-		super(parameters);
-	}
+    public static final String FIELD_NAME = "uiSettings";
+
+    public UISettings(UISettingsParameters parameters) {
+        super(parameters);
+    }
 
 }

@@ -5,38 +5,38 @@ import com.citytechinc.cq.component.xml.XmlElementParameters;
 
 public interface WidgetParameters extends DialogElementParameters, XmlElementParameters {
 
-	public abstract String getXtype();
+    String getXtype();
 
-	public abstract void setXtype(String xtype);
+    void setXtype(String xtype);
 
-	public abstract String getFieldLabel();
+    String getFieldLabel();
 
-	public abstract void setFieldLabel(String fieldLabel);
+    void setFieldLabel(String fieldLabel);
 
-	public abstract String getFieldDescription();
+    String getFieldDescription();
 
-	public abstract void setFieldDescription(String fieldDescription);
+    void setFieldDescription(String fieldDescription);
 
-	public abstract boolean isAllowBlank();
+    boolean isAllowBlank();
 
-	public abstract void setAllowBlank(boolean allowBlank);
+    void setAllowBlank(boolean allowBlank);
 
-	public abstract String getDefaultValue();
+    String getDefaultValue();
 
-	public abstract void setDefaultValue(String defaultValue);
+    void setDefaultValue(String defaultValue);
 
-	public abstract String getName();
+    String getName();
 
-	public abstract void setName(String name);
+    void setName(String name);
 
-	public abstract boolean isHideLabel();
+    boolean isHideLabel();
 
-	public abstract void setHideLabel(boolean hideLabel);
+    void setHideLabel(boolean hideLabel);
 
-	public abstract boolean isDisabled();
+    boolean isDisabled();
 
-	public abstract void setDisabled(boolean disabled);
+    void setDisabled(boolean disabled);
 
-	public abstract String getPrimaryType();
+    String getPrimaryType();
 
 }

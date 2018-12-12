@@ -5,11 +5,11 @@ import com.citytechinc.cq.component.touchuidialog.widget.DefaultTouchUIWidgetPar
 
 public class TextFieldWidgetParameters extends DefaultTouchUIWidgetParameters {
 
-	@Override
-	public String getResourceType() {
-		if(TouchUIDialogType.CORAL3.isOfType(getTouchUIDialogType())) {
-			return TextFieldCoral3Widget.RESOURCE_TYPE;
-		}
-		return TextFieldWidget.RESOURCE_TYPE;
-	}
+    @Override
+    public String getResourceType() {
+        if (TouchUIDialogType.CORAL3.isOfType(getTouchUIDialogType())) {
+            return TextFieldCoral3Widget.RESOURCE_TYPE;
+        }
+        return TextFieldWidget.RESOURCE_TYPE;
+    }
 }

@@ -15,17 +15,17 @@ import java.util.Collections;
  */
 public class RichTextEditorMaker extends AbstractWidgetMaker<RichTextEditorWidgetParameters> {
 
-	public RichTextEditorMaker(WidgetMakerParameters parameters) {
-		super(parameters);
-	}
+    public RichTextEditorMaker(WidgetMakerParameters parameters) {
+        super(parameters);
+    }
 
-	@Override
-	public DialogElement make(RichTextEditorWidgetParameters widgetParameters) throws ClassNotFoundException {
-		final RichTextEditor rteAnnotation = getAnnotation(RichTextEditor.class);
-		final RtePlugins plugins = new RtePluginBuilder(new RtePluginBuilderParameters(rteAnnotation)).build();
+    @Override
+    public DialogElement make(RichTextEditorWidgetParameters widgetParameters) throws ClassNotFoundException {
+        final RichTextEditor rteAnnotation = getAnnotation(RichTextEditor.class);
+        final RtePlugins plugins = new RtePluginBuilder(new RtePluginBuilderParameters(rteAnnotation)).build();
 
-		widgetParameters.setContainedElements(Collections.singletonList(plugins));
+        widgetParameters.setContainedElements(Collections.singletonList(plugins));
 
-		return new RichTextEditorWidget(widgetParameters);
-	}
+        return new RichTextEditorWidget(widgetParameters);
+    }
 }

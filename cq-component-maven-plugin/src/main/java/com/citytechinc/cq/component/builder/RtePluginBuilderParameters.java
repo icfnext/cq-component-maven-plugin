@@ -20,188 +20,204 @@ import com.citytechinc.cq.component.annotations.widgets.rte.Undo;
 import com.citytechinc.cq.component.editconfig.annotations.inplaceeditors.TextEditor;
 
 public class RtePluginBuilderParameters {
-	private Edit[] edit;
-	private FindReplace[] findreplace;
-	private Format[] format;
-	private Image[] image;
-	private Keys[] keys;
-	private Justify[] justify;
-	private Links[] links;
-	private Lists[] lists;
-	private MiscTools[] misctools;
-	private ParaFormat[] paraformat;
-	private SpellCheck[] spellcheck;
-	private Style[] styles;
-	private SubSuperscript[] subsuperscript;
-	private Table[] table;
-	private Undo[] undo;
-	private UISettings[] uiSettings;
 
-	public RtePluginBuilderParameters() {
-	}
+    private Edit[] edit;
 
-	public RtePluginBuilderParameters(RichTextEditor rteTextEditor) {
-		this.edit = rteTextEditor.edit();
-		this.findreplace = rteTextEditor.findreplace();
-		this.format = rteTextEditor.format();
-		this.image = rteTextEditor.image();
-		this.keys = rteTextEditor.keys();
-		this.justify = rteTextEditor.justify();
-		this.links = rteTextEditor.links();
-		this.lists = rteTextEditor.lists();
-		this.misctools = rteTextEditor.misctools();
-		this.paraformat = rteTextEditor.paraformat();
-		this.spellcheck = rteTextEditor.spellcheck();
-		this.styles = rteTextEditor.styles();
-		this.subsuperscript = rteTextEditor.subsuperscript();
-		this.table = rteTextEditor.table();
-		this.undo = rteTextEditor.undo();
-		this.uiSettings = rteTextEditor.uiSettings();
-	}
+    private FindReplace[] findreplace;
 
-	public RtePluginBuilderParameters(TextEditor textEditor) {
-		this.edit = textEditor.edit();
-		this.findreplace = textEditor.findreplace();
-		this.format = textEditor.format();
-		this.image = textEditor.image();
-		this.keys = textEditor.keys();
-		this.justify = textEditor.justify();
-		this.links = textEditor.links();
-		this.lists = textEditor.lists();
-		this.misctools = textEditor.misctools();
-		this.paraformat = textEditor.paraformat();
-		this.spellcheck = textEditor.spellcheck();
-		this.styles = textEditor.styles();
-		this.subsuperscript = textEditor.subsuperscript();
-		this.undo = textEditor.undo();
-		this.uiSettings = textEditor.uiSettings();
-	}
+    private Format[] format;
 
-	public Edit[] getEdit() {
-		return edit;
-	}
+    private Image[] image;
 
-	public void setEdit(Edit[] edit) {
-		this.edit = edit;
-	}
+    private Keys[] keys;
 
-	public FindReplace[] getFindreplace() {
-		return findreplace;
-	}
+    private Justify[] justify;
 
-	public void setFindreplace(FindReplace[] findreplace) {
-		this.findreplace = findreplace;
-	}
+    private Links[] links;
 
-	public Format[] getFormat() {
-		return format;
-	}
+    private Lists[] lists;
 
-	public void setFormat(Format[] format) {
-		this.format = format;
-	}
+    private MiscTools[] misctools;
 
-	public Image[] getImage() {
-		return image;
-	}
+    private ParaFormat[] paraformat;
 
-	public void setImage(Image[] image) {
-		this.image = image;
-	}
+    private SpellCheck[] spellcheck;
 
-	public Keys[] getKeys() {
-		return keys;
-	}
+    private Style[] styles;
 
-	public void setKeys(Keys[] keys) {
-		this.keys = keys;
-	}
+    private SubSuperscript[] subsuperscript;
 
-	public Justify[] getJustify() {
-		return justify;
-	}
+    private Table[] table;
 
-	public void setJustify(Justify[] justify) {
-		this.justify = justify;
-	}
+    private Undo[] undo;
 
-	public Links[] getLinks() {
-		return links;
-	}
+    private UISettings[] uiSettings;
 
-	public void setLinks(Links[] links) {
-		this.links = links;
-	}
+    public RtePluginBuilderParameters() {
+    }
 
-	public Lists[] getLists() {
-		return lists;
-	}
+    public RtePluginBuilderParameters(RichTextEditor rteTextEditor) {
+        this.edit = rteTextEditor.edit();
+        this.findreplace = rteTextEditor.findreplace();
+        this.format = rteTextEditor.format();
+        this.image = rteTextEditor.image();
+        this.keys = rteTextEditor.keys();
+        this.justify = rteTextEditor.justify();
+        this.links = rteTextEditor.links();
+        this.lists = rteTextEditor.lists();
+        this.misctools = rteTextEditor.misctools();
+        this.paraformat = rteTextEditor.paraformat();
+        this.spellcheck = rteTextEditor.spellcheck();
+        this.styles = rteTextEditor.styles();
+        this.subsuperscript = rteTextEditor.subsuperscript();
+        this.table = rteTextEditor.table();
+        this.undo = rteTextEditor.undo();
+        this.uiSettings = rteTextEditor.uiSettings();
+    }
 
-	public void setLists(Lists[] lists) {
-		this.lists = lists;
-	}
+    public RtePluginBuilderParameters(TextEditor textEditor) {
+        this.edit = textEditor.edit();
+        this.findreplace = textEditor.findreplace();
+        this.format = textEditor.format();
+        this.image = textEditor.image();
+        this.keys = textEditor.keys();
+        this.justify = textEditor.justify();
+        this.links = textEditor.links();
+        this.lists = textEditor.lists();
+        this.misctools = textEditor.misctools();
+        this.paraformat = textEditor.paraformat();
+        this.spellcheck = textEditor.spellcheck();
+        this.styles = textEditor.styles();
+        this.subsuperscript = textEditor.subsuperscript();
+        this.undo = textEditor.undo();
+        this.uiSettings = textEditor.uiSettings();
+    }
 
-	public MiscTools[] getMisctools() {
-		return misctools;
-	}
+    public Edit[] getEdit() {
+        return edit;
+    }
 
-	public void setMisctools(MiscTools[] misctools) {
-		this.misctools = misctools;
-	}
+    public void setEdit(Edit[] edit) {
+        this.edit = edit;
+    }
 
-	public ParaFormat[] getParaformat() {
-		return paraformat;
-	}
+    public FindReplace[] getFindreplace() {
+        return findreplace;
+    }
 
-	public void setParaformat(ParaFormat[] paraformat) {
-		this.paraformat = paraformat;
-	}
+    public void setFindreplace(FindReplace[] findreplace) {
+        this.findreplace = findreplace;
+    }
 
-	public SpellCheck[] getSpellcheck() {
-		return spellcheck;
-	}
+    public Format[] getFormat() {
+        return format;
+    }
 
-	public void setSpellcheck(SpellCheck[] spellcheck) {
-		this.spellcheck = spellcheck;
-	}
+    public void setFormat(Format[] format) {
+        this.format = format;
+    }
 
-	public Style[] getStyles() {
-		return styles;
-	}
+    public Image[] getImage() {
+        return image;
+    }
 
-	public void setStyles(Style[] styles) {
-		this.styles = styles;
-	}
+    public void setImage(Image[] image) {
+        this.image = image;
+    }
 
-	public SubSuperscript[] getSubsuperscript() {
-		return subsuperscript;
-	}
+    public Keys[] getKeys() {
+        return keys;
+    }
 
-	public void setSubsuperscript(SubSuperscript[] subsuperscript) {
-		this.subsuperscript = subsuperscript;
-	}
+    public void setKeys(Keys[] keys) {
+        this.keys = keys;
+    }
 
-	public Table[] getTable() {
-		return table;
-	}
+    public Justify[] getJustify() {
+        return justify;
+    }
 
-	public void setTable(Table[] table) {
-		this.table = table;
-	}
+    public void setJustify(Justify[] justify) {
+        this.justify = justify;
+    }
 
-	public Undo[] getUndo() {
-		return undo;
-	}
+    public Links[] getLinks() {
+        return links;
+    }
 
-	public void setUndo(Undo[] undo) {
-		this.undo = undo;
-	}
+    public void setLinks(Links[] links) {
+        this.links = links;
+    }
 
-	public UISettings[] getUiSettings() {
-		return uiSettings;
-	}
+    public Lists[] getLists() {
+        return lists;
+    }
 
-	public void setUiSettings(UISettings[] uiSettings) {
-		this.uiSettings = uiSettings;
-	}
+    public void setLists(Lists[] lists) {
+        this.lists = lists;
+    }
+
+    public MiscTools[] getMisctools() {
+        return misctools;
+    }
+
+    public void setMisctools(MiscTools[] misctools) {
+        this.misctools = misctools;
+    }
+
+    public ParaFormat[] getParaformat() {
+        return paraformat;
+    }
+
+    public void setParaformat(ParaFormat[] paraformat) {
+        this.paraformat = paraformat;
+    }
+
+    public SpellCheck[] getSpellcheck() {
+        return spellcheck;
+    }
+
+    public void setSpellcheck(SpellCheck[] spellcheck) {
+        this.spellcheck = spellcheck;
+    }
+
+    public Style[] getStyles() {
+        return styles;
+    }
+
+    public void setStyles(Style[] styles) {
+        this.styles = styles;
+    }
+
+    public SubSuperscript[] getSubsuperscript() {
+        return subsuperscript;
+    }
+
+    public void setSubsuperscript(SubSuperscript[] subsuperscript) {
+        this.subsuperscript = subsuperscript;
+    }
+
+    public Table[] getTable() {
+        return table;
+    }
+
+    public void setTable(Table[] table) {
+        this.table = table;
+    }
+
+    public Undo[] getUndo() {
+        return undo;
+    }
+
+    public void setUndo(Undo[] undo) {
+        this.undo = undo;
+    }
+
+    public UISettings[] getUiSettings() {
+        return uiSettings;
+    }
+
+    public void setUiSettings(UISettings[] uiSettings) {
+        this.uiSettings = uiSettings;
+    }
 }

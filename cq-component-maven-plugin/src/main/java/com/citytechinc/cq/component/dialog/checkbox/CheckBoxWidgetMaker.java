@@ -7,31 +7,31 @@ import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 
 public class CheckBoxWidgetMaker extends AbstractWidgetMaker<CheckBoxWidgetParameters> {
 
-	public CheckBoxWidgetMaker(WidgetMakerParameters parameters) {
-		super(parameters);
-	}
+    public CheckBoxWidgetMaker(WidgetMakerParameters parameters) {
+        super(parameters);
+    }
 
-	@Override
-	public DialogElement make(CheckBoxWidgetParameters widgetParameters) throws ClassNotFoundException {
+    @Override
+    public DialogElement make(CheckBoxWidgetParameters widgetParameters) throws ClassNotFoundException {
 
-		CheckBox checkBoxAnnotation = getAnnotation(CheckBox.class);
+        CheckBox checkBoxAnnotation = getAnnotation(CheckBox.class);
 
-		String inputValue = getInputValueForField(checkBoxAnnotation);
-		boolean checked = getCheckedForField(checkBoxAnnotation);
+        String inputValue = getInputValueForField(checkBoxAnnotation);
+        boolean checked = getCheckedForField(checkBoxAnnotation);
 
-		widgetParameters.setInputValue(inputValue);
-		widgetParameters.setChecked(checked);
+        widgetParameters.setInputValue(inputValue);
+        widgetParameters.setChecked(checked);
 
-		return new CheckBoxWidget(widgetParameters);
+        return new CheckBoxWidget(widgetParameters);
 
-	}
+    }
 
-	protected String getInputValueForField(CheckBox annotation) {
-		return annotation.inputValue();
-	}
+    protected String getInputValueForField(CheckBox annotation) {
+        return annotation.inputValue();
+    }
 
-	protected boolean getCheckedForField(CheckBox annotation) {
-		return annotation.checked();
-	}
+    protected boolean getCheckedForField(CheckBox annotation) {
+        return annotation.checked();
+    }
 
 }

@@ -1,9 +1,5 @@
 package com.citytechinc.cq.component.builder;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import com.citytechinc.cq.component.annotations.widgets.ToolbarConfig;
 import com.citytechinc.cq.component.touchuidialog.widget.richtexteditor.CUI;
 import com.citytechinc.cq.component.touchuidialog.widget.richtexteditor.CUIParameters;
@@ -16,50 +12,55 @@ import com.citytechinc.cq.component.touchuidialog.widget.richtexteditor.ToolbarP
 import com.citytechinc.cq.component.touchuidialog.widget.richtexteditor.UISettings;
 import com.citytechinc.cq.component.touchuidialog.widget.richtexteditor.UISettingsParameters;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class RteUISettingsBuilder {
-	private final com.citytechinc.cq.component.annotations.widgets.rte.UISettings uiSettingsAnnotation;
 
-	public RteUISettingsBuilder(com.citytechinc.cq.component.annotations.widgets.rte.UISettings uiSettingsAnnotation) {
-		this.uiSettingsAnnotation = uiSettingsAnnotation;
-	}
+    private final com.citytechinc.cq.component.annotations.widgets.rte.UISettings uiSettingsAnnotation;
 
-	public UISettings build() {
-		List<Toolbar> toolbars = new ArrayList<Toolbar>();
-		if (uiSettingsAnnotation.inline().length > 0) {
-			toolbars.add(buildToolbar(uiSettingsAnnotation.inline()[0], "inline"));
-		}
+    public RteUISettingsBuilder(com.citytechinc.cq.component.annotations.widgets.rte.UISettings uiSettingsAnnotation) {
+        this.uiSettingsAnnotation = uiSettingsAnnotation;
+    }
 
-		if (uiSettingsAnnotation.fullscreen().length > 0) {
-			toolbars.add(buildToolbar(uiSettingsAnnotation.fullscreen()[0], "fullscreen"));
-		}
+    public UISettings build() {
+        List<Toolbar> toolbars = new ArrayList<Toolbar>();
+        if (uiSettingsAnnotation.inline().length > 0) {
+            toolbars.add(buildToolbar(uiSettingsAnnotation.inline()[0], "inline"));
+        }
 
-		CUIParameters cuiParamers = new CUIParameters();
-		cuiParamers.setContainedElements(toolbars);
-		CUI cui = new CUI(cuiParamers);
+        if (uiSettingsAnnotation.fullscreen().length > 0) {
+            toolbars.add(buildToolbar(uiSettingsAnnotation.fullscreen()[0], "fullscreen"));
+        }
 
-		UISettingsParameters uiSettingsParameters = new UISettingsParameters();
-		uiSettingsParameters.setContainedElements(Collections.singletonList(cui));
-		return new UISettings(uiSettingsParameters);
-	}
+        CUIParameters cuiParamers = new CUIParameters();
+        cuiParamers.setContainedElements(toolbars);
+        CUI cui = new CUI(cuiParamers);
 
-	private Toolbar buildToolbar(ToolbarConfig toolbarConfig, String fieldName) {
-		ToolbarParameters toolbarParameters = new ToolbarParameters();
-		toolbarParameters.setFieldName(fieldName);
-		toolbarParameters.setToolbar(toolbarConfig.toolbars());
-		if (toolbarConfig.popovers().length > 0) {
-			PopoversParameters popoversParameters = new PopoversParameters();
-			List<Popover> popovers = new ArrayList<Popover>();
-			for (com.citytechinc.cq.component.annotations.widgets.Popover popover : toolbarConfig.popovers()) {
-				PopoverParameters popoverParameters = new PopoverParameters();
-				popoverParameters.setFieldName(popover.ref());
-				popoverParameters.setRef(popover.ref());
-				popoverParameters.setItems(popover.items());
-				popovers.add(new Popover(popoverParameters));
-			}
-			popoversParameters.setContainedElements(popovers);
-			toolbarParameters.setContainedElements(Collections.singletonList(new Popovers(popoversParameters)));
-		}
+        UISettingsParameters uiSettingsParameters = new UISettingsParameters();
+        uiSettingsParameters.setContainedElements(Collections.singletonList(cui));
+        return new UISettings(uiSettingsParameters);
+    }
 
-		return new Toolbar(toolbarParameters);
-	}
+    private Toolbar buildToolbar(ToolbarConfig toolbarConfig, String fieldName) {
+        ToolbarParameters toolbarParameters = new ToolbarParameters();
+        toolbarParameters.setFieldName(fieldName);
+        toolbarParameters.setToolbar(toolbarConfig.toolbars());
+        if (toolbarConfig.popovers().length > 0) {
+            PopoversParameters popoversParameters = new PopoversParameters();
+            List<Popover> popovers = new ArrayList<Popover>();
+            for (com.citytechinc.cq.component.annotations.widgets.Popover popover : toolbarConfig.popovers()) {
+                PopoverParameters popoverParameters = new PopoverParameters();
+                popoverParameters.setFieldName(popover.ref());
+                popoverParameters.setRef(popover.ref());
+                popoverParameters.setItems(popover.items());
+                popovers.add(new Popover(popoverParameters));
+            }
+            popoversParameters.setContainedElements(popovers);
+            toolbarParameters.setContainedElements(Collections.singletonList(new Popovers(popoversParameters)));
+        }
+
+        return new Toolbar(toolbarParameters);
+    }
 }

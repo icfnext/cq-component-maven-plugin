@@ -5,20 +5,20 @@ import com.citytechinc.cq.component.annotations.widgets.Selection;
 import com.citytechinc.cq.component.touchuidialog.widget.AbstractTouchUIWidget;
 
 @TouchUIWidget(annotationClass = Selection.class, makerClass = SelectionFieldWidgetMaker.class,
-	resourceType = SelectionFieldCoral3Widget.RESOURCE_TYPE)
+    resourceType = SelectionFieldCoral3Widget.RESOURCE_TYPE)
 public class SelectionFieldCoral3Widget extends AbstractTouchUIWidget {
 
-	public static final String RESOURCE_TYPE = "granite/ui/components/coral/foundation/form/select";
+    public static final String RESOURCE_TYPE = "granite/ui/components/coral/foundation/form/select";
 
-	private final boolean multiple;
+    private final boolean multiple;
 
-	public SelectionFieldCoral3Widget(SelectionFieldWidgetParameters parameters) {
-		super(parameters);
+    public SelectionFieldCoral3Widget(SelectionFieldWidgetParameters parameters) {
+        super(parameters);
 
-		this.multiple = parameters.isMultiple();
-	}
+        this.multiple = parameters.isMultiple();
+    }
 
-	public boolean getMultiple() {
-		return multiple;
-	}
+    public boolean getMultiple() {
+        return multiple;
+    }
 }

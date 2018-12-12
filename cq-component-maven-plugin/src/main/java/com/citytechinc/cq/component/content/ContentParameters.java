@@ -1,149 +1,161 @@
 package com.citytechinc.cq.component.content;
 
-import java.util.List;
-
 import com.citytechinc.cq.component.xml.DefaultXmlElementParameters;
+
+import java.util.List;
 
 public class ContentParameters extends DefaultXmlElementParameters {
 
-	private static final String CONTENT_PRIMARY_TYPE = "cq:Component";
+    private static final String CONTENT_PRIMARY_TYPE = "cq:Component";
 
-	private List<String> allowedChildren;
-	private List<String> allowedParents;
-	private String componentGroup;
-	private String cellName;
-	private Boolean isContainer;
-	private Boolean noDecoration;
-	private String templatePath;
-	private String dialogPath;
-	private String created;
-	private String description;
-	private String title;
-	private String resourceSuperType;
-	private String className;
+    private List<String> allowedChildren;
 
-	public String getClassName() {
-		return className;
-	}
+    private List<String> allowedParents;
 
-	public void setClassName(String className) {
-		this.className = className;
-	}
+    private String componentGroup;
 
-	public List<String> getAllowedChildren() {
-		return allowedChildren;
-	}
+    private String cellName;
 
-	public void setAllowedChildren(List<String> allowedChildren) {
-		this.allowedChildren = allowedChildren;
-	}
+    private Boolean isContainer;
 
-	public List<String> getAllowedParents() {
-		return allowedParents;
-	}
+    private Boolean noDecoration;
 
-	public void setAllowedParents(List<String> allowedParents) {
-		this.allowedParents = allowedParents;
-	}
+    private String templatePath;
 
-	public String getComponentGroup() {
-		return componentGroup;
-	}
+    private String dialogPath;
 
-	public void setComponentGroup(String componentGroup) {
-		this.componentGroup = componentGroup;
-	}
+    private String created;
 
-	public String getCellName() {
-		return cellName;
-	}
+    private String description;
 
-	public void setCellName(String cellName) {
-		this.cellName = cellName;
-	}
+    private String title;
 
-	public Boolean getIsContainer() {
-		return isContainer;
-	}
+    private String resourceSuperType;
 
-	public void setIsContainer(Boolean isContainer) {
-		this.isContainer = isContainer;
-	}
+    private String className;
 
-	public Boolean getNoDecoration() {
-		return noDecoration;
-	}
+    public String getClassName() {
+        return className;
+    }
 
-	public void setNoDecoration(Boolean noDecoration) {
-		this.noDecoration = noDecoration;
-	}
+    public void setClassName(String className) {
+        this.className = className;
+    }
 
-	public String getTemplatePath() {
-		return templatePath;
-	}
+    public List<String> getAllowedChildren() {
+        return allowedChildren;
+    }
 
-	public void setTemplatePath(String templatePath) {
-		this.templatePath = templatePath;
-	}
+    public void setAllowedChildren(List<String> allowedChildren) {
+        this.allowedChildren = allowedChildren;
+    }
 
-	public String getDialogPath() {
-		return dialogPath;
-	}
+    public List<String> getAllowedParents() {
+        return allowedParents;
+    }
 
-	public void setDialogPath(String dialogPath) {
-		this.dialogPath = dialogPath;
-	}
+    public void setAllowedParents(List<String> allowedParents) {
+        this.allowedParents = allowedParents;
+    }
 
-	public String getCreated() {
-		return created;
-	}
+    public String getComponentGroup() {
+        return componentGroup;
+    }
 
-	public void setCreated(String created) {
-		this.created = created;
-	}
+    public void setComponentGroup(String componentGroup) {
+        this.componentGroup = componentGroup;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getCellName() {
+        return cellName;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setCellName(String cellName) {
+        this.cellName = cellName;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public Boolean getIsContainer() {
+        return isContainer;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setIsContainer(Boolean isContainer) {
+        this.isContainer = isContainer;
+    }
 
-	public String getResourceSuperType() {
-		return resourceSuperType;
-	}
+    public Boolean getNoDecoration() {
+        return noDecoration;
+    }
 
-	public void setResourceSuperType(String resourceSuperType) {
-		this.resourceSuperType = resourceSuperType;
-	}
+    public void setNoDecoration(Boolean noDecoration) {
+        this.noDecoration = noDecoration;
+    }
 
-	@Override
-	public String getFieldName() {
-		return "jcr:root";
-	}
+    public String getTemplatePath() {
+        return templatePath;
+    }
 
-	@Override
-	public void setFieldName(String fieldName) {
-		throw new UnsupportedOperationException("fieldName is Static for EditConfig");
-	}
+    public void setTemplatePath(String templatePath) {
+        this.templatePath = templatePath;
+    }
 
-	@Override
-	public String getPrimaryType() {
-		return CONTENT_PRIMARY_TYPE;
-	}
+    public String getDialogPath() {
+        return dialogPath;
+    }
 
-	@Override
-	public void setPrimaryType(String primaryType) {
-		throw new UnsupportedOperationException("PrimaryType is Static for EditConfig");
-	}
+    public void setDialogPath(String dialogPath) {
+        this.dialogPath = dialogPath;
+    }
+
+    public String getCreated() {
+        return created;
+    }
+
+    public void setCreated(String created) {
+        this.created = created;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getResourceSuperType() {
+        return resourceSuperType;
+    }
+
+    public void setResourceSuperType(String resourceSuperType) {
+        this.resourceSuperType = resourceSuperType;
+    }
+
+    @Override
+    public String getFieldName() {
+        return "jcr:root";
+    }
+
+    @Override
+    public void setFieldName(String fieldName) {
+        throw new UnsupportedOperationException("fieldName is Static for EditConfig");
+    }
+
+    @Override
+    public String getPrimaryType() {
+        return CONTENT_PRIMARY_TYPE;
+    }
+
+    @Override
+    public void setPrimaryType(String primaryType) {
+        throw new UnsupportedOperationException("PrimaryType is Static for EditConfig");
+    }
 
 }

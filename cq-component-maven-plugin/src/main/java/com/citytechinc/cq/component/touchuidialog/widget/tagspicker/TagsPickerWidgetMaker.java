@@ -15,7 +15,9 @@ public class TagsPickerWidgetMaker extends AbstractTouchUIWidgetMaker<TagsPicker
     }
 
     @Override
-    protected TouchUIDialogElement make(TagsPickerWidgetParameters widgetParameters) throws ClassNotFoundException, InvalidComponentFieldException, TouchUIDialogGenerationException, IllegalAccessException, InstantiationException {
+    protected TouchUIDialogElement make(TagsPickerWidgetParameters widgetParameters)
+        throws ClassNotFoundException, InvalidComponentFieldException, TouchUIDialogGenerationException,
+        IllegalAccessException, InstantiationException {
 
         TagInputField widgetAnnotation = getAnnotation(TagInputField.class);
 

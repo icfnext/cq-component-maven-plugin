@@ -6,13 +6,13 @@ import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
 
 public class DateTimeWidgetMaker extends AbstractWidgetMaker<DateTimeWidgetParameters> {
 
-	public DateTimeWidgetMaker(WidgetMakerParameters parameters) {
-		super(parameters);
-	}
+    public DateTimeWidgetMaker(WidgetMakerParameters parameters) {
+        super(parameters);
+    }
 
-	@Override
-	public DialogElement make(DateTimeWidgetParameters parameters) {
-		return new DateTimeWidget(parameters);
-	}
+    @Override
+    public DialogElement make(DateTimeWidgetParameters parameters) {
+        return new DateTimeWidget(parameters);
+    }
 
 }

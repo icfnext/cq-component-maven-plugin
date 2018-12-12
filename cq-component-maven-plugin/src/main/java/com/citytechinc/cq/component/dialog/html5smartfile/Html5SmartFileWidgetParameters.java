@@ -4,114 +4,124 @@ import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 import com.citytechinc.cq.component.util.Constants;
 
 public class Html5SmartFileWidgetParameters extends DefaultWidgetParameters {
-	private boolean allowFileNameEditing;
-	private boolean allowFileReference;
-	private boolean allowUpload;
-	private String ddAccept;
-	private String ddGroups;
-	private String fileNameParameter;
-	private String fileReferenceParameter;
-	private String mimeTypes;
-	private String mimeTypesDescription;
-	private int sizeLimit;
 
-	public boolean isAllowFileNameEditing() {
-		return allowFileNameEditing;
-	}
+    private boolean allowFileNameEditing;
 
-	public void setAllowFileNameEditing(boolean allowFileNameEditing) {
-		this.allowFileNameEditing = allowFileNameEditing;
-	}
+    private boolean allowFileReference;
 
-	public boolean isAllowFileReference() {
-		return allowFileReference;
-	}
+    private boolean allowUpload;
 
-	public void setAllowFileReference(boolean allowFileReference) {
-		this.allowFileReference = allowFileReference;
-	}
+    private String ddAccept;
 
-	public boolean isAllowUpload() {
-		return allowUpload;
-	}
+    private String ddGroups;
 
-	public void setAllowUpload(boolean allowUpload) {
-		this.allowUpload = allowUpload;
-	}
+    private String fileNameParameter;
 
-	public String getDdAccept() {
-		return ddAccept;
-	}
+    private String fileReferenceParameter;
 
-	public void setDdAccept(String ddAccept) {
-		this.ddAccept = ddAccept;
-	}
+    private String mimeTypes;
 
-	public String getDdGroups() {
-		return ddGroups;
-	}
+    private String mimeTypesDescription;
 
-	public void setDdGroups(String ddGroups) {
-		this.ddGroups = ddGroups;
-	}
+    private int sizeLimit;
 
-	public String getFileNameParameter() {
-		return fileNameParameter;
-	}
+    public boolean isAllowFileNameEditing() {
+        return allowFileNameEditing;
+    }
 
-	public void setFileNameParameter(String fileNameParameter) {
-		this.fileNameParameter = fileNameParameter;
-	}
+    public void setAllowFileNameEditing(boolean allowFileNameEditing) {
+        this.allowFileNameEditing = allowFileNameEditing;
+    }
 
-	public String getFileReferenceParameter() {
-		return fileReferenceParameter;
-	}
+    public boolean isAllowFileReference() {
+        return allowFileReference;
+    }
 
-	public void setFileReferenceParameter(String fileReferenceParameter) {
-		this.fileReferenceParameter = fileReferenceParameter;
-	}
+    public void setAllowFileReference(boolean allowFileReference) {
+        this.allowFileReference = allowFileReference;
+    }
 
-	public String getMimeTypes() {
-		return mimeTypes;
-	}
+    public boolean isAllowUpload() {
+        return allowUpload;
+    }
 
-	public void setMimeTypes(String mimeTypes) {
-		this.mimeTypes = mimeTypes;
-	}
+    public void setAllowUpload(boolean allowUpload) {
+        this.allowUpload = allowUpload;
+    }
 
-	public String getMimeTypesDescription() {
-		return mimeTypesDescription;
-	}
+    public String getDdAccept() {
+        return ddAccept;
+    }
 
-	public void setMimeTypesDescription(String mimeTypesDescription) {
-		this.mimeTypesDescription = mimeTypesDescription;
-	}
+    public void setDdAccept(String ddAccept) {
+        this.ddAccept = ddAccept;
+    }
 
-	public int getSizeLimit() {
-		return sizeLimit;
-	}
+    public String getDdGroups() {
+        return ddGroups;
+    }
 
-	public void setSizeLimit(int sizeLimit) {
-		this.sizeLimit = sizeLimit;
-	}
+    public void setDdGroups(String ddGroups) {
+        this.ddGroups = ddGroups;
+    }
 
-	@Override
-	public String getPrimaryType() {
-		return Constants.CQ_WIDGET;
-	}
+    public String getFileNameParameter() {
+        return fileNameParameter;
+    }
 
-	@Override
-	public void setPrimaryType(String primaryType) {
-		throw new UnsupportedOperationException("PrimaryType is Static for Html5SmartFileWidget");
-	}
+    public void setFileNameParameter(String fileNameParameter) {
+        this.fileNameParameter = fileNameParameter;
+    }
 
-	@Override
-	public String getXtype() {
-		return Html5SmartFileWidget.XTYPE;
-	}
+    public String getFileReferenceParameter() {
+        return fileReferenceParameter;
+    }
 
-	@Override
-	public void setXtype(String xtype) {
-		throw new UnsupportedOperationException("xtype is Static for Html5SmartFileWidget");
-	}
+    public void setFileReferenceParameter(String fileReferenceParameter) {
+        this.fileReferenceParameter = fileReferenceParameter;
+    }
+
+    public String getMimeTypes() {
+        return mimeTypes;
+    }
+
+    public void setMimeTypes(String mimeTypes) {
+        this.mimeTypes = mimeTypes;
+    }
+
+    public String getMimeTypesDescription() {
+        return mimeTypesDescription;
+    }
+
+    public void setMimeTypesDescription(String mimeTypesDescription) {
+        this.mimeTypesDescription = mimeTypesDescription;
+    }
+
+    public int getSizeLimit() {
+        return sizeLimit;
+    }
+
+    public void setSizeLimit(int sizeLimit) {
+        this.sizeLimit = sizeLimit;
+    }
+
+    @Override
+    public String getPrimaryType() {
+        return Constants.CQ_WIDGET;
+    }
+
+    @Override
+    public void setPrimaryType(String primaryType) {
+        throw new UnsupportedOperationException("PrimaryType is Static for Html5SmartFileWidget");
+    }
+
+    @Override
+    public String getXtype() {
+        return Html5SmartFileWidget.XTYPE;
+    }
+
+    @Override
+    public void setXtype(String xtype) {
+        throw new UnsupportedOperationException("xtype is Static for Html5SmartFileWidget");
+    }
 }

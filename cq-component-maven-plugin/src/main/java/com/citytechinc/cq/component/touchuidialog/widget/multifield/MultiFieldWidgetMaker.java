@@ -37,7 +37,7 @@ public class MultiFieldWidgetMaker extends AbstractTouchUIWidgetMaker<MultiField
 
     @Override
     public TouchUIDialogElement make(MultiFieldWidgetParameters widgetParameters) throws ClassNotFoundException,
-            InvalidComponentFieldException, TouchUIDialogGenerationException {
+        InvalidComponentFieldException, TouchUIDialogGenerationException {
         MultiField annotation = getAnnotation(MultiField.class);
         List<TouchUIDialogElement> containedElements = new ArrayList<TouchUIDialogElement>();
 
@@ -46,9 +46,9 @@ public class MultiFieldWidgetMaker extends AbstractTouchUIWidgetMaker<MultiField
                 containedElements.add(generateFieldContainer(widgetParameters, this));
             } catch (NotFoundException e) {
                 throw new TouchUIDialogGenerationException(
-                        "Exception encountered while constructing contained elements for the Multifield "
-                                + parameters.getDialogFieldConfig().getFieldName() + " of class "
-                                + parameters.getContainingClass().getName(), e);
+                    "Exception encountered while constructing contained elements for the Multifield "
+                        + parameters.getDialogFieldConfig().getFieldName() + " of class "
+                        + parameters.getContainingClass().getName(), e);
             }
             // For coral 3 composite multifield, the name parameter should be inside the field tag
             widgetParameters.setName("");
@@ -79,8 +79,10 @@ public class MultiFieldWidgetMaker extends AbstractTouchUIWidgetMaker<MultiField
         return false;
     }
 
-    private Container generateFieldContainer(MultiFieldWidgetParameters widgetParameters, MultiFieldWidgetMaker widgetMaker)
-            throws NotFoundException, InvalidComponentFieldException, ClassNotFoundException, TouchUIDialogGenerationException {
+    private Container generateFieldContainer(MultiFieldWidgetParameters widgetParameters,
+        MultiFieldWidgetMaker widgetMaker)
+        throws NotFoundException, InvalidComponentFieldException, ClassNotFoundException,
+        TouchUIDialogGenerationException {
         ContainerParameters containerParameters = new ContainerParameters();
 
         containerParameters.setFieldName("field");
@@ -92,7 +94,8 @@ public class MultiFieldWidgetMaker extends AbstractTouchUIWidgetMaker<MultiField
     }
 
     private List<TouchUIDialogElement> generateItemsTag(MultiFieldWidgetMaker widgetMaker)
-            throws NotFoundException, InvalidComponentFieldException, ClassNotFoundException, TouchUIDialogGenerationException {
+        throws NotFoundException, InvalidComponentFieldException, ClassNotFoundException,
+        TouchUIDialogGenerationException {
         ItemsParameters itemsParameters = new ItemsParameters();
 
         itemsParameters.setFieldName("items");
@@ -104,7 +107,8 @@ public class MultiFieldWidgetMaker extends AbstractTouchUIWidgetMaker<MultiField
     }
 
     private List<TouchUIDialogElement> generateDialogElements(MultiFieldWidgetMaker widgetMaker)
-            throws NotFoundException, InvalidComponentFieldException, ClassNotFoundException, TouchUIDialogGenerationException {
+        throws NotFoundException, InvalidComponentFieldException, ClassNotFoundException,
+        TouchUIDialogGenerationException {
         List<TouchUIDialogElement> dialogElements = new ArrayList<TouchUIDialogElement>();
 
         buildDialogFields(dialogElements, widgetMaker);
@@ -114,8 +118,8 @@ public class MultiFieldWidgetMaker extends AbstractTouchUIWidgetMaker<MultiField
     }
 
     private static void buildDialogFields(List<TouchUIDialogElement> elements, MultiFieldWidgetMaker widgetMaker)
-            throws NotFoundException, InvalidComponentFieldException, ClassNotFoundException,
-            TouchUIDialogGenerationException {
+        throws NotFoundException, InvalidComponentFieldException, ClassNotFoundException,
+        TouchUIDialogGenerationException {
         List<CtMember> fieldsAndMethods = new ArrayList<CtMember>();
         fieldsAndMethods.addAll(ComponentMojoUtil.collectFields(widgetMaker.getCtType()));
         fieldsAndMethods.addAll(ComponentMojoUtil.collectMethods(widgetMaker.getCtType()));
@@ -131,11 +135,13 @@ public class MultiFieldWidgetMaker extends AbstractTouchUIWidgetMaker<MultiField
                         throw new InvalidComponentFieldException(e.getMessage(), e);
                     }
                 } else if (member.hasAnnotation(DialogField.class)) {
-                    dialogFieldConfig = new DialogFieldConfig((DialogField) member.getAnnotation(DialogField.class), member);
+                    dialogFieldConfig = new DialogFieldConfig((DialogField) member.getAnnotation(DialogField.class),
+                        member);
                 }
 
                 if (dialogFieldConfig != null && !dialogFieldConfig.isSuppressTouchUI()) {
-                    TouchUIWidgetMakerParameters curFieldMember = generateWidgetMakerParameters(member, widgetMaker, dialogFieldConfig);
+                    TouchUIWidgetMakerParameters curFieldMember = generateWidgetMakerParameters(member, widgetMaker,
+                        dialogFieldConfig);
 
                     if (member.hasAnnotation(MultiFieldChildResource.class)) {
                         buildDialogFields(elements, new MultiFieldWidgetMaker(curFieldMember));
@@ -152,10 +158,12 @@ public class MultiFieldWidgetMaker extends AbstractTouchUIWidgetMaker<MultiField
         }
     }
 
-    private static TouchUIWidgetMakerParameters generateWidgetMakerParameters(CtMember member, MultiFieldWidgetMaker widgetMaker, DialogFieldConfig dialogFieldConfig)
-            throws ClassNotFoundException {
+    private static TouchUIWidgetMakerParameters generateWidgetMakerParameters(CtMember member,
+        MultiFieldWidgetMaker widgetMaker, DialogFieldConfig dialogFieldConfig)
+        throws ClassNotFoundException {
         TouchUIWidgetMakerParameters widgetMakerParameters = new TouchUIWidgetMakerParameters();
-        Class<?> fieldClass = widgetMaker.getParameters().getClassLoader().loadClass(member.getDeclaringClass().getName());
+        Class<?> fieldClass = widgetMaker.getParameters().getClassLoader().loadClass(
+            member.getDeclaringClass().getName());
 
         widgetMakerParameters.setDialogFieldConfig(dialogFieldConfig);
         widgetMakerParameters.setContainingClass(fieldClass);

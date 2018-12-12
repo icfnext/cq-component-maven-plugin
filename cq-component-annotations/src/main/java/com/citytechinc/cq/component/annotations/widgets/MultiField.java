@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * Represents a Widget of type CQ.form.MultiField in Classic UI
- *
+ * <p>
  * Represents a Widget of type granite/ui/components/foundation/form/multifield
  * in Touch UI
  */
@@ -15,34 +15,35 @@ import java.lang.annotation.Target;
 @Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface MultiField {
 
-	public static final String ADD_ITEM_LABEL_DEFAULT = "Add Item";
-	public static final boolean ORDERABLE_DEFAULT = true;
+    String ADD_ITEM_LABEL_DEFAULT = "Add Item";
 
-	/**
-	 * Used for Classic UI only
-	 *
-	 * The label to display for the addItem control.
-	 *
-	 * @return String
-	 */
-	String addItemLabel() default ADD_ITEM_LABEL_DEFAULT;
+    boolean ORDERABLE_DEFAULT = true;
 
-	/**
-	 * Used for Classic UI only
-	 *
-	 * If the list of fields should be orderable and Up/Down buttons are
-	 * rendered
-	 *
-	 * @return boolean
-	 */
-	boolean orderable() default ORDERABLE_DEFAULT;
+    /**
+     * Used for Classic UI only
+     * <p>
+     * The label to display for the addItem control.
+     *
+     * @return String
+     */
+    String addItemLabel() default ADD_ITEM_LABEL_DEFAULT;
 
-	/**
-	 * Used for Touch UI Coral3 Only
-	 *
-	 * Set true to handle the form content value as composite.
-	 *
-	 * @return boolean
-	 */
-	boolean composite() default false;
+    /**
+     * Used for Classic UI only
+     * <p>
+     * If the list of fields should be orderable and Up/Down buttons are
+     * rendered
+     *
+     * @return boolean
+     */
+    boolean orderable() default ORDERABLE_DEFAULT;
+
+    /**
+     * Used for Touch UI Coral3 Only
+     * <p>
+     * Set true to handle the form content value as composite.
+     *
+     * @return boolean
+     */
+    boolean composite() default false;
 }

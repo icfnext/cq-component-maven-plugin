@@ -7,182 +7,199 @@ import java.util.List;
 
 public class FileUploadWidgetParameters extends DefaultTouchUIWidgetParameters {
 
-	private String title;
-	private boolean async;
-	private String text;
-	private boolean hideText;
-	private String icon;
-	private String iconSize;
-	private String size;
-	private boolean multiple;
-	private String uploadUrl;
-	private String uploadUrlBuilder;
-	private Long sizeLimit;
-	private boolean autoStart;
-	private boolean useHTML5;
-	private String dropZone;
-	// TODO: Event handling
-	private List<String> mimeTypes;
-	private boolean allowUpload;
-	private String fileNameParameter;
-	private String fileReferenceParameter;
+    private String title;
 
-	@Override
-	public String getTitle() {
-		return title;
-	}
+    private boolean async;
 
-	@Override
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    private String text;
 
-	public boolean isAsync() {
-		return async;
-	}
+    private boolean hideText;
 
-	public void setAsync(boolean async) {
-		this.async = async;
-	}
+    private String icon;
 
-	public String getText() {
-		return text;
-	}
+    private String iconSize;
 
-	public void setText(String text) {
-		this.text = text;
-	}
+    private String size;
 
-	public boolean isHideText() {
-		return hideText;
-	}
+    private boolean multiple;
 
-	public void setHideText(boolean hideText) {
-		this.hideText = hideText;
-	}
+    private String uploadUrl;
 
-	public String getIcon() {
-		return icon;
-	}
+    private String uploadUrlBuilder;
 
-	public void setIcon(String icon) {
-		this.icon = icon;
-	}
+    private Long sizeLimit;
 
-	public String getIconSize() {
-		return iconSize;
-	}
+    private boolean autoStart;
 
-	public void setIconSize(String iconSize) {
-		this.iconSize = iconSize;
-	}
+    private boolean useHTML5;
 
-	public String getSize() {
-		return size;
-	}
+    private String dropZone;
 
-	public void setSize(String size) {
-		this.size = size;
-	}
+    // TODO: Event handling
+    private List<String> mimeTypes;
 
-	public boolean isMultiple() {
-		return multiple;
-	}
+    private boolean allowUpload;
 
-	public void setMultiple(boolean multiple) {
-		this.multiple = multiple;
-	}
+    private String fileNameParameter;
 
-	public String getUploadUrl() {
-		return uploadUrl;
-	}
+    private String fileReferenceParameter;
 
-	public void setUploadUrl(String uploadUrl) {
-		this.uploadUrl = uploadUrl;
-	}
+    @Override
+    public String getTitle() {
+        return title;
+    }
 
-	public String getUploadUrlBuilder() {
-		return uploadUrlBuilder;
-	}
+    @Override
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public void setUploadUrlBuilder(String uploadUrlBuilder) {
-		this.uploadUrlBuilder = uploadUrlBuilder;
-	}
+    public boolean isAsync() {
+        return async;
+    }
 
-	public Long getSizeLimit() {
-		return sizeLimit;
-	}
+    public void setAsync(boolean async) {
+        this.async = async;
+    }
 
-	public void setSizeLimit(Long sizeLimit) {
-		this.sizeLimit = sizeLimit;
-	}
+    public String getText() {
+        return text;
+    }
 
-	public boolean isAutoStart() {
-		return autoStart;
-	}
+    public void setText(String text) {
+        this.text = text;
+    }
 
-	public void setAutoStart(boolean autoStart) {
-		this.autoStart = autoStart;
-	}
+    public boolean isHideText() {
+        return hideText;
+    }
 
-	public boolean isUseHTML5() {
-		return useHTML5;
-	}
+    public void setHideText(boolean hideText) {
+        this.hideText = hideText;
+    }
 
-	public void setUseHTML5(boolean useHTML5) {
-		this.useHTML5 = useHTML5;
-	}
+    public String getIcon() {
+        return icon;
+    }
 
-	public String getDropZone() {
-		return dropZone;
-	}
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
 
-	public void setDropZone(String dropZone) {
-		this.dropZone = dropZone;
-	}
+    public String getIconSize() {
+        return iconSize;
+    }
 
-	public List<String> getMimeTypes() {
-		return mimeTypes;
-	}
+    public void setIconSize(String iconSize) {
+        this.iconSize = iconSize;
+    }
 
-	public void setMimeTypes(List<String> mimeTypes) {
-		this.mimeTypes = mimeTypes;
-	}
+    public String getSize() {
+        return size;
+    }
 
-	public boolean isAllowUpload() {
-		return allowUpload;
-	}
+    public void setSize(String size) {
+        this.size = size;
+    }
 
-	public void setAllowUpload(boolean allowUpload) {
-		this.allowUpload = allowUpload;
-	}
+    public boolean isMultiple() {
+        return multiple;
+    }
 
-	public String getFileNameParameter() {
-		return fileNameParameter;
-	}
+    public void setMultiple(boolean multiple) {
+        this.multiple = multiple;
+    }
 
-	public void setFileNameParameter(String fileNameParameter) {
-		this.fileNameParameter = fileNameParameter;
-	}
+    public String getUploadUrl() {
+        return uploadUrl;
+    }
 
-	public String getFileReferenceParameter() {
-		return fileReferenceParameter;
-	}
+    public void setUploadUrl(String uploadUrl) {
+        this.uploadUrl = uploadUrl;
+    }
 
-	public void setFileReferenceParameter(String fileReferenceParameter) {
-		this.fileReferenceParameter = fileReferenceParameter;
-	}
+    public String getUploadUrlBuilder() {
+        return uploadUrlBuilder;
+    }
 
-	@Override
-	public String getResourceType() {
-		if(TouchUIDialogType.CORAL3.isOfType(getTouchUIDialogType())) {
-			return FileUploadCoral3Widget.RESOURCE_TYPE;
-		}
-		return FileUploadWidget.RESOURCE_TYPE;
-	}
+    public void setUploadUrlBuilder(String uploadUrlBuilder) {
+        this.uploadUrlBuilder = uploadUrlBuilder;
+    }
 
-	@Override
-	public void setResourceType(String resourceType) {
-		throw new UnsupportedOperationException("resourceType is Static for FileUploadWidget");
-	}
+    public Long getSizeLimit() {
+        return sizeLimit;
+    }
+
+    public void setSizeLimit(Long sizeLimit) {
+        this.sizeLimit = sizeLimit;
+    }
+
+    public boolean isAutoStart() {
+        return autoStart;
+    }
+
+    public void setAutoStart(boolean autoStart) {
+        this.autoStart = autoStart;
+    }
+
+    public boolean isUseHTML5() {
+        return useHTML5;
+    }
+
+    public void setUseHTML5(boolean useHTML5) {
+        this.useHTML5 = useHTML5;
+    }
+
+    public String getDropZone() {
+        return dropZone;
+    }
+
+    public void setDropZone(String dropZone) {
+        this.dropZone = dropZone;
+    }
+
+    public List<String> getMimeTypes() {
+        return mimeTypes;
+    }
+
+    public void setMimeTypes(List<String> mimeTypes) {
+        this.mimeTypes = mimeTypes;
+    }
+
+    public boolean isAllowUpload() {
+        return allowUpload;
+    }
+
+    public void setAllowUpload(boolean allowUpload) {
+        this.allowUpload = allowUpload;
+    }
+
+    public String getFileNameParameter() {
+        return fileNameParameter;
+    }
+
+    public void setFileNameParameter(String fileNameParameter) {
+        this.fileNameParameter = fileNameParameter;
+    }
+
+    public String getFileReferenceParameter() {
+        return fileReferenceParameter;
+    }
+
+    public void setFileReferenceParameter(String fileReferenceParameter) {
+        this.fileReferenceParameter = fileReferenceParameter;
+    }
+
+    @Override
+    public String getResourceType() {
+        if (TouchUIDialogType.CORAL3.isOfType(getTouchUIDialogType())) {
+            return FileUploadCoral3Widget.RESOURCE_TYPE;
+        }
+        return FileUploadWidget.RESOURCE_TYPE;
+    }
+
+    @Override
+    public void setResourceType(String resourceType) {
+        throw new UnsupportedOperationException("resourceType is Static for FileUploadWidget");
+    }
 }

@@ -4,60 +4,64 @@ import com.citytechinc.cq.component.dialog.widget.DefaultWidgetParameters;
 import com.citytechinc.cq.component.util.Constants;
 
 public class SelectionWidgetParameters extends DefaultWidgetParameters {
-	private String type;
-	private String options;
-	private String optionsProvider;
-	private String sortDir;
 
-	public String getType() {
-		return type;
-	}
+    private String type;
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    private String options;
 
-	public String getOptions() {
-		return options;
-	}
+    private String optionsProvider;
 
-	public void setOptions(String options) {
-		this.options = options;
-	}
+    private String sortDir;
 
-	public String getOptionsProvider() {
-		return optionsProvider;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setOptionsProvider(String optionsProvider) {
-		this.optionsProvider = optionsProvider;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public String getSortDir() {
-		return sortDir;
-	}
+    public String getOptions() {
+        return options;
+    }
 
-	public void setSortDir(String sortDir) {
-		this.sortDir = sortDir;
-	}
+    public void setOptions(String options) {
+        this.options = options;
+    }
 
-	@Override
-	public String getPrimaryType() {
-		return Constants.CQ_WIDGET;
-	}
+    public String getOptionsProvider() {
+        return optionsProvider;
+    }
 
-	@Override
-	public void setPrimaryType(String primaryType) {
-		throw new UnsupportedOperationException("PrimaryType is Static for SelectionWidget");
-	}
+    public void setOptionsProvider(String optionsProvider) {
+        this.optionsProvider = optionsProvider;
+    }
 
-	@Override
-	public String getXtype() {
-		return SelectionWidget.XTYPE;
-	}
+    public String getSortDir() {
+        return sortDir;
+    }
 
-	@Override
-	public void setXtype(String xtype) {
-		throw new UnsupportedOperationException("xtype is Static for SelectionWidget");
-	}
+    public void setSortDir(String sortDir) {
+        this.sortDir = sortDir;
+    }
+
+    @Override
+    public String getPrimaryType() {
+        return Constants.CQ_WIDGET;
+    }
+
+    @Override
+    public void setPrimaryType(String primaryType) {
+        throw new UnsupportedOperationException("PrimaryType is Static for SelectionWidget");
+    }
+
+    @Override
+    public String getXtype() {
+        return SelectionWidget.XTYPE;
+    }
+
+    @Override
+    public void setXtype(String xtype) {
+        throw new UnsupportedOperationException("xtype is Static for SelectionWidget");
+    }
 }

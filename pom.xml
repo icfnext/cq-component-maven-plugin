@@ -42,9 +42,9 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:git@github.com:Citytechinc/cq-component-maven-plugin.git</connection>
-        <url>https://github.com/Citytechinc/cq-component-maven-plugin</url>
-        <developerConnection>scm:git:git@github.com:Citytechinc/cq-component-maven-plugin.git</developerConnection>
+        <connection>scm:git:git@github.com:OlsonDigital/cq-component-maven-plugin.git</connection>
+        <url>https://github.com/OlsonDigital/cq-component-maven-plugin</url>
+        <developerConnection>scm:git:git@github.com:OlsonDigital/cq-component-maven-plugin.git</developerConnection>
     </scm>
 
     <distributionManagement>

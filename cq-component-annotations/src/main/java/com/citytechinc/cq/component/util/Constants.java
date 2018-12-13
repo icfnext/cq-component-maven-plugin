@@ -11,7 +11,7 @@ public class Constants {
 
     public static final String SLING_NS_URI = "http://sling.apache.org/jcr/sling/1.0";
 
-    public static final String PRIMARY_TYPE_ATTRIBUTE = "jcr:primaryType";
+    public static final String GRANITE_NS_URI = "http://www.adobe.com/jcr/granite/1.0";
 
     public static final String NT_UNSTRUCTURED = "nt:unstructured";
 

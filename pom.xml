@@ -6,7 +6,7 @@
     <groupId>com.citytechinc.cq.cq-component-plugin</groupId>
     <artifactId>cq-component-plugin</artifactId>
     <packaging>pom</packaging>
-    <version>6.0.0</version>
+    <version>6.1.0</version>
     <name>CQ Component Plugin</name>
     <description>Plugin enabling annotation driven CQ5 Component development.</description>
 
@@ -42,9 +42,9 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:git@github.com:Citytechinc/cq-component-maven-plugin.git</connection>
-        <url>https://github.com/Citytechinc/cq-component-maven-plugin</url>
-        <developerConnection>scm:git:git@github.com:Citytechinc/cq-component-maven-plugin.git</developerConnection>
+        <connection>scm:git:git@github.com:OlsonDigital/cq-component-maven-plugin.git</connection>
+        <url>https://github.com/OlsonDigital/cq-component-maven-plugin</url>
+        <developerConnection>scm:git:git@github.com:OlsonDigital/cq-component-maven-plugin.git</developerConnection>
     </scm>
 
     <distributionManagement>
@@ -77,6 +77,18 @@
     </properties>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>versions-maven-plugin</artifactId>
+                    <version>2.2</version>
+                    <configuration>
+                        <generateBackupPoms>false</generateBackupPoms>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -149,15 +161,6 @@
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <reportPlugins>
-                        <plugin>
-                            <artifactId>maven-javadoc-plugin</artifactId>
-                            <version>2.9.1</version>
-                            <configuration>
-                                <aggregate>true</aggregate>
-                            </configuration>
-                        </plugin>
-                    </reportPlugins>
                     <skipDeploy>true</skipDeploy>
                 </configuration>
             </plugin>
@@ -180,6 +183,22 @@
             </plugin>
         </plugins>
     </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>2.8</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <configuration>
+                    <aggregate>true</aggregate>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
 
     <profiles>
         <profile>

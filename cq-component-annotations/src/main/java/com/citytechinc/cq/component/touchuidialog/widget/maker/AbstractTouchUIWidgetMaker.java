@@ -48,7 +48,10 @@ public abstract class AbstractTouchUIWidgetMaker<T extends TouchUIWidgetParamete
         parameters.setAdditionalProperties(getAdditionalPropertiesForField());
         parameters.setShowOnCreate(getShowOnCreateForField());
         parameters.setHideOnEdit(getHideOnEditForField());
-        parameters.setOrderBefore(getOrderBefore());
+
+        if (StringUtils.isNotEmpty(getOrderBefore())) {
+            parameters.setOrderBefore(getOrderBefore());
+        }
 
         return make(parameters);
 

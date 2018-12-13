@@ -203,6 +203,10 @@ public class DialogUtil {
                     dialogFieldConfig =
                         new DialogFieldConfig((DialogField) superClassMethod.getAnnotation(DialogField.class),
                             superClassMethod);
+
+                    if (superClassMethod.hasAnnotation(HideDialogField.class)) {
+                        dialogFieldConfig.setHideDialogField(true);
+                    }
                 } else if (superClassMethod.hasAnnotation(DialogFieldOverride.class)) {
                     mergeDialogFields(dialogFieldConfig, superClassMethod);
                     //TODO: Evaluate if we want to allow overriding of an already hidden field

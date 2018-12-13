@@ -36,14 +36,14 @@ public class TouchUIWidgetFactory {
     }
 
     public static TouchUIWidgetMakerContext getWidgetMakerForMemberParameters(TouchUIWidgetMakerParameters parameters,
-        int rankingCeiling) throws InvalidComponentFieldException {
-        TouchUIWidgetConfigHolder widgetConfig = getWidgetConfigForParameters(parameters, rankingCeiling);
-
+        int rankingCeiling) {
         // If the widget is intended to be hidden by an inheriting component dialog
         // use the HideDialogFieldWidgetMaker
-        if (widgetConfig != null && parameters.getDialogFieldConfig().isHideDialogField()) {
+        if (parameters.getDialogFieldConfig().isHideDialogField()) {
             return new TouchUIWidgetMakerContext(HideDialogFieldWidgetMaker.class, "");
         }
+
+        TouchUIWidgetConfigHolder widgetConfig = getWidgetConfigForParameters(parameters, rankingCeiling);
 
         // If we were able to lookup a widget configuration with a valid maker
         // class return it

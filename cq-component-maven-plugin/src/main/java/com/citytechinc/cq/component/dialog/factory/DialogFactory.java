@@ -2,6 +2,7 @@ package com.citytechinc.cq.component.dialog.factory;
 
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.DialogField;
+import com.citytechinc.cq.component.annotations.HideDialogField;
 import com.citytechinc.cq.component.annotations.IgnoreDialogField;
 import com.citytechinc.cq.component.annotations.Listener;
 import com.citytechinc.cq.component.dialog.Dialog;
@@ -121,6 +122,10 @@ public class DialogFactory {
                     if (member.hasAnnotation(DialogField.class)) {
                         dialogFieldConfig =
                             new DialogFieldConfig((DialogField) member.getAnnotation(DialogField.class), member);
+
+                        if (member.hasAnnotation(HideDialogField.class)) {
+                            dialogFieldConfig.setHideDialogField(true);
+                        }
                     }
                 }
 

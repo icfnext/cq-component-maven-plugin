@@ -1,6 +1,6 @@
 ##Introduction
 
-The CQ Component Plugin mitigates the effort required in Adobe CQ component development by generating, at built time, .content.xml, _cq_editConfig.xml, _cq_dialog.xml, and dialog.xml files for your components, leaving you free to focus on functionality.
+The CQ Component Plugin mitigates the effort required in Adobe CQ component development by generating, at build time, .content.xml, _cq_editConfig.xml, _cq_dialog.xml, and dialog.xml files for your components, leaving you free to focus on functionality.
 
 ##Motivations
 

@@ -1,81 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/DECORATION/1.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/DECORATION/1.3.0 http://maven.apache.org/xsd/decoration-1.3.0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+>
 
-	<skin>
-		<groupId>com.icfolson.maven</groupId>
-		<artifactId>icfolson-maven-skin</artifactId>
-		<version>1.1.0</version>
-	</skin>
+    <skin>
+        <groupId>com.icfolson.maven</groupId>
+        <artifactId>icfolson-maven-skin</artifactId>
+        <version>1.1.0</version>
+    </skin>
 
-	<bannerRight>
-		<name>CQ Component Plugin</name>
-		<href>index.html</href>
-	</bannerRight>
+    <bannerRight>
+        <name>CQ Component Plugin</name>
+        <href>index.html</href>
+    </bannerRight>
 
-	<googleAnalyticsAccountId>UA-928005-4</googleAnalyticsAccountId>
+    <googleAnalyticsAccountId>UA-928005-4</googleAnalyticsAccountId>
 
-	<custom>
-		<reflowSkin>
-			<skinAttribution>false</skinAttribution>
-			<!-- Make this to 'false' for local development, i.e. file:// URLs -->
-			<protocolRelativeURLs>false</protocolRelativeURLs>
-			<smoothScroll>true</smoothScroll>
-			<titleTemplate>%2$s | %1$s</titleTemplate>
-			<highlightJs>true</highlightJs>
-			<highlightJsTheme>github</highlightJsTheme>
-			<brand>
-				<name>
-					CQ Component Plugin
-				</name>
-				<href>index.html</href>
-			</brand>
-			<slogan>A Plugin for CQ Components!</slogan>
-			<toc>sidebar</toc>
-			<topNav>Basics|Extending</topNav>
-			<body />
-			<pages>
-				<index project="cq-component-plugin">
-					<titleTemplate>CQ Component Plugin</titleTemplate>
-					<breadcrumbs>false</breadcrumbs>
-					<toc>false</toc>
-					<markPageHeader>false</markPageHeader>
-					<sections>
-						<columns>1</columns>
-						<body />
-					</sections>
-				</index>
-			</pages>
-			<bottomNav maxSpan="9">
-				<column>Main</column>
-				<column>Basics</column>
-				<column>Extending</column>
-			</bottomNav>
-		</reflowSkin>
-	</custom>
+    <custom>
+        <reflowSkin>
+            <skinAttribution>false</skinAttribution>
+            <!-- Make this to 'false' for local development, i.e. file:// URLs -->
+            <protocolRelativeURLs>false</protocolRelativeURLs>
+            <smoothScroll>true</smoothScroll>
+            <titleTemplate>%2$s | %1$s</titleTemplate>
+            <highlightJs>true</highlightJs>
+            <highlightJsTheme>github</highlightJsTheme>
+            <brand>
+                <name>
+                    CQ Component Plugin
+                </name>
+                <href>index.html</href>
+            </brand>
+            <slogan>A plugin for generating AEM component configuration files from annotated Java classes.</slogan>
+            <toc>sidebar</toc>
+            <topNav>Basics|Extending</topNav>
+            <body/>
+            <pages>
+                <index project="cq-component-plugin">
+                    <titleTemplate>CQ Component Plugin</titleTemplate>
+                    <breadcrumbs>false</breadcrumbs>
+                    <toc>false</toc>
+                    <markPageHeader>false</markPageHeader>
+                    <sections>
+                        <columns>1</columns>
+                        <body/>
+                    </sections>
+                </index>
+            </pages>
+            <bottomNav maxSpan="9">
+                <column>Main</column>
+                <column>Basics</column>
+                <column>Extending</column>
+            </bottomNav>
+        </reflowSkin>
+    </custom>
 
-	<body>
-		<links>
-			<item name="GitHub"
-				href="https://github.com/Citytechinc/cq-component-maven-plugin/" />
-		</links>
-		<menu name="Main" inherit="top">
-			<item name="Home" href="index.html" />
-			<item name="GitHub"
-				href="https://github.com/Citytechinc/cq-component-maven-plugin/" />
-			<item name="Java Doc" href="apidocs/index.html" />
-			<item name="ICF Olson" href="http://www.icfolson.com" />
-		</menu>
-		<menu name="Basics" inherit="bottom">
-			<item name="Configuration" href="configuration.html" />
-			<item name="Usage" href="usage.html" />
-			<item name="Additional Features" href="additional-features.html" />
-		</menu>
-		<menu name="Extending" inherit="bottom">
-			<item name="Adding a Widget" href="adding-a-widget.html" />
-			<item name="Adding a Transformer" href="adding-a-transformer.html" />
-		</menu>
-		<footer></footer>
-	</body>
+    <body>
+        <links>
+            <item name="GitHub"
+                  href="https://github.com/OlsonDigital/cq-component-maven-plugin/"/>
+        </links>
+        <menu name="Main"
+              inherit="top">
+            <item name="Home"
+                  href="index.html"/>
+            <item name="GitHub"
+                  href="https://github.com/OlsonDigital/cq-component-maven-plugin/"/>
+            <item name="Javadocs"
+                  href="apidocs/index.html"/>
+            <item name="ICF Olson"
+                  href="http://www.icfolson.com"/>
+        </menu>
+        <menu name="Basics"
+              inherit="bottom">
+            <item name="Configuration"
+                  href="configuration.html"/>
+            <item name="Usage"
+                  href="usage.html"/>
+            <item name="Additional Features"
+                  href="additional-features.html"/>
+        </menu>
+        <menu name="Extending"
+              inherit="bottom">
+            <item name="Adding a Widget"
+                  href="adding-a-widget.html"/>
+            <item name="Adding a Transformer"
+                  href="adding-a-transformer.html"/>
+        </menu>
+        <footer></footer>
+    </body>
 </project>

@@ -102,8 +102,8 @@ public class TabsLayoutCoral3Maker extends AbstractLayoutMaker {
                 if (StringUtils.isNotEmpty(currentTabAnnotation.renderConditionResourceType())) {
                     TouchUIDialogElementParameters renderParameters = new DefaultTouchUIDialogElementParameters();
 
-                    renderParameters.setNameSpace("granite");
-                    renderParameters.setFieldName("rendercondition");
+                    renderParameters.setNameSpace(Constants.GRANITE_NS_URI);
+                    renderParameters.setFieldName("granite:rendercondition");
                     renderParameters.setPrimaryType(Constants.NT_UNSTRUCTURED);
                     renderParameters.setResourceType(currentTabAnnotation.renderConditionResourceType());
 

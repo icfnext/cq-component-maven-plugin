@@ -1,6 +1,7 @@
 package com.citytechinc.cq.component.touchuidialog.layout.columns.fixedcolumns;
 
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElementComparator;
 import com.citytechinc.cq.component.touchuidialog.container.items.Items;
 import com.citytechinc.cq.component.touchuidialog.container.items.ItemsParameters;
 import com.citytechinc.cq.component.touchuidialog.layout.Layout;
@@ -15,6 +16,7 @@ import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMake
 import com.citytechinc.cq.component.xml.XmlElement;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class FixedColumnsLayoutMaker extends AbstractLayoutMaker {
@@ -31,14 +33,11 @@ public class FixedColumnsLayoutMaker extends AbstractLayoutMaker {
         // Construct the appropriate Layout Element
         FixedColumnsLayoutElementParameters fixedColumnsLayoutElementParameters = new FixedColumnsLayoutElementParameters();
 
-        // Add the Items to the layout element
-        List<XmlElement> containedElements;
-
         FixedColumnsLayoutElement layoutElement = new FixedColumnsLayoutElement(fixedColumnsLayoutElementParameters);
         layoutElement.setFieldName("layout");
 
         // Add the Layout element ot the contained elements list
-        containedElements = new ArrayList<XmlElement>();
+        List<XmlElement> containedElements = new ArrayList<XmlElement>();
         containedElements.add(layoutElement);
         containedElements.add(makeItems());
         layoutParameters.setContainedElements(containedElements);
@@ -74,6 +73,8 @@ public class FixedColumnsLayoutMaker extends AbstractLayoutMaker {
         } catch (Exception e) {
             throw new LayoutMakerException("Exception encountered while constructing widgets for layout", e);
         }
+
+        Collections.sort(columnParameters.getItems(), new TouchUIDialogElementComparator());
 
         // Create and add the column section
         List<XmlElement> containedElements = new ArrayList<XmlElement>();

@@ -2,6 +2,7 @@ package com.citytechinc.cq.component.touchuidialog.layout.columns.fixedcolumns;
 
 import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElement;
+import com.citytechinc.cq.component.touchuidialog.TouchUIDialogElementComparator;
 import com.citytechinc.cq.component.touchuidialog.container.items.Items;
 import com.citytechinc.cq.component.touchuidialog.container.items.ItemsParameters;
 import com.citytechinc.cq.component.touchuidialog.layout.Layout;
@@ -14,6 +15,7 @@ import com.citytechinc.cq.component.touchuidialog.util.TouchUIDialogUtil;
 import com.citytechinc.cq.component.touchuidialog.widget.factory.TouchUIWidgetFactory;
 import com.citytechinc.cq.component.touchuidialog.widget.maker.TouchUIWidgetMakerParameters;
 
+import java.util.Collections;
 import java.util.List;
 
 public class FixedColumnsLayoutCoral3Maker extends AbstractLayoutMaker {
@@ -76,6 +78,8 @@ public class FixedColumnsLayoutCoral3Maker extends AbstractLayoutMaker {
         } catch (Exception e) {
             throw new LayoutMakerException("Exception encountered while constructing widgets for layout", e);
         }
+
+        Collections.sort(columnParameters.getItems(), new TouchUIDialogElementComparator());
 
         // Create and add the column section
         Column column = new Column(columnParameters);

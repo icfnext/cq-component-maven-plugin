@@ -7,5 +7,4 @@ public class Column extends Container {
     public Column(ColumnParameters parameters) {
         super(parameters);
     }
-
 }

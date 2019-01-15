@@ -4,6 +4,7 @@ import com.citytechinc.cq.component.annotations.Component;
 import com.citytechinc.cq.component.annotations.DialogField;
 import com.citytechinc.cq.component.annotations.HideDialogField;
 import com.citytechinc.cq.component.annotations.IgnoreDialogField;
+import com.citytechinc.cq.component.annotations.IncludeDialogFields;
 import com.citytechinc.cq.component.annotations.widgets.Selection;
 import com.citytechinc.cq.component.dialog.ComponentNameTransformer;
 import com.citytechinc.cq.component.dialog.DialogFieldConfig;
@@ -21,6 +22,7 @@ import com.citytechinc.cq.component.touchuidialog.widget.radiogroup.RadioGroupWi
 import com.citytechinc.cq.component.touchuidialog.widget.registry.TouchUIWidgetRegistry;
 import com.citytechinc.cq.component.touchuidialog.widget.selection.options.Option;
 import com.citytechinc.cq.component.touchuidialog.widget.selection.options.OptionParameters;
+import com.citytechinc.cq.component.util.ComponentUtil;
 import com.citytechinc.cq.component.xml.XmlElement;
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -98,12 +100,14 @@ public class TouchUIDialogUtil {
     public static List<TouchUIWidgetMakerParameters> getWidgetMakerParametersForComponentClass(CtClass componentClass,
         ClassLoader classLoader, ClassPool classPool, TouchUIWidgetRegistry widgetRegistry, String touchUIDialogType)
         throws NotFoundException,
-        ClassNotFoundException, InvalidComponentClassException {
+        ClassNotFoundException, InvalidComponentClassException, InvalidComponentFieldException {
 
         List<TouchUIWidgetMakerParameters> widgetMakerParametersList = new ArrayList<TouchUIWidgetMakerParameters>();
 
         List<CtMember> fieldsAndMethods = new ArrayList<CtMember>();
+
         Component componentAnnotation = (Component) componentClass.getAnnotation(Component.class);
+
         fieldsAndMethods.addAll(ComponentMojoUtil.collectFields(componentClass,
             componentAnnotation.suppressFieldInheritanceForTouchUI()));
         fieldsAndMethods.addAll(ComponentMojoUtil.collectMethods(componentClass,
@@ -115,34 +119,9 @@ public class TouchUIDialogUtil {
         // Iterate through all the fields creating configs for each and
         // preparing the necessary widget maker parameters
         for (CtMember member : fieldsAndMethods) {
-            if (!member.hasAnnotation(IgnoreDialogField.class)) {
-                DialogFieldConfig dialogFieldConfig = null;
-
-                if (member instanceof CtMethod) {
-                    dialogFieldConfig = DialogUtil.getDialogFieldFromSuperClasses((CtMethod) member);
-                } else {
-                    if (member.hasAnnotation(DialogField.class)) {
-                        dialogFieldConfig =
-                            new DialogFieldConfig((DialogField) member.getAnnotation(DialogField.class), member);
-
-                        if (member.hasAnnotation(HideDialogField.class)) {
-                            dialogFieldConfig.setHideDialogField(true);
-                        }
-                    }
-                }
-
-                if (dialogFieldConfig != null && !dialogFieldConfig.isSuppressTouchUI()) {
-                    TouchUIWidgetMakerParameters touchUIWidgetMakerParameters = new TouchUIWidgetMakerParameters();
-                    touchUIWidgetMakerParameters.setClassLoader(classLoader);
-                    touchUIWidgetMakerParameters.setContainingClass(trueComponentClass);
-                    touchUIWidgetMakerParameters.setDialogFieldConfig(dialogFieldConfig);
-                    touchUIWidgetMakerParameters.setClassPool(classPool);
-                    touchUIWidgetMakerParameters.setUseDotSlashInName(true);
-                    touchUIWidgetMakerParameters.setWidgetRegistry(widgetRegistry);
-                    touchUIWidgetMakerParameters.setTouchUIDialogType(touchUIDialogType);
-                    widgetMakerParametersList.add(touchUIWidgetMakerParameters);
-                }
-            }
+            widgetMakerParametersList.addAll(
+                getTouchUIWidgetMakerParameters(trueComponentClass, member, classLoader, classPool, widgetRegistry,
+                    touchUIDialogType));
         }
 
         return widgetMakerParametersList;
@@ -287,5 +266,59 @@ public class TouchUIDialogUtil {
 
     public static List<XmlElement> createContainedElements(XmlElement... elements) {
         return Arrays.asList(elements);
+    }
+
+    private static List<TouchUIWidgetMakerParameters> getTouchUIWidgetMakerParameters(Class<?> trueComponentClass,
+        CtMember member, ClassLoader classLoader, ClassPool classPool, TouchUIWidgetRegistry widgetRegistry,
+        String touchUIDialogType)
+        throws NotFoundException, ClassNotFoundException, InvalidComponentClassException,
+        InvalidComponentFieldException {
+        List<TouchUIWidgetMakerParameters> widgetMakerParametersList = new ArrayList<TouchUIWidgetMakerParameters>();
+
+        if (!member.hasAnnotation(IgnoreDialogField.class)) {
+            DialogFieldConfig dialogFieldConfig = null;
+
+            if (member instanceof CtMethod) {
+                dialogFieldConfig = DialogUtil.getDialogFieldFromSuperClasses((CtMethod) member);
+            } else {
+                if (member.hasAnnotation(DialogField.class)) {
+                    dialogFieldConfig =
+                        new DialogFieldConfig((DialogField) member.getAnnotation(DialogField.class), member);
+
+                    if (member.hasAnnotation(HideDialogField.class)) {
+                        dialogFieldConfig.setHideDialogField(true);
+                    }
+                } else if (member.hasAnnotation(IncludeDialogFields.class)) {
+                    List<CtMember> includeFieldsAndMethods = new ArrayList<CtMember>();
+
+                    Class<?> memberType = ComponentUtil.getTypeForMember(member, trueComponentClass);
+                    CtClass memberCtClass = classPool.getCtClass(memberType.getName());
+
+                    includeFieldsAndMethods.addAll(ComponentMojoUtil.collectFields(memberCtClass));
+                    includeFieldsAndMethods.addAll(ComponentMojoUtil.collectMethods(memberCtClass));
+
+                    for (CtMember includeMember : includeFieldsAndMethods) {
+                        widgetMakerParametersList.addAll(getTouchUIWidgetMakerParameters(trueComponentClass,
+                            includeMember, classLoader, classPool, widgetRegistry, touchUIDialogType));
+                    }
+                }
+            }
+
+            if (dialogFieldConfig != null && !dialogFieldConfig.isSuppressTouchUI()) {
+                TouchUIWidgetMakerParameters touchUIWidgetMakerParameters = new TouchUIWidgetMakerParameters();
+
+                touchUIWidgetMakerParameters.setClassLoader(classLoader);
+                touchUIWidgetMakerParameters.setContainingClass(trueComponentClass);
+                touchUIWidgetMakerParameters.setDialogFieldConfig(dialogFieldConfig);
+                touchUIWidgetMakerParameters.setClassPool(classPool);
+                touchUIWidgetMakerParameters.setUseDotSlashInName(true);
+                touchUIWidgetMakerParameters.setWidgetRegistry(widgetRegistry);
+                touchUIWidgetMakerParameters.setTouchUIDialogType(touchUIDialogType);
+
+                widgetMakerParametersList.add(touchUIWidgetMakerParameters);
+            }
+        }
+
+        return widgetMakerParametersList;
     }
 }

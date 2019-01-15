@@ -4,7 +4,7 @@
 
 	<head>
 		<meta charset="UTF-8" />
-		<title>Dependency Information | CQ Component Plugin</title>
+		<title>Dependency Information | CQ Component Plugin Annotations</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="description" content="" />
 		<meta http-equiv="content-language" content="en" />
@@ -27,23 +27,9 @@
 			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
 
-		<!-- Google Analytics -->
-		<script type="text/javascript">
-		
-			var _gaq = _gaq || [];
-			_gaq.push(['_setAccount', 'UA-928005-4']);
-			_gaq.push(['_trackPageview']);
+	</head>
 
-			(function() {
-				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-			})();
-
-		</script>
-		</head>
-
-	<body class="page-dependency-info project-cq-component-plugin" data-spy="scroll" data-offset="60" data-target="#toc-scroll-target">
+	<body class="page-dependency-info project-cq-component-annotations" data-spy="scroll" data-offset="60" data-target="#toc-scroll-target">
 
 		<nav class="navbar navbar-default navbar-fixed-top">
 				<div class="container">
@@ -126,9 +112,8 @@
   <div class="source"> 
    <pre>&lt;dependency&gt;
   &lt;groupId&gt;com.citytechinc.cq.cq-component-plugin&lt;/groupId&gt;
-  &lt;artifactId&gt;cq-component-plugin&lt;/artifactId&gt;
+  &lt;artifactId&gt;cq-component-annotations&lt;/artifactId&gt;
   &lt;version&gt;6.1.3&lt;/version&gt;
-  &lt;type&gt;pom&lt;/type&gt;
 &lt;/dependency&gt;</pre> 
   </div> 
  </div> 
@@ -136,15 +121,15 @@
   <h3 id="Apache_Buildr">Apache Buildr</h3> 
   <a name="Apache_Buildr"></a> 
   <div class="source"> 
-   <pre>'com.citytechinc.cq.cq-component-plugin:cq-component-plugin:pom:6.1.3'</pre> 
+   <pre>'com.citytechinc.cq.cq-component-plugin:cq-component-annotations:jar:6.1.3'</pre> 
   </div> 
  </div> 
  <div class="section"> 
   <h3 id="Apache_Ivy">Apache Ivy</h3> 
   <a name="Apache_Ivy"></a> 
   <div class="source"> 
-   <pre>&lt;dependency org=&quot;com.citytechinc.cq.cq-component-plugin&quot; name=&quot;cq-component-plugin&quot; rev=&quot;6.1.3&quot;&gt;
-  &lt;artifact name=&quot;cq-component-plugin&quot; type=&quot;pom&quot; /&gt;
+   <pre>&lt;dependency org=&quot;com.citytechinc.cq.cq-component-plugin&quot; name=&quot;cq-component-annotations&quot; rev=&quot;6.1.3&quot;&gt;
+  &lt;artifact name=&quot;cq-component-annotations&quot; type=&quot;jar&quot; /&gt;
 &lt;/dependency&gt;</pre> 
   </div> 
  </div> 
@@ -153,7 +138,7 @@
   <a name="Groovy_Grape"></a> 
   <div class="source"> 
    <pre>@Grapes(
-@Grab(group='com.citytechinc.cq.cq-component-plugin', module='cq-component-plugin', version='6.1.3')
+@Grab(group='com.citytechinc.cq.cq-component-plugin', module='cq-component-annotations', version='6.1.3')
 )</pre> 
   </div> 
  </div> 
@@ -161,21 +146,21 @@
   <h3 id="Grails">Grails</h3> 
   <a name="Grails"></a> 
   <div class="source"> 
-   <pre>compile 'com.citytechinc.cq.cq-component-plugin:cq-component-plugin:6.1.3'</pre> 
+   <pre>compile 'com.citytechinc.cq.cq-component-plugin:cq-component-annotations:6.1.3'</pre> 
   </div> 
  </div> 
  <div class="section"> 
   <h3 id="Leiningen">Leiningen</h3> 
   <a name="Leiningen"></a> 
   <div class="source"> 
-   <pre>[com.citytechinc.cq.cq-component-plugin/cq-component-plugin &quot;6.1.3&quot;]</pre> 
+   <pre>[com.citytechinc.cq.cq-component-plugin/cq-component-annotations &quot;6.1.3&quot;]</pre> 
   </div> 
  </div> 
  <div class="section"> 
   <h3 id="SBT">SBT</h3> 
   <a name="SBT"></a> 
   <div class="source"> 
-   <pre>libraryDependencies += &quot;com.citytechinc.cq.cq-component-plugin&quot; % &quot;cq-component-plugin&quot; % &quot;6.1.3&quot;</pre> 
+   <pre>libraryDependencies += &quot;com.citytechinc.cq.cq-component-plugin&quot; % &quot;cq-component-annotations&quot; % &quot;6.1.3&quot;</pre> 
   </div> 
  </div> 
 </div>

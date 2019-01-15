@@ -1,0 +1,400 @@
+
+<!DOCTYPE html>
+<html  xml:lang="en" lang="en">
+
+	<head>
+		<meta charset="UTF-8" />
+		<title>Configuration | CQ Component Plugin</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="description" content="" />
+		<meta http-equiv="content-language" content="en" />
+		
+		<link href="./css/bootstrap.min.css" rel="stylesheet" />
+		<link href="./css/bootstrap-responsive.min.css" rel="stylesheet" />
+		<link href="./css/docs.css" rel="stylesheet" />
+		<link href="./css/reflow-skin.css" rel="stylesheet" />
+		<link href="./css/site.css" rel="stylesheet" />
+		
+		<link href="http://yandex.st/highlightjs/7.3/styles/github.min.css" rel="stylesheet" />
+		
+		<link href="./css/lightbox.css" rel="stylesheet" />
+		
+		<link href="./css/site.css" rel="stylesheet" />
+		<link href="./css/print.css" rel="stylesheet" media="print" />
+		
+		<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+		<!--[if lt IE 9]>
+			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+
+		<!-- Google Analytics -->
+		<script type="text/javascript">
+		
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-928005-4']);
+			_gaq.push(['_trackPageview']);
+
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+
+		</script>
+		</head>
+
+	<body class="page-configuration project-cq-component-plugin" data-spy="scroll" data-offset="60" data-target="#toc-scroll-target">
+
+		<nav class="navbar navbar-default navbar-fixed-top">
+				<div class="container">
+					<div class="navbar-header">
+				      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false">
+				        <span class="sr-only">Toggle navigation</span>
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				      </button>
+				    
+					<a class="navbar-brand" href="index.html">CQ Component Plugin</a>
+					</div>
+					<div class="collapse navbar-collapse">
+						<ul class="nav navbar-nav navbar-right">
+							<li><a href="https://github.com/OlsonDigital/cq-component-maven-plugin/" title="GitHub" class="externalLink">GitHub </a></li>
+							<li class="dropdown active">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Basics <b class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li class="active"><a href="" title="Configuration">Configuration </a></li>
+									<li><a href="usage.html" title="Usage">Usage </a></li>
+									<li><a href="additional-features.html" title="Additional Features">Additional Features </a></li>
+								</ul>
+							</li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Extending <b class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li><a href="adding-a-widget.html" title="Adding a Widget">Adding a Widget </a></li>
+									<li><a href="adding-a-transformer.html" title="Adding a Transformer">Adding a Transformer </a></li>
+								</ul>
+							</li>
+						</ul>
+					</div><!--/.nav-collapse -->
+				</div>
+		</nav>
+		
+	<div class="container">
+	
+	<!-- Masthead
+	================================================== -->
+
+	
+	
+	<header class="jumbotron subhead">
+		<div class="row" id="banner">
+			<div class="span12">
+				<div class="pull-left">
+					<a href="http://www.icfolson.com" id="bannerLeft"><img src="images/logo.jpg" alt="ICF Olson"></a>
+				</div>
+				<div class="pull-right">
+										<a href="index.html" id="bannerRight"><h1>CQ Component Plugin</h1></a>
+					<p class="lead">A plugin for generating AEM component configuration files from annotated Java classes.</p>
+				</div>
+			</div>
+		</div>
+
+
+	
+			<div>
+			<ul class="breadcrumb">
+				<li class="projectVersion version-date">Version: 6.1.3</li>
+				<li class="divider">|</li>
+				<li class="publishDate version-date">Last Published: 2019-01-15</li>
+			</ul>
+		</div>
+	</header>
+
+	<div class="main-body">
+	<div class="row">
+		<div class="span8">
+			<div class="body-content">
+<div class="section"> 
+ <div class="page-header">
+  <h2 id="Configuration">Configuration</h2>
+ </div> 
+</div> 
+<div class="section"> 
+ <h2 id="Maven_Plugin">Maven Plugin</h2> 
+ <p>The CQ Component Plugin requires two Maven configurations. First is the plugin configuration itself. Second is the addition of a Maven dependency containing the annotations used to identify Java Classes as Components and Fields and Methods as authorable elements as well as the abstract classes and interfaces necessary extends the plugin.</p> 
+ <div class="section"> 
+  <h3 id="Maven_POM">Maven POM</h3> 
+  <div class="source"> 
+   <pre>&lt;plugin&gt;
+    &lt;groupId&gt;com.citytechinc.cq.cq-component-plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;cq-component-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;6.1.3&lt;/version&gt;
+    &lt;extensions&gt;true&lt;/extensions&gt;
+    &lt;executions&gt;
+        &lt;execution&gt;
+            &lt;goals&gt;
+                &lt;goal&gt;component&lt;/goal&gt;
+            &lt;/goals&gt;
+        &lt;/execution&gt;
+    &lt;/executions&gt;
+    &lt;configuration&gt;
+        &lt;componentPathBase&gt;jcr_root/apps/client/components&lt;/componentPathBase&gt;
+        &lt;componentPathSuffix&gt;content&lt;/componentPathSuffix&gt;
+        &lt;defaultComponentGroup&gt;Client Group&lt;/defaultComponentGroup&gt;
+        &lt;transformerName&gt;camel-case&lt;/transformerName&gt;
+        &lt;generateTouchUiDialogs&gt;true&lt;/generateTouchUiDialogs&gt;
+        &lt;excludeDependencies&gt;
+           &lt;dependency&gt;
+               &lt;groupId&gt;dependency.group.id&lt;/groupId&gt;
+               &lt;artifactId&gt;dependency-artifact-id&lt;/artifactId&gt;
+           &lt;/dependency&gt;
+        &lt;/excludeDependencies&gt;
+        &lt;additionalFeatures&gt;
+            &lt;additionalFeature&gt;feature-flag&lt;/additionalFeature&gt;
+            &lt;additionalFeature&gt;another-feature-flag&lt;/additionalFeature&gt;
+        &lt;/additionalFeatures&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt;
+</pre> 
+  </div> 
+ </div> 
+ <div class="section"> 
+  <h3 id="Maven_Dependency">Maven Dependency</h3> 
+  <div class="source"> 
+   <pre>&lt;dependency&gt;
+    &lt;groupId&gt;com.citytechinc.cq.cq-component-plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;cq-component-annotations&lt;/artifactId&gt;
+    &lt;version&gt;6.1.3&lt;/version&gt;
+&lt;/dependency&gt;
+</pre> 
+  </div> 
+ </div> 
+</div> 
+<div class="section"> 
+ <h2 id="Gradle_Plugin">Gradle Plugin</h2> 
+ <p>The CQ Component Plugin requires three Gradle configurations. First is the build script configuration to include the plugin. Second is the addition of the componentPlugin extension to set the properties. The third is setting the plugin to depend on a part of the build.</p> 
+ <div class="section"> 
+  <h3 id="Build_Script">Build Script</h3> 
+  <div class="source"> 
+   <pre>buildscript {
+    repositories {
+       mavenLocal()
+       mavenCentral()
+    }
+    dependencies {
+       classpath group: 'com.citytechinc.cq.cq-component-plugin', name: 'cq-component-maven-plugin', version: '6.1.3'
+    }
+}
+</pre> 
+  </div> 
+ </div> 
+ <div class="section"> 
+  <h3 id="componentPlugin_Extension">componentPlugin Extension</h3> 
+  <div class="section"> 
+   <h4 id="Example">Example</h4> 
+   <div class="source"> 
+    <pre>componentPlugin {
+    componentPathBase = &quot;jcr_root/apps/project/components&quot;
+    componentPathSuffix=&quot;content&quot;
+    defaultComponentGroup=&quot;Project&quot;
+    transformerName=&quot;camel-case&quot;
+}
+</pre> 
+   </div> 
+  </div> 
+ </div> 
+ <div class="section"> 
+  <h3 id="Depends_On">Depends On</h3> 
+  <div class="source"> 
+   <pre>install.dependsOn generateComponents
+</pre> 
+  </div> 
+ </div> 
+</div> 
+<div class="section"> 
+ <h2 id="Configurable_Properties">Configurable Properties</h2> 
+ <table border="0" class="table table-striped break-words-table"> 
+  <thead> 
+   <tr class="a"> 
+    <th>Element</th> 
+    <th>Type</th> 
+    <th>Default</th> 
+    <th>Description</th> 
+   </tr> 
+  </thead> 
+  <tbody> 
+   <tr class="b"> 
+    <td>componentPathBase</td> 
+    <td>String</td> 
+    <td></td> 
+    <td> The content path to your project's components within the apps content tree. The full path to which files for an individual component will be written is: `componentPathBase + / + componentPathSuffix + / + component name` (annotated per component or based on the name of the component class if not annotated). The component path as a whole can be overridden at the component level via the `path` property of the @Component annotation. </td> 
+   </tr> 
+   <tr class="a"> 
+    <td>componentPathSuffix</td> 
+    <td>String</td> 
+    <td>content</td> 
+    <td>See the description of componentPathBase for an explanation of how this property is used in the construction of a path to which component files will be written. </td> 
+   </tr> 
+   <tr class="b"> 
+    <td>defaultComponentGroup</td> 
+    <td>String</td> 
+    <td></td> 
+    <td>The group to which Components whose files are generated via this plugin will be added in the CQ Sidekick. This can be overridden at the component level via the `group` property of the @Component annotation. </td> 
+   </tr> 
+   <tr class="a"> 
+    <td>transformerName</td> 
+    <td>String</td> 
+    <td>camel-case</td> 
+    <td>The name of the transformer used to change from a the name of a class to the folder in the jcr. The defaults available are: 
+     <ul> 
+      <li>camel-case: Converts the class name to camel case</li> 
+      <li>lower-case: Converts the class name to lower case</li> 
+      <li>lower-case-dash: Converts the class name to lower case and separates words with dashes. Word boundaries are based on camel case standards.</li> 
+     </ul> </td> 
+   </tr> 
+   <tr class="b"> 
+    <td>excludedDependencies</td> 
+    <td>List</td> 
+    <td></td> 
+    <td>A list of Dependencies whose Components should be excluded from the construction process. XML files will not be generated by this plugin for any Java Classes annotated as Components which are members of any of the Dependencies in this list. <br /> <br /> <b>Currently unavailable in the Gradle Plugin.</b> </td> 
+   </tr> 
+   <tr class="a"> 
+    <td>generateTouchUiDialogs</td> 
+    <td>Boolean</td> 
+    <td>true</td> 
+    <td>Enabled the generation of dialogs for Touch UI</td> 
+   </tr> 
+   <tr class="b"> 
+    <td>additionalFeatures</td> 
+    <td>List</td> 
+    <td></td> 
+    <td>A list of Feature Flags for features which should be enabled. See the Additional Features page for more information on this configuration.</td> 
+   </tr> 
+  </tbody> 
+ </table> 
+</div>
+			</div>
+		</div>
+		<div class="span4">
+			<div id="toc-sidebar">
+				<div class="well">
+					<ul class="nav nav-list">
+						<li class="nav-header">Table of Contents</li>
+		<li><a href="#Configuration" title="Configuration">Configuration</a>
+		<li class="dropdown"><a href="#Maven_Plugin" title="Maven Plugin">Maven Plugin <b class="caret"></b></a>
+			<ul class="nav nav-list">
+		<li><a href="#Maven_POM" title="Maven POM">Maven POM</a>
+		<li><a href="#Maven_Dependency" title="Maven Dependency">Maven Dependency</a>
+				<li class="divider"></li>
+			</ul>
+		</li>
+		<li class="dropdown"><a href="#Gradle_Plugin" title="Gradle Plugin">Gradle Plugin <b class="caret"></b></a>
+			<ul class="nav nav-list">
+		<li><a href="#Build_Script" title="Build Script">Build Script</a>
+		<li class="dropdown"><a href="#componentPlugin_Extension" title="componentPlugin Extension">componentPlugin Extension <b class="caret"></b></a>
+			<ul class="nav nav-list">
+		<li><a href="#Example" title="Example">Example</a>
+				<li class="divider"></li>
+			</ul>
+		</li>
+		<li><a href="#Depends_On" title="Depends On">Depends On</a>
+				<li class="divider"></li>
+			</ul>
+		</li>
+		<li><a href="#Configurable_Properties" title="Configurable Properties">Configurable Properties</a>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+
+	</div><!-- /container -->
+	
+	<!-- Footer
+	================================================== -->
+	<footer class="well">
+		<div class="container">
+			<div class="row">
+				<div class="span3 bottom-nav">
+					<ul class="nav nav-list">
+						<li class="nav-header">Main</li>
+						<li>
+							<a href="index.html" title="Home">Home </a>
+						</li>
+						<li>
+							<a href="https://github.com/OlsonDigital/cq-component-maven-plugin/" title="GitHub" class="externalLink">GitHub </a>
+						</li>
+						<li>
+							<a href="apidocs/index.html" title="Javadocs">Javadocs </a>
+						</li>
+						<li>
+							<a href="http://www.icfolson.com" title="ICF Olson" class="externalLink">ICF Olson </a>
+						</li>
+					</ul>
+				</div>
+				<div class="span3 bottom-nav">
+					<ul class="nav nav-list">
+						<li class="nav-header">Basics</li>
+						<li class="active">
+							<a href="#" title="Configuration">Configuration </a>
+						</li>
+						<li>
+							<a href="usage.html" title="Usage">Usage </a>
+						</li>
+						<li>
+							<a href="additional-features.html" title="Additional Features">Additional Features </a>
+						</li>
+					</ul>
+				</div>
+				<div class="span3 bottom-nav">
+					<ul class="nav nav-list">
+						<li class="nav-header">Extending</li>
+						<li>
+							<a href="adding-a-widget.html" title="Adding a Widget">Adding a Widget </a>
+						</li>
+						<li>
+							<a href="adding-a-transformer.html" title="Adding a Transformer">Adding a Transformer </a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</footer>
+		
+	<div class="container subfooter">
+		<div class="row">
+			<div class="span12">
+				<p class="pull-right"><a href="#">Back to top</a></p>
+				<p class="copyright">Copyright &copy;2019 <a href="http://www.icfolson.com">ICF Olson</a>. All Rights Reserved.</p>
+					</div>
+		</div>
+	</div>
+
+	<!-- Le javascript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+
+	<!-- Fallback jQuery loading from Google CDN:
+	     http://stackoverflow.com/questions/1014203/best-way-to-use-googles-hosted-jquery-but-fall-back-to-my-hosted-library-on-go -->
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	<script type="text/javascript">
+		if (typeof jQuery == 'undefined')
+		{
+			document.write(unescape("%3Cscript src='./js/jquery-1.8.3.min.js' type='text/javascript'%3E%3C/script%3E"));
+		}
+	</script>
+	
+	<script src="./js/bootstrap.min.js"></script>
+	<script src="./js/lightbox.js"></script>
+	<script src="./js/jquery.smooth-scroll.min.js"></script>
+	<!-- back button support for smooth scroll -->
+	<script src="./js/jquery.ba-bbq.min.js"></script>
+	<script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script>
+
+	<script src="./js/reflow-skin.js"></script>
+	<script src="https://use.typekit.net/rya5bvi.js"></script><script>try{Typekit.load({ async: true });}catch(e){}</script>
+	
+	</body>
+</html>

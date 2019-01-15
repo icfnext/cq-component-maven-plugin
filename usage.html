@@ -1,0 +1,503 @@
+
+<!DOCTYPE html>
+<html  xml:lang="en" lang="en">
+
+	<head>
+		<meta charset="UTF-8" />
+		<title>Usage | CQ Component Plugin</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="description" content="" />
+		<meta http-equiv="content-language" content="en" />
+		
+		<link href="./css/bootstrap.min.css" rel="stylesheet" />
+		<link href="./css/bootstrap-responsive.min.css" rel="stylesheet" />
+		<link href="./css/docs.css" rel="stylesheet" />
+		<link href="./css/reflow-skin.css" rel="stylesheet" />
+		<link href="./css/site.css" rel="stylesheet" />
+		
+		<link href="http://yandex.st/highlightjs/7.3/styles/github.min.css" rel="stylesheet" />
+		
+		<link href="./css/lightbox.css" rel="stylesheet" />
+		
+		<link href="./css/site.css" rel="stylesheet" />
+		<link href="./css/print.css" rel="stylesheet" media="print" />
+		
+		<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+		<!--[if lt IE 9]>
+			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+
+		<!-- Google Analytics -->
+		<script type="text/javascript">
+		
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-928005-4']);
+			_gaq.push(['_trackPageview']);
+
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+
+		</script>
+		</head>
+
+	<body class="page-usage project-cq-component-plugin" data-spy="scroll" data-offset="60" data-target="#toc-scroll-target">
+
+		<nav class="navbar navbar-default navbar-fixed-top">
+				<div class="container">
+					<div class="navbar-header">
+				      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false">
+				        <span class="sr-only">Toggle navigation</span>
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				      </button>
+				    
+					<a class="navbar-brand" href="index.html">CQ Component Plugin</a>
+					</div>
+					<div class="collapse navbar-collapse">
+						<ul class="nav navbar-nav navbar-right">
+							<li><a href="https://github.com/OlsonDigital/cq-component-maven-plugin/" title="GitHub" class="externalLink">GitHub </a></li>
+							<li class="dropdown active">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Basics <b class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li><a href="configuration.html" title="Configuration">Configuration </a></li>
+									<li class="active"><a href="" title="Usage">Usage </a></li>
+									<li><a href="additional-features.html" title="Additional Features">Additional Features </a></li>
+								</ul>
+							</li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Extending <b class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li><a href="adding-a-widget.html" title="Adding a Widget">Adding a Widget </a></li>
+									<li><a href="adding-a-transformer.html" title="Adding a Transformer">Adding a Transformer </a></li>
+								</ul>
+							</li>
+						</ul>
+					</div><!--/.nav-collapse -->
+				</div>
+		</nav>
+		
+	<div class="container">
+	
+	<!-- Masthead
+	================================================== -->
+
+	
+	
+	<header class="jumbotron subhead">
+		<div class="row" id="banner">
+			<div class="span12">
+				<div class="pull-left">
+					<a href="http://www.icfolson.com" id="bannerLeft"><img src="images/logo.jpg" alt="ICF Olson"></a>
+				</div>
+				<div class="pull-right">
+										<a href="index.html" id="bannerRight"><h1>CQ Component Plugin</h1></a>
+					<p class="lead">A plugin for generating AEM component configuration files from annotated Java classes.</p>
+				</div>
+			</div>
+		</div>
+
+
+	
+			<div>
+			<ul class="breadcrumb">
+				<li class="projectVersion version-date">Version: 6.1.3</li>
+				<li class="divider">|</li>
+				<li class="publishDate version-date">Last Published: 2019-01-15</li>
+			</ul>
+		</div>
+	</header>
+
+	<div class="main-body">
+	<div class="row">
+		<div class="span8">
+			<div class="body-content">
+<div class="section"> 
+ <div class="page-header">
+  <h2 id="Usage">Usage</h2>
+ </div> 
+ <p>The cq-component-maven-plugin generates .content.xml, _cq_editConfig.xml, _cq_dialog.xml, and dialog.xml files for Components and injects them into a previously created CQ Package archive file. As such, the plugin should be run as part of or after the <tt>package</tt> lifecycle phase and, if running during the <tt>package</tt> lifecycle phase, should be configured after the plugin creating the aforementioned archive file.</p> 
+</div> 
+<div class="section"> 
+ <h2 id="Annotations">Annotations</h2> 
+ <p>This plugin will search through the classes built as part of your project along with those contained in any dependencies and transitive dependencies which are not included in the excludedDependencies POM configuration looking for those annotated with the <tt>@Component</tt> annotation and generating .content.xml, _cq_editConfig, _cq_dialog.xml, and dialog.xml files based on said annotation, the class itself, inherited classes and interfaces, and the fields and methods of the class or inherited classes and interfaces which are annotated with <tt>@DialogField</tt> annotations. The plugin will attempt to default most configuration present in these generated files based on information provided by the classes, fields, and methods. These default choices can be overridden via properties of the annotations and stacked annotations.</p> 
+ <p>Specific files will only be generated if such files do not already exist for the component. For example, if you have created a dialog.xml file for the component already, this plugin will not overwrite it.</p> 
+ <div class="section"> 
+  <h3 id="Component">Component</h3> 
+  <p><a href="apidocs/com/citytechinc/cq/component/annotations/Component.html">com.citytechinc.cq.component.annotations.Component</a></p> 
+  <p>This is the annotation that indicates to the plugin that a class represents a component. It contains configuration for the _cq_editConfig.xml, .content.xml, _cq_dialog.xml, and dialog.xml files.</p> 
+ </div> 
+ <div class="section"> 
+  <h3 id="DialogField">DialogField</h3> 
+  <p><a href="apidocs/com/citytechinc/cq/component/annotations/DialogField.html">com.citytechinc.cq.component.annotations.DialogField</a></p> 
+  <p>This annotation marks a field or method as an authorable element. Authorable elements are represented in CQ Component Dialogs. How they are represented is based on information provided in the <tt>@DialogField</tt> annotation and information provided in any stacked annotations.</p> 
+  <p>Determination of the xtype to be rendered for an authorable element in the Classic UI is based on the following process:</p> 
+  <ol style="list-style-type: decimal"> 
+   <li>If the <tt>xtype</tt> property of the <tt>@DialogField</tt> annotation is populated, its value is used.</li> 
+   <li>If a stacked Widget annotation is also associated with the element the xtype associated with the stacked annotation is used.</li> 
+  </ol> 
+  <p>Determination of the resourceType to be rendered for an authorable element in the Touch UI is similarly:</p> 
+  <ol style="list-style-type: decimal"> 
+   <li>If the <tt>resourceType</tt> property of the <tt>@DialogField</tt> annotation is populated, its value is used.</li> 
+   <li>If a stacked Widget annotation is also associated with the element the resourceType associated with the stacked annotation is used.</li> 
+  </ol> 
+  <p>The name used will be based off the field name or the method name using Java bean standards and can be overridden using the <tt>name</tt> property of the annotation.</p> 
+  <div class="section"> 
+   <h4 id="Dialog_Field_Examples">Dialog Field Examples</h4> 
+   <p>Textfield saved at ./title</p> 
+   <div class="source"> 
+    <pre>@DialogField(fieldLabel=&quot;Title&quot;)
+@TextField
+private String title;
+</pre> 
+   </div> 
+   <p>TextArea saved at ./text using explicitly set xtypes and resourceTypes</p> 
+   <div class="source"> 
+    <pre>@DialogField(fieldLabel=&quot;Text&quot;, xtype=&quot;textarea&quot;, resourceType=&quot;granite/ui/components/foundation/form/textarea&quot;)
+private String text;
+</pre> 
+   </div> 
+   <p>TextArea saved at ./text using Stacked Annotations (recommended) </p> 
+   <div class="source"> 
+    <pre>@DialogField(fieldLabel=&quot;Text&quot;)
+@TextArea
+private String text;
+</pre> 
+   </div> 
+   <p>Pathfield saved at ./simplePath</p> 
+   <div class="source"> 
+    <pre>@DialogField(fieldLabel=&quot;Title&quot;, name=&quot;./simplePath&quot;)
+@PathField
+private URI path;
+</pre> 
+   </div> 
+  </div> 
+ </div> 
+ <div class="section"> 
+  <h3 id="Widgets">Widgets</h3> 
+  <p>Widget annotations are used in conjunction with a DialogField annotation to set the correct xtype and to allow configuration of additional properties germane to the widget type.</p> 
+  <p>All of the default widget annotations can be found <a href="apidocs/com/citytechinc/cq/component/annotations/widgets/package-summary.html">here</a>.</p> 
+  <div class="section"> 
+   <h4 id="Widget_Examples">Widget Examples</h4> 
+   <p>Datefield saved at ./date</p> 
+   <div class="source"> 
+    <pre>@DialogField(fieldLabel=&quot;Title&quot;)
+@DateField
+private Date date;
+</pre> 
+   </div> 
+   <p>Pathfield saved at ./mainpath</p> 
+   <div class="source"> 
+    <pre>@DialogField(fieldLabel=&quot;Main Path&quot;)
+@PathField
+private String mainpath;
+</pre> 
+   </div> 
+   <p>Numberfield saved as ./quantity</p> 
+   <div class="source"> 
+    <pre>@DialogField(fieldLabel=&quot;Quantity&quot;)
+@NumberField(allowNegative=false, allowDecimals=true)
+private Double quantity;
+</pre> 
+   </div> 
+   <p>Composite Multifield (CoralUI 3 only) saved as ./compositeMultifield</p> 
+   <div class="source"> 
+    <pre>@DialogField(fieldLabel = &quot;Composite Multifield&quot;)
+@MultiField(composite = true)
+protected List&lt;ContactData&gt; compositeMultifield;
+
+// ContactData class example
+public class ContactData {
+    @DialogField(fieldLabel = &quot;First Name&quot;)
+    @TextField
+    private String firstName;
+
+    @DialogField(fieldLabel = &quot;Last Name&quot;)
+    @TextField
+    private String lastName;
+
+    @DialogField(fieldLabel = &quot;Phone Number&quot;)
+    @TextField
+    private String phoneNumber;
+
+    @DialogField
+    @MultiFieldChildResource
+    private Address address;
+}
+
+// Address class example
+public class Address {
+    @DialogField(fieldLabel = &quot;Street Name&quot;, name = &quot;./address/streetName&quot;)
+    @TextField
+    private String streetName;
+
+    @DialogField(fieldLabel = &quot;Street Number&quot;, name = &quot;./address/streetNumber&quot;)
+    @TextField
+    private String streetNumber;
+}
+</pre> 
+   </div> 
+  </div> 
+ </div> 
+ <div class="section"> 
+  <h3 id="In_Place_Editors">In Place Editors</h3> 
+  <p>In Place Editor specific annotations are used to configure in place editors inside the cq:editConfig.xml. If multiple in place editor annotations are found for a given class, a hybrid in place editor is configured using the provided individual configurations.</p> 
+  <p>All of the default in place editor annotations can be found <a href="apidocs/com/citytechinc/cq/component/editconfig/annotations/inplaceeditors/package-summary.html">here</a>.</p> 
+  <div class="section"> 
+   <h4 id="In_Place_Editor_Examples">In Place Editor Examples</h4> 
+   <p>A Rich Text In Place Editor saved at ./text</p> 
+   <div class="source"> 
+    <pre>@TextEditor
+String text
+</pre> 
+   </div> 
+   <p>An Image In Place Editor saved at ./image (with the additional widget annotations so that it functions)</p> 
+   <div class="source"> 
+    <pre>@DialogField(fieldLabel = &quot;Image&quot;)
+@Html5SmartImage(tab=false)
+@ImageEditor(title=&quot;Image&quot;)
+Image image
+</pre> 
+   </div> 
+  </div> 
+ </div> 
+</div> 
+<div class="section"> 
+ <h2 id="Inheritance">Inheritance</h2> 
+ <p>Dialog Fields will be inherited from any classes or interfaces extended or implemented respectively by a component’s backing class. </p> 
+ <div class="source"> 
+  <pre>public interface ClassifiableComponent {
+    @DialogField(fieldLabel = &quot;Classifications&quot;, ranking = 1000)
+    @TagInputField
+    public List&lt;Tag&gt; getClassifications();
+}
+
+@Component(&quot;Concrete Component&quot;)
+public class ConcreteComponent implements ClassifiableComponent {
+
+    public List&lt;Tag&gt; getClassifications() {
+        ...
+    }
+
+}
+</pre> 
+ </div> 
+ <div class="section"> 
+  <h3 id="DialogFieldOverride">DialogFieldOverride</h3> 
+  <p><a href="apidocs/com/citytechinc/cq/component/annotations/DialogFieldOverride.html">com.citytechinc.cq.component.annotations.DialogFieldOverride</a></p> 
+  <p>The <tt>@DialogFieldOverride</tt> annotation allows for granular overrides to <tt>@DialogField</tt> properties which would be otherwise inherited without the respecification of the entire <tt>@DialogField</tt> annotation.</p> 
+  <div class="source"> 
+   <pre>public interface ClassifiableComponent {
+    @DialogField(fieldLabel = &quot;Classifications&quot;, ranking = 1000)
+    @TagInputField
+    public List&lt;Tag&gt; getClassifications();
+}
+
+@Component(&quot;Concrete Component&quot;)
+public class ConcreteComponent implements ClassifiableComponent {
+
+    @DialogFieldOverride(ranking = 50, required = false, hideLabel = false)
+    public List&lt;Tag&gt; getClassifications() {
+        ...
+    }
+
+}
+</pre> 
+  </div> 
+  <p>Due to limitations with Java Annotations, overridable boolean attributes are required in the <tt>@DialogFieldOverride</tt> annotation. These attributes are the <tt>required</tt> and <tt>hideLabel</tt>. </p> 
+ </div> 
+ <div class="section"> 
+  <h3 id="IgnoreDialogField">IgnoreDialogField</h3> 
+  <p><a href="apidocs/com/citytechinc/cq/component/annotations/IgnoreDialogField.html">com.citytechinc.cq.component.annotations.IgnoreDialogField</a></p> 
+  <p>The <tt>@IgnoreDialogField</tt> annotation is used to suppress the output of an otherwise inherited field.</p> 
+  <div class="source"> 
+   <pre>public interface ClassifiableComponent {
+    @DialogField(fieldLabel = &quot;Classifications&quot;, ranking = 1000)
+    @TagInputField
+    public List&lt;Tag&gt; getClassifications();
+}
+
+@Component(&quot;Concrete Component&quot;)
+public class ConcreteComponent implements ClassifiableComponent {
+
+    @IgnoreDialogField
+    public List&lt;Tag&gt; getClassifications() {
+        //Returns some non-authored list of Tags
+        ...
+    }
+
+}
+</pre> 
+  </div> 
+ </div> 
+</div> 
+<div class="section"> 
+ <h2 id="Touch_UI_and_Classic_UI">Touch UI and Classic UI</h2> 
+ <p>Introduced in AEM 6.0, the Touch UI is the default page authoring user interface. Authors who wish to or need to based on functionality may fall back to the Classic UI. This means that developers often need to support authorability via both the Touch UI and the Classic UI. By default the CQ Component Plugin will generate both the _cq_dialog.xml file used by the Touch UI and the dialog.xml file used by the Classic UI using a single set of annotations.</p> 
+ <div class="section"> 
+  <h3 id="Disabling_Touch_UI">Disabling Touch UI</h3> 
+  <p>Generation of the Touch UI dialogs can be suppressed at a project, component, or field level. To suppress generation at a project level set the <tt>generateTouchUiDialogs</tt> POM configuration to <tt>false</tt>. To suppress generation at a component level, set the <tt>suppressTouchUIDialog</tt> attribute of the <tt>@Component</tt> annotation to <tt>false</tt>. To suppress generation at a field level, set the <tt>suppressTouchUI</tt> attribute of the <tt>@DialogField</tt> annotation to <tt>false</tt>. </p> 
+ </div> 
+ <div class="section"> 
+  <h3 id="Enabling_Touch_UI_CoralUI_3_Dialogs">Enabling Touch UI CoralUI 3 Dialogs</h3> 
+  <p>Generation of the Touch UI CoralUI 3 dialogs can be enabled at a project level. In order to enable it, set the <tt>useCoral3Dialogs</tt> POM configuration to <tt>true</tt>. CoralUI 3 dialogs are currently tested with AEM 6.3.</p> 
+ </div> 
+ <div class="section"> 
+  <h3 id="Disabling_Classic_UI">Disabling Classic UI</h3> 
+  <p>Generation of the Classic UI dialogs can be suppressed at a project, component, or field level. To suppress generation at a project level set the <tt>generateClassicUiDialogs</tt> POM configuration to <tt>false</tt>. To suppress generation at a component level, set the <tt>suppressClassicUIDialog</tt> attribute of the <tt>@Component</tt> annotation to <tt>false</tt>.</p> 
+ </div> 
+ <div class="section"> 
+  <h3 id="Mode-Exclusive_Widgets">Mode-Exclusive Widgets</h3> 
+  <p>It is possible to create widgets which work exclusively in Touch UI or Classic UI. An example of such a widget is that enabled by the <tt>@Switch</tt> annotation. Currently this annotation will not be recognized by the Classic UI widget rendering mechanisms. Similarly, custom widgets you create may only have support for one or the other interface depending on your requirements, there is not a systematic requirement to support both. </p> 
+ </div> 
+ <div class="section"> 
+  <h3 id="Suppressing_Field_Inheritance">Suppressing Field Inheritance</h3> 
+  <p>Sling’s resource merger, used in the rendering of Dialogs in the Touch UI, merges properties of child resource type dialogs with those of the parent. To avoid duplicative and potentially invalid definition of fields in the Touch UI dialog XML, the <tt>suppressFieldInheritanceForTouchUI</tt> flag can be enabled. Enabling this flag will keep the Touch UI widget rendering mechanisms from looking up the Java class hierarchy when collecting dialog field widgets. </p> 
+ </div> 
+</div>
+			</div>
+		</div>
+		<div class="span4">
+			<div id="toc-sidebar">
+				<div class="well">
+					<ul class="nav nav-list">
+						<li class="nav-header">Table of Contents</li>
+		<li><a href="#Usage" title="Usage">Usage</a>
+		<li class="dropdown"><a href="#Annotations" title="Annotations">Annotations <b class="caret"></b></a>
+			<ul class="nav nav-list">
+		<li><a href="#Component" title="Component">Component</a>
+		<li class="dropdown"><a href="#DialogField" title="DialogField">DialogField <b class="caret"></b></a>
+			<ul class="nav nav-list">
+		<li><a href="#Dialog_Field_Examples" title="Dialog Field Examples">Dialog Field Examples</a>
+				<li class="divider"></li>
+			</ul>
+		</li>
+		<li class="dropdown"><a href="#Widgets" title="Widgets">Widgets <b class="caret"></b></a>
+			<ul class="nav nav-list">
+		<li><a href="#Widget_Examples" title="Widget Examples">Widget Examples</a>
+				<li class="divider"></li>
+			</ul>
+		</li>
+		<li class="dropdown"><a href="#In_Place_Editors" title="In Place Editors">In Place Editors <b class="caret"></b></a>
+			<ul class="nav nav-list">
+		<li><a href="#In_Place_Editor_Examples" title="In Place Editor Examples">In Place Editor Examples</a>
+				<li class="divider"></li>
+			</ul>
+		</li>
+			</ul>
+		</li>
+		<li class="dropdown"><a href="#Inheritance" title="Inheritance">Inheritance <b class="caret"></b></a>
+			<ul class="nav nav-list">
+		<li><a href="#DialogFieldOverride" title="DialogFieldOverride">DialogFieldOverride</a>
+		<li><a href="#IgnoreDialogField" title="IgnoreDialogField">IgnoreDialogField</a>
+				<li class="divider"></li>
+			</ul>
+		</li>
+		<li class="dropdown"><a href="#Touch_UI_and_Classic_UI" title="Touch UI and Classic UI">Touch UI and Classic UI <b class="caret"></b></a>
+			<ul class="nav nav-list">
+		<li><a href="#Disabling_Touch_UI" title="Disabling Touch UI">Disabling Touch UI</a>
+		<li><a href="#Enabling_Touch_UI_CoralUI_3_Dialogs" title="Enabling Touch UI CoralUI 3 Dialogs">Enabling Touch UI CoralUI 3 Dialogs</a>
+		<li><a href="#Disabling_Classic_UI" title="Disabling Classic UI">Disabling Classic UI</a>
+		<li><a href="#Mode-Exclusive_Widgets" title="Mode-Exclusive Widgets">Mode-Exclusive Widgets</a>
+		<li><a href="#Suppressing_Field_Inheritance" title="Suppressing Field Inheritance">Suppressing Field Inheritance</a>
+				<li class="divider"></li>
+			</ul>
+		</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+
+	</div><!-- /container -->
+	
+	<!-- Footer
+	================================================== -->
+	<footer class="well">
+		<div class="container">
+			<div class="row">
+				<div class="span3 bottom-nav">
+					<ul class="nav nav-list">
+						<li class="nav-header">Main</li>
+						<li>
+							<a href="index.html" title="Home">Home </a>
+						</li>
+						<li>
+							<a href="https://github.com/OlsonDigital/cq-component-maven-plugin/" title="GitHub" class="externalLink">GitHub </a>
+						</li>
+						<li>
+							<a href="apidocs/index.html" title="Javadocs">Javadocs </a>
+						</li>
+						<li>
+							<a href="http://www.icfolson.com" title="ICF Olson" class="externalLink">ICF Olson </a>
+						</li>
+					</ul>
+				</div>
+				<div class="span3 bottom-nav">
+					<ul class="nav nav-list">
+						<li class="nav-header">Basics</li>
+						<li>
+							<a href="configuration.html" title="Configuration">Configuration </a>
+						</li>
+						<li class="active">
+							<a href="#" title="Usage">Usage </a>
+						</li>
+						<li>
+							<a href="additional-features.html" title="Additional Features">Additional Features </a>
+						</li>
+					</ul>
+				</div>
+				<div class="span3 bottom-nav">
+					<ul class="nav nav-list">
+						<li class="nav-header">Extending</li>
+						<li>
+							<a href="adding-a-widget.html" title="Adding a Widget">Adding a Widget </a>
+						</li>
+						<li>
+							<a href="adding-a-transformer.html" title="Adding a Transformer">Adding a Transformer </a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</footer>
+		
+	<div class="container subfooter">
+		<div class="row">
+			<div class="span12">
+				<p class="pull-right"><a href="#">Back to top</a></p>
+				<p class="copyright">Copyright &copy;2019 <a href="http://www.icfolson.com">ICF Olson</a>. All Rights Reserved.</p>
+					</div>
+		</div>
+	</div>
+
+	<!-- Le javascript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+
+	<!-- Fallback jQuery loading from Google CDN:
+	     http://stackoverflow.com/questions/1014203/best-way-to-use-googles-hosted-jquery-but-fall-back-to-my-hosted-library-on-go -->
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	<script type="text/javascript">
+		if (typeof jQuery == 'undefined')
+		{
+			document.write(unescape("%3Cscript src='./js/jquery-1.8.3.min.js' type='text/javascript'%3E%3C/script%3E"));
+		}
+	</script>
+	
+	<script src="./js/bootstrap.min.js"></script>
+	<script src="./js/lightbox.js"></script>
+	<script src="./js/jquery.smooth-scroll.min.js"></script>
+	<!-- back button support for smooth scroll -->
+	<script src="./js/jquery.ba-bbq.min.js"></script>
+	<script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script>
+
+	<script src="./js/reflow-skin.js"></script>
+	<script src="https://use.typekit.net/rya5bvi.js"></script><script>try{Typekit.load({ async: true });}catch(e){}</script>
+	
+	</body>
+</html>

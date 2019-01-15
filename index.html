@@ -1,0 +1,233 @@
+
+<!DOCTYPE html>
+<html  xml:lang="en" lang="en">
+
+	<head>
+		<meta charset="UTF-8" />
+		<title>CQ Component Plugin</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="description" content="" />
+		<meta http-equiv="content-language" content="en" />
+		
+		<link href="./css/bootstrap.min.css" rel="stylesheet" />
+		<link href="./css/bootstrap-responsive.min.css" rel="stylesheet" />
+		<link href="./css/docs.css" rel="stylesheet" />
+		<link href="./css/reflow-skin.css" rel="stylesheet" />
+		<link href="./css/site.css" rel="stylesheet" />
+		
+		<link href="http://yandex.st/highlightjs/7.3/styles/github.min.css" rel="stylesheet" />
+		
+		<link href="./css/lightbox.css" rel="stylesheet" />
+		
+		<link href="./css/site.css" rel="stylesheet" />
+		<link href="./css/print.css" rel="stylesheet" media="print" />
+		
+		<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+		<!--[if lt IE 9]>
+			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+
+		<!-- Google Analytics -->
+		<script type="text/javascript">
+		
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-928005-4']);
+			_gaq.push(['_trackPageview']);
+
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+
+		</script>
+		</head>
+
+	<body class="page-index project-cq-component-plugin" data-spy="scroll" data-offset="60" data-target="#toc-scroll-target">
+
+		<nav class="navbar navbar-default navbar-fixed-top">
+				<div class="container">
+					<div class="navbar-header">
+				      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false">
+				        <span class="sr-only">Toggle navigation</span>
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				      </button>
+				    
+					<a class="navbar-brand" href="index.html">CQ Component Plugin</a>
+					</div>
+					<div class="collapse navbar-collapse">
+						<ul class="nav navbar-nav navbar-right">
+							<li><a href="https://github.com/OlsonDigital/cq-component-maven-plugin/" title="GitHub" class="externalLink">GitHub </a></li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Basics <b class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li><a href="configuration.html" title="Configuration">Configuration </a></li>
+									<li><a href="usage.html" title="Usage">Usage </a></li>
+									<li><a href="additional-features.html" title="Additional Features">Additional Features </a></li>
+								</ul>
+							</li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Extending <b class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li><a href="adding-a-widget.html" title="Adding a Widget">Adding a Widget </a></li>
+									<li><a href="adding-a-transformer.html" title="Adding a Transformer">Adding a Transformer </a></li>
+								</ul>
+							</li>
+						</ul>
+					</div><!--/.nav-collapse -->
+				</div>
+		</nav>
+		
+	<div class="container">
+	
+	<!-- Masthead
+	================================================== -->
+
+	
+	
+	<header class="jumbotron subhead">
+		<div class="row" id="banner">
+			<div class="span12">
+				<div class="pull-left">
+					<a href="http://www.icfolson.com" id="bannerLeft"><img src="images/logo.jpg" alt="ICF Olson"></a>
+				</div>
+				<div class="pull-right">
+										<a href="" id="bannerRight"><h1>CQ Component Plugin</h1></a>
+					<p class="lead">A plugin for generating AEM component configuration files from annotated Java classes.</p>
+				</div>
+			</div>
+		</div>
+
+
+	
+		</header>
+
+	<div class="main-body">
+	<div class="row columns columns1">
+		<div class="span12">
+			<h2 id="Introduction">Introduction</h2>
+<p>The CQ Component Plugin mitigates the effort required in Adobe CQ component development by generating, at build time, .content.xml, _cq_editConfig.xml, _cq_dialog.xml, and dialog.xml files for your components, leaving you free to focus on functionality.</p>
+<div class="section">    
+</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="span12">
+			<h2 id="Motivations">Motivations</h2>
+<p>Adobe CQ components are comprised of a number of standard parts including a sightly/jsp file, a backing Java class, a Touch UI _cq_dialog.xml file, a Classic UI dialog.xml file, a .content.xml file, and a _cq_editConfig.xml file. In practice, there is a great deal of duplicate information between the Java class and many of the configuration files. Creating the _cq_dialog.xml file alone is often a grueling task, especially when working with more complex widget widget types. The complexity is only compounded as both a Touch UI and Classic UI dialog must often be created. As these artifacts are without schema, the developer must remember, or copy from a prior dialog, the oft esoteric incantation necessary to effect their intended outcome, namely the presentation of a particular authoring interface which will save properties to a particular location.</p>
+<p>The CQ Component Maven Plugin addresses these three areas by generating, as part of the build process, the _cq_dialog.xml, dialog.xml, .content.xml, and _cq_editConfig.xml files based on information provided by a components backing Java class. Details concerning the _cq_dialog.xml and dialog.xml configurations are abstracted by way of idiomatic annotations on the same component backing Java class, making even the most complicated Touch UI widgets and Classic UI xtypes straightforward to configure and allowing for the configuration of both with a single set of annotations. Information is no longer duplicated as the Java class is being used directly in the generation of the xml configuration files instead of requiring manual propagation on the part of the developer. Finally, the number of artifacts necessary to construct a component is reduced from 5 to 2, reducing complexity and significantly sanitizing your source code.</p>
+<div class="section">    
+</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="span12">
+			<h2 id="Goals">Goals</h2>
+<p>The CQ Component Plugin has one goal:</p>
+<ul> 
+ <li><tt>component</tt> generates .content.xml, _cq_editConfig.xml, _cq_dialog.xml, and dialog.xml files as necessary for Components it finds in project dependencies.</li> 
+</ul>
+<div class="section">   
+</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="span12">
+			<h2 id="Usage">Usage</h2>
+<p>General instructions on how to use the CQ Component Plugin can be found on the <a href="usage.html">usage page</a>. Instructions for extending the plugin can be found on the <a href="adding-a-transformer.html">Adding a Transformer</a> and <a href="adding-a-widget.html">Adding a Widget</a> pages.</p>
+		</div>
+	</div>
+	<div class="row">
+	</div>
+	</div>
+
+	</div><!-- /container -->
+	
+	<!-- Footer
+	================================================== -->
+	<footer class="well">
+		<div class="container">
+			<div class="row">
+				<div class="span3 bottom-nav">
+					<ul class="nav nav-list">
+						<li class="nav-header">Main</li>
+						<li class="active">
+							<a href="#" title="Home">Home </a>
+						</li>
+						<li>
+							<a href="https://github.com/OlsonDigital/cq-component-maven-plugin/" title="GitHub" class="externalLink">GitHub </a>
+						</li>
+						<li>
+							<a href="apidocs/index.html" title="Javadocs">Javadocs </a>
+						</li>
+						<li>
+							<a href="http://www.icfolson.com" title="ICF Olson" class="externalLink">ICF Olson </a>
+						</li>
+					</ul>
+				</div>
+				<div class="span3 bottom-nav">
+					<ul class="nav nav-list">
+						<li class="nav-header">Basics</li>
+						<li>
+							<a href="configuration.html" title="Configuration">Configuration </a>
+						</li>
+						<li>
+							<a href="usage.html" title="Usage">Usage </a>
+						</li>
+						<li>
+							<a href="additional-features.html" title="Additional Features">Additional Features </a>
+						</li>
+					</ul>
+				</div>
+				<div class="span3 bottom-nav">
+					<ul class="nav nav-list">
+						<li class="nav-header">Extending</li>
+						<li>
+							<a href="adding-a-widget.html" title="Adding a Widget">Adding a Widget </a>
+						</li>
+						<li>
+							<a href="adding-a-transformer.html" title="Adding a Transformer">Adding a Transformer </a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</footer>
+		
+	<div class="container subfooter">
+		<div class="row">
+			<div class="span12">
+				<p class="pull-right"><a href="#">Back to top</a></p>
+				<p class="copyright">Copyright &copy;2019 <a href="http://www.icfolson.com">ICF Olson</a>. All Rights Reserved.</p>
+					</div>
+		</div>
+	</div>
+
+	<!-- Le javascript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+
+	<!-- Fallback jQuery loading from Google CDN:
+	     http://stackoverflow.com/questions/1014203/best-way-to-use-googles-hosted-jquery-but-fall-back-to-my-hosted-library-on-go -->
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	<script type="text/javascript">
+		if (typeof jQuery == 'undefined')
+		{
+			document.write(unescape("%3Cscript src='./js/jquery-1.8.3.min.js' type='text/javascript'%3E%3C/script%3E"));
+		}
+	</script>
+	
+	<script src="./js/bootstrap.min.js"></script>
+	<script src="./js/lightbox.js"></script>
+	<script src="./js/jquery.smooth-scroll.min.js"></script>
+	<!-- back button support for smooth scroll -->
+	<script src="./js/jquery.ba-bbq.min.js"></script>
+	<script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script>
+
+	<script src="./js/reflow-skin.js"></script>
+	<script src="https://use.typekit.net/rya5bvi.js"></script><script>try{Typekit.load({ async: true });}catch(e){}</script>
+	
+	</body>
+</html>

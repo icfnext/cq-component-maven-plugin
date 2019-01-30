@@ -12,12 +12,16 @@ public class RichTextEditorWidget extends AbstractTouchUIWidget {
 
     public static final String FEATURE_FLAG = "rte-touchui";
 
+    private final boolean useFixedInlineToolbar;
+
     public RichTextEditorWidget(RichTextEditorWidgetParameters parameters) {
         super(parameters);
+
+        useFixedInlineToolbar = parameters.isUseFixedInlineToolbar();
     }
 
-    public boolean getUseFixedInlineToolbar() {
-        return true;
+    public boolean isUseFixedInlineToolbar() {
+        return useFixedInlineToolbar;
     }
 
 }

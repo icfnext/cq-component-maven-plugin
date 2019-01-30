@@ -27,6 +27,7 @@ public class RichTextEditorWidgetMaker extends AbstractTouchUIWidgetMaker<RichTe
         InstantiationException {
         List<XmlElement> children = new ArrayList<XmlElement>();
         final RichTextEditor rteAnnotation = getAnnotation(RichTextEditor.class);
+
         children.add(new RtePluginBuilder(new RtePluginBuilderParameters(rteAnnotation)).build());
 
         if (rteAnnotation.uiSettings().length > 0) {
@@ -35,6 +36,7 @@ public class RichTextEditorWidgetMaker extends AbstractTouchUIWidgetMaker<RichTe
         }
 
         parameters.setContainedElements(children);
+        parameters.setUseFixedInlineToolbar(rteAnnotation.useFixedInlineToolbar());
 
         return new RichTextEditorWidget(parameters);
     }

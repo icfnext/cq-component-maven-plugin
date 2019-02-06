@@ -21,12 +21,12 @@ public @interface AuthorizableAutocomplete {
     /**
      * A hint to the user of what can be entered in the field.
      */
-    String emptyText();
+    String emptyText() default "";
 
     /**
      * The name of the validator to be applied. E.g. `foundation.jcr.name`.
      */
-    String validation();
+    String[] validation() default {};
 
     /**
      * Indicates if the user is able to select multiple selections.

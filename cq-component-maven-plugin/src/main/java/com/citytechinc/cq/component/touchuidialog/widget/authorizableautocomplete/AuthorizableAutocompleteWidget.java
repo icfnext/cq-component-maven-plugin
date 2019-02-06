@@ -12,7 +12,7 @@ public class AuthorizableAutocompleteWidget extends AbstractTouchUIWidget {
 
     private final String emptyText;
 
-    private final String validation;
+    private final String[] validation;
 
     private final boolean multiple;
 
@@ -47,7 +47,7 @@ public class AuthorizableAutocompleteWidget extends AbstractTouchUIWidget {
         return emptyText;
     }
 
-    public String getValidation() {
+    public String[] getValidation() {
         return validation;
     }
 

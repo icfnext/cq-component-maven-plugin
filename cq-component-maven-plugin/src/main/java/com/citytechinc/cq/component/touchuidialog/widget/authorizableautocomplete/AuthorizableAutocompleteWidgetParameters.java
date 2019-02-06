@@ -6,7 +6,7 @@ public class AuthorizableAutocompleteWidgetParameters extends DefaultTouchUIWidg
 
     private String emptyText;
 
-    private String validation;
+    private String[] validation;
 
     private boolean multiple;
 
@@ -28,11 +28,11 @@ public class AuthorizableAutocompleteWidgetParameters extends DefaultTouchUIWidg
         this.emptyText = emptyText;
     }
 
-    public String getValidation() {
+    public String[] getValidation() {
         return validation;
     }
 
-    public void setValidation(final String validation) {
+    public void setValidation(final String[] validation) {
         this.validation = validation;
     }
 

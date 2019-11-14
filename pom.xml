@@ -62,12 +62,12 @@
         <repository>
             <id>gradle</id>
             <name>gradle-releases</name>
-            <url>http://repo.gradle.org/gradle/libs-releases-local</url>
+            <url>https://repo.gradle.org/gradle/libs-releases-local</url>
         </repository>
         <repository>
             <id>spring</id>
             <name>spring-releases</name>
-            <url>http://repo.spring.io/ext-release-local</url>
+            <url>https://repo.spring.io/ext-release-local</url>
         </repository>
     </repositories>
 

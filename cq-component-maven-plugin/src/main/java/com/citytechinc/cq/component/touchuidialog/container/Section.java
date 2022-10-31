@@ -8,8 +8,6 @@ public class Section extends Container {
 
     public static final String INCLUDE_RESOURCE_TYPE = "granite/ui/components/foundation/include";
 
-    private String path;
-
     private String resourceType;
 
     public Section(SectionParameters parameters) {
@@ -17,12 +15,7 @@ public class Section extends Container {
 
         if (StringUtils.isNotEmpty(parameters.getPath())) {
             this.resourceType = RESOURCE_TYPE;
-            this.path = parameters.getPath();
         }
-    }
-
-    public String getPath() {
-        return path;
     }
 
     public String getResourceType() {

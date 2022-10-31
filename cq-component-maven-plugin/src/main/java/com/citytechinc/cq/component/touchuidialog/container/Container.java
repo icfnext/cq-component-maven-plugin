@@ -17,6 +17,8 @@ public class Container extends AbstractTouchUIDialogElement {
 
     private final boolean maximized;
 
+    private String path;
+
     private NameSpacedAttribute<String> title;
 
     private final NameSpacedAttribute<Boolean> showOnCreate;
@@ -30,6 +32,11 @@ public class Container extends AbstractTouchUIDialogElement {
 
         margin = parameters.isMargin();
         maximized = parameters.isMaximized();
+
+	if (StringUtils.isNotEmpty(parameters.getPath())) {
+            path = parameters.getPath();
+        }
+
 
         if (StringUtils.isNotEmpty(parameters.getTitle())) {
             title = new NameSpacedAttribute<String>(Constants.JCR_NS_URI, Constants.JCR_NS_PREFIX,
@@ -70,5 +77,9 @@ public class Container extends AbstractTouchUIDialogElement {
 
     public NameSpacedAttribute<String> getOrderBefore() {
         return orderBefore;
+    }
+
+    public String getPath() {
+        return path;
     }
 }
